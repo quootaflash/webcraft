@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebCraft Elite | Jasa Pembuatan Website Premium</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        :root {
+            --primary: #2563eb;
+            --secondary: #059669;
+            --accent: #d97706;
+            --dark: #1f2937;
+            --light: #f8fafc;
+            --surface: #ffffff;
+        }
+        
+        body {
+            background: var(--surface);
+            color: var(--dark);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        /* Ultra Smooth Animations */
+        .smooth-transition {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        /* Micro Interactions */
+        @keyframes microBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-3px); }
+        }
+        
+        @keyframes gentlePulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+        
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+        
+        @keyframes blink {
+            50% { border-color: transparent; }
+        }
+        
+        .animate-micro-bounce {
+            animation: microBounce 2s ease-in-out infinite;
+        }
+        
+        .animate-gentle-pulse {
+            animation: gentlePulse 3s ease-in-out infinite;
+        }
+        
+        .animate-slide-up {
+            animation: slideUp 0.8s ease-out;
+        }
+        
+        .animate-fade-in {
+            animation: fadeIn 1.2s ease-out;
+        }
+        
+        .animate-scale-in {
+            animation: scaleIn 0.6s ease-out;
+        }
+        
+        .typing-animation {
+            overflow: hidden;
+            border-right: 2px solid var(--primary);
+            white-space: nowrap;
+            animation: typing 3.5s steps(40, end), blink 0.75s step-end infinite;
+        }
+        
+        /* Advanced Hover Effects */
+        .hover-3d {
+            transform-style: preserve-3d;
+            perspective: 1000px;
+        }
+        
+        .hover-3d:hover {
+            transform: translateZ(20px) rotateX(2deg) rotateY(2deg);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .hover-magnetic {
+            transition: transform 0.3s ease;
+        }
+        
+        .hover-magnetic:hover {
+            transform: translateY(-8px) scale(1.02);
+        }
+        
+        .hover-shimmer {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hover-shimmer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.2),
+                transparent
+            );
+            transition: left 0.5s ease;
+        }
+        
+        .hover-shimmer:hover::before {
+            left: 100%;
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--secondary);
+        }
+        
+        /* Smooth Scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        /* Parallax Effect */
+        .parallax {
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+        
+        /* Interactive Elements */
+        .interactive-card {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .interactive-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Loading Animation */
+        .loading-dots {
+            display: inline-block;
+        }
+        
+        .loading-dots span {
+            animation: loading 1.4s ease-in-out infinite both;
+            display: inline-block;
+        }
+        
+        .loading-dots span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        
+        .loading-dots span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        
+        @keyframes loading {
+            0%, 80%, 100% {
+                transform: scale(0.8);
+                opacity: 0.5;
+            }
+            40% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+        
+        /* Advanced Focus Effects */
+        .focus-effect:focus {
+            transform: scale(1.05);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+        
+        /* Staggered Animation */
+        .stagger-item {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        
+        .stagger-visible {
+            opacity: 1;
+            transform: translateY(0);
+            transition: all 0.6s ease;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="bg-white/95 backdrop-blur-md fixed w-full z-50 shadow-sm smooth-transition">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <h1 class="text-2xl font-bold text-gray-900">
+                        <span class="text-blue-600">Web</span>Craft<span class="text-emerald-600">Elite</span>
+                    </h1>
+                </div>
+                
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#home" class="text-gray-700 hover:text-blue-600 smooth-transition">Home</a>
+                    <a href="#services" class="text-gray-700 hover:text-blue-600 smooth-transition">Layanan</a>
+                    <a href="#portfolio" class="text-gray-700 hover:text-blue-600 smooth-transition">Portfolio</a>
+                    <a href="#pricing" class="text-gray-700 hover:text-blue-600 smooth-transition">Harga</a>
+                    <a href="#contact" class="text-gray-700 hover:text-blue-600 smooth-transition">Kontak</a>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <button class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-semibold smooth-transition hover-magnetic">
+                        Konsultasi Gratis
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Hero Section -->
+    <section id="home" class="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-emerald-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div class="animate-scale-in">
+                <h1 class="text-5xl md:text-7xl font-bold mb-6 text-gray-900">
+                    Website <span class="text-blue-600">Premium</span>
+                    <br>Untuk <span class="typing-animation text-emerald-600">Bisnis Elite</span>
+                </h1>
+                <p class="text-xl md:text-2xl text-gray-600 mb-8 max-w-3xl mx-auto">
+                    Transformasi digital bisnis Anda dengan website berkelas dunia yang dirancang khusus
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <button class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-xl font-semibold text-lg smooth-transition hover-magnetic hover-shimmer">
+                        <i class="fas fa-rocket mr-2"></i>Mulai Sekarang
+                    </button>
+                    <button class="border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white px-8 py-4 rounded-xl font-semibold text-lg smooth-transition hover-magnetic">
+                        <i class="fas fa-eye mr-2"></i>Lihat Portfolio
+                    </button>
+                </div>
+            </div>
+            
+            <div class="mt-20 animate-micro-bounce">
+                <div class="bg-white rounded-2xl p-8 shadow-xl max-w-4xl mx-auto hover-3d">
+                    <img src="https://placehold.co/800x400" alt="Modern website dashboard showing analytics and beautiful user interface design" class="w-full rounded-xl">
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Services Section -->
+    <section id="services" class="py-20 px-4 sm:px-6 lg:px-8 bg-white">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16 animate-slide-up">
+                <h2 class="text-4xl md:text-5xl font-bold mb-4 text-gray-900">Layanan <span class="text-blue-600">Premium</span></h2>
+                <p class="text-xl text-gray-600">Solusi lengkap untuk kebutuhan website bisnis kelas atas</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Service 1 -->
+                <div class="bg-white rounded-2xl p-8 shadow-lg smooth-transition interactive-card hover-3d">
+                    <div class="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center mb-6">
+                        <i class="fas fa-laptop-code text-2xl text-blue-600"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4 text-gray-900">Website Perusahaan</h3>
+                    <p class="text-gray-600 mb-4">Website profesional yang mencerminkan identitas brand Anda dengan design modern</p>
+                    <ul class="space-y-2 text-gray-600">
+                        <li class="flex items-center"><i class="fas fa-check-circle text-emerald-500 mr-2"></i> Design Custom</li>
+                        <li class="flex items-center"><i class="fas fa-check-circle text-emerald-500 mr-2"></i> Responsive Design</li>
+                        <li class="flex items-center"><i class="fas fa-check-circle text-emerald-500 mr-2"></i> SEO Optimized</li>
+                    </ul>
+                </div>
+                
+                <!-- Service 2 -->
+                <div class="bg-white rounded-2xl p-8 shadow-lg smooth-transition interactive-card hover-3d">
+                    <div class="w-16 h-16 bg-purple-100 rounded-2xl flex items-center justify-center mb-6">
+                        <i class="fas fa-shopping-cart text-2xl text-purple-600"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4 text-gray-900">E-Commerce Elite</h3>
+                    <p class="text-gray-600 mb-4">Toko online premium dengan sistem pembayaran lengkap dan manajemen canggih</p>
+                    <ul class="space-y-2 text-gray-600">
+                        <li class="flex items-center"><i class="fas fa-check-circle text-emerald-500 mr-2"></i> Payment Gateway</li>
+                        <li class="flex items-center"><i class="fas fa-check-circle text-emerald-500 mr-2"></i> Inventory System</li>
+                        <li class="flex items-center"><i class="fas fa-check-circle text-emerald-500 mr-2"></i> Mobile First</li>
+                    </ul>
+                </div>
+                
+                <!-- Service 3 -->
+                <div class="bg-white rounded-2xl p-8 shadow-lg smooth-transition interactive-card hover-3d">
+                    <div class="w-16 h-16 bg-orange-100 rounded-2xl flex items-center justify-center mb-6">
+                        <i class="fas fa-mobile-alt text-2xl text-orange-600"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4 text-gray-900">Web Application</h3>
+                    <p class="text-gray-600 mb-4">Aplikasi web custom dengan fitur canggih dan performa tinggi</p>
+                    <ul class="space-y-2 text-gray-600">
+                        <li class="flex items-center"><i class="fas fa-check-circle text-emerald-500 mr-2"></i> Custom Features</li>
+                        <li class="flex items-center"><i class="fas fa-check-circle text-emerald-500 mr-2"></i> High Performance</li>
+                        <li class="flex items-center"><i class="fas fa-check-circle text-emerald-500 mr-2"></i> Database Integration</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Interactive Demo Section -->
+    <section class="py-20 px-4 sm:px-6 lg:px-8 bg-gray-50">
+        <div class="max-w-7xl mx-auto text-center">
+            <h2 class="text-4xl md:text-5xl font-bold mb-8 text-gray-900">Coba <span class="text-blue-600">Demo Interaktif</span></h2>
+            
+            <div class="bg-white rounded-2xl p-8 shadow-xl max-w-4xl mx-auto">
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="text-left">
+                        <h3 class="text-2xl font-bold mb-4 text-gray-900">Website Builder</h3>
+                        <p class="text-gray-600 mb-6">Pilih style yang sesuai dengan brand Anda</p>
+                        
+                        <div class="space-y-4">
+                            <button class="style-btn w-full p-4 border-2 border-gray-200 rounded-xl text-left smooth-transition hover:border-blue-500 focus-effect" data-style="minimal">
+                                <i class="fas fa-paint-brush text-blue-600 mr-2"></i>
+                                Minimalist Design
+                            </button>
+                            <button class="style-btn w-full p-4 border-2 border-gray-200 rounded-xl text-left smooth-transition hover:border-blue-500 focus-effect" data-style="modern">
+                                <i class="fas fa-desktop text-purple-600 mr-2"></i>
+                                Modern Layout
+                            </button>
+                            <button class="style-btn w-full p-4 border-2 border-gray-200 rounded-xl text-left smooth-transition hover:border-blue-500 focus-effect" data-style="corporate">
+                                <i class="fas fa-building text-emerald-600 mr-2"></i>
+                                Corporate Style
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-gray-100 rounded-xl p-4">
+                        <div id="demo-preview" class="bg-white rounded-lg p-4 h-64 flex items-center justify-center">
+                            <p class="text-gray-500">Pilih style untuk melihat preview</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Portfolio Section -->
+    <section id="portfolio" class="py-20 px-4 sm:px-6 lg:px-8 bg-white">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold mb-4 text-gray-900">Portfolio <span class="text-blue-600">Elite</span></h2>
+                <p class="text-xl text-gray-600">Karya terbaik yang membuktikan kualitas premium kami</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Portfolio Items will be added here -->
+                <div class="portfolio-item bg-white rounded-2xl shadow-lg overflow-hidden smooth-transition interactive-card">
+                    <img src="https://placehold.co/400x300" alt="Modern corporate website design" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-gray-900 mb-2">Corporate Website</h3>
+                        <p class="text-gray-600">Design modern untuk perusahaan teknologi</p>
+                    </div>
+                </div>
+                
+                <div class="portfolio-item bg-white rounded-2xl shadow-lg overflow-hidden smooth-transition interactive-card">
+                    <img src="https://placehold.co/400x300" alt="E-commerce website design" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-gray-900 mb-2">E-Commerce Store</h3>
+                        <p class="text-gray-600">Toko online dengan fitur lengkap</p>
+                    </div>
+                </div>
+                
+                <div class="portfolio-item bg-white rounded-2xl shadow-lg overflow-hidden smooth-transition interactive-card">
+                    <img src="https://placehold.co/400x300" alt="Web application dashboard" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-gray-900 mb-2">Web App Dashboard</h3>
+                        <p class="text-gray-600">Dashboard aplikasi dengan analytics</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- CTA Section -->
+    <section class="py-20 px-4 sm:px-6 lg:px-8 bg-blue-600">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="text-4xl md:text-5xl font-bold mb-6 text-white">Siap <span class="text-emerald-300">Transformasi</span> Digital?</h2>
+            <p class="text-xl text-blue-100 mb-8">Mulai percakapan kami sekarang dan dapatkan konsultasi gratis</p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <button class="bg-white text-blue-600 hover:bg-gray-100 px-8 py-4 rounded-xl font-semibold text-lg smooth-transition hover-magnetic">
+                    <i class="fas fa-comment-dots mr-2"></i>Konsultasi Gratis
+                </button>
+                <button class="border-2 border-white text-white hover:bg-white hover:text-blue-600 px-8 py-4 rounded-xl font-semibold text-lg smooth-transition hover-magnetic">
+                    <i class="fas fa-phone mr-2"></i>Hubungi Kami
+                </button>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-2xl font-bold mb-4">
+                        <span class="text-blue-400">Web</span>Craft<span class="text-emerald-400">Elite</span>
+                    </h3>
+                    <p class="text-gray-400 mb-4">
+                        Membantu bisnis Anda tumbuh dengan solusi website premium dan modern.
+                    </p>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Layanan</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white smooth-transition">Website Perusahaan</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white smooth-transition">E-Commerce</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white smooth-transition">Web Application</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Tautan</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white smooth-transition">Tentang Kami</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white smooth-transition">Portfolio</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white smooth-transition">Blog</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Kontak</h4>
+                    <div class="space-y-2 text-gray-400">
+                        <p><i class="fas fa-envelope mr-2"></i>info@webcraftelite.com</p>
+                        <p><i class="fas fa-phone mr-2"></i>+62 812 3456 7890</p>
+                        <p><i class="fas fa-map-marker-alt mr-2"></i>Jakarta, Indonesia</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center">
+                <p class="text-gray-400">
+                    © 2024 WebCraft Elite. All rights reserved.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling for navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+        
+        // Interactive demo functionality
+        const styleButtons = document.querySelectorAll('.style-btn');
+        const demoPreview = document.getElementById('demo-preview');
+        
+        const styles = {
+            minimal: {
+                bg: 'bg-white',
+                text: 'text-gray-800',
+                content: 'Minimalist Design Preview'
+            },
+            modern: {
+                bg: 'bg-gradient-to-r from-blue-50 to-purple-50',
+                text: 'text-gray-800',
+                content: 'Modern Layout Preview'
+            },
+            corporate: {
+                bg: 'bg-gradient-to-r from-gray-50 to-blue-50',
+                text: 'text-gray-800',
+                content: 'Corporate Style Preview'
+            }
+        };
+        
+        styleButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const style = this.dataset.style;
+                
+                // Remove active class from all buttons
+                styleButtons.forEach(btn => {
+                    btn.classList.remove('border-blue-500', 'bg-blue-50');
+                });
+                
+                // Add active class to clicked button
+                this.classList.add('border-blue-500', 'bg-blue-50');
+                
+                // Update preview
+                demoPreview.className = `rounded-lg p-4 h-64 flex items-center justify-center smooth-transition ${styles[style].bg} ${styles[style].text}`;
+                demoPreview.innerHTML = `
+                    <div class="text-center">
+                        <i class="fas fa-check-circle text-4xl text-green-500 mb-2"></i>
+                        <p class="font-semibold">${styles[style].content}</p>
+                    </div>
+                `;
+            });
+        });
+        
+        // Intersection Observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('stagger-visible');
+                }
+            });
+        }, observerOptions);
+        
+        // Observe elements for staggered animation
+        document.querySelectorAll('.stagger-item').forEach(item => {
+            observer.observe(item);
+        });
+        
+        // Add staggered animation to portfolio items
+        document.querySelectorAll('.portfolio-item').forEach((item, index) => {
+            item.classList.add('stagger-item');
+            item.style.transitionDelay = `${index * 0.1}s`;
+        });
+        
+        // Hover magnetic effect
+        document.querySelectorAll('.hover-magnetic').forEach(item => {
+            item.addEventListener('mouseenter', () => {
+                item.style.transform = 'translateY(-8px) scale(1.02)';
+            });
+            
+            item.addEventListener('mouseleave', () => {
+                item.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+        
+        // Initialize typing animation
+        setTimeout(() => {
+            document.querySelector('.typing-animation').style.animation = 'none';
+            document.querySelector('.typing-animation').style.borderRight = 'none';
+        }, 3500);
+        
+        // Loading animation for demo
+        function simulateLoading() {
+            demoPreview.innerHTML = `
+                <div class="text-center">
+                    <div class="loading-dots">
+                        <span>.</span><span>.</span><span>.</span>
+                    </div>
+                    <p class="text-gray-500 mt-2">Loading preview</p>
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>
