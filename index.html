@@ -12,6 +12,9 @@
     <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
     <link href="https://unpkg.com/aos@next/dist/aos.css" rel="stylesheet" />
     
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet" />
     
@@ -24,7 +27,7 @@
                 extend: {
                     colors: {
                         brand: {
-                            DEFAULT: '#221E82',
+                            DEFAULT: '#221E82', 
                             dark: '#1a174e',
                             light: '#3833a0',
                             bg: '#F8FAFC'
@@ -46,13 +49,7 @@
         ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
 
         /* Layout Structure */
-        .app-wrapper {
-            display: flex;
-            min-height: 100vh;
-            width: 100%;
-            position: relative;
-            overflow-x: hidden;
-        }
+        .app-wrapper { display: flex; min-height: 100vh; width: 100%; position: relative; overflow-x: hidden; }
 
         /* Sidebar Styling */
         .sidebar {
@@ -60,20 +57,14 @@
             background: white;
             border-right: 1px solid #e2e8f0;
             position: fixed;
-            top: 0;
-            left: 0;
-            bottom: 0;
+            top: 0; left: 0; bottom: 0;
             z-index: 50;
             display: flex;
             flex-direction: column;
             transition: transform 0.3s ease-in-out;
             box-shadow: 4px 0 24px rgba(0,0,0,0.05);
         }
-
-        @media (max-width: 1023px) {
-            .sidebar { transform: translateX(-100%); }
-            .sidebar.active { transform: translateX(0); box-shadow: 10px 0 30px rgba(0,0,0,0.2); }
-        }
+        @media (max-width: 1023px) { .sidebar { transform: translateX(-100%); } .sidebar.active { transform: translateX(0); box-shadow: 10px 0 30px rgba(0,0,0,0.2); } }
 
         .main-content {
             flex: 1;
@@ -85,18 +76,12 @@
             z-index: 10;
             transition: margin-left 0.3s ease, width 0.3s ease;
         }
-
-        @media (max-width: 1023px) {
-            .main-content { margin-left: 0; width: 100%; }
-        }
+        @media (max-width: 1023px) { .main-content { margin-left: 0; width: 100%; } }
 
         .sidebar-menu { flex: 1; overflow-y: auto; margin-bottom: 1rem; padding-right: 5px; }
         .sidebar-menu::-webkit-scrollbar { width: 4px; }
         .sidebar-menu::-webkit-scrollbar-thumb { background: #cbd5e1; }
-        .sidebar-footer {
-            margin-top: auto; padding-top: 1.5rem; border-top: 1px solid #e2e8f0;
-            background: white; flex-shrink: 0;
-        }
+        .sidebar-footer { margin-top: auto; padding-top: 1.5rem; border-top: 1px solid #e2e8f0; background: white; flex-shrink: 0; }
 
         .sidebar-overlay {
             position: fixed; top: 0; left: 0; right: 0; bottom: 0;
@@ -105,36 +90,51 @@
         }
         .sidebar-overlay.active { opacity: 1; pointer-events: auto; }
 
-        /* TikTok Card Style */
-        .tiktok-card {
-            aspect-ratio: 9/16;
-            border-radius: 1rem;
-            overflow: hidden;
-            position: relative;
-            cursor: pointer;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        /* Cursor Follower Effect */
+        .cursor-dot, .cursor-outline {
+            position: fixed; top: 0; left: 0; transform: translate(-50%, -50%);
+            border-radius: 50%; z-index: 9999; pointer-events: none;
         }
-        .play-icon-overlay {
-            background: rgba(0,0,0,0.4);
-            transition: background 0.3s;
+        .cursor-dot { width: 8px; height: 8px; background-color: #221E82; }
+        .cursor-outline {
+            width: 40px; height: 40px; border: 1px solid #221E82;
+            transition: width 0.2s, height 0.2s, top 0.2s, left 0.2s;
         }
-        .tiktok-card:hover .play-icon-overlay { background: rgba(0,0,0,0.2); }
-        .tiktok-card:hover img { transform: scale(1.05); transition: 0.5s; }
 
-        /* 3D Tilt */
-        .tilt-card {
-            transform-style: preserve-3d;
-            transform: perspective(1000px);
+        /* Testimoni Phone Mockup */
+        .phone-mockup {
+            border: 12px solid #1e293b; border-radius: 30px; overflow: hidden; position: relative;
+            background: #000; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2);
+            transition: transform 0.4s ease;
         }
-        
+        .phone-mockup:hover { transform: scale(1.05) rotate(-2deg); z-index: 10; box-shadow: 0 25px 50px -12px rgba(34, 30, 130, 0.5); }
+        .phone-mockup::before {
+            content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+            width: 40%; height: 25px; background: #1e293b;
+            border-bottom-left-radius: 12px; border-bottom-right-radius: 12px; z-index: 20;
+        }
+
         /* FAQ Accordion */
-        details { transition: all 0.3s ease; }
-        details[open] { background-color: #F1F5F9; }
+        details { transition: all 0.3s ease; border-left: 4px solid transparent; }
+        details[open] { background-color: #F1F5F9; border-left-color: #221E82; }
         details[open] summary i { transform: rotate(180deg); }
         summary i { transition: transform 0.3s ease; }
+        
+        /* Back to Top Button */
+        #backToTop {
+            opacity: 0; visibility: hidden; transition: all 0.3s ease;
+        }
+        #backToTop.show { opacity: 1; visibility: visible; }
+
+        /* 3D Tilt */
+        .tilt-card { transform-style: preserve-3d; transform: perspective(1000px); }
     </style>
 </head>
 <body class="font-sans text-gray-800 antialiased">
+
+    <!-- Cursor Elements -->
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
 
     <!-- Mobile Overlay -->
     <div id="sidebar-overlay" class="sidebar-overlay" onclick="closeSidebar()"></div>
@@ -145,7 +145,6 @@
         <nav id="sidebar" class="sidebar">
             <!-- Logo PNG -->
             <a href="#" class="flex items-center gap-3 px-6 py-6 border-b border-gray-100">
-                <!-- GANTI src DENGAN FILE PNG ANDA -->
                 <img src="https://via.placeholder.com/40x40/221E82/FFFFFF?text=W" alt="Logo WriteHub" class="h-10 w-10 object-contain rounded-lg">
                 <span class="text-2xl font-bold text-brand tracking-tight">WriteHub</span>
             </a>
@@ -155,9 +154,7 @@
                 <li><a href="#home" class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-brand/5 hover:text-brand transition font-medium group" onclick="closeSidebarMobile()"><i class="fa-solid fa-house w-5 text-center group-hover:scale-110 transition-transform"></i> Beranda</a></li>
                 <li><a href="#products" class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-brand/5 hover:text-brand transition font-medium group" onclick="closeSidebarMobile()"><i class="fa-solid fa-layer-group w-5 text-center group-hover:scale-110 transition-transform"></i> Layanan</a></li>
                 <li><a href="#testimoni" class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-brand/5 hover:text-brand transition font-medium group" onclick="closeSidebarMobile()"><i class="fa-solid fa-images w-5 text-center group-hover:scale-110 transition-transform"></i> Bukti</a></li>
-                <!-- Menu Baru: TikTok -->
                 <li><a href="#tiktok" class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-brand/5 hover:text-brand transition font-medium group" onclick="closeSidebarMobile()"><i class="fa-brands fa-tiktok w-5 text-center group-hover:scale-110 transition-transform"></i> Video Tips</a></li>
-                <!-- Menu Baru: FAQ -->
                 <li><a href="#faq" class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-brand/5 hover:text-brand transition font-medium group" onclick="closeSidebarMobile()"><i class="fa-solid fa-circle-question w-5 text-center group-hover:scale-110 transition-transform"></i> Q&A</a></li>
                 <li><a href="#contact" class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-brand/5 hover:text-brand transition font-medium group" onclick="closeSidebarMobile()"><i class="fa-solid fa-envelope w-5 text-center group-hover:scale-110 transition-transform"></i> Kontak</a></li>
             </ul>
@@ -188,8 +185,12 @@
             </header>
 
             <!-- HERO SECTION -->
-            <section id="home" class="pt-24 md:pt-32 pb-20 px-6 md:px-12 max-w-7xl mx-auto">
-                <div class="grid md:grid-cols-2 gap-12 items-center">
+            <section id="home" class="pt-24 md:pt-32 pb-20 px-6 md:px-12 max-w-7xl mx-auto relative overflow-hidden">
+                <!-- Interactive Background Blobs -->
+                <div class="absolute top-0 right-0 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl -mr-16 -mt-16 animate-pulse"></div>
+                <div class="absolute bottom-0 left-0 w-96 h-96 bg-brand/5 rounded-full blur-3xl -ml-48 -mb-48"></div>
+
+                <div class="grid md:grid-cols-2 gap-12 items-center relative z-10">
                     <div data-aos="fade-right">
                         <span class="inline-block py-1 px-3 rounded-full bg-brand/10 text-brand text-xs font-bold uppercase tracking-wider mb-4">Career Solution Partner</span>
                         <h1 class="text-4xl md:text-6xl font-extrabold text-gray-900 leading-tight mb-6">
@@ -221,7 +222,7 @@
                 </div>
             </section>
 
-           <!-- PRODUK SCROLLABLE (SIDESWIPE) -->
+            <!-- PRODUK SCROLLABLE (SIDESWIPE) -->
             <section id="products" class="py-24 bg-gray-50">
                 <div class="max-w-7xl mx-auto px-6">
                     <div class="text-center mb-16">
@@ -307,9 +308,9 @@
                         <div class="swiper-pagination mt-8"></div>
                     </div>
                 </div>
-            </section>   
-                            
-          <!-- TESTIMONI SCROLLABLE (SIDESWIPE) -->
+            </section>
+
+            <!-- TESTIMONI SCROLLABLE (SIDESWIPE) -->
             <section id="testimoni" class="py-24 bg-brand text-white overflow-hidden relative">
                 <div class="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -mr-32 -mt-32"></div>
                 <div class="absolute bottom-0 left-0 w-96 h-96 bg-blue-400/10 rounded-full blur-3xl -ml-48 -mb-48"></div>
@@ -358,141 +359,114 @@
                 </div>
             </section>
 
-
-            <!-- NEW: TIKTOK TIPS VIDEO SECTION -->
+            <!-- TIKTOK TIPS (VIDEO PLAYER WORKING) -->
             <section id="tiktok" class="py-24 bg-white">
                 <div class="max-w-7xl mx-auto px-6">
                     <div class="text-center mb-16">
                         <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4">Tips Karir <span class="text-black"><i class="fa-brands fa-tiktok"></i></span></h2>
-                        <p class="text-gray-600">Tonton video tips karir kami langsung di TikTok. Klik video untuk menonton!</p>
+                        <p class="text-gray-600">Tonton video tips karir kami langsung di sini. Klik video untuk memutar!</p>
                     </div>
 
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-                        <!-- TikTok 1 -->
-                        <a href="https://www.tiktok.com/@writehub" target="_blank" class="block group" data-aos="fade-up">
-                            <div class="tiktok-card bg-gray-900 relative">
-                                <img src="https://images.unsplash.com/photo-1587620962725-abab7fe55159?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Tips 1" class="w-full h-full object-cover opacity-80 group-hover:opacity-100">
-                                <div class="absolute inset-0 flex items-center justify-center">
-                                    <div class="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-white border border-white/30 group-hover:scale-110 transition">
-                                        <i class="fa-solid fa-play text-xl ml-1"></i>
-                                    </div>
-                                </div>
-                                <div class="absolute bottom-4 left-4 flex items-center gap-2 text-white text-sm font-bold drop-shadow-md">
-                                    <i class="fa-brands fa-tiktok"></i> @writehub
-                                </div>
-                            </div>
-                        </a>
+                        <!-- Menggunakan Embed TikTok agar video bisa diputar langsung -->
+                        <!-- GANTI @writehub DENGAN USERNAME TIKTOK ANDA -->
+                        <div class="rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition transform hover:-translate-y-2" data-aos="fade-up">
+                            <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@writehub/video/1" data-video-id="1" style="max-width: 605px;min-width: 325px;height: 600px; width: 100%;border-radius: 12px; background-color: #000;">
+                                <section> <a target="_blank" href="https://www.tiktok.com/@writehub/video/1?refer=embed" rel="noopener" aria-label="TikTok" class="absolute bottom-0 right-0 z-10 bg-white rounded-full p-2 text-blue-500 hover:text-black transition-colors"> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-full h-full"><path d="M9 12h6m-6 0h6m-6 0v6m0-6v6m0-6h6"></path> </svg> </a> </section>
+                            </blockquote>
+                            <script async src="https://www.tiktok.com/embed.js"></script>
+                        </div>
 
-                        <!-- TikTok 2 -->
-                        <a href="https://www.tiktok.com/@writehub" target="_blank" class="block group" data-aos="fade-up" data-aos-delay="100">
-                            <div class="tiktok-card bg-gray-900 relative">
-                                <img src="https://images.unsplash.com/photo-1551836022-d5d88e9218df?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Tips 2" class="w-full h-full object-cover opacity-80 group-hover:opacity-100">
-                                <div class="absolute inset-0 flex items-center justify-center">
-                                    <div class="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-white border border-white/30 group-hover:scale-110 transition">
-                                        <i class="fa-solid fa-play text-xl ml-1"></i>
-                                    </div>
-                                </div>
-                                <div class="absolute bottom-4 left-4 flex items-center gap-2 text-white text-sm font-bold drop-shadow-md">
-                                    <i class="fa-brands fa-tiktok"></i> @writehub
-                                </div>
-                            </div>
-                        </a>
+                        <!-- Video 2 (Placeholder untuk Demo, ganti data-video-id asli) -->
+                        <div class="rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition transform hover:-translate-y-2" data-aos="fade-up" data-aos-delay="100">
+                            <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@writehub/video/2" data-video-id="2" style="max-width: 605px;min-width: 325px;height: 600px; width: 100%;border-radius: 12px; background-color: #000;">
+                                <section> <a target="_blank" href="https://www.tiktok.com/@writehub/video/2?refer=embed" rel="noopener" aria-label="TikTok" class="absolute bottom-0 right-0 z-10 bg-white rounded-full p-2 text-blue-500 hover:text-black transition-colors"> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-full h-full"><path d="M9 12h6m-6 0h6m-6 0v6m0-6v6m0-6h6"></path> </svg> </a> </section>
+                            </blockquote>
+                            <script async src="https://www.tiktok.com/embed.js"></script>
+                        </div>
+                        
+                        <!-- Video 3 -->
+                        <div class="rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition transform hover:-translate-y-2" data-aos="fade-up" data-aos-delay="200">
+                            <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@writehub/video/3" data-video-id="3" style="max-width: 605px;min-width: 325px;height: 600px; width: 100%;border-radius: 12px; background-color: #000;">
+                                <section> <a target="_blank" href="https://www.tiktok.com/@writehub/video/3?refer=embed" rel="noopener" aria-label="TikTok" class="absolute bottom-0 right-0 z-10 bg-white rounded-full p-2 text-blue-500 hover:text-black transition-colors"> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-full h-full"><path d="M9 12h6m-6 0h6m-6 0v6m0-6v6m0-6h6"></path> </svg> </a> </section>
+                            </blockquote>
+                            <script async src="https://www.tiktok.com/embed.js"></script>
+                        </div>
 
-                        <!-- TikTok 3 -->
-                        <a href="https://www.tiktok.com/@writehub" target="_blank" class="block group" data-aos="fade-up" data-aos-delay="200">
-                            <div class="tiktok-card bg-gray-900 relative">
-                                <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Tips 3" class="w-full h-full object-cover opacity-80 group-hover:opacity-100">
-                                <div class="absolute inset-0 flex items-center justify-center">
-                                    <div class="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-white border border-white/30 group-hover:scale-110 transition">
-                                        <i class="fa-solid fa-play text-xl ml-1"></i>
-                                    </div>
-                                </div>
-                                <div class="absolute bottom-4 left-4 flex items-center gap-2 text-white text-sm font-bold drop-shadow-md">
-                                    <i class="fa-brands fa-tiktok"></i> @writehub
-                                </div>
-                            </div>
-                        </a>
-
-                        <!-- TikTok 4 -->
-                        <a href="https://www.tiktok.com/@writehub" target="_blank" class="block group" data-aos="fade-up" data-aos-delay="300">
-                            <div class="tiktok-card bg-gray-900 relative">
-                                <img src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Tips 4" class="w-full h-full object-cover opacity-80 group-hover:opacity-100">
-                                <div class="absolute inset-0 flex items-center justify-center">
-                                    <div class="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-white border border-white/30 group-hover:scale-110 transition">
-                                        <i class="fa-solid fa-play text-xl ml-1"></i>
-                                    </div>
-                                </div>
-                                <div class="absolute bottom-4 left-4 flex items-center gap-2 text-white text-sm font-bold drop-shadow-md">
-                                    <i class="fa-brands fa-tiktok"></i> @writehub
-                                </div>
-                            </div>
-                        </a>
+                         <!-- Video 4 -->
+                         <div class="rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition transform hover:-translate-y-2" data-aos="fade-up" data-aos-delay="300">
+                            <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@writehub/video/4" data-video-id="4" style="max-width: 605px;min-width: 325px;height: 600px; width: 100%;border-radius: 12px; background-color: #000;">
+                                <section> <a target="_blank" href="https://www.tiktok.com/@writehub/video/4?refer=embed" rel="noopener" aria-label="TikTok" class="absolute bottom-0 right-0 z-10 bg-white rounded-full p-2 text-blue-500 hover:text-black transition-colors"> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-full h-full"><path d="M9 12h6m-6 0h6m-6 0v6m0-6v6m0-6h6"></path> </svg> </a> </section>
+                            </blockquote>
+                            <script async src="https://www.tiktok.com/embed.js"></script>
+                        </div>
                     </div>
                 </div>
             </section>
 
-            <!-- NEW: Q&A SECTION (FAQ) -->
+            <!-- FAQ SECTION (REVISED CONTENT) -->
             <section id="faq" class="py-24 bg-gray-50">
                 <div class="max-w-4xl mx-auto px-6">
                     <div class="text-center mb-16">
                         <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4">Tanya Jawab <span class="text-brand">(FAQ)</span></h2>
-                        <p class="text-gray-600">Pertanyaan yang sering diajukan oleh calon klien.</p>
+                        <p class="text-gray-600">Pertanyaan yang sering diajukan untuk menjawab kebingungan Anda.</p>
                     </div>
 
                     <div class="space-y-4">
-                        <!-- Q1 -->
+                        <!-- Q1: Proses & Keamanan -->
                         <details class="group bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden transition duration-300" open>
                             <summary class="flex justify-between items-center p-6 cursor-pointer list-none hover:bg-gray-50 transition">
                                 <div class="flex items-center gap-4">
                                     <span class="bg-brand/10 text-brand w-8 h-8 rounded-lg flex items-center justify-center font-bold">1</span>
-                                    <h3 class="font-bold text-gray-800 text-lg">Berapa lama proses pembuatan CV?</h3>
+                                    <h3 class="font-bold text-gray-800 text-lg">Berapa lama prosesnya dan apakah data saya aman?</h3>
                                 </div>
                                 <i class="fa-solid fa-chevron-down text-gray-400 group-open:rotate-180 transition-transform duration-300"></i>
                             </summary>
                             <div class="p-6 pt-0 text-gray-600 border-t border-gray-100 mt-4 animate-fade-in">
-                                Untuk paket Basic, proses memakan waktu 3-4 hari kerja. Untuk paket Professional dan Executive, kami menargetkan penyelesaian dalam 2-3 hari kerja setelah data lengkap kami terima.
+                                <p class="mb-2 font-semibold text-brand">Waktu Pengerjaan:</p> Untuk paket Basic 3-4 hari kerja, Professional 2-3 hari. <br><br>
+                                <p class="font-semibold text-brand">Keamanan Data:</p> Kami menjamin kerahasiaan data 100%. Data Anda hanya digunakan untuk keperluan penulisan dan dihapus dari server kami setelah 30 hari. Kami tidak pernah menjual data ke pihak ketiga.
                             </div>
                         </details>
 
-                        <!-- Q2 -->
+                        <!-- Q2: Revisi & Garansi -->
                         <details class="group bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden transition duration-300">
                             <summary class="flex justify-between items-center p-6 cursor-pointer list-none hover:bg-gray-50 transition">
                                 <div class="flex items-center gap-4">
                                     <span class="bg-brand/10 text-brand w-8 h-8 rounded-lg flex items-center justify-center font-bold">2</span>
-                                    <h3 class="font-bold text-gray-800 text-lg">Apakah data saya aman?</h3>
+                                    <h3 class="font-bold text-gray-800 text-lg">Bagaimana sistem revisi dan apakah ada garansi?</h3>
                                 </div>
                                 <i class="fa-solid fa-chevron-down text-gray-400 group-open:rotate-180 transition-transform duration-300"></i>
                             </summary>
                             <div class="p-6 pt-0 text-gray-600 border-t border-gray-100 mt-4 animate-fade-in">
-                                Sangat aman. Kami menjaga kerahasiaan data klien dengan ketat. Data Anda hanya digunakan untuk keperluan penulisan dokumen dan akan dihapus dari server kami setelah 30 hari.
+                                Kami memberikan revisi sampai Anda puas. Jika Anda merasa hasilnya belum sesuai ekspektasi dalam 3x revisi, kami memberikan <span class="text-brand font-bold">Garansi Uang Kembali 100%</span>. Kepuasan Anda adalah prioritas kami.
                             </div>
                         </details>
 
-                        <!-- Q3 -->
+                        <!-- Q3: Metode Kerja Remote -->
                         <details class="group bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden transition duration-300">
                             <summary class="flex justify-between items-center p-6 cursor-pointer list-none hover:bg-gray-50 transition">
                                 <div class="flex items-center gap-4">
                                     <span class="bg-brand/10 text-brand w-8 h-8 rounded-lg flex items-center justify-center font-bold">3</span>
-                                    <h3 class="font-bold text-gray-800 text-lg">Apakah revisi gratis?</h3>
+                                    <h3 class="font-bold text-gray-800 text-lg">Apakah kerjanya remote atau harus bertemu?</h3>
                                 </div>
                                 <i class="fa-solid fa-chevron-down text-gray-400 group-open:rotate-180 transition-transform duration-300"></i>
                             </summary>
                             <div class="p-6 pt-0 text-gray-600 border-t border-gray-100 mt-4 animate-fade-in">
-                                Kami menyediakan revisi untuk memastikan dokumen sudah sesuai dengan ekspektasi Anda. Revisi mencakup perbaikan tata bahasa, struktur, atau gaya penulisan.
+                                Sepenuhnya <span class="font-bold text-brand">100% Remote</span> via WhatsApp dan Email. Anda tidak perlu datang ke kantor kami. Proses diskusi pengerjaan dilakukan secara online untuk efisiensi waktu Anda.
                             </div>
                         </details>
 
-                        <!-- Q4 -->
+                        <!-- Q4: Kualitas ATS -->
                         <details class="group bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden transition duration-300">
                             <summary class="flex justify-between items-center p-6 cursor-pointer list-none hover:bg-gray-50 transition">
                                 <div class="flex items-center gap-4">
                                     <span class="bg-brand/10 text-brand w-8 h-8 rounded-lg flex items-center justify-center font-bold">4</span>
-                                    <h3 class="font-bold text-gray-800 text-lg">Bagaimana cara pembayarannya?</h3>
+                                    <h3 class="font-bold text-gray-800 text-lg">Apakah CV dijamin lolos ATS perusahaan besar?</h3>
                                 </div>
                                 <i class="fa-solid fa-chevron-down text-gray-400 group-open:rotate-180 transition-transform duration-300"></i>
                             </summary>
                             <div class="p-6 pt-0 text-gray-600 border-t border-gray-100 mt-4 animate-fade-in">
-                                Pembayaran dapat dilakukan melalui Transfer Bank (BCA, Mandiri, BNI) atau E-Wallet (GoPay, OVO, Dana). Invoice akan dikirimkan setelah kami menerima data Anda.
+                                Ya. Kami menggunakan metode <span class="text-brand font-bold">ATS Optimization</span> yang teruji. Kami melakukan riset keyword khusus untuk industri yang Anda lamar, sehingga CV Anda akan terbaca oleh sistem rekrutmen perusahaan seperti Tokopedia, Gojek, dan BUMN.
                             </div>
                         </details>
                     </div>
@@ -532,18 +506,40 @@
                 <i class="fa-brands fa-whatsapp"></i>
             </a>
 
+            <!-- Back To Top Button -->
+            <button id="backToTop" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="fixed bottom-6 left-6 bg-brand text-white w-12 h-12 rounded-full shadow-lg flex items-center justify-center z-[9998] hover:bg-brand-dark transition">
+                <i class="fa-solid fa-arrow-up"></i>
+            </button>
+
         </main>
     </div>
 
     <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script>
-        // 1. AOS Init
+        // 1. Cursor Follower Effect
+        const cursorDot = document.querySelector('.cursor-dot');
+        const cursorOutline = document.querySelector('.cursor-outline');
+
+        window.addEventListener('mousemove', (e) => {
+            const posX = e.clientX;
+            const posY = e.clientY;
+
+            cursorDot.style.left = `${posX}px`;
+            cursorDot.style.top = `${posY}px`;
+
+            cursorOutline.animate({
+                left: `${posX}px`,
+                top: `${posY}px`,
+            }, { duration: 500, fill: "forwards" });
+        });
+
+        // 2. AOS Init
         AOS.init({ duration: 800, once: true, offset: 50 });
 
-        // 2. Sidebar Logic
+        // 3. Sidebar Logic
         const sidebar = document.getElementById('sidebar');
         const overlay = document.getElementById('sidebar-overlay');
-
         function toggleSidebar() {
             sidebar.classList.toggle('active');
             overlay.classList.toggle('active');
@@ -556,9 +552,10 @@
             if (window.innerWidth < 1024) { closeSidebar(); }
         }
 
-        // 3. Filter Logic
+        // 4. Filter Logic
         const filterBtns = document.querySelectorAll('.filter-btn');
-        const productCards = document.querySelectorAll('.product-card');
+        const productSlides = document.querySelectorAll('.swiper-slide');
+
         filterBtns.forEach(btn => {
             btn.addEventListener('click', () => {
                 filterBtns.forEach(b => {
@@ -568,16 +565,64 @@
                 });
                 btn.classList.remove('bg-white', 'text-gray-600', 'border-gray-200');
                 btn.classList.add('bg-brand', 'text-white', 'border-brand');
+                
                 const filterValue = btn.getAttribute('data-filter');
-                productCards.forEach(card => {
-                    if (filterValue === 'all' || card.getAttribute('data-category') === filterValue) {
-                        card.style.display = 'block';
-                    } else { card.style.display = 'none'; }
+                
+                // Filter Swiper Slides
+                productSlides.forEach(slide => {
+                    if (filterValue === 'all' || slide.getAttribute('data-category') === filterValue) {
+                        slide.style.display = 'block'; // Reset display to let swiper handle layout
+                    } else {
+                        slide.style.display = 'none';
+                    }
                 });
+                
+                // Update Swiper after filtering
+                productSwiper.update();
             });
         });
 
-        // 4. 3D Tilt Effect
+        // 5. Init Swiper Products (Horizontal Scroll)
+        const productSwiper = new Swiper('.productSwiper', {
+            slidesPerView: 1,
+            spaceBetween: 20,
+            loop: true,
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+                dynamicBullets: true,
+            },
+            autoplay: {
+                delay: 3000,
+                disableOnInteraction: false,
+            },
+            breakpoints: {
+                640: { slidesPerView: 2 },
+                1024: { slidesPerView: 3 },
+            }
+        });
+
+        // 6. Init Swiper Testimoni (Horizontal Scroll) -->
+        const testimonialSwiper = new Swiper('.testimonialSwiper', {
+            slidesPerView: 1.5,
+            spaceBetween: 30,
+            loop: true,
+            centeredSlides: true,
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+            },
+            autoplay: {
+                delay: 3500,
+                disableOnInteraction: false,
+            },
+            breakpoints: {
+                640: { slidesPerView: 2, spaceBetween: 20 },
+                1024: { slidesPerView: 3, spaceBetween: 30 },
+            }
+        });
+
+        // 7. 3D Tilt Effect
         const tiltCards = document.querySelectorAll('.tilt-card');
         tiltCards.forEach(card => {
             card.addEventListener('mousemove', (e) => {
@@ -593,6 +638,16 @@
             card.addEventListener('mouseleave', () => {
                 card.style.transform = `perspective(1000px) rotateX(0) rotateY(0) scale(1)`;
             });
+        });
+
+        // 8. Back To Top Button Logic
+        const backToTop = document.getElementById('backToTop');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                backToTop.classList.add('show');
+            } else {
+                backToTop.classList.remove('show');
+            }
         });
     </script>
 </body>
