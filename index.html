@@ -221,7 +221,8 @@
                 </div>
             </section>
 
-            <!-- PRODUK -->
+           
+                                <!-- PRODUK SCROLLABLE (SIDESWIPE) -->
             <section id="products" class="py-24 bg-gray-50">
                 <div class="max-w-7xl mx-auto px-6">
                     <div class="text-center mb-16">
@@ -234,51 +235,77 @@
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="product-grid">
-                        <!-- Product 1 -->
-                        <div class="product-card group" data-category="cv" data-aos="fade-up">
-                            <div class="tilt-card bg-white rounded-2xl shadow-sm hover:shadow-2xl border border-gray-100 overflow-hidden transition-all duration-300 h-full flex flex-col">
-                                <div class="relative h-56 overflow-hidden">
-                                    <img src="https://images.unsplash.com/photo-1586281380349-632531db7ed4?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="CV Writing" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
-                                    <div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-300"><span class="bg-white text-brand px-4 py-2 rounded-full font-bold text-sm transform translate-y-4 group-hover:translate-y-0 transition duration-300">Lihat Detail</span></div>
-                                </div>
-                                <div class="p-6 flex-1 flex flex-col">
-                                    <div class="flex justify-between items-start mb-4"><h3 class="text-xl font-bold text-gray-800">CV Writing Pro</h3><span class="bg-blue-100 text-blue-700 text-xs font-bold px-2 py-1 rounded">ATS Friendly</span></div>
-                                    <p class="text-gray-600 text-sm mb-6 flex-1">CV yang didesain khusus untuk melewati sistem rekrutmen bot.</p>
-                                    <a href="https://wa.me/6288219673570" class="mt-auto w-full bg-gray-900 text-white text-sm py-3 rounded-lg hover:bg-brand transition flex items-center justify-center gap-2 font-medium"><i class="fa-brands fa-whatsapp"></i> Pesan via WA</a>
+                    <!-- Swiper Container -->
+                    <div class="swiper productSwiper py-4">
+                        <div class="swiper-wrapper" id="product-grid">
+                            <!-- Product 1 -->
+                            <div class="swiper-slide h-full" data-category="cv" data-aos="fade-up">
+                                <div class="tilt-card bg-white rounded-2xl shadow-sm hover:shadow-2xl border border-gray-100 overflow-hidden transition-all duration-300 flex flex-col h-[500px]">
+                                    <div class="relative h-56 overflow-hidden">
+                                        <img src="https://images.unsplash.com/photo-1586281380349-632531db7ed4?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="CV Writing" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                                        <div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-300">
+                                            <span class="bg-white text-brand px-4 py-2 rounded-full font-bold text-sm transform translate-y-4 group-hover:translate-y-0 transition duration-300">Lihat Detail</span>
+                                        </div>
+                                    </div>
+                                    <div class="p-6 flex-1 flex flex-col">
+                                        <div class="flex justify-between items-start mb-4">
+                                            <h3 class="text-xl font-bold text-gray-800">CV Writing Pro</h3>
+                                            <span class="bg-blue-100 text-blue-700 text-xs font-bold px-2 py-1 rounded">ATS Friendly</span>
+                                        </div>
+                                        <p class="text-gray-600 text-sm mb-6 flex-1">CV yang didesain khusus untuk melewati sistem rekrutmen bot dengan keyword yang tepat.</p>
+                                        <a href="https://wa.me/6288219673570" class="mt-auto w-full bg-gray-900 text-white text-sm py-3 rounded-lg hover:bg-brand transition flex items-center justify-center gap-2 font-medium">
+                                            <i class="fa-brands fa-whatsapp"></i> Pesan via WA
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <!-- Product 2 -->
-                        <div class="product-card group" data-category="linkedin" data-aos="fade-up" data-aos-delay="100">
-                            <div class="tilt-card bg-white rounded-2xl shadow-sm hover:shadow-2xl border border-gray-100 overflow-hidden transition-all duration-300 h-full flex flex-col">
-                                <div class="relative h-56 overflow-hidden">
-                                    <img src="https://images.unsplash.com/photo-1611162617474-5b21e879e113?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="LinkedIn" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
-                                    <div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-300"><span class="bg-white text-brand px-4 py-2 rounded-full font-bold text-sm transform translate-y-4 group-hover:translate-y-0 transition duration-300">Lihat Detail</span></div>
-                                </div>
-                                <div class="p-6 flex-1 flex flex-col">
-                                    <div class="flex justify-between items-start mb-4"><h3 class="text-xl font-bold text-gray-800">LinkedIn Optimization</h3><span class="bg-blue-700 text-white text-xs font-bold px-2 py-1 rounded">SEO Ready</span></div>
-                                    <p class="text-gray-600 text-sm mb-6 flex-1">Ubah profil LinkedIn Anda menjadi magnet headhunter.</p>
-                                    <a href="https://wa.me/6285814772634" class="mt-auto w-full bg-gray-900 text-white text-sm py-3 rounded-lg hover:bg-brand transition flex items-center justify-center gap-2 font-medium"><i class="fa-brands fa-whatsapp"></i> Pesan via WA</a>
+                            <!-- Product 2 -->
+                            <div class="swiper-slide h-full" data-category="linkedin" data-aos="fade-up" data-aos-delay="100">
+                                <div class="tilt-card bg-white rounded-2xl shadow-sm hover:shadow-2xl border border-gray-100 overflow-hidden transition-all duration-300 flex flex-col h-[500px]">
+                                    <div class="relative h-56 overflow-hidden">
+                                        <img src="https://images.unsplash.com/photo-1611162617474-5b21e879e113?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="LinkedIn" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                                        <div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-300">
+                                            <span class="bg-white text-brand px-4 py-2 rounded-full font-bold text-sm transform translate-y-4 group-hover:translate-y-0 transition duration-300">Lihat Detail</span>
+                                        </div>
+                                    </div>
+                                    <div class="p-6 flex-1 flex flex-col">
+                                        <div class="flex justify-between items-start mb-4">
+                                            <h3 class="text-xl font-bold text-gray-800">LinkedIn Optimization</h3>
+                                            <span class="bg-blue-700 text-white text-xs font-bold px-2 py-1 rounded">SEO Ready</span>
+                                        </div>
+                                        <p class="text-gray-600 text-sm mb-6 flex-1">Ubah profil LinkedIn Anda menjadi magnet headhunter dengan optimasi keyword yang tepat.</p>
+                                        <a href="https://wa.me/6285814772634" class="mt-auto w-full bg-gray-900 text-white text-sm py-3 rounded-lg hover:bg-brand transition flex items-center justify-center gap-2 font-medium">
+                                            <i class="fa-brands fa-whatsapp"></i> Pesan via WA
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <!-- Product 3 -->
-                        <div class="product-card group" data-category="coaching" data-aos="fade-up" data-aos-delay="200">
-                            <div class="tilt-card bg-white rounded-2xl shadow-sm hover:shadow-2xl border border-gray-100 overflow-hidden transition-all duration-300 h-full flex flex-col">
-                                <div class="relative h-56 overflow-hidden">
-                                    <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Coaching" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
-                                    <div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-300"><span class="bg-white text-brand px-4 py-2 rounded-full font-bold text-sm transform translate-y-4 group-hover:translate-y-0 transition duration-300">Lihat Detail</span></div>
-                                </div>
-                                <div class="p-6 flex-1 flex flex-col">
-                                    <div class="flex justify-between items-start mb-4"><h3 class="text-xl font-bold text-gray-800">1-on-1 Coaching</h3><span class="bg-green-100 text-green-700 text-xs font-bold px-2 py-1 rounded">Expert HR</span></div>
-                                    <p class="text-gray-600 text-sm mb-6 flex-1">Sesi coaching private dengan HR berpengalaman.</p>
-                                    <a href="https://wa.me/6285814772634" class="mt-auto w-full bg-gray-900 text-white text-sm py-3 rounded-lg hover:bg-brand transition flex items-center justify-center gap-2 font-medium"><i class="fa-brands fa-whatsapp"></i> Pesan via WA</a>
+                            <!-- Product 3 -->
+                            <div class="swiper-slide h-full" data-category="coaching" data-aos="fade-up" data-aos-delay="200">
+                                <div class="tilt-card bg-white rounded-2xl shadow-sm hover:shadow-2xl border border-gray-100 overflow-hidden transition-all duration-300 flex flex-col h-[500px]">
+                                    <div class="relative h-56 overflow-hidden">
+                                        <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Coaching" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                                        <div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-300">
+                                            <span class="bg-white text-brand px-4 py-2 rounded-full font-bold text-sm transform translate-y-4 group-hover:translate-y-0 transition duration-300">Lihat Detail</span>
+                                        </div>
+                                    </div>
+                                    <div class="p-6 flex-1 flex flex-col">
+                                        <div class="flex justify-between items-start mb-4">
+                                            <h3 class="text-xl font-bold text-gray-800">1-on-1 Coaching</h3>
+                                            <span class="bg-green-100 text-green-700 text-xs font-bold px-2 py-1 rounded">Expert HR</span>
+                                        </div>
+                                        <p class="text-gray-600 text-sm mb-6 flex-1">Sesi coaching private dengan HR berpengalaman untuk mengevaluasi dan memperbaiki strategi karir Anda.</p>
+                                        <a href="https://wa.me/6285814772634" class="mt-auto w-full bg-gray-900 text-white text-sm py-3 rounded-lg hover:bg-brand transition flex items-center justify-center gap-2 font-medium">
+                                            <i class="fa-brands fa-whatsapp"></i> Pesan via WA
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                        <!-- Pagination -->
+                        <div class="swiper-pagination mt-8"></div>
                     </div>
                 </div>
             </section>
