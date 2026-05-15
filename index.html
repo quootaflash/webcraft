@@ -54,6 +54,29 @@
             overflow-x: hidden;
         }
 
+        /* Horizontal Scroll Styling */
+.overflow-x-auto {
+    scrollbar-width: thin;
+    scrollbar-color: #94a3b8 transparent;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
+}
+
+.scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+/* Snap scrolling */
+.snap-x {
+    scroll-snap-type: x mandatory;
+}
+.snap-start {
+    scroll-snap-align: start;
+}
+
         /* Sidebar Styling */
         .sidebar {
             width: 280px;
@@ -220,20 +243,38 @@
                     </div>
                 </div>
             </section>
+<!-- PRODUK -->
+<section id="products" class="py-24 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-6">
+        <div class="text-center mb-16">
+            <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4">Solusi <span class="text-brand">Karir Premium</span></h2>
+            <div class="flex flex-wrap justify-center gap-2 mt-8">
+                <button class="filter-btn active px-6 py-2 rounded-full border border-brand bg-brand text-white font-medium transition hover:shadow-lg" data-filter="all">Semua</button>
+                <button class="filter-btn px-6 py-2 rounded-full border border-gray-200 bg-white text-gray-600 font-medium hover:border-brand hover:text-brand transition" data-filter="cv">CV & Resume</button>
+                <button class="filter-btn px-6 py-2 rounded-full border border-gray-200 bg-white text-gray-600 font-medium hover:border-brand hover:text-brand transition" data-filter="linkedin">LinkedIn</button>
+                <button class="filter-btn px-6 py-2 rounded-full border border-gray-200 bg-white text-gray-600 font-medium hover:border-brand hover:text-brand transition" data-filter="coaching">Coaching</button>
+            </div>
+        </div>
 
-            <!-- PRODUK -->
-            <section id="products" class="py-24 bg-gray-50">
-                <div class="max-w-7xl mx-auto px-6">
-                    <div class="text-center mb-16">
-                        <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4">Solusi <span class="text-brand">Karir Premium</span></h2>
-                        <div class="flex flex-wrap justify-center gap-2 mt-8">
-                            <button class="filter-btn active px-6 py-2 rounded-full border border-brand bg-brand text-white font-medium transition hover:shadow-lg" data-filter="all">Semua</button>
-                            <button class="filter-btn px-6 py-2 rounded-full border border-gray-200 bg-white text-gray-600 font-medium hover:border-brand hover:text-brand transition" data-filter="cv">CV & Resume</button>
-                            <button class="filter-btn px-6 py-2 rounded-full border border-gray-200 bg-white text-gray-600 font-medium hover:border-brand hover:text-brand transition" data-filter="linkedin">LinkedIn</button>
-                            <button class="filter-btn px-6 py-2 rounded-full border border-gray-200 bg-white text-gray-600 font-medium hover:border-brand hover:text-brand transition" data-filter="coaching">Coaching</button>
+        <!-- Horizontal Scroll Container -->
+        <div class="overflow-x-auto pb-8 snap-x snap-mandatory scrollbar-hide">
+            <div class="flex gap-8 w-max px-1" id="product-grid">
+                <!-- Product cards tetap sama, tapi pakai flex -->
+                <!-- Product 1 -->
+                <div class="product-card group w-[340px] snap-start" data-category="cv" data-aos="fade-up">
+                    <div class="tilt-card bg-white rounded-2xl shadow-sm hover:shadow-2xl border border-gray-100 overflow-hidden transition-all duration-300 h-full flex flex-col">
+                        <!-- Isi card sama seperti sebelumnya -->
+                        <div class="relative h-56 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1586281380349-632531db7ed4?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="CV Writing" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                            <div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-300"><span class="bg-white text-brand px-4 py-2 rounded-full font-bold text-sm transform translate-y-4 group-hover:translate-y-0 transition duration-300">Lihat Detail</span></div>
+                        </div>
+                        <div class="p-6 flex-1 flex flex-col">
+                            <div class="flex justify-between items-start mb-4"><h3 class="text-xl font-bold text-gray-800">CV Writing Pro</h3><span class="bg-blue-100 text-blue-700 text-xs font-bold px-2 py-1 rounded">ATS Friendly</span></div>
+                            <p class="text-gray-600 text-sm mb-6 flex-1">CV yang didesain khusus untuk melewati sistem rekrutmen bot.</p>
+                            <a href="https://wa.me/6288219673570" class="mt-auto w-full bg-gray-900 text-white text-sm py-3 rounded-lg hover:bg-brand transition flex items-center justify-center gap-2 font-medium"><i class="fa-brands fa-whatsapp"></i> Pesan via WA</a>
                         </div>
                     </div>
-
+                </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="product-grid">
                         <!-- Product 1 -->
                         <div class="product-card group" data-category="cv" data-aos="fade-up">
@@ -283,15 +324,24 @@
                 </div>
             </section>
 
-            <!-- TESTIMONI FOTO BUKTI -->
-            <section id="testimoni" class="py-24 bg-brand text-white overflow-hidden relative">
-                <div class="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -mr-32 -mt-32"></div>
-                <div class="absolute bottom-0 left-0 w-96 h-96 bg-blue-400/10 rounded-full blur-3xl -ml-48 -mb-48"></div>
-                <div class="max-w-7xl mx-auto px-6 relative z-10">
-                    <div class="text-center mb-16">
-                        <h2 class="text-3xl md:text-5xl font-extrabold mb-4">Bukti Nyata <span class="text-yellow-400">Client Sukses</span></h2>
-                        <p class="text-indigo-200 text-lg">Kami buktikan dengan screenshot asli dari klien kami.</p>
-                    </div>
+          <!-- TESTIMONI FOTO BUKTI -->
+<section id="testimoni" class="py-24 bg-brand text-white overflow-hidden relative">
+    <div class="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -mr-32 -mt-32"></div>
+    <div class="absolute bottom-0 left-0 w-96 h-96 bg-blue-400/10 rounded-full blur-3xl -ml-48 -mb-48"></div>
+    
+    <div class="max-w-7xl mx-auto px-6 relative z-10">
+        <div class="text-center mb-16">
+            <h2 class="text-3xl md:text-5xl font-extrabold mb-4">Bukti Nyata <span class="text-yellow-400">Client Sukses</span></h2>
+            <p class="text-indigo-200 text-lg">Kami buktikan dengan screenshot asli dari klien kami.</p>
+        </div>
+
+        <!-- Horizontal Scroll -->
+        <div class="overflow-x-auto pb-8 snap-x snap-mandatory scrollbar-hide">
+            <div class="flex gap-8 w-max">
+                <div class="group perspective-1000 w-[300px] snap-start" data-aos="fade-up">
+                    <div class="phone-mockup w-full aspect-[9/19]"><img src="https://images.unsplash.com/photo-1611606063065-ee7946f0787a?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Chat Bukti 1" class="w-full h-full object-cover rounded-2xl"></div>
+                    <div class="text-center mt-4"><h4 class="font-bold text-lg">Diterima di GoTo</h4><p class="text-sm text-indigo-300">Via WhatsApp</p></div>
+                </div>
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
                         <div class="group perspective-1000" data-aos="fade-up">
                             <div class="phone-mockup w-full aspect-[9/19]"><img src="https://images.unsplash.com/photo-1611606063065-ee7946f0787a?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Chat Bukti 1" class="w-full h-full object-cover"></div>
