@@ -40,51 +40,7 @@
             }
         }
     </script>
-       <style>
-      /* --- PORTFOLIO --- */
-        .portfolio-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem;
-        }
-        .portfolio-card {
-            background: var(--bg-card); border-radius: var(--radius-lg);
-            border: 1px solid var(--border-color); overflow: hidden;
-            transition: var(--transition);
-        }
-        .portfolio-card:hover { box-shadow: var(--shadow-md); transform: translateY(-3px); }
-        .p-thumb {
-            height: 200px; width: 100%; object-fit: cover;
-            background: #f1f5f9;
-        }
-        .p-info { padding: 1.5rem; }
-        .p-cat { font-size: 0.75rem; color: var(--brand-color); font-weight: 700; text-transform: uppercase; margin-bottom: 0.5rem; display: block; }
-        .p-title { font-size: 1.1rem; font-weight: 700; color: var(--text-heading); margin-bottom: 0.5rem; }
-        .p-desc { font-size: 0.9rem; color: var(--text-muted); line-height: 1.5; }
-
-        /* --- PRICING --- */
-        .pricing { background-color: var(--bg-card); }
-        .pricing-wrapper {
-            display: flex; flex-wrap: wrap; gap: 2rem; justify-content: center;
-        }
-        .price-card {
-            flex: 1; min-width: 300px; max-width: 350px;
-            background: var(--bg-body); padding: 2.5rem; border-radius: var(--radius-lg);
-            border: 1px solid var(--border-color); text-align: center; position: relative;
-        }
-        .price-card.popular {
-            background: var(--bg-card); border: 2px solid var(--brand-color);
-            box-shadow: var(--shadow-brand); transform: scale(1.05); z-index: 2;
-        }
-        .pop-tag {
-            position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
-            background: var(--brand-color); color: white; padding: 0.4rem 1.2rem;
-            border-radius: 20px; font-size: 0.75rem; font-weight: 700;
-        }
-        .price { font-size: 2.25rem; font-weight: 800; color: var(--text-heading); margin: 1.5rem 0; }
-        .feat-list { text-align: left; margin: 1.5rem 0; }
-        .feat-list li { margin-bottom: 0.75rem; color: var(--text-muted); display: flex; gap: 0.75rem; font-size: 0.95rem; }
-        .feat-list i { color: var(--brand-color); margin-top: 3px; }
-        </style>
-
+    
     <style>
         /* Custom Scrollbar */
         ::-webkit-scrollbar { width: 8px; }
@@ -255,50 +211,7 @@
                         <div class="group cursor-default" data-aos="fade-up" data-aos-delay="300"><h3 class="text-3xl font-extrabold text-brand mb-1 group-hover:scale-110 transition-transform">5x</h3><p class="text-sm text-gray-500 uppercase tracking-wide">More Callbacks</p></div>
                     </div>
                 </div>
-            </section>
-
-              <!-- PORTFOLIO SECTION -->
-            <section id="portfolio" class="section">
-                <div class="container">
-                    <div class="section-header">
-                        <span class="badge">Portofolio</span>
-                        <h2>Karya Terbaru</h2>
-                        <p>Bukti nyata kualitas kerja kami.</p>
-                    </div>
-
-                    <div class="portfolio-grid">
-                        <div class="portfolio-card">
-                            <img src="https://picsum.photos/seed/cv3/500/350" alt="CV 1" class="p-thumb">
-                            <div class="p-info">
-                                <span class="p-cat">Managerial</span>
-                                <h3 class="p-title">CV Transformasi FMCG</h3>
-                                <p class="p-desc">Membantu klien pindah ke perusahaan multinasional.</p>
-                            </div>
-                        </div>
-                        <div class="portfolio-card">
-                            <img src="https://picsum.photos/seed/cv4/500/350" alt="CV 2" class="p-thumb">
-                            <div class="p-info">
-                                <span class="p-cat">Tech & IT</span>
-                                <h3 class="p-title">Resume Software Engineer</h3>
-                                <p class="p-desc">Fokus pada proyek GitHub dan tech stack.</p>
-                            </div>
-                        </div>
-                        <div class="portfolio-card">
-                            <img src="https://picsum.photos/seed/cv5/500/350" alt="CV 3" class="p-thumb">
-                            <div class="p-info">
-                                <span class="p-cat">Finance</span>
-                                <h3 class="p-title">LinkedIn Makeover</h3>
-                                <p class="p-desc">Meningkatkan connection view hingga 300%.</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div style="text-align: center; margin-top: 3rem;">
-                        <a href="#" class="btn btn-outline">Lihat Instagram <i class="fa-brands fa-instagram"></i></a>
-                    </div>
-                </div>
-            </section>
-            
+            </section>>
             <!-- PRODUK SCROLLABLE (SIDESWIPE) -->
             <section id="products" class="py-24 bg-gray-50">
                 <div class="max-w-7xl mx-auto px-6">
