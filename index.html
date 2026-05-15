@@ -687,13 +687,27 @@
             });
         });
 
-        // --- CONTENT PROTECTION ---
-        document.addEventListener('contextmenu', e => e.preventDefault());
-        document.onkeydown = e => {
-            if(e.keyCode == 123) return false;
-            if(e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) return false;
-            if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) return false;
-        };
+        document.addEventListener('contextmenu', event => {
+            event.preventDefault();
+            showToast();
+        });
+
+        document.onkeydown = function(e) {
+            if (e.keyCode == 123 || 
+                (e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) || 
+                (e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) || 
+                (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) || 
+                (e.ctrlKey && e.keyCode == 'S'.charCodeAt(0))
+            ) {
+                return false;
+            }
+        }
+
+        function showToast() {
+            const toast = document.getElementById("protection-toast");
+            toast.style.visibility = "visible";
+            setTimeout(() => { toast.style.visibility = "hidden"; }, 2000);
+        }
     </script>
 </body>
 </html>
