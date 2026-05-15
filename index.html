@@ -1,713 +1,553 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WriteHubIndo - Professional Career Solutions</title>
-    <meta name="description" content="Jasa CV Profesional, Resume, dan LinkedIn Optimization Premium.">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Beranda | WriteHub</title>
     
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- AOS Animation -->
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <link href="https://unpkg.com/aos@next/dist/aos.css" rel="stylesheet" />
+    
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet" />
+    
+    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    
-    <!-- Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            DEFAULT: '#221E82',
+                            dark: '#1a174e',
+                            light: '#3833a0',
+                            bg: '#F8FAFC'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
 
     <style>
-        /* --- VARIABLES & RESET --- */
-        :root {
-            /* Warna Brand Request: #221E82 */
-            --primary: #0F172A;
-            --brand-color: #221E82;
-            --brand-hover: #1a174e;
-            --brand-light: rgba(34, 30, 130, 0.08);
-            
-            --bg-body: #F8FAFC;
-            --bg-card: #FFFFFF;
-            --bg-sidebar: rgba(255, 255, 255, 0.95);
-            --bg-faq: #F1F5F9; 
-            
-            --text-main: #334155;
-            --text-heading: #0F172A;
-            --text-muted: #64748B;
-            
-            --border-color: #E2E8F0;
-            --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
-            --shadow-lg: 0 10px 15px -3px rgba(34, 30, 130, 0.1);
-            --shadow-brand: 0 10px 25px -5px rgba(34, 30, 130, 0.25);
-
-            --radius-md: 0.75rem;
-            --radius-lg: 1.25rem;
-            --sidebar-width: 280px;
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        [data-theme="dark"] {
-            --bg-body: #0B1120;
-            --bg-card: #1E293B;
-            --bg-sidebar: rgba(30, 41, 59, 0.95);
-            --bg-faq: #1E293B;
-            --text-main: #CBD5E1;
-            --text-heading: #F8FAFC;
-            --text-muted: #94A3B8;
-            --border-color: #334155;
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; outline: none; }
-        html { scroll-behavior: smooth; font-size: 16px; }
-        
-        body {
-            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background-color: var(--bg-body);
-            color: var(--text-main);
-            line-height: 1.6;
-            overflow-x: hidden;
-            -webkit-font-smoothing: antialiased;
-            position: relative; /* Context untuk fixed elements */
-        }
-
-        a { text-decoration: none; color: inherit; transition: var(--transition); }
-        ul { list-style: none; }
-        img { max-width: 100%; display: block; }
-        button { cursor: pointer; font-family: inherit; border: none; background: none; }
-
-        /* --- CUSTOM SCROLLBAR --- */
+        /* Custom Scrollbar */
         ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: var(--brand-color); }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
 
-        /* --- LAYOUT WRAPPER --- */
+        /* Layout Structure */
         .app-wrapper {
             display: flex;
             min-height: 100vh;
             width: 100%;
             position: relative;
+            overflow-x: hidden;
         }
 
-        /* --- SIDEBAR (FIXED FOOTER BUTTON) --- */
+        /* Sidebar Styling */
         .sidebar {
-            width: var(--sidebar-width);
-            background: var(--bg-sidebar);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border-right: 1px solid var(--border-color);
+            width: 280px;
+            background: white;
+            border-right: 1px solid #e2e8f0;
             position: fixed;
-            top: 0; left: 0; bottom: 0;
-            z-index: 1000;
-            padding: 2rem 1.5rem;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            z-index: 50;
             display: flex;
             flex-direction: column;
-            height: 100vh; /* Penuhi tinggi layar */
-            overflow: hidden; /* Sidebar TIDAK boleh scroll secara keseluruhan */
-            transform: translateX(0);
             transition: transform 0.3s ease-in-out;
+            box-shadow: 4px 0 24px rgba(0,0,0,0.05);
         }
 
-        .logo-container {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            margin-bottom: 1.5rem;
-            padding-bottom: 1.5rem;
-            border-bottom: 1px solid var(--border-color);
-            flex-shrink: 0; /* Logo tidak mengecil */
-        }
-        
-        .logo-img {
-            height: 40px;
-            width: auto;
-            object-fit: contain;
+        @media (max-width: 1023px) {
+            .sidebar { transform: translateX(-100%); }
+            .sidebar.active { transform: translateX(0); box-shadow: 10px 0 30px rgba(0,0,0,0.2); }
         }
 
-        .logo-text {
-            font-size: 1.25rem;
-            font-weight: 800;
-            color: var(--text-heading);
-            letter-spacing: -0.5px;
-            line-height: 1.2;
-        }
-
-        /* NAV LIST YANG BISA DISCROLL */
-        .nav-list { 
-            flex: 1; /* Mengisi ruang kosong antara logo dan footer */
-            display: flex; 
-            flex-direction: column; 
-            gap: 0.5rem; 
-            overflow-y: auto; /* HANYA bagian ini yang discroll jika layar pendek */
-            margin-bottom: 1rem;
-            padding-right: 5px; /* Ruang scrollbar */
-        }
-        
-        .nav-link {
-            display: flex; align-items: center; gap: 1rem;
-            padding: 0.875rem 1rem;
-            border-radius: var(--radius-md);
-            color: var(--text-muted);
-            font-weight: 500;
-            font-size: 0.95rem;
-            transition: var(--transition);
-            white-space: nowrap;
-        }
-        
-        .nav-link i { width: 24px; text-align: center; font-size: 1.1rem; }
-        
-        .nav-link:hover, .nav-link.active {
-            background: var(--brand-light);
-            color: var(--brand-color);
-            transform: translateX(4px);
-        }
-
-        /* SIDEBAR FOOTER - BUTTON KONSULTASI STAY DI BAWAH */
-        .sidebar-footer {
-            margin-top: auto; /* Dorong ke paling bawah container */
-            padding-top: 1.5rem;
-            border-top: 1px solid var(--border-color);
-            flex-shrink: 0; /* PASTIKAN tidak mengecil/terpotong */
-            position: relative;
-            z-index: 10;
-        }
-        
-        .btn-theme {
-            width: 100%;
-            display: flex; align-items: center; justify-content: center; gap: 0.75rem;
-            padding: 0.75rem; border-radius: var(--radius-md);
-            background: var(--bg-body); border: 1px solid var(--border-color);
-            color: var(--text-heading); font-weight: 600; transition: var(--transition);
-            margin-bottom: 1rem;
-        }
-        .btn-theme:hover { border-color: var(--brand-color); color: var(--brand-color); }
-
-        /* --- MAIN CONTENT --- */
         .main-content {
             flex: 1;
-            margin-left: var(--sidebar-width);
-            width: calc(100% - var(--sidebar-width));
+            margin-left: 280px;
+            width: calc(100% - 280px);
             min-height: 100vh;
-            background-color: var(--bg-body);
+            background-color: #F8FAFC;
             position: relative;
-            display: flex; flex-direction: column;
+            z-index: 10;
+            transition: margin-left 0.3s ease, width 0.3s ease;
         }
 
-        /* --- MOBILE HEADER --- */
-        .mobile-header {
-            display: none;
-            position: sticky; top: 0;
-            height: 70px; background: var(--bg-card);
-            border-bottom: 1px solid var(--border-color);
-            z-index: 999;
-            align-items: center; justify-content: space-between;
-            padding: 0 1.5rem;
-            box-shadow: var(--shadow-sm);
-        }
-        .menu-toggle { font-size: 1.5rem; color: var(--text-heading); cursor: pointer; padding: 0.5rem; }
-
-        /* --- UTILITIES --- */
-        .container { max-width: 1100px; margin: 0 auto; padding: 0 1.5rem; width: 100%; }
-        .section { padding: 5rem 0; position: relative; }
-        
-        .badge {
-            display: inline-block; background: var(--brand-light); color: var(--brand-color);
-            padding: 0.4rem 1rem; border-radius: 50px; font-size: 0.8rem; font-weight: 700;
-            text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 1rem;
-        }
-        .section-header { text-align: center; max-width: 800px; margin: 0 auto 4rem; }
-        .section-header h2 { font-size: 2.25rem; font-weight: 800; color: var(--text-heading); margin-bottom: 1rem; line-height: 1.2; }
-        .section-header p { color: var(--text-muted); font-size: 1.1rem; }
-
-        .btn {
-            display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
-            padding: 0.875rem 2rem; border-radius: var(--radius-md);
-            font-weight: 600; font-size: 0.95rem; transition: var(--transition); white-space: nowrap;
-        }
-        .btn-primary {
-            background: var(--brand-color); color: white;
-            box-shadow: 0 4px 12px rgba(34, 30, 130, 0.25);
-        }
-        .btn-primary:hover { background: var(--brand-hover); transform: translateY(-2px); box-shadow: 0 6px 16px rgba(34, 30, 130, 0.35); }
-        .btn-outline { border: 2px solid var(--border-color); color: var(--text-heading); background: transparent; }
-        .btn-outline:hover { border-color: var(--brand-color); color: var(--brand-color); background: var(--brand-light); }
-
-        /* --- HERO --- */
-        .hero { padding-top: 4rem; padding-bottom: 6rem; background: radial-gradient(circle at top right, var(--brand-light) 0%, transparent 40%); }
-        .hero-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 4rem; align-items: center; }
-        .hero-content h1 { font-size: 3rem; line-height: 1.15; font-weight: 800; color: var(--text-heading); margin-bottom: 1.5rem; }
-        .highlight { color: var(--brand-color); position: relative; display: inline-block; }
-        .highlight::after { content: ''; position: absolute; bottom: 4px; left: 0; width: 100%; height: 12px; background: rgba(34, 30, 130, 0.15); z-index: -1; }
-        .hero-content p { font-size: 1.15rem; color: var(--text-muted); margin-bottom: 2.5rem; max-width: 90%; }
-        .stats-bar { display: flex; gap: 3rem; margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border-color); }
-        .stat-item h4 { font-size: 1.75rem; font-weight: 800; color: var(--brand-color); line-height: 1; }
-        .stat-item span { font-size: 0.9rem; color: var(--text-muted); font-weight: 500; }
-        .hero-img-wrapper { position: relative; border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-brand); border: 1px solid var(--border-color); background: var(--bg-card); }
-        .hero-img-wrapper img { width: 100%; height: auto; display: block; }
-
-        /* --- SERVICES --- */
-        .services { background-color: var(--bg-card); }
-        .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
-        .service-card { padding: 2.5rem; border-radius: var(--radius-lg); background: var(--bg-body); border: 1px solid var(--border-color); transition: var(--transition); }
-        .service-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); border-color: var(--brand-color); }
-        .icon-box { width: 56px; height: 56px; border-radius: 12px; background: white; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: var(--brand-color); box-shadow: var(--shadow-sm); margin-bottom: 1.5rem; }
-        .service-card h3 { font-size: 1.25rem; margin-bottom: 0.75rem; color: var(--text-heading); }
-        .service-card p { font-size: 0.95rem; color: var(--text-muted); margin-bottom: 1.5rem; line-height: 1.6; }
-        .read-more { color: var(--brand-color); font-weight: 600; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 0.5rem; }
-
-        /* --- PORTFOLIO --- */
-        .portfolio-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem; }
-        .portfolio-card { background: var(--bg-card); border-radius: var(--radius-lg); border: 1px solid var(--border-color); overflow: hidden; transition: var(--transition); }
-        .portfolio-card:hover { box-shadow: var(--shadow-md); transform: translateY(-3px); }
-        .p-thumb { height: 200px; width: 100%; object-fit: cover; background: #f1f5f9; }
-        .p-info { padding: 1.5rem; }
-        .p-cat { font-size: 0.75rem; color: var(--brand-color); font-weight: 700; text-transform: uppercase; margin-bottom: 0.5rem; display: block; }
-        .p-title { font-size: 1.1rem; font-weight: 700; color: var(--text-heading); margin-bottom: 0.5rem; }
-        .p-desc { font-size: 0.9rem; color: var(--text-muted); line-height: 1.5; }
-
-        /* --- PRICING --- */
-        .pricing { background-color: var(--bg-card); }
-        .pricing-wrapper { display: flex; flex-wrap: wrap; gap: 2rem; justify-content: center; }
-        .price-card { flex: 1; min-width: 300px; max-width: 350px; background: var(--bg-body); padding: 2.5rem; border-radius: var(--radius-lg); border: 1px solid var(--border-color); text-align: center; position: relative; }
-        .price-card.popular { background: var(--bg-card); border: 2px solid var(--brand-color); box-shadow: var(--shadow-brand); transform: scale(1.05); z-index: 2; }
-        .pop-tag { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: var(--brand-color); color: white; padding: 0.4rem 1.2rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700; }
-        .price { font-size: 2.25rem; font-weight: 800; color: var(--text-heading); margin: 1.5rem 0; }
-        .feat-list { text-align: left; margin: 1.5rem 0; }
-        .feat-list li { margin-bottom: 0.75rem; color: var(--text-muted); display: flex; gap: 0.75rem; font-size: 0.95rem; }
-        .feat-list i { color: var(--brand-color); margin-top: 3px; }
-
-        /* --- TESTIMONIALS --- */
-        .testi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
-        .testi-card { background: var(--bg-card); padding: 2rem; border-radius: var(--radius-lg); border: 1px solid var(--border-color); position: relative; }
-        .testi-card i { position: absolute; top: 1.5rem; right: 1.5rem; font-size: 2rem; color: var(--brand-light); opacity: 0.4; }
-        .stars { color: #F59E0B; margin-bottom: 1rem; font-size: 0.9rem; }
-        .testi-text { font-style: italic; color: var(--text-main); margin-bottom: 1.5rem; line-height: 1.6; }
-        .user-info { display: flex; align-items: center; gap: 1rem; }
-        .avatar { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; background: #ddd; }
-
-        /* --- FAQ --- */
-        .faq-section { background-color: var(--bg-faq); padding-top: 5rem; padding-bottom: 5rem; border-top: 1px solid var(--border-color); }
-        .faq-container { max-width: 800px; margin: 0 auto; }
-        details { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem; margin-bottom: 1rem; cursor: pointer; transition: all 0.2s ease; }
-        details:hover { border-color: var(--brand-color); }
-        details[open] { border-color: var(--brand-color); box-shadow: var(--shadow-sm); }
-        summary { font-weight: 600; color: var(--text-heading); list-style: none; display: flex; justify-content: space-between; align-items: center; }
-        summary::-webkit-details-marker { display: none; }
-        summary::after { content: '\f078'; font-family: "Font Awesome 6 Free"; font-weight: 900; transition: transform 0.3s; color: var(--brand-color); }
-        details[open] summary::after { transform: rotate(180deg); }
-        details p { margin-top: 1rem; color: var(--text-muted); font-size: 0.95rem; padding-top: 1rem; border-top: 1px dashed var(--border-color); }
-
-        /* --- FOOTER --- */
-        footer { background: var(--primary); color: #94A3B8; padding: 4rem 0 2rem; margin-top: auto; position: relative; z-index: 10; }
-        .footer-content { display: grid; grid-template-columns: 2fr 1fr 1fr 1.5fr; gap: 3rem; margin-bottom: 3rem; }
-        .footer-brand h2 { color: white; font-size: 1.5rem; font-weight: 800; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem; }
-        .f-col h4 { color: white; margin-bottom: 1.5rem; font-size: 1.1rem; }
-        .f-col ul li { margin-bottom: 0.75rem; }
-        .f-col a:hover { color: white; padding-left: 5px; }
-        .social-row { display: flex; gap: 1rem; margin-top: 1.5rem; }
-        .s-btn { width: 36px; height: 36px; background: rgba(255,255,255,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: 0.3s; }
-        .s-btn:hover { background: var(--brand-color); transform: translateY(-3px); }
-        .copyright { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 2rem; text-align: center; font-size: 0.9rem; }
-
-        /* --- FLOATING WHATSAPP (FIXED Z-INDEX & POSITION) --- */
-        .float-wa {
-            position: fixed; 
-            bottom: 30px; right: 30px; 
-            background: #25D366; color: white; 
-            width: 60px; height: 60px;
-            border-radius: 50%; 
-            display: flex; align-items: center; justify-content: center;
-            font-size: 1.8rem; 
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-            z-index: 999999; /* Z-INDEX TERTINGGI AGAR TIDAK TENGGELAM */
-            transition: transform 0.3s;
-            animation: pulse 2s infinite;
-        }
-        
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); }
-            70% { box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
-        }
-        
-        .float-wa:hover { transform: scale(1.1); }
-
-        /* --- RESPONSIVE --- */
-        @media (max-width: 1024px) {
-            :root { --sidebar-width: 0px; }
-            .sidebar { width: 280px; transform: translateX(-100%); box-shadow: 5px 0 15px rgba(0,0,0,0.1); }
-            .sidebar.active { transform: translateX(0); }
+        @media (max-width: 1023px) {
             .main-content { margin-left: 0; width: 100%; }
-            .mobile-header { display: flex; }
-            .hero-grid { grid-template-columns: 1fr; text-align: center; }
-            .hero-content p { margin: 0 auto 2rem; }
-            .stats-bar { justify-content: center; }
-            .hero-img-wrapper { display: none; } 
-            .footer-content { grid-template-columns: 1fr 1fr; }
-            .price-card.popular { transform: scale(1); }
         }
-        @media (max-width: 768px) {
-            .hero-content h1 { font-size: 2.25rem; }
-            .section-header h2 { font-size: 1.75rem; }
-            .footer-content { grid-template-columns: 1fr; }
-            .float-wa { width: 50px; height: 50px; font-size: 1.5rem; bottom: 20px; right: 20px; }
+
+        .sidebar-menu { flex: 1; overflow-y: auto; margin-bottom: 1rem; padding-right: 5px; }
+        .sidebar-menu::-webkit-scrollbar { width: 4px; }
+        .sidebar-menu::-webkit-scrollbar-thumb { background: #cbd5e1; }
+        .sidebar-footer {
+            margin-top: auto; padding-top: 1.5rem; border-top: 1px solid #e2e8f0;
+            background: white; flex-shrink: 0;
         }
+
+        .sidebar-overlay {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.5); z-index: 40;
+            opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+        }
+        .sidebar-overlay.active { opacity: 1; pointer-events: auto; }
+
+        /* TikTok Card Style */
+        .tiktok-card {
+            aspect-ratio: 9/16;
+            border-radius: 1rem;
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        .play-icon-overlay {
+            background: rgba(0,0,0,0.4);
+            transition: background 0.3s;
+        }
+        .tiktok-card:hover .play-icon-overlay { background: rgba(0,0,0,0.2); }
+        .tiktok-card:hover img { transform: scale(1.05); transition: 0.5s; }
+
+        /* 3D Tilt */
+        .tilt-card {
+            transform-style: preserve-3d;
+            transform: perspective(1000px);
+        }
+        
+        /* FAQ Accordion */
+        details { transition: all 0.3s ease; }
+        details[open] { background-color: #F1F5F9; }
+        details[open] summary i { transform: rotate(180deg); }
+        summary i { transition: transform 0.3s ease; }
     </style>
 </head>
-<body>
+<body class="font-sans text-gray-800 antialiased">
 
-    <!-- FLOATING WHATSAPP (DITEMPATKAN PALING ATAS AGAR Z-INDEX EFEKTIF) -->
-    <a href="https://wa.me/6281234567890" target="_blank" class="float-wa" title="Chat WhatsApp">
-        <i class="fa-brands fa-whatsapp"></i>
-    </a>
+    <!-- Mobile Overlay -->
+    <div id="sidebar-overlay" class="sidebar-overlay" onclick="closeSidebar()"></div>
 
     <div class="app-wrapper">
         
-        <!-- SIDEBAR NAVIGATION -->
-        <nav class="sidebar">
-            <a href="#" class="logo-container">
-                <!-- GANTI SRC DENGAN LINK PNG ANDA -->
-                <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhcZC1CDw0BNBVB3RtNbLcfb9fgrUBbICNfg2u5Yh8e4paTNDj3sdV0BeFozNfzlV8D-N9RFcIuUyWAJMY13DhRHt7c33Mj3k7V0AbaAbRiqFo5UM_ql0VViU_DpmKqq1F07nE5P1RDijY1rZUdAIX6EG_190qdqkjOnJjs8PgWYd8JOA_BU_6bX1-b6nQ7/s3264/26292.png" alt="WriteHubIndo Logo" class="logo-img">
-                <span class="logo-text"></span>
+        <!-- SIDEBAR -->
+        <nav id="sidebar" class="sidebar">
+            <!-- Logo PNG -->
+            <a href="#" class="flex items-center gap-3 px-6 py-6 border-b border-gray-100">
+                <!-- GANTI src DENGAN FILE PNG ANDA -->
+                <img src="https://via.placeholder.com/40x40/221E82/FFFFFF?text=W" alt="Logo WriteHub" class="h-10 w-10 object-contain rounded-lg">
+                <span class="text-2xl font-bold text-brand tracking-tight">WriteHub</span>
             </a>
 
-            <!-- NAV LIST: BISA DISCROLL, TAPI TIDAK MEMPENGARUHI FOOTER -->
-            <ul class="nav-list">
-                <li><a href="#home" class="nav-link active"><i class="fa-solid fa-house"></i> Beranda</a></li>
-                <li><a href="#services" class="nav-link"><i class="fa-solid fa-layer-group"></i> Layanan</a></li>
-                <li><a href="#portfolio" class="nav-link"><i class="fa-solid fa-briefcase"></i> Portofolio</a></li>
-                <li><a href="#testimonials" class="nav-link"><i class="fa-solid fa-star"></i> Testimoni</a></li>
-                <li><a href="#pricing" class="nav-link"><i class="fa-solid fa-tags"></i> Harga</a></li>
-                <li><a href="#faq" class="nav-link"><i class="fa-solid fa-circle-question"></i> FAQ</a></li>
+            <!-- Menu List -->
+            <ul class="sidebar-menu flex flex-col gap-2 px-4 py-4">
+                <li><a href="#home" class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-brand/5 hover:text-brand transition font-medium group" onclick="closeSidebarMobile()"><i class="fa-solid fa-house w-5 text-center group-hover:scale-110 transition-transform"></i> Beranda</a></li>
+                <li><a href="#products" class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-brand/5 hover:text-brand transition font-medium group" onclick="closeSidebarMobile()"><i class="fa-solid fa-layer-group w-5 text-center group-hover:scale-110 transition-transform"></i> Layanan</a></li>
+                <li><a href="#testimoni" class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-brand/5 hover:text-brand transition font-medium group" onclick="closeSidebarMobile()"><i class="fa-solid fa-images w-5 text-center group-hover:scale-110 transition-transform"></i> Bukti</a></li>
+                <!-- Menu Baru: TikTok -->
+                <li><a href="#tiktok" class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-brand/5 hover:text-brand transition font-medium group" onclick="closeSidebarMobile()"><i class="fa-brands fa-tiktok w-5 text-center group-hover:scale-110 transition-transform"></i> Video Tips</a></li>
+                <!-- Menu Baru: FAQ -->
+                <li><a href="#faq" class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-brand/5 hover:text-brand transition font-medium group" onclick="closeSidebarMobile()"><i class="fa-solid fa-circle-question w-5 text-center group-hover:scale-110 transition-transform"></i> Q&A</a></li>
+                <li><a href="#contact" class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-brand/5 hover:text-brand transition font-medium group" onclick="closeSidebarMobile()"><i class="fa-solid fa-envelope w-5 text-center group-hover:scale-110 transition-transform"></i> Kontak</a></li>
             </ul>
 
-            <!-- SIDEBAR FOOTER: TETAP STAY DI BAWAH -->
-            <div class="sidebar-footer">
-                <button class="btn-theme" onclick="toggleTheme()">
-                    <i class="fa-solid fa-moon" id="theme-icon"></i> <span id="theme-text">Mode Gelap</span>
+            <!-- Sidebar Footer -->
+            <div class="sidebar-footer px-6 pb-6">
+                <button class="w-full flex items-center justify-center gap-2 py-3 rounded-xl border border-gray-200 text-gray-600 hover:border-brand hover:text-brand transition mb-4 font-medium">
+                    <i class="fa-solid fa-moon"></i> Mode Gelap
                 </button>
-                <!-- Button Konsultasi -->
-                <a href="#contact" class="btn btn-primary" style="width: 100%;">Konsultasi Gratis</a>
+                <a href="#contact" class="w-full bg-brand text-white font-bold py-3.5 rounded-xl hover:bg-brand-dark transition shadow-lg shadow-brand/30 flex items-center justify-center gap-2 group" onclick="closeSidebarMobile()">
+                    Konsultasi Gratis <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition"></i>
+                </a>
             </div>
         </nav>
 
         <!-- MAIN CONTENT -->
         <main class="main-content">
-            <header class="mobile-header">
-                <div class="logo-container" style="margin:0; padding:0; border:none;">
-                    <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhcZC1CDw0BNBVB3RtNbLcfb9fgrUBbICNfg2u5Yh8e4paTNDj3sdV0BeFozNfzlV8D-N9RFcIuUyWAJMY13DhRHt7c33Mj3k7V0AbaAbRiqFo5UM_ql0VViU_DpmKqq1F07nE5P1RDijY1rZUdAIX6EG_190qdqkjOnJjs8PgWYd8JOA_BU_6bX1-b6nQ7/s3264/26292.png" alt="Logo" class="logo-img" style="height:32px;">
-                    <span class="logo-text" style="font-size: 1.1rem;"></span>
+            
+            <!-- MOBILE HEADER -->
+            <header class="md:hidden fixed top-0 w-full bg-white/95 backdrop-blur-md shadow-sm z-40 transition-all duration-300 px-6 py-4 flex justify-between items-center">
+                <div class="flex items-center gap-2">
+                    <img src="https://via.placeholder.com/32x32/221E82/FFFFFF?text=W" alt="Logo" class="h-8 w-8 object-contain rounded">
+                    <span class="text-lg font-bold text-brand">WriteHub</span>
                 </div>
-                <div class="menu-toggle" onclick="toggleSidebar()">
-                    <i class="fa-solid fa-bars"></i>
-                </div>
+                <button onclick="toggleSidebar()" class="text-gray-700 focus:outline-none p-2 hover:bg-gray-100 rounded-lg transition">
+                    <i class="fa-solid fa-bars text-xl"></i>
+                </button>
             </header>
 
             <!-- HERO SECTION -->
-            <section id="home" class="hero">
-                <div class="container">
-                    <div class="hero-grid">
-                        <div class="hero-content">
-                            <span class="badge">Career Partner #1</span>
-                            <h1>Tingkatkan Karir dengan Dokumen <span class="highlight">Profesional</span></h1>
-                            <p>Kami mengubah CV dan profil biasa menjadi alat pemasaran diri yang kuat. Lolos ATS, menarik perhatian HRD, dan raih pekerjaan impian Anda.</p>
-                            <div style="display: flex; gap: 1rem; flex-wrap: wrap; justify-content: inherit;">
-                                <a href="#pricing" class="btn btn-primary">Lihat Paket <i class="fa-solid fa-arrow-right"></i></a>
-                                <a href="#portfolio" class="btn btn-outline">Lihat Karya <i class="fa-solid fa-eye"></i></a>
-                            </div>
-                            <div class="stats-bar">
-                                <div class="stat-item"><h4 class="counter" data-target="5000">0</h4><span>Klien Puas</span></div>
-                                <div class="stat-item"><h4 class="counter" data-target="98">0</h4><span>% Lolos ATS</span></div>
-                                <div class="stat-item"><h4 class="counter" data-target="24">0</h4><span>Jam Proses</span></div>
-                            </div>
+            <section id="home" class="pt-24 md:pt-32 pb-20 px-6 md:px-12 max-w-7xl mx-auto">
+                <div class="grid md:grid-cols-2 gap-12 items-center">
+                    <div data-aos="fade-right">
+                        <span class="inline-block py-1 px-3 rounded-full bg-brand/10 text-brand text-xs font-bold uppercase tracking-wider mb-4">Career Solution Partner</span>
+                        <h1 class="text-4xl md:text-6xl font-extrabold text-gray-900 leading-tight mb-6">
+                            Ubah CV Biasa Jadi <span class="text-brand relative inline-block">Tawaran Kerja<svg class="absolute w-full h-3 -bottom-1 left-0 text-yellow-400 -z-10" viewBox="0 0 200 9" fill="none"><path d="M2.00025 6.50003C6.00022 3.50002 45.5002 3.50002 98.0002 3.50002C150.5 3.50002 190 3.50002 194 6.50003" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg></span>
+                        </h1>
+                        <p class="text-lg text-gray-600 mb-8 leading-relaxed">Jasa pembuatan CV profesional & optimasi LinkedIn yang terbukti meningkatkan peluang panggilan interview hingga <span class="font-bold text-brand">5x Lipat</span>.</p>
+                        <div class="flex flex-col sm:flex-row gap-4">
+                            <a href="#products" class="px-8 py-3.5 bg-brand text-white rounded-xl font-bold hover:bg-brand-dark transition shadow-xl shadow-brand/20 flex items-center justify-center gap-2 group">Buat CV Sekarang <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition"></i></a>
+                            <a href="#tiktok" class="px-8 py-3.5 border-2 border-gray-200 text-gray-700 rounded-xl font-bold hover:border-brand hover:text-brand transition flex items-center justify-center gap-2"><i class="fa-brands fa-tiktok"></i> Tips Video</a>
                         </div>
-                        <div class="hero-img-wrapper">
-                            <img src="https://picsum.photos/seed/writehub2/600/700" alt="CV Preview">
+                    </div>
+                    <div class="order-1 md:order-2 relative" data-aos="fade-left">
+                        <div class="relative z-10 bg-white p-2 rounded-2xl shadow-2xl rotate-3 hover:rotate-0 transition-transform duration-500">
+                            <img src="https://images.unsplash.com/photo-1586281380349-632531db7ed4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Career Success" class="rounded-xl w-full h-auto object-cover">
                         </div>
                     </div>
                 </div>
             </section>
 
-            <!-- SERVICES SECTION -->
-            <section id="services" class="section services">
-                <div class="container">
-                    <div class="section-header">
-                        <span class="badge">Layanan Kami</span>
-                        <h2>Solusi Komprehensif</h2>
-                        <p>Layanan lengkap untuk kebutuhan dokumen karir Anda.</p>
-                    </div>
-                    <div class="services-grid">
-                        <div class="service-card">
-                            <div class="icon-box"><i class="fa-regular fa-file-word"></i></div>
-                            <h3>CV & Resume</h3>
-                            <p>Penulisan ulang CV dengan pendekatan data-driven. Fokus pada pencapaian kuantitatif dan format ATS.</p>
-                            <a href="#" class="read-more">Detail Layanan <i class="fa-solid fa-chevron-right"></i></a>
-                        </div>
-                        <div class="service-card">
-                            <div class="icon-box"><i class="fa-brands fa-linkedin-in"></i></div>
-                            <h3>LinkedIn Opt.</h3>
-                            <p>Optimasi profil lengkap termasuk Headline SEO, About Section storytelling, dan pengalaman kerja.</p>
-                            <a href="#" class="read-more">Detail Layanan <i class="fa-solid fa-chevron-right"></i></a>
-                        </div>
-                        <div class="service-card">
-                            <div class="icon-box"><i class="fa-regular fa-envelope-open"></i></div>
-                            <h3>Cover Letter</h3>
-                            <p>Drafting surat lamaran dan email dingin yang persuasif, disesuaikan khusus untuk target perusahaan.</p>
-                            <a href="#" class="read-more">Detail Layanan <i class="fa-solid fa-chevron-right"></i></a>
-                        </div>
+            <!-- STATS -->
+            <section class="py-10 bg-white border-y border-gray-100">
+                <div class="container mx-auto max-w-6xl px-4">
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center divide-x divide-gray-100">
+                        <div class="group cursor-default" data-aos="fade-up"><h3 class="text-3xl font-extrabold text-brand mb-1 group-hover:scale-110 transition-transform">40K+</h3><p class="text-sm text-gray-500 uppercase tracking-wide">Happy Clients</p></div>
+                        <div class="group cursor-default" data-aos="fade-up" data-aos-delay="100"><h3 class="text-3xl font-extrabold text-brand mb-1 group-hover:scale-110 transition-transform">98%</h3><p class="text-sm text-gray-500 uppercase tracking-wide">Interview Rate</p></div>
+                        <div class="group cursor-default" data-aos="fade-up" data-aos-delay="200"><h3 class="text-3xl font-extrabold text-brand mb-1 group-hover:scale-110 transition-transform">24h</h3><p class="text-sm text-gray-500 uppercase tracking-wide">Fast Delivery</p></div>
+                        <div class="group cursor-default" data-aos="fade-up" data-aos-delay="300"><h3 class="text-3xl font-extrabold text-brand mb-1 group-hover:scale-110 transition-transform">5x</h3><p class="text-sm text-gray-500 uppercase tracking-wide">More Callbacks</p></div>
                     </div>
                 </div>
             </section>
 
-            <!-- PORTFOLIO SECTION -->
-            <section id="portfolio" class="section">
-                <div class="container">
-                    <div class="section-header">
-                        <span class="badge">Portofolio</span>
-                        <h2>Karya Terbaru</h2>
-                        <p>Bukti nyata kualitas kerja kami.</p>
-                    </div>
-                    <div class="portfolio-grid">
-                        <div class="portfolio-card">
-                            <img src="https://picsum.photos/seed/cv3/500/350" alt="CV 1" class="p-thumb">
-                            <div class="p-info"><span class="p-cat">Managerial</span><h3 class="p-title">CV Transformasi FMCG</h3><p class="p-desc">Membantu klien pindah ke perusahaan multinasional.</p></div>
-                        </div>
-                        <div class="portfolio-card">
-                            <img src="https://picsum.photos/seed/cv4/500/350" alt="CV 2" class="p-thumb">
-                            <div class="p-info"><span class="p-cat">Tech & IT</span><h3 class="p-title">Resume Software Engineer</h3><p class="p-desc">Fokus pada proyek GitHub dan tech stack.</p></div>
-                        </div>
-                        <div class="portfolio-card">
-                            <img src="https://picsum.photos/seed/cv5/500/350" alt="CV 3" class="p-thumb">
-                            <div class="p-info"><span class="p-cat">Finance</span><h3 class="p-title">LinkedIn Makeover</h3><p class="p-desc">Meningkatkan connection view hingga 300%.</p></div>
+            <!-- PRODUK -->
+            <section id="products" class="py-24 bg-gray-50">
+                <div class="max-w-7xl mx-auto px-6">
+                    <div class="text-center mb-16">
+                        <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4">Solusi <span class="text-brand">Karir Premium</span></h2>
+                        <div class="flex flex-wrap justify-center gap-2 mt-8">
+                            <button class="filter-btn active px-6 py-2 rounded-full border border-brand bg-brand text-white font-medium transition hover:shadow-lg" data-filter="all">Semua</button>
+                            <button class="filter-btn px-6 py-2 rounded-full border border-gray-200 bg-white text-gray-600 font-medium hover:border-brand hover:text-brand transition" data-filter="cv">CV & Resume</button>
+                            <button class="filter-btn px-6 py-2 rounded-full border border-gray-200 bg-white text-gray-600 font-medium hover:border-brand hover:text-brand transition" data-filter="linkedin">LinkedIn</button>
+                            <button class="filter-btn px-6 py-2 rounded-full border border-gray-200 bg-white text-gray-600 font-medium hover:border-brand hover:text-brand transition" data-filter="coaching">Coaching</button>
                         </div>
                     </div>
-                    <div style="text-align: center; margin-top: 3rem;">
-                        <a href="#" class="btn btn-outline">Lihat Instagram <i class="fa-brands fa-instagram"></i></a>
-                    </div>
-                </div>
-            </section>
 
-            <!-- PRICING SECTION -->
-            <section id="pricing" class="section pricing">
-                <div class="container">
-                    <div class="section-header">
-                        <span class="badge">Harga</span>
-                        <h2>Pilih Paket</h2>
-                        <p>Investasi terbaik untuk masa depan Anda.</p>
-                    </div>
-                    <div class="pricing-wrapper">
-                        <div class="price-card">
-                            <h3>Basic</h3>
-                            <div class="price">Rp 249k</div>
-                            <ul class="feat-list">
-                                <li><i class="fa-solid fa-circle-check"></i> CV ATS Friendly</li>
-                                <li><i class="fa-solid fa-circle-check"></i> Desain Modern</li>
-                                <li><i class="fa-solid fa-circle-check"></i> 1x Revisi</li>
-                            </ul>
-                            <a href="#" class="btn btn-outline" style="width: 100%;">Pilih</a>
-                        </div>
-                        <div class="price-card popular">
-                            <div class="pop-tag">BEST VALUE</div>
-                            <h3>Professional</h3>
-                            <div class="price">Rp 499k</div>
-                            <ul class="feat-list">
-                                <li><i class="fa-solid fa-circle-check"></i> CV + Cover Letter</li>
-                                <li><i class="fa-solid fa-circle-check"></i> LinkedIn Opt.</li>
-                                <li><i class="fa-solid fa-circle-check"></i> Unlimited Revisi</li>
-                            </ul>
-                            <a href="#" class="btn btn-primary" style="width: 100%;">Pilih</a>
-                        </div>
-                        <div class="price-card">
-                            <h3>Executive</h3>
-                            <div class="price">Rp 899k</div>
-                            <ul class="feat-list">
-                                <li><i class="fa-solid fa-circle-check"></i> Full Package</li>
-                                <li><i class="fa-solid fa-circle-check"></i> Bio Writing</li>
-                                <li><i class="fa-solid fa-circle-check"></i> Konsultasi Karir</li>
-                            </ul>
-                            <a href="#" class="btn btn-outline" style="width: 100%;">Pilih</a>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- TESTIMONIALS -->
-            <section id="testimonials" class="section">
-                <div class="container">
-                    <div class="section-header">
-                        <span class="badge">Testimoni</span>
-                        <h2>Kata Mereka</h2>
-                    </div>
-                    <div class="testi-grid">
-                        <div class="testi-card">
-                            <i class="fa-solid fa-quote-right"></i>
-                            <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
-                            <p class="testi-text">"Saya coba apply ke 10 perusahaan setelah pakai CV baru, 8 diantaranya memanggil interview. Luar biasa!"</p>
-                            <div class="user-info">
-                                <img src="https://picsum.photos/seed/u1/100/100" alt="User" class="avatar">
-                                <div><div style="font-weight: 700; color: var(--text-heading);">Rina Kartika</div><div style="font-size: 0.85rem; color: var(--text-muted);">Marketing Manager</div></div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="product-grid">
+                        <!-- Product 1 -->
+                        <div class="product-card group" data-category="cv" data-aos="fade-up">
+                            <div class="tilt-card bg-white rounded-2xl shadow-sm hover:shadow-2xl border border-gray-100 overflow-hidden transition-all duration-300 h-full flex flex-col">
+                                <div class="relative h-56 overflow-hidden">
+                                    <img src="https://images.unsplash.com/photo-1586281380349-632531db7ed4?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="CV Writing" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                                    <div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-300"><span class="bg-white text-brand px-4 py-2 rounded-full font-bold text-sm transform translate-y-4 group-hover:translate-y-0 transition duration-300">Lihat Detail</span></div>
+                                </div>
+                                <div class="p-6 flex-1 flex flex-col">
+                                    <div class="flex justify-between items-start mb-4"><h3 class="text-xl font-bold text-gray-800">CV Writing Pro</h3><span class="bg-blue-100 text-blue-700 text-xs font-bold px-2 py-1 rounded">ATS Friendly</span></div>
+                                    <p class="text-gray-600 text-sm mb-6 flex-1">CV yang didesain khusus untuk melewati sistem rekrutmen bot.</p>
+                                    <a href="https://wa.me/6288219673570" class="mt-auto w-full bg-gray-900 text-white text-sm py-3 rounded-lg hover:bg-brand transition flex items-center justify-center gap-2 font-medium"><i class="fa-brands fa-whatsapp"></i> Pesan via WA</a>
+                                </div>
                             </div>
                         </div>
-                        <div class="testi-card">
-                            <i class="fa-solid fa-quote-right"></i>
-                            <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
-                            <p class="testi-text">"Optimasi LinkedIn-nya juara. Sekarang headhunter dari luar negeri sering menghubungi saya."</p>
-                            <div class="user-info">
-                                <img src="https://picsum.photos/seed/u3/100/100" alt="User" class="avatar">
-                                <div><div style="font-weight: 700; color: var(--text-heading);">Sarah Wijaya</div><div style="font-size: 0.85rem; color: var(--text-muted);">Software Engineer</div></div>
+
+                        <!-- Product 2 -->
+                        <div class="product-card group" data-category="linkedin" data-aos="fade-up" data-aos-delay="100">
+                            <div class="tilt-card bg-white rounded-2xl shadow-sm hover:shadow-2xl border border-gray-100 overflow-hidden transition-all duration-300 h-full flex flex-col">
+                                <div class="relative h-56 overflow-hidden">
+                                    <img src="https://images.unsplash.com/photo-1611162617474-5b21e879e113?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="LinkedIn" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                                    <div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-300"><span class="bg-white text-brand px-4 py-2 rounded-full font-bold text-sm transform translate-y-4 group-hover:translate-y-0 transition duration-300">Lihat Detail</span></div>
+                                </div>
+                                <div class="p-6 flex-1 flex flex-col">
+                                    <div class="flex justify-between items-start mb-4"><h3 class="text-xl font-bold text-gray-800">LinkedIn Optimization</h3><span class="bg-blue-700 text-white text-xs font-bold px-2 py-1 rounded">SEO Ready</span></div>
+                                    <p class="text-gray-600 text-sm mb-6 flex-1">Ubah profil LinkedIn Anda menjadi magnet headhunter.</p>
+                                    <a href="https://wa.me/6285814772634" class="mt-auto w-full bg-gray-900 text-white text-sm py-3 rounded-lg hover:bg-brand transition flex items-center justify-center gap-2 font-medium"><i class="fa-brands fa-whatsapp"></i> Pesan via WA</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Product 3 -->
+                        <div class="product-card group" data-category="coaching" data-aos="fade-up" data-aos-delay="200">
+                            <div class="tilt-card bg-white rounded-2xl shadow-sm hover:shadow-2xl border border-gray-100 overflow-hidden transition-all duration-300 h-full flex flex-col">
+                                <div class="relative h-56 overflow-hidden">
+                                    <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Coaching" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                                    <div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-300"><span class="bg-white text-brand px-4 py-2 rounded-full font-bold text-sm transform translate-y-4 group-hover:translate-y-0 transition duration-300">Lihat Detail</span></div>
+                                </div>
+                                <div class="p-6 flex-1 flex flex-col">
+                                    <div class="flex justify-between items-start mb-4"><h3 class="text-xl font-bold text-gray-800">1-on-1 Coaching</h3><span class="bg-green-100 text-green-700 text-xs font-bold px-2 py-1 rounded">Expert HR</span></div>
+                                    <p class="text-gray-600 text-sm mb-6 flex-1">Sesi coaching private dengan HR berpengalaman.</p>
+                                    <a href="https://wa.me/6285814772634" class="mt-auto w-full bg-gray-900 text-white text-sm py-3 rounded-lg hover:bg-brand transition flex items-center justify-center gap-2 font-medium"><i class="fa-brands fa-whatsapp"></i> Pesan via WA</a>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <!-- FAQ SECTION -->
-            <section id="faq" class="faq-section">
-                <div class="container">
-                    <div class="section-header">
-                        <span class="badge">FAQ</span>
-                        <h2>Pertanyaan Umum</h2>
+            <!-- TESTIMONI FOTO BUKTI -->
+            <section id="testimoni" class="py-24 bg-brand text-white overflow-hidden relative">
+                <div class="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -mr-32 -mt-32"></div>
+                <div class="absolute bottom-0 left-0 w-96 h-96 bg-blue-400/10 rounded-full blur-3xl -ml-48 -mb-48"></div>
+                <div class="max-w-7xl mx-auto px-6 relative z-10">
+                    <div class="text-center mb-16">
+                        <h2 class="text-3xl md:text-5xl font-extrabold mb-4">Bukti Nyata <span class="text-yellow-400">Client Sukses</span></h2>
+                        <p class="text-indigo-200 text-lg">Kami buktikan dengan screenshot asli dari klien kami.</p>
                     </div>
-                    <div class="faq-container">
-                        <details>
-                            <summary>Berapa lama proses pengerjaannya?</summary>
-                            <p>Untuk paket Basic, proses memakan waktu 3-4 hari kerja setelah data lengkap kami terima. Untuk paket Professional dan Executive, kami menargetkan penyelesaian dalam 2-3 hari kerja.</p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                        <div class="group perspective-1000" data-aos="fade-up">
+                            <div class="phone-mockup w-full aspect-[9/19]"><img src="https://images.unsplash.com/photo-1611606063065-ee7946f0787a?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Chat Bukti 1" class="w-full h-full object-cover"></div>
+                            <div class="text-center mt-4"><h4 class="font-bold text-lg">Diterima di GoTo</h4><p class="text-sm text-indigo-300">Via WhatsApp</p></div>
+                        </div>
+                        <div class="group perspective-1000" data-aos="fade-up" data-aos-delay="100">
+                            <div class="phone-mockup w-full aspect-[9/19]"><img src="https://images.unsplash.com/photo-1563986768494-4dee2763ff3f?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Chat Bukti 2" class="w-full h-full object-cover"></div>
+                            <div class="text-center mt-4"><h4 class="font-bold text-lg">Interview Unilever</h4><p class="text-sm text-indigo-300">Via Email</p></div>
+                        </div>
+                        <div class="group perspective-1000" data-aos="fade-up" data-aos-delay="200">
+                            <div class="phone-mockup w-full aspect-[9/19]"><img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Chat Bukti 3" class="w-full h-full object-cover"></div>
+                            <div class="text-center mt-4"><h4 class="font-bold text-lg">Offer Letter BCA</h4><p class="text-sm text-indigo-300">Via WhatsApp</p></div>
+                        </div>
+                        <div class="group perspective-1000" data-aos="fade-up" data-aos-delay="300">
+                            <div class="phone-mockup w-full aspect-[9/19]"><img src="https://images.unsplash.com/photo-1504805572947-34fad45aed93?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Chat Bukti 4" class="w-full h-full object-cover"></div>
+                            <div class="text-center mt-4"><h4 class="font-bold text-lg">Lolos Tes BUMN</h4><p class="text-sm text-indigo-300">Via WhatsApp</p></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- NEW: TIKTOK TIPS VIDEO SECTION -->
+            <section id="tiktok" class="py-24 bg-white">
+                <div class="max-w-7xl mx-auto px-6">
+                    <div class="text-center mb-16">
+                        <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4">Tips Karir <span class="text-black"><i class="fa-brands fa-tiktok"></i></span></h2>
+                        <p class="text-gray-600">Tonton video tips karir kami langsung di TikTok. Klik video untuk menonton!</p>
+                    </div>
+
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                        <!-- TikTok 1 -->
+                        <a href="https://www.tiktok.com/@writehub" target="_blank" class="block group" data-aos="fade-up">
+                            <div class="tiktok-card bg-gray-900 relative">
+                                <img src="https://images.unsplash.com/photo-1587620962725-abab7fe55159?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Tips 1" class="w-full h-full object-cover opacity-80 group-hover:opacity-100">
+                                <div class="absolute inset-0 flex items-center justify-center">
+                                    <div class="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-white border border-white/30 group-hover:scale-110 transition">
+                                        <i class="fa-solid fa-play text-xl ml-1"></i>
+                                    </div>
+                                </div>
+                                <div class="absolute bottom-4 left-4 flex items-center gap-2 text-white text-sm font-bold drop-shadow-md">
+                                    <i class="fa-brands fa-tiktok"></i> @writehub
+                                </div>
+                            </div>
+                        </a>
+
+                        <!-- TikTok 2 -->
+                        <a href="https://www.tiktok.com/@writehub" target="_blank" class="block group" data-aos="fade-up" data-aos-delay="100">
+                            <div class="tiktok-card bg-gray-900 relative">
+                                <img src="https://images.unsplash.com/photo-1551836022-d5d88e9218df?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Tips 2" class="w-full h-full object-cover opacity-80 group-hover:opacity-100">
+                                <div class="absolute inset-0 flex items-center justify-center">
+                                    <div class="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-white border border-white/30 group-hover:scale-110 transition">
+                                        <i class="fa-solid fa-play text-xl ml-1"></i>
+                                    </div>
+                                </div>
+                                <div class="absolute bottom-4 left-4 flex items-center gap-2 text-white text-sm font-bold drop-shadow-md">
+                                    <i class="fa-brands fa-tiktok"></i> @writehub
+                                </div>
+                            </div>
+                        </a>
+
+                        <!-- TikTok 3 -->
+                        <a href="https://www.tiktok.com/@writehub" target="_blank" class="block group" data-aos="fade-up" data-aos-delay="200">
+                            <div class="tiktok-card bg-gray-900 relative">
+                                <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Tips 3" class="w-full h-full object-cover opacity-80 group-hover:opacity-100">
+                                <div class="absolute inset-0 flex items-center justify-center">
+                                    <div class="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-white border border-white/30 group-hover:scale-110 transition">
+                                        <i class="fa-solid fa-play text-xl ml-1"></i>
+                                    </div>
+                                </div>
+                                <div class="absolute bottom-4 left-4 flex items-center gap-2 text-white text-sm font-bold drop-shadow-md">
+                                    <i class="fa-brands fa-tiktok"></i> @writehub
+                                </div>
+                            </div>
+                        </a>
+
+                        <!-- TikTok 4 -->
+                        <a href="https://www.tiktok.com/@writehub" target="_blank" class="block group" data-aos="fade-up" data-aos-delay="300">
+                            <div class="tiktok-card bg-gray-900 relative">
+                                <img src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Tips 4" class="w-full h-full object-cover opacity-80 group-hover:opacity-100">
+                                <div class="absolute inset-0 flex items-center justify-center">
+                                    <div class="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-white border border-white/30 group-hover:scale-110 transition">
+                                        <i class="fa-solid fa-play text-xl ml-1"></i>
+                                    </div>
+                                </div>
+                                <div class="absolute bottom-4 left-4 flex items-center gap-2 text-white text-sm font-bold drop-shadow-md">
+                                    <i class="fa-brands fa-tiktok"></i> @writehub
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- NEW: Q&A SECTION (FAQ) -->
+            <section id="faq" class="py-24 bg-gray-50">
+                <div class="max-w-4xl mx-auto px-6">
+                    <div class="text-center mb-16">
+                        <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4">Tanya Jawab <span class="text-brand">(FAQ)</span></h2>
+                        <p class="text-gray-600">Pertanyaan yang sering diajukan oleh calon klien.</p>
+                    </div>
+
+                    <div class="space-y-4">
+                        <!-- Q1 -->
+                        <details class="group bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden transition duration-300" open>
+                            <summary class="flex justify-between items-center p-6 cursor-pointer list-none hover:bg-gray-50 transition">
+                                <div class="flex items-center gap-4">
+                                    <span class="bg-brand/10 text-brand w-8 h-8 rounded-lg flex items-center justify-center font-bold">1</span>
+                                    <h3 class="font-bold text-gray-800 text-lg">Berapa lama proses pembuatan CV?</h3>
+                                </div>
+                                <i class="fa-solid fa-chevron-down text-gray-400 group-open:rotate-180 transition-transform duration-300"></i>
+                            </summary>
+                            <div class="p-6 pt-0 text-gray-600 border-t border-gray-100 mt-4 animate-fade-in">
+                                Untuk paket Basic, proses memakan waktu 3-4 hari kerja. Untuk paket Professional dan Executive, kami menargetkan penyelesaian dalam 2-3 hari kerja setelah data lengkap kami terima.
+                            </div>
                         </details>
-                        <details>
-                            <summary>Apakah data saya aman?</summary>
-                            <p>Sangat aman. Kami menjaga kerahasiaan data klien dengan ketat. Data Anda hanya digunakan untuk keperluan penulisan dokumen dan akan dihapus dari server kami setelah 30 hari.</p>
+
+                        <!-- Q2 -->
+                        <details class="group bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden transition duration-300">
+                            <summary class="flex justify-between items-center p-6 cursor-pointer list-none hover:bg-gray-50 transition">
+                                <div class="flex items-center gap-4">
+                                    <span class="bg-brand/10 text-brand w-8 h-8 rounded-lg flex items-center justify-center font-bold">2</span>
+                                    <h3 class="font-bold text-gray-800 text-lg">Apakah data saya aman?</h3>
+                                </div>
+                                <i class="fa-solid fa-chevron-down text-gray-400 group-open:rotate-180 transition-transform duration-300"></i>
+                            </summary>
+                            <div class="p-6 pt-0 text-gray-600 border-t border-gray-100 mt-4 animate-fade-in">
+                                Sangat aman. Kami menjaga kerahasiaan data klien dengan ketat. Data Anda hanya digunakan untuk keperluan penulisan dokumen dan akan dihapus dari server kami setelah 30 hari.
+                            </div>
                         </details>
-                        <details>
-                            <summary>Bagaimana sistem revisinya?</summary>
-                            <p>Kami menyediakan revisi untuk memastikan dokumen sudah sesuai dengan ekspektasi Anda. Revisi mencakup perbaikan tata bahasa, struktur, atau gaya penulisan, namun tidak menambah pengalaman kerja baru.</p>
+
+                        <!-- Q3 -->
+                        <details class="group bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden transition duration-300">
+                            <summary class="flex justify-between items-center p-6 cursor-pointer list-none hover:bg-gray-50 transition">
+                                <div class="flex items-center gap-4">
+                                    <span class="bg-brand/10 text-brand w-8 h-8 rounded-lg flex items-center justify-center font-bold">3</span>
+                                    <h3 class="font-bold text-gray-800 text-lg">Apakah revisi gratis?</h3>
+                                </div>
+                                <i class="fa-solid fa-chevron-down text-gray-400 group-open:rotate-180 transition-transform duration-300"></i>
+                            </summary>
+                            <div class="p-6 pt-0 text-gray-600 border-t border-gray-100 mt-4 animate-fade-in">
+                                Kami menyediakan revisi untuk memastikan dokumen sudah sesuai dengan ekspektasi Anda. Revisi mencakup perbaikan tata bahasa, struktur, atau gaya penulisan.
+                            </div>
                         </details>
-                        <details>
-                            <summary>Apa bedanya CV ATS dengan CV biasa?</summary>
-                            <p>CV ATS dirancang dengan format dan kata kunci tertentu agar bisa dibaca oleh software rekruter perusahaan besar. CV biasa seringkali gagal melewati sistem ini meskipun kualifikasi Anda bagus.</p>
+
+                        <!-- Q4 -->
+                        <details class="group bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden transition duration-300">
+                            <summary class="flex justify-between items-center p-6 cursor-pointer list-none hover:bg-gray-50 transition">
+                                <div class="flex items-center gap-4">
+                                    <span class="bg-brand/10 text-brand w-8 h-8 rounded-lg flex items-center justify-center font-bold">4</span>
+                                    <h3 class="font-bold text-gray-800 text-lg">Bagaimana cara pembayarannya?</h3>
+                                </div>
+                                <i class="fa-solid fa-chevron-down text-gray-400 group-open:rotate-180 transition-transform duration-300"></i>
+                            </summary>
+                            <div class="p-6 pt-0 text-gray-600 border-t border-gray-100 mt-4 animate-fade-in">
+                                Pembayaran dapat dilakukan melalui Transfer Bank (BCA, Mandiri, BNI) atau E-Wallet (GoPay, OVO, Dana). Invoice akan dikirimkan setelah kami menerima data Anda.
+                            </div>
                         </details>
                     </div>
                 </div>
             </section>
 
             <!-- FOOTER -->
-            <footer>
-                <div class="container">
-                    <div class="footer-content">
-                        <div>
-                            <div class="footer-brand">
-                                <img src="https://via.placeholder.com/30x30/221E82/FFFFFF?text=W" alt="Logo" style="border-radius:4px; margin-right:8px;">
-                                WriteHubIndo
+            <footer class="bg-gray-900 text-gray-400 pt-16 pb-8 border-t border-gray-800">
+                <div class="max-w-7xl mx-auto px-6">
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+                        <div class="col-span-1 md:col-span-1">
+                            <div class="flex items-center gap-2 mb-6">
+                                <img src="https://via.placeholder.com/40x40/221E82/FFFFFF?text=W" alt="Logo Footer" class="h-8 w-8 object-contain rounded">
+                                <span class="text-xl font-bold text-white">WriteHub</span>
                             </div>
-                            <p style="margin-bottom: 1.5rem;">Membantu profesional Indonesia tampil terbaik melalui dokumen karir berkualitas tinggi.</p>
-                            <div class="social-row">
-                                <a href="#" class="s-btn"><i class="fa-brands fa-instagram"></i></a>
-                                <a href="#" class="s-btn"><i class="fa-brands fa-linkedin-in"></i></a>
-                                <a href="#" class="s-btn"><i class="fa-brands fa-tiktok"></i></a>
-                            </div>
-                        </div>
-                        <div class="f-col">
-                            <h4>Layanan</h4>
-                            <ul><li><a href="#">CV Writing</a></li><li><a href="#">Resume</a></li><li><a href="#">LinkedIn</a></li></ul>
-                        </div>
-                        <div class="f-col">
-                            <h4>Perusahaan</h4>
-                            <ul><li><a href="#">Tentang Kami</a></li><li><a href="#">Kontak</a></li></ul>
+                            <p class="text-sm leading-relaxed mb-6">Partner karir profesional untuk mencapai impian.</p>
                         </div>
                         <div>
-                            <h4 style="color:white; margin-bottom:1.5rem;">Hubungi Kami</h4>
-                            <ul style="color: #94A3B8;">
-                                <li style="margin-bottom:0.5rem;"><i class="fa-solid fa-envelope" style="color:var(--brand-color); margin-right:8px;"></i> hello@writehubindo.com</li>
-                                <li><i class="fa-brands fa-whatsapp" style="color:var(--brand-color); margin-right:8px;"></i> +62 812 3456 7890</li>
-                            </ul>
+                            <h4 class="text-white font-bold mb-6">Layanan</h4>
+                            <ul class="space-y-3 text-sm"><li><a href="#" class="hover:text-brand transition">CV Writing</a></li><li><a href="#" class="hover:text-brand transition">Resume Makeover</a></li><li><a href="#" class="hover:text-brand transition">LinkedIn Opt.</a></li></ul>
+                        </div>
+                        <div>
+                            <h4 class="text-white font-bold mb-6">Perusahaan</h4>
+                            <ul class="space-y-3 text-sm"><li><a href="#" class="hover:text-brand transition">Tentang Kami</a></li><li><a href="#" class="hover:text-brand transition">Karir</a></li><li><a href="#" class="hover:text-brand transition">Blog</a></li></ul>
+                        </div>
+                        <div>
+                            <h4 class="text-white font-bold mb-6">Kontak</h4>
+                            <ul class="space-y-3 text-sm"><li class="flex items-center gap-2"><i class="fa-solid fa-envelope text-brand"></i> hello@writehub.id</li><li class="flex items-center gap-2"><i class="fa-solid fa-phone text-brand"></i> +62 882 1967 3570</li></ul>
                         </div>
                     </div>
-                    <div class="copyright">&copy; 2023 WriteHubIndo. All Rights Reserved.</div>
+                    <div class="border-t border-gray-800 pt-8 text-center text-xs">&copy; 2025 WriteHub. All Rights Reserved.</div>
                 </div>
             </footer>
+
+            <!-- Floating WhatsApp -->
+            <a href="https://wa.me/6288219673570" target="_blank" class="fixed bottom-6 right-6 bg-green-500 text-white w-14 h-14 rounded-full shadow-2xl flex items-center justify-center text-2xl hover:bg-green-600 transition hover:scale-110 z-[9999] cursor-pointer animate-bounce">
+                <i class="fa-brands fa-whatsapp"></i>
+            </a>
+
         </main>
     </div>
 
+    <!-- Scripts -->
     <script>
-        // --- SIDEBAR TOGGLE ---
+        // 1. AOS Init
+        AOS.init({ duration: 800, once: true, offset: 50 });
+
+        // 2. Sidebar Logic
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebar-overlay');
+
         function toggleSidebar() {
-            const sidebar = document.querySelector('.sidebar');
             sidebar.classList.toggle('active');
+            overlay.classList.toggle('active');
         }
-        document.querySelectorAll('.nav-link').forEach(link => {
-            link.addEventListener('click', () => {
-                if (window.innerWidth <= 1024) document.querySelector('.sidebar').classList.remove('active');
-            });
-        });
-
-        // --- THEME TOGGLE ---
-        function toggleTheme() {
-            const body = document.body;
-            const isDark = body.getAttribute('data-theme') === 'dark';
-            const newTheme = isDark ? 'light' : 'dark';
-            body.setAttribute('data-theme', newTheme);
-            const icon = document.getElementById('theme-icon');
-            const text = document.getElementById('theme-text');
-            if (newTheme === 'dark') {
-                icon.className = 'fa-solid fa-sun';
-                text.textContent = ' Mode Terang';
-            } else {
-                icon.className = 'fa-solid fa-moon';
-                text.textContent = ' Mode Gelap';
-            }
+        function closeSidebar() {
+            sidebar.classList.remove('active');
+            overlay.classList.remove('active');
+        }
+        function closeSidebarMobile() {
+            if (window.innerWidth < 1024) { closeSidebar(); }
         }
 
-        // --- COUNTER ---
-        const counters = document.querySelectorAll('.counter');
-        let counted = false;
-        const observer = new IntersectionObserver((entries) => {
-            if(entries[0].isIntersecting && !counted) {
-                counters.forEach(counter => {
-                    const target = +counter.getAttribute('data-target');
-                    const inc = target / 80; let count = 0;
-                    const updateCount = () => {
-                        count += inc;
-                        if(count < target) { counter.innerText = Math.ceil(count); requestAnimationFrame(updateCount); }
-                        else { counter.innerText = target + (target > 100 ? '+' : '%'); }
-                    };
-                    updateCount();
+        // 3. Filter Logic
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const productCards = document.querySelectorAll('.product-card');
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterBtns.forEach(b => {
+                    b.classList.remove('bg-brand', 'text-white');
+                    b.classList.add('bg-white', 'text-gray-600', 'border-gray-200');
+                    b.classList.remove('border-brand');
                 });
-                counted = true;
-            }
-        }, { threshold: 0.5 });
-        const statsSection = document.querySelector('.stats-bar');
-        if(statsSection) observer.observe(statsSection);
-
-        // --- SMOOTH SCROLL ---
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if(target) {
-                    const offset = window.innerWidth > 1024 ? 0 : 70;
-                    const top = target.offsetTop - offset;
-                    window.scrollTo({ top: top, behavior: 'smooth' });
-                }
+                btn.classList.remove('bg-white', 'text-gray-600', 'border-gray-200');
+                btn.classList.add('bg-brand', 'text-white', 'border-brand');
+                const filterValue = btn.getAttribute('data-filter');
+                productCards.forEach(card => {
+                    if (filterValue === 'all' || card.getAttribute('data-category') === filterValue) {
+                        card.style.display = 'block';
+                    } else { card.style.display = 'none'; }
+                });
             });
         });
 
-        document.addEventListener('contextmenu', event => {
-            event.preventDefault();
-            showToast();
+        // 4. 3D Tilt Effect
+        const tiltCards = document.querySelectorAll('.tilt-card');
+        tiltCards.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const rotateX = ((y - centerY) / centerY) * -10;
+                const rotateY = ((x - centerX) / centerX) * 10;
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = `perspective(1000px) rotateX(0) rotateY(0) scale(1)`;
+            });
         });
-
-        document.onkeydown = function(e) {
-            if (e.keyCode == 123 || 
-                (e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) || 
-                (e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) || 
-                (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) || 
-                (e.ctrlKey && e.keyCode == 'S'.charCodeAt(0))
-            ) {
-                return false;
-            }
-        }
-
-        function showToast() {
-            const toast = document.getElementById("protection-toast");
-            toast.style.visibility = "visible";
-            setTimeout(() => { toast.style.visibility = "hidden"; }, 2000);
-        }
     </script>
 </body>
 </html>
