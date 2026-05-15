@@ -3,1008 +3,697 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WriteHubIndo - Jasa CV Profesional & Karir Solution</title>
-    <meta name="description" content="Layanan pembuatan CV profesional, resume, optimasi LinkedIn, dan E-Book karir terbaik di Indonesia.">
+    <title>WriteHubIndo - Professional Career Solutions</title>
+    <meta name="description" content="Jasa CV Profesional, Resume, dan LinkedIn Optimization Premium.">
     
-    <!-- Fonts: Plus Jakarta Sans -->
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
-    <!-- Icons: FontAwesome -->
+    <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
         /* --- VARIABLES & RESET --- */
         :root {
+            /* Warna Brand Request: #221E82 */
             --primary: #0F172A;
-            --primary-light: #1E293B; 
-            --secondary: #3B82F6;
-            --secondary-dark: #2563EB;
-            --accent: #38BDF8;
+            --brand-color: #221E82;
+            --brand-hover: #1a174e;
+            --brand-light: rgba(34, 30, 130, 0.08);
             
             --bg-body: #F8FAFC;
-            --bg-white: #FFFFFF;
-            --bg-gray: #F1F5F9;
+            --bg-card: #FFFFFF;
+            --bg-sidebar: rgba(255, 255, 255, 0.95);
+            --bg-faq: #F1F5F9; 
+            
             --text-main: #334155;
             --text-heading: #0F172A;
             --text-muted: #64748B;
+            
+            --border-color: #E2E8F0;
+            --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+            --shadow-lg: 0 10px 15px -3px rgba(34, 30, 130, 0.1);
+            --shadow-brand: 0 10px 25px -5px rgba(34, 30, 130, 0.25);
 
-            --wa-color: #25D366;
-            --ig-color: #E1306C;
-            --tt-color: #000000;
-
-            --radius-sm: 0.5rem;
             --radius-md: 0.75rem;
             --radius-lg: 1.25rem;
-            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-            --shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-            
-            --container-width: 1280px;
-            --header-height: 80px;
+            --sidebar-width: 280px;
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
+        [data-theme="dark"] {
+            --bg-body: #0B1120;
+            --bg-card: #1E293B;
+            --bg-sidebar: rgba(30, 41, 59, 0.95);
+            --bg-faq: #1E293B;
+            --text-main: #CBD5E1;
+            --text-heading: #F8FAFC;
+            --text-muted: #94A3B8;
+            --border-color: #334155;
+        }
+
         * { margin: 0; padding: 0; box-sizing: border-box; outline: none; }
-        
-        html { scroll-behavior: smooth; }
+        html { scroll-behavior: smooth; font-size: 16px; }
         
         body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             background-color: var(--bg-body);
             color: var(--text-main);
             line-height: 1.6;
             overflow-x: hidden;
-            user-select: none; 
-            -webkit-user-select: none;
+            -webkit-font-smoothing: antialiased;
+            position: relative; /* Context untuk fixed elements */
         }
 
-        input, textarea { user-select: text; -webkit-user-select: text; }
-
-        a { text-decoration: none; color: inherit; }
+        a { text-decoration: none; color: inherit; transition: var(--transition); }
         ul { list-style: none; }
         img { max-width: 100%; display: block; }
+        button { cursor: pointer; font-family: inherit; border: none; background: none; }
 
-        /* --- UTILITIES --- */
-        .container {
-            max-width: var(--container-width);
-            margin: 0 auto;
-            padding: 0 1.5rem;
+        /* --- CUSTOM SCROLLBAR --- */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--brand-color); }
+
+        /* --- LAYOUT WRAPPER --- */
+        .app-wrapper {
+            display: flex;
+            min-height: 100vh;
+            width: 100%;
+            position: relative;
         }
 
-        .section { padding: 6rem 0; }
+        /* --- SIDEBAR (FIXED FOOTER BUTTON) --- */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: var(--bg-sidebar);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-right: 1px solid var(--border-color);
+            position: fixed;
+            top: 0; left: 0; bottom: 0;
+            z-index: 1000;
+            padding: 2rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            height: 100vh; /* Penuhi tinggi layar */
+            overflow: hidden; /* Sidebar TIDAK boleh scroll secara keseluruhan */
+            transform: translateX(0);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            flex-shrink: 0; /* Logo tidak mengecil */
+        }
         
-        /* Animation Classes */
-        .reveal {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.8s ease-out;
-        }
-        .reveal.active {
-            opacity: 1;
-            transform: translateY(0);
+        .logo-img {
+            height: 40px;
+            width: auto;
+            object-fit: contain;
         }
 
-        .section-header {
-            text-align: center;
-            max-width: 800px;
-            margin: 0 auto 4rem;
-        }
-
-        .section-header .subtitle {
-            display: inline-block;
-            color: var(--secondary);
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            font-size: 0.875rem;
-            margin-bottom: 1rem;
-            background: #EFF6FF;
-            padding: 0.5rem 1rem;
-            border-radius: 9999px;
-        }
-
-        .section-header h2 {
-            font-size: 2.5rem;
+        .logo-text {
+            font-size: 1.25rem;
             font-weight: 800;
             color: var(--text-heading);
-            margin-bottom: 1rem;
+            letter-spacing: -0.5px;
             line-height: 1.2;
         }
 
-        .section-header p {
-            color: var(--text-muted);
-            font-size: 1.125rem;
+        /* NAV LIST YANG BISA DISCROLL */
+        .nav-list { 
+            flex: 1; /* Mengisi ruang kosong antara logo dan footer */
+            display: flex; 
+            flex-direction: column; 
+            gap: 0.5rem; 
+            overflow-y: auto; /* HANYA bagian ini yang discroll jika layar pendek */
+            margin-bottom: 1rem;
+            padding-right: 5px; /* Ruang scrollbar */
         }
-
-        /* --- BUTTONS --- */
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0.875rem 2rem;
-            font-weight: 600;
+        
+        .nav-link {
+            display: flex; align-items: center; gap: 1rem;
+            padding: 0.875rem 1rem;
             border-radius: var(--radius-md);
+            color: var(--text-muted);
+            font-weight: 500;
+            font-size: 0.95rem;
             transition: var(--transition);
-            cursor: pointer;
-            border: none;
-            font-size: 1rem;
-            gap: 0.75rem;
             white-space: nowrap;
         }
-
-        .btn-primary {
-            background-color: var(--secondary);
-            color: white;
-            box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.3);
-        }
-
-        .btn-primary:hover {
-            background-color: var(--secondary-dark);
-            transform: translateY(-2px);
-            box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.4);
-        }
-
-        .btn-outline {
-            background: transparent;
-            border: 2px solid var(--primary);
-            color: var(--primary);
-        }
-
-        .btn-outline:hover {
-            background: var(--primary);
-            color: white;
-        }
-
-        /* --- NAVIGATION --- */
-        .navbar {
-            background-color: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            position: fixed;
-            top: 0;
-            width: 100%;
-            z-index: 1000;
-            height: var(--header-height);
-            border-bottom: 1px solid rgba(226, 232, 240, 0.6);
-            transition: var(--transition);
-        }
-
-        .nav-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            height: 100%;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            font-weight: 800;
-            font-size: 1.5rem;
-            color: var(--primary);
-            letter-spacing: -0.03em;
-        }
-
-        .logo img {
-            height: 42px;
-            width: auto;
-            object-fit: contain;
-        }
-
-        .nav-menu {
-            display: flex;
-            gap: 2.5rem;
-            align-items: center;
-        }
-
-        .nav-link {
-            font-weight: 500;
-            color: var(--text-main);
-            font-size: 0.95rem;
-            position: relative;
-            transition: var(--transition);
-        }
-
-        .nav-link:hover, .nav-link.active {
-            color: var(--secondary);
-        }
-
-        .hamburger {
-            display: none;
-            cursor: pointer;
-            font-size: 1.5rem;
-            color: var(--primary);
-            z-index: 1002;
-        }
-
-        /* --- HERO SECTION --- */
-        .hero {
-            padding-top: calc(var(--header-height) + 4rem);
-            padding-bottom: 5rem;
-            background: radial-gradient(circle at top right, #EFF6FF 0%, #FFFFFF 50%);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: -100px; right: -100px;
-            width: 500px; height: 500px;
-            background: radial-gradient(circle, rgba(59,130,246,0.1) 0%, rgba(255,255,255,0) 70%);
-            border-radius: 50%;
-            z-index: 0;
-        }
-
-        .hero-container {
-            display: grid;
-            grid-template-columns: 1.2fr 1fr;
-            gap: 4rem;
-            align-items: center;
-            position: relative;
-            z-index: 1;
-        }
-
-        .hero-content h1 {
-            font-size: 3.75rem;
-            line-height: 1.15;
-            font-weight: 800;
-            color: var(--text-heading);
-            margin-bottom: 1.5rem;
-            letter-spacing: -0.02em;
-        }
-
-        .hero-content p {
-            font-size: 1.25rem;
-            color: var(--text-muted);
-            margin-bottom: 2.5rem;
-            max-width: 550px;
-        }
-
-        .hero-actions {
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-        }
-
-        .hero-trust {
-            margin-top: 3rem;
-            padding-top: 2rem;
-            border-top: 1px solid #E2E8F0;
-            display: flex;
-            align-items: center;
-            gap: 2rem;
-        }
-
-        .trust-item strong {
-            display: block;
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--primary);
-        }
-
-        .trust-item span {
-            font-size: 0.875rem;
-            color: var(--text-muted);
-        }
-
-        .hero-visual {
-            position: relative;
-        }
-
-        .hero-img {
-            width: 100%;
-            border-radius: var(--radius-lg);
-            box-shadow: var(--shadow-lg);
-            transform: perspective(1000px) rotateY(-5deg);
-            transition: var(--transition);
-            border: 8px solid rgba(255,255,255,0.5);
-            background: white;
-        }
-
-        .hero-img:hover {
-            transform: perspective(1000px) rotateY(0deg) scale(1.02);
-        }
-
-        .float-badge {
-            position: absolute;
-            background: white;
-            padding: 1rem 1.5rem;
-            border-radius: var(--radius-md);
-            box-shadow: var(--shadow-lg);
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            z-index: 2;
-            animation: float 4s ease-in-out infinite;
-        }
-
-        .fb-1 { top: 10%; left: -20px; }
-        .fb-2 { bottom: 15%; right: -20px; animation-delay: 2s; }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-15px); }
-        }
-
-        /* --- SERVICES SECTION --- */
-        .services { background-color: var(--bg-white); }
-
-        .services-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 2rem;
-        }
-
-        .service-card {
-            background: var(--bg-body);
-            padding: 2.5rem;
-            border-radius: var(--radius-lg);
-            border: 1px solid transparent;
-            transition: var(--transition);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .service-card:hover {
-            background: white;
-            box-shadow: var(--shadow-hover);
-            border-color: #BFDBFE;
-            transform: translateY(-5px);
-        }
-
-        .s-icon {
-            width: 60px;
-            height: 60px;
-            background: white;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.75rem;
-            color: var(--secondary);
-            margin-bottom: 1.5rem;
-            box-shadow: var(--shadow-sm);
-            transition: var(--transition);
-        }
-
-        .service-card:hover .s-icon {
-            background: var(--secondary);
-            color: white;
-            transform: scale(1.1) rotate(5deg);
-        }
-
-        .service-card h3 {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            color: var(--text-heading);
-        }
-
-        /* --- EBOOK SECTION --- */
-        .ebook {
-            background: linear-gradient(135deg, var(--primary) 0%, #1E3A8A 100%);
-            color: white;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .ebook-wrapper {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 4rem;
-        }
-
-        .ebook-content { flex: 1; z-index: 2; }
         
-        .ebook-content h2 {
-            font-size: 2.5rem;
-            font-weight: 800;
-            margin-bottom: 1.5rem;
+        .nav-link i { width: 24px; text-align: center; font-size: 1.1rem; }
+        
+        .nav-link:hover, .nav-link.active {
+            background: var(--brand-light);
+            color: var(--brand-color);
+            transform: translateX(4px);
         }
 
-        .ebook-content ul { margin: 2rem 0; }
-        .ebook-content li {
-            margin-bottom: 0.75rem;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            font-size: 1.1rem;
-        }
-        .ebook-content i { color: var(--accent); }
-
-        .ebook-visual { flex: 1; display: flex; justify-content: center; position: relative; }
-
-        .book-mockup {
-            width: 320px;
-            height: 460px;
-            background: white;
-            border-radius: 4px 12px 12px 4px;
-            box-shadow: 
-                -20px 0 30px rgba(0,0,0,0.3),
-                0 20px 50px rgba(0,0,0,0.4);
+        /* SIDEBAR FOOTER - BUTTON KONSULTASI STAY DI BAWAH */
+        .sidebar-footer {
+            margin-top: auto; /* Dorong ke paling bawah container */
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border-color);
+            flex-shrink: 0; /* PASTIKAN tidak mengecil/terpotong */
             position: relative;
-            transform: rotateY(-15deg) rotateX(5deg);
-            transition: var(--transition);
-            padding: 2rem;
-            display: flex;
-            flex-direction: column;
-            color: var(--primary);
-        }
-
-        .ebook-visual:hover .book-mockup {
-            transform: rotateY(0deg) rotateX(0deg) scale(1.05);
             z-index: 10;
         }
-
-        .book-cover {
-            width: 100%;
-            height: 200px;
-            background-color: #DBEAFE;
-            border-radius: 4px;
-            margin-bottom: 1.5rem;
-            overflow: hidden;
-        }
         
-        .book-cover img { width: 100%; height: 100%; object-fit: cover; }
+        .btn-theme {
+            width: 100%;
+            display: flex; align-items: center; justify-content: center; gap: 0.75rem;
+            padding: 0.75rem; border-radius: var(--radius-md);
+            background: var(--bg-body); border: 1px solid var(--border-color);
+            color: var(--text-heading); font-weight: 600; transition: var(--transition);
+            margin-bottom: 1rem;
+        }
+        .btn-theme:hover { border-color: var(--brand-color); color: var(--brand-color); }
+
+        /* --- MAIN CONTENT --- */
+        .main-content {
+            flex: 1;
+            margin-left: var(--sidebar-width);
+            width: calc(100% - var(--sidebar-width));
+            min-height: 100vh;
+            background-color: var(--bg-body);
+            position: relative;
+            display: flex; flex-direction: column;
+        }
+
+        /* --- MOBILE HEADER --- */
+        .mobile-header {
+            display: none;
+            position: sticky; top: 0;
+            height: 70px; background: var(--bg-card);
+            border-bottom: 1px solid var(--border-color);
+            z-index: 999;
+            align-items: center; justify-content: space-between;
+            padding: 0 1.5rem;
+            box-shadow: var(--shadow-sm);
+        }
+        .menu-toggle { font-size: 1.5rem; color: var(--text-heading); cursor: pointer; padding: 0.5rem; }
+
+        /* --- UTILITIES --- */
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 1.5rem; width: 100%; }
+        .section { padding: 5rem 0; position: relative; }
+        
+        .badge {
+            display: inline-block; background: var(--brand-light); color: var(--brand-color);
+            padding: 0.4rem 1rem; border-radius: 50px; font-size: 0.8rem; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 1rem;
+        }
+        .section-header { text-align: center; max-width: 800px; margin: 0 auto 4rem; }
+        .section-header h2 { font-size: 2.25rem; font-weight: 800; color: var(--text-heading); margin-bottom: 1rem; line-height: 1.2; }
+        .section-header p { color: var(--text-muted); font-size: 1.1rem; }
+
+        .btn {
+            display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+            padding: 0.875rem 2rem; border-radius: var(--radius-md);
+            font-weight: 600; font-size: 0.95rem; transition: var(--transition); white-space: nowrap;
+        }
+        .btn-primary {
+            background: var(--brand-color); color: white;
+            box-shadow: 0 4px 12px rgba(34, 30, 130, 0.25);
+        }
+        .btn-primary:hover { background: var(--brand-hover); transform: translateY(-2px); box-shadow: 0 6px 16px rgba(34, 30, 130, 0.35); }
+        .btn-outline { border: 2px solid var(--border-color); color: var(--text-heading); background: transparent; }
+        .btn-outline:hover { border-color: var(--brand-color); color: var(--brand-color); background: var(--brand-light); }
+
+        /* --- HERO --- */
+        .hero { padding-top: 4rem; padding-bottom: 6rem; background: radial-gradient(circle at top right, var(--brand-light) 0%, transparent 40%); }
+        .hero-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 4rem; align-items: center; }
+        .hero-content h1 { font-size: 3rem; line-height: 1.15; font-weight: 800; color: var(--text-heading); margin-bottom: 1.5rem; }
+        .highlight { color: var(--brand-color); position: relative; display: inline-block; }
+        .highlight::after { content: ''; position: absolute; bottom: 4px; left: 0; width: 100%; height: 12px; background: rgba(34, 30, 130, 0.15); z-index: -1; }
+        .hero-content p { font-size: 1.15rem; color: var(--text-muted); margin-bottom: 2.5rem; max-width: 90%; }
+        .stats-bar { display: flex; gap: 3rem; margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border-color); }
+        .stat-item h4 { font-size: 1.75rem; font-weight: 800; color: var(--brand-color); line-height: 1; }
+        .stat-item span { font-size: 0.9rem; color: var(--text-muted); font-weight: 500; }
+        .hero-img-wrapper { position: relative; border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-brand); border: 1px solid var(--border-color); background: var(--bg-card); }
+        .hero-img-wrapper img { width: 100%; height: auto; display: block; }
+
+        /* --- SERVICES --- */
+        .services { background-color: var(--bg-card); }
+        .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
+        .service-card { padding: 2.5rem; border-radius: var(--radius-lg); background: var(--bg-body); border: 1px solid var(--border-color); transition: var(--transition); }
+        .service-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); border-color: var(--brand-color); }
+        .icon-box { width: 56px; height: 56px; border-radius: 12px; background: white; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: var(--brand-color); box-shadow: var(--shadow-sm); margin-bottom: 1.5rem; }
+        .service-card h3 { font-size: 1.25rem; margin-bottom: 0.75rem; color: var(--text-heading); }
+        .service-card p { font-size: 0.95rem; color: var(--text-muted); margin-bottom: 1.5rem; line-height: 1.6; }
+        .read-more { color: var(--brand-color); font-weight: 600; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 0.5rem; }
+
+        /* --- PORTFOLIO --- */
+        .portfolio-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem; }
+        .portfolio-card { background: var(--bg-card); border-radius: var(--radius-lg); border: 1px solid var(--border-color); overflow: hidden; transition: var(--transition); }
+        .portfolio-card:hover { box-shadow: var(--shadow-md); transform: translateY(-3px); }
+        .p-thumb { height: 200px; width: 100%; object-fit: cover; background: #f1f5f9; }
+        .p-info { padding: 1.5rem; }
+        .p-cat { font-size: 0.75rem; color: var(--brand-color); font-weight: 700; text-transform: uppercase; margin-bottom: 0.5rem; display: block; }
+        .p-title { font-size: 1.1rem; font-weight: 700; color: var(--text-heading); margin-bottom: 0.5rem; }
+        .p-desc { font-size: 0.9rem; color: var(--text-muted); line-height: 1.5; }
+
+        /* --- PRICING --- */
+        .pricing { background-color: var(--bg-card); }
+        .pricing-wrapper { display: flex; flex-wrap: wrap; gap: 2rem; justify-content: center; }
+        .price-card { flex: 1; min-width: 300px; max-width: 350px; background: var(--bg-body); padding: 2.5rem; border-radius: var(--radius-lg); border: 1px solid var(--border-color); text-align: center; position: relative; }
+        .price-card.popular { background: var(--bg-card); border: 2px solid var(--brand-color); box-shadow: var(--shadow-brand); transform: scale(1.05); z-index: 2; }
+        .pop-tag { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: var(--brand-color); color: white; padding: 0.4rem 1.2rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700; }
+        .price { font-size: 2.25rem; font-weight: 800; color: var(--text-heading); margin: 1.5rem 0; }
+        .feat-list { text-align: left; margin: 1.5rem 0; }
+        .feat-list li { margin-bottom: 0.75rem; color: var(--text-muted); display: flex; gap: 0.75rem; font-size: 0.95rem; }
+        .feat-list i { color: var(--brand-color); margin-top: 3px; }
 
         /* --- TESTIMONIALS --- */
-        .testimonials { background-color: var(--bg-white); }
-        
-        .testi-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-        }
+        .testi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
+        .testi-card { background: var(--bg-card); padding: 2rem; border-radius: var(--radius-lg); border: 1px solid var(--border-color); position: relative; }
+        .testi-card i { position: absolute; top: 1.5rem; right: 1.5rem; font-size: 2rem; color: var(--brand-light); opacity: 0.4; }
+        .stars { color: #F59E0B; margin-bottom: 1rem; font-size: 0.9rem; }
+        .testi-text { font-style: italic; color: var(--text-main); margin-bottom: 1.5rem; line-height: 1.6; }
+        .user-info { display: flex; align-items: center; gap: 1rem; }
+        .avatar { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; background: #ddd; }
 
-        .testi-card {
-            background: var(--bg-body);
-            padding: 2rem;
-            border-radius: var(--radius-lg);
-            border: 1px solid #E2E8F0;
-            transition: var(--transition);
-        }
+        /* --- FAQ --- */
+        .faq-section { background-color: var(--bg-faq); padding-top: 5rem; padding-bottom: 5rem; border-top: 1px solid var(--border-color); }
+        .faq-container { max-width: 800px; margin: 0 auto; }
+        details { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem; margin-bottom: 1rem; cursor: pointer; transition: all 0.2s ease; }
+        details:hover { border-color: var(--brand-color); }
+        details[open] { border-color: var(--brand-color); box-shadow: var(--shadow-sm); }
+        summary { font-weight: 600; color: var(--text-heading); list-style: none; display: flex; justify-content: space-between; align-items: center; }
+        summary::-webkit-details-marker { display: none; }
+        summary::after { content: '\f078'; font-family: "Font Awesome 6 Free"; font-weight: 900; transition: transform 0.3s; color: var(--brand-color); }
+        details[open] summary::after { transform: rotate(180deg); }
+        details p { margin-top: 1rem; color: var(--text-muted); font-size: 0.95rem; padding-top: 1rem; border-top: 1px dashed var(--border-color); }
 
-        .testi-card:hover {
-            box-shadow: var(--shadow-md);
-            border-color: var(--secondary);
-        }
+        /* --- FOOTER --- */
+        footer { background: var(--primary); color: #94A3B8; padding: 4rem 0 2rem; margin-top: auto; position: relative; z-index: 10; }
+        .footer-content { display: grid; grid-template-columns: 2fr 1fr 1fr 1.5fr; gap: 3rem; margin-bottom: 3rem; }
+        .footer-brand h2 { color: white; font-size: 1.5rem; font-weight: 800; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem; }
+        .f-col h4 { color: white; margin-bottom: 1.5rem; font-size: 1.1rem; }
+        .f-col ul li { margin-bottom: 0.75rem; }
+        .f-col a:hover { color: white; padding-left: 5px; }
+        .social-row { display: flex; gap: 1rem; margin-top: 1.5rem; }
+        .s-btn { width: 36px; height: 36px; background: rgba(255,255,255,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: 0.3s; }
+        .s-btn:hover { background: var(--brand-color); transform: translateY(-3px); }
+        .copyright { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 2rem; text-align: center; font-size: 0.9rem; }
 
-        .testi-stars { color: #F59E0B; margin-bottom: 1rem; }
-        .testi-text { font-style: italic; color: var(--text-main); margin-bottom: 1.5rem; }
-        
-        .testi-user {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-        
-        .testi-avatar {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background-color: #CBD5E1;
-        }
-
-        /* --- FOOTER (PERBAIKAN Z-INDEX) --- */
-        footer {
-            background-color: var(--primary);
-            color: #94A3B8;
-            padding: 5rem 0 2rem;
-            margin-top: 4rem;
-            position: relative; /* Penting untuk stacking context */
-            z-index: 1; /* Pastikan footer di bawah tombol WA */
-        }
-
-        .footer-grid {
-            display: grid;
-            grid-template-columns: 1.5fr 1fr 1fr 1fr;
-            gap: 3rem;
-            margin-bottom: 4rem;
-        }
-
-        .footer-brand-container {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .footer-logo {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            color: white;
-            font-size: 1.5rem;
-            font-weight: 800;
-            margin-bottom: 1.5rem;
-            text-decoration: none;
+        /* --- FLOATING WHATSAPP (FIXED Z-INDEX & POSITION) --- */
+        .float-wa {
+            position: fixed; 
+            bottom: 30px; right: 30px; 
+            background: #25D366; color: white; 
+            width: 60px; height: 60px;
+            border-radius: 50%; 
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.8rem; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            z-index: 999999; /* Z-INDEX TERTINGGI AGAR TIDAK TENGGELAM */
+            transition: transform 0.3s;
+            animation: pulse 2s infinite;
         }
         
-        .footer-logo img {
-            height: 40px;
-            width: auto;
-            object-fit: contain;
-        }
-
-        .footer-links h4 {
-            color: white;
-            font-weight: 700;
-            margin-bottom: 1.5rem;
-            font-size: 1.1rem;
-        }
-
-        .footer-links li { margin-bottom: 1rem; }
-        .footer-links a { transition: 0.3s; display: inline-block; }
-        .footer-links a:hover { color: var(--secondary); transform: translateX(5px); }
-
-        .social-icons {
-            display: flex;
-            gap: 1rem;
-            margin-top: 1.5rem;
-        }
-
-        .social-btn {
-            width: 40px;
-            height: 40px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            transition: var(--transition);
-            font-size: 1.2rem;
-        }
-
-        .social-btn:hover {
-            background: var(--secondary);
-            transform: translateY(-3px);
-        }
-
-        .footer-bottom {
-            border-top: 1px solid rgba(255,255,255,0.1);
-            padding-top: 2rem;
-            text-align: center;
-            font-size: 0.875rem;
-        }
-
-        /* --- FLOATING WHATSAPP (FIX FINAL) --- */
-        .floating-wa {
-            position: fixed;
-            /* DINAIKKAN PADA 100px AGAR TIDAK TENGGELAM OLEH FOOTER ATAU BROWSER BAR */
-            bottom: 100px; 
-            right: 30px;
-            background-color: var(--wa-color);
-            color: white;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-            /* Z-INDEX DIBUAT SANGAT TINGGI 99999 */
-            z-index: 99999; 
-            transition: var(--transition);
-            animation: pulse-wa 2s infinite;
-            cursor: pointer;
-        }
-
-        .floating-wa:hover {
-            transform: scale(1.1);
-        }
-
-        @keyframes pulse-wa {
+        @keyframes pulse {
             0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); }
             70% { box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); }
             100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
         }
+        
+        .float-wa:hover { transform: scale(1.1); }
 
-        /* --- RESPONSIVE MEDIA QUERIES --- */
+        /* --- RESPONSIVE --- */
         @media (max-width: 1024px) {
-            .hero-content h1 { font-size: 3rem; }
-            .ebook-wrapper { flex-direction: column; text-align: center; }
-            .ebook-content ul li { justify-content: center; }
-            .footer-grid { grid-template-columns: 1fr 1fr; }
+            :root { --sidebar-width: 0px; }
+            .sidebar { width: 280px; transform: translateX(-100%); box-shadow: 5px 0 15px rgba(0,0,0,0.1); }
+            .sidebar.active { transform: translateX(0); }
+            .main-content { margin-left: 0; width: 100%; }
+            .mobile-header { display: flex; }
+            .hero-grid { grid-template-columns: 1fr; text-align: center; }
+            .hero-content p { margin: 0 auto 2rem; }
+            .stats-bar { justify-content: center; }
+            .hero-img-wrapper { display: none; } 
+            .footer-content { grid-template-columns: 1fr 1fr; }
+            .price-card.popular { transform: scale(1); }
         }
-
         @media (max-width: 768px) {
-            .nav-menu {
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100vh;
-                background: white;
-                flex-direction: column;
-                justify-content: center;
-                padding: 2rem;
-                box-shadow: var(--shadow-lg);
-                transform: translateX(100%);
-                transition: transform 0.3s ease-in-out;
-                z-index: 99999;
-            }
-
-            .nav-menu.active { transform: translateX(0); }
-            .hamburger { display: block; }
-            
-            .hero-container { grid-template-columns: 1fr; text-align: center; }
-            .hero-content p { margin: 0 auto 2.5rem; }
-            .hero-actions { justify-content: center; }
-            .hero-trust { justify-content: center; }
-            .hero-visual { margin-top: 3rem; }
-            
-            .footer-grid { grid-template-columns: 1fr; }
-            
             .hero-content h1 { font-size: 2.25rem; }
-            .section-header h2 { font-size: 2rem; }
-            
-            /* PERBAIKAN POSISI WA DI MOBILE */
-            .floating-wa {
-                bottom: 70px; /* Dinaikkan agar tidak kena browser bar bawah */
-                right: 20px;
-                width: 55px;
-                height: 55px;
-                font-size: 1.8rem;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .btn { width: 100%; }
-            .hero-actions { flex-direction: column; }
+            .section-header h2 { font-size: 1.75rem; }
+            .footer-content { grid-template-columns: 1fr; }
+            .float-wa { width: 50px; height: 50px; font-size: 1.5rem; bottom: 20px; right: 20px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- NAVIGATION -->
-    <nav class="navbar">
-        <div class="container nav-container">
-            <a href="#" class="logo">
-                <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhcZC1CDw0BNBVB3RtNbLcfb9fgrUBbICNfg2u5Yh8e4paTNDj3sdV0BeFozNfzlV8D-N9RFcIuUyWAJMY13DhRHt7c33Mj3k7V0AbaAbRiqFo5UM_ql0VViU_DpmKqq1F07nE5P1RDijY1rZUdAIX6EG_190qdqkjOnJjs8PgWYd8JOA_BU_6bX1-b6nQ7/s3264/26292.png" alt="WriteHubIndo Logo" oncontextmenu="return false;">
-                <span></span>
-            </a>
-            
-            <div class="hamburger" onclick="toggleMenu()">
-                <i class="fa-solid fa-bars"></i>
-            </div>
-
-            <ul class="nav-menu">
-                <li><a href="#home" class="nav-link" onclick="closeMenu()">Beranda</a></li>
-                <li><a href="#services" class="nav-link" onclick="closeMenu()">Layanan</a></li>
-                <li><a href="#ebook" class="nav-link" onclick="closeMenu()">E-Book</a></li>
-                <li><a href="#testimonials" class="nav-link" onclick="closeMenu()">Testimoni</a></li>
-                <li><a href="#contact" class="btn btn-primary" onclick="closeMenu()">Konsultasi Gratis</a></li>
-            </ul>
-        </div>
-    </nav>
-
-    <!-- HERO SECTION -->
-    <header id="home" class="hero">
-        <div class="container hero-container">
-            <div class="hero-content reveal">
-                <span class="section-header" style="text-align: left; margin-bottom: 1.5rem;">
-                    <span class="subtitle">Partner Karir Profesional #1</span>
-                </span>
-                <h1>Ubah Dokumen Biasa Menjadi <span style="color: var(--secondary);">Tawaran Kerja</span></h1>
-                <p>Jasa pembuatan CV profesional dan optimasi LinkedIn standar internasional. Tingkatkan peluang Anda hingga 5x lebih besar.</p>
-                
-                <div class="hero-actions">
-                    <a href="#services" class="btn btn-primary">
-                        Mulai Sekarang <i class="fa-solid fa-arrow-right"></i>
-                    </a>
-                    <a href="#ebook" class="btn btn-outline">
-                        <i class="fa-solid fa-book"></i> Beli E-Book
-                    </a>
-                </div>
-
-                <div class="hero-trust">
-                    <div class="trust-item">
-                        <strong>5000+</strong>
-                        <span>Klien Puas</span>
-                    </div>
-                    <div class="trust-item">
-                        <strong>98%</strong>
-                        <span>Rate Lolos ATS</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="hero-visual reveal">
-                <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEivzJNwLlFClvwP1PHbyHH3-XuROVJU0GwweGAamW4h_xPA1TPIfVFXGEa_h2HzXqjXH7lK6HHSjzPQ5XTtNUpXwJ4HXj5-rB23nMbLr6VkoNcdIrvIo_Gclp1mBk4eftW-98mk3l6vxshi6b56qIGwzi7AkAT32nB4d1Z_ERidEyMP92tXHehFwa7gb9YT/s2730/26300.jpg" alt="Professional CV" class="hero-img" oncontextmenu="return false;">
-                
-                       
-                <div class="float-badge fb-2">
-                    <div style="background: #DBEAFE; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--secondary);">
-                        <i class="fa-solid fa-briefcase"></i>
-                    </div>
-                    <div>
-                        <div style="font-weight: 700; font-size: 0.9rem;">Diterima Kerja</div>
-                        <div style="font-size: 0.75rem; color: var(--text-muted);">Dalam 7 Hari</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </header>
-
-    <!-- SERVICES SECTION -->
-    <section id="services" class="section services">
-        <div class="container">
-            <div class="section-header reveal">
-                <span class="subtitle">Layanan Kami</span>
-                <h2>Solusi Dokumen Karir Premium</h2>
-                <p>Kami menawarkan layanan komprehensif untuk memastikan profil Anda menonjol di pasar kerja yang kompetitif.</p>
-            </div>
-
-            <div class="services-grid">
-                <div class="service-card reveal">
-                    <div class="s-icon"><i class="fa-regular fa-file-word"></i></div>
-                    <h3>CV Writing</h3>
-                    <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Penulisan ulang CV oleh ahli strategi karir. Fokus pada pencapaian numerik dan format yang ramah ATS.</p>
-                    <a href="#contact" style="color: var(--secondary); font-weight: 600;">Pilih Paket <i class="fa-solid fa-arrow-right"></i></a>
-                </div>
-
-                <div class="service-card reveal">
-                    <div class="s-icon"><i class="fa-brands fa-linkedin-in"></i></div>
-                    <h3>LinkedIn Optimization</h3>
-                    <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Optimasi profil lengkap termasuk headline, about section, dan pengalaman agar mudah ditemukan recruiter.</p>
-                    <a href="#contact" style="color: var(--secondary); font-weight: 600;">Pilih Paket <i class="fa-solid fa-arrow-right"></i></a>
-                </div>
-
-                <div class="service-card reveal">
-                    <div class="s-icon"><i class="fa-regular fa-envelope"></i></div>
-                    <h3>Cover Letter</h3>
-                    <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Surat lamaran yang disesuaikan secara khusus untuk posisi dan perusahaan yang Anda lamar.</p>
-                    <a href="#contact" style="color: var(--secondary); font-weight: 600;">Pilih Paket <i class="fa-solid fa-arrow-right"></i></a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- EBOOK SECTION -->
-    <section id="ebook" class="section ebook">
-        <div class="container ebook-wrapper">
-            <div class="ebook-content reveal">
-                <span class="subtitle" style="background: rgba(255,255,255,0.1); color: #fff;">Produk Digital</span>
-                <h2>Panduan Eksklusif: <br>Menaklukkan Pasar Kerja 2024</h2>
-                <p>Belajar strategi lamaran kerja efektif tanpa harus membayar jasa mahal. E-Book ini berisi template, contoh kalimat, dan tips rahasia HRD.</p>
-                
-                <ul>
-                    <li><i class="fa-solid fa-check-circle"></i> 10 Template CV ATS Friendly</li>
-                    <li><i class="fa-solid fa-check-circle"></i> 50+ Power Verbs Bahasa Indonesia</li>
-                    <li><i class="fa-solid fa-check-circle"></i> Tips Interview Behavioral</li>
-                </ul>
-
-                <a href="#" class="btn btn-primary" style="background: white; color: var(--secondary);">
-                    <i class="fa-solid fa-cart-shopping"></i> Beli Sekarang - Rp 99.000
-                </a>
-            </div>
-
-            <div class="ebook-visual reveal">
-                <div class="book-mockup">
-                    <div class="book-cover">
-                        <img src="https://picsum.photos/seed/ebook_cover/300/400" alt="E-Book Cover" oncontextmenu="return false;">
-                    </div>
-                    <div style="font-size: 0.8rem; font-weight: 700; text-transform: uppercase; color: #94A3B8; margin-bottom: 0.5rem;">Edisi Spesial</div>
-                    <h3 style="font-size: 1.5rem; font-weight: 800; line-height: 1.2;">The Ultimate Job Hunt Guide</h3>
-                    <div style="margin-top: auto; font-size: 0.9rem; font-weight: 600;">By WriteHubIndo Team</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- TESTIMONIALS -->
-    <section id="testimonials" class="section testimonials">
-        <div class="container">
-            <div class="section-header reveal">
-                <span class="subtitle">Testimoni</span>
-                <h2>Apa Kata Mereka?</h2>
-                <p>Ribuan klien telah berhasil mendapatkan pekerjaan impian.</p>
-            </div>
-
-            <div class="testi-grid">
-                <div class="testi-card reveal">
-                    <div class="testi-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
-                    <p class="testi-text">"Saya coba apply ke 10 perusahaan setelah pakai CV baru, 8 diantaranya memanggil interview. Luar biasa!"</p>
-                    <div class="testi-user">
-                        <img src="https://picsum.photos/seed/u1/100/100" alt="User" class="testi-avatar">
-                        <div>
-                            <div style="font-weight: 700; color: var(--primary);">Rina Kartika</div>
-                            <div style="font-size: 0.85rem; color: var(--text-muted);">Marketing Manager</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="testi-card reveal">
-                    <div class="testi-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
-                    <p class="testi-text">"E-Booknya sangat membantu fresh graduate seperti saya. Isinya praktis dan mudah dipahami."</p>
-                    <div class="testi-user">
-                        <img src="https://picsum.photos/seed/u2/100/100" alt="User" class="testi-avatar">
-                        <div>
-                            <div style="font-weight: 700; color: var(--primary);">Dimas Anggara</div>
-                            <div style="font-size: 0.85rem; color: var(--text-muted);">Fresh Graduate</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="testi-card reveal">
-                    <div class="testi-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i></div>
-                    <p class="testi-text">"Optimasi LinkedIn-nya juara. Sekarang headhunter dari luar negeri sering menghubungi saya."</p>
-                    <div class="testi-user">
-                        <img src="https://picsum.photos/seed/u3/100/100" alt="User" class="testi-avatar">
-                        <div>
-                            <div style="font-weight: 700; color: var(--primary);">Sarah Wijaya</div>
-                            <div style="font-size: 0.85rem; color: var(--text-muted);">Software Engineer</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- FOOTER -->
-    <footer id="contact">
-        <div class="container">
-            <div class="footer-grid">
-                <div class="footer-brand-container">
-                    <a href="#" class="footer-logo">
-                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi1KUzCfiFj2_TCAT4WjS2GDw60pM4mThTnYguLRCzmph5UBQZle99S7iy2c4RnYcPNf8zbQ6Dy7AAx2cnHko6sCKNII74XSSFNHIEOe7lcycoQssUgBpVwex0UzVd-SyVPdggGaGsD9X6cBWAN7MH7eo6z4zicLjIVGgfTRrAuO2nPevP7MPV00g5007Rl/s3264/26293.png" alt="WriteHubIndo Logo" oncontextmenu="return false;">
-                        <span></span>
-                    </a>
-                    <p style="max-width: 300px; margin-bottom: 1.5rem; line-height: 1.8;">
-                        Membantu profesional Indonesia tampil terbaik melalui dokumen karir berkualitas tinggi dan strategi personal branding.
-                    </p>
-                    <div class="social-icons">
-                        <a href="https://instagram.com" target="_blank" class="social-btn" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
-                        <a href="https://tiktok.com" target="_blank" class="social-btn" title="TikTok"><i class="fa-brands fa-tiktok"></i></a>
-                        <a href="https://wa.me/6281234567890" target="_blank" class="social-btn" title="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
-                    </div>
-                </div>
-
-                <div class="footer-links">
-                    <h4>Layanan</h4>
-                    <ul>
-                        <li><a href="#">CV Writing</a></li>
-                        <li><a href="#">Resume Makeover</a></li>
-                        <li><a href="#">LinkedIn Optimization</a></li>
-                        <li><a href="#">E-Book Karir</a></li>
-                    </ul>
-                </div>
-
-                <div class="footer-links">
-                    <h4>Perusahaan</h4>
-                    <ul>
-                        <li><a href="#">Tentang Kami</a></li>
-                        <li><a href="#">Portofolio</a></li>
-                        <li><a href="#">Blog Karir</a></li>
-                        <li><a href="#">Kontak</a></li>
-                    </ul>
-                </div>
-
-                <div class="footer-links">
-                    <h4>Hubungi Kami</h4>
-                    <ul style="font-size: 0.95rem;">
-                        <li style="display: flex; gap: 0.75rem; align-items: flex-start;">
-                            <i class="fa-solid fa-envelope" style="margin-top: 4px; color: var(--secondary);"></i>
-                            <span>hello@writehubindo.com</span>
-                        </li>
-                        <li style="display: flex; gap: 0.75rem; align-items: flex-start;">
-                            <i class="fa-brands fa-whatsapp" style="margin-top: 4px; color: var(--wa-color);"></i>
-                            <span>+62 812 3456 7890</span>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            
-            <div class="footer-bottom">
-                <p>&copy; 2023 WriteHubIndo. All Rights Reserved. Content Protected.</p>
-            </div>
-        </div>
-    </footer>
-
-    <!-- FLOATING WHATSAPP BUTTON (FINAL FIX) -->
-    <a href="https://wa.me/6281234567890" target="_blank" class="floating-wa" title="Chat WhatsApp">
+    <!-- FLOATING WHATSAPP (DITEMPATKAN PALING ATAS AGAR Z-INDEX EFEKTIF) -->
+    <a href="https://wa.me/6281234567890" target="_blank" class="float-wa" title="Chat WhatsApp">
         <i class="fa-brands fa-whatsapp"></i>
     </a>
 
-    <!-- PROTECTION TOAST -->
-    <div id="protection-toast" style="visibility: hidden; min-width: 250px; background-color: #EF4444; color: #fff; text-align: center; border-radius: 8px; padding: 16px; position: fixed; z-index: 100000; left: 50%; bottom: 30px; transform: translateX(-50%); box-shadow: 0 4px 12px rgba(0,0,0,0.2); font-weight: 600;">
-        <i class="fa-solid fa-shield-halved"></i> Konten Dilindungi
+    <div class="app-wrapper">
+        
+        <!-- SIDEBAR NAVIGATION -->
+        <nav class="sidebar">
+            <a href="#" class="logo-container">
+                <!-- GANTI SRC DENGAN LINK PNG ANDA -->
+                <img src="https://via.placeholder.com/40x40/221E82/FFFFFF?text=W" alt="WriteHubIndo Logo" class="logo-img">
+                <span class="logo-text">WriteHubIndo</span>
+            </a>
+
+            <!-- NAV LIST: BISA DISCROLL, TAPI TIDAK MEMPENGARUHI FOOTER -->
+            <ul class="nav-list">
+                <li><a href="#home" class="nav-link active"><i class="fa-solid fa-house"></i> Beranda</a></li>
+                <li><a href="#services" class="nav-link"><i class="fa-solid fa-layer-group"></i> Layanan</a></li>
+                <li><a href="#portfolio" class="nav-link"><i class="fa-solid fa-briefcase"></i> Portofolio</a></li>
+                <li><a href="#testimonials" class="nav-link"><i class="fa-solid fa-star"></i> Testimoni</a></li>
+                <li><a href="#pricing" class="nav-link"><i class="fa-solid fa-tags"></i> Harga</a></li>
+                <li><a href="#faq" class="nav-link"><i class="fa-solid fa-circle-question"></i> FAQ</a></li>
+            </ul>
+
+            <!-- SIDEBAR FOOTER: TETAP STAY DI BAWAH -->
+            <div class="sidebar-footer">
+                <button class="btn-theme" onclick="toggleTheme()">
+                    <i class="fa-solid fa-moon" id="theme-icon"></i> <span id="theme-text">Mode Gelap</span>
+                </button>
+                <!-- Button Konsultasi -->
+                <a href="#contact" class="btn btn-primary" style="width: 100%;">Konsultasi Gratis</a>
+            </div>
+        </nav>
+
+        <!-- MAIN CONTENT -->
+        <main class="main-content">
+            <header class="mobile-header">
+                <div class="logo-container" style="margin:0; padding:0; border:none;">
+                    <img src="https://via.placeholder.com/32x32/221E82/FFFFFF?text=W" alt="Logo" class="logo-img" style="height:32px;">
+                    <span class="logo-text" style="font-size: 1.1rem;">WriteHubIndo</span>
+                </div>
+                <div class="menu-toggle" onclick="toggleSidebar()">
+                    <i class="fa-solid fa-bars"></i>
+                </div>
+            </header>
+
+            <!-- HERO SECTION -->
+            <section id="home" class="hero">
+                <div class="container">
+                    <div class="hero-grid">
+                        <div class="hero-content">
+                            <span class="badge">Career Partner #1</span>
+                            <h1>Tingkatkan Karir dengan Dokumen <span class="highlight">Profesional</span></h1>
+                            <p>Kami mengubah CV dan profil biasa menjadi alat pemasaran diri yang kuat. Lolos ATS, menarik perhatian HRD, dan raih pekerjaan impian Anda.</p>
+                            <div style="display: flex; gap: 1rem; flex-wrap: wrap; justify-content: inherit;">
+                                <a href="#pricing" class="btn btn-primary">Lihat Paket <i class="fa-solid fa-arrow-right"></i></a>
+                                <a href="#portfolio" class="btn btn-outline">Lihat Karya <i class="fa-solid fa-eye"></i></a>
+                            </div>
+                            <div class="stats-bar">
+                                <div class="stat-item"><h4 class="counter" data-target="5000">0</h4><span>Klien Puas</span></div>
+                                <div class="stat-item"><h4 class="counter" data-target="98">0</h4><span>% Lolos ATS</span></div>
+                                <div class="stat-item"><h4 class="counter" data-target="24">0</h4><span>Jam Proses</span></div>
+                            </div>
+                        </div>
+                        <div class="hero-img-wrapper">
+                            <img src="https://picsum.photos/seed/writehub2/600/700" alt="CV Preview">
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SERVICES SECTION -->
+            <section id="services" class="section services">
+                <div class="container">
+                    <div class="section-header">
+                        <span class="badge">Layanan Kami</span>
+                        <h2>Solusi Komprehensif</h2>
+                        <p>Layanan lengkap untuk kebutuhan dokumen karir Anda.</p>
+                    </div>
+                    <div class="services-grid">
+                        <div class="service-card">
+                            <div class="icon-box"><i class="fa-regular fa-file-word"></i></div>
+                            <h3>CV & Resume</h3>
+                            <p>Penulisan ulang CV dengan pendekatan data-driven. Fokus pada pencapaian kuantitatif dan format ATS.</p>
+                            <a href="#" class="read-more">Detail Layanan <i class="fa-solid fa-chevron-right"></i></a>
+                        </div>
+                        <div class="service-card">
+                            <div class="icon-box"><i class="fa-brands fa-linkedin-in"></i></div>
+                            <h3>LinkedIn Opt.</h3>
+                            <p>Optimasi profil lengkap termasuk Headline SEO, About Section storytelling, dan pengalaman kerja.</p>
+                            <a href="#" class="read-more">Detail Layanan <i class="fa-solid fa-chevron-right"></i></a>
+                        </div>
+                        <div class="service-card">
+                            <div class="icon-box"><i class="fa-regular fa-envelope-open"></i></div>
+                            <h3>Cover Letter</h3>
+                            <p>Drafting surat lamaran dan email dingin yang persuasif, disesuaikan khusus untuk target perusahaan.</p>
+                            <a href="#" class="read-more">Detail Layanan <i class="fa-solid fa-chevron-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PORTFOLIO SECTION -->
+            <section id="portfolio" class="section">
+                <div class="container">
+                    <div class="section-header">
+                        <span class="badge">Portofolio</span>
+                        <h2>Karya Terbaru</h2>
+                        <p>Bukti nyata kualitas kerja kami.</p>
+                    </div>
+                    <div class="portfolio-grid">
+                        <div class="portfolio-card">
+                            <img src="https://picsum.photos/seed/cv3/500/350" alt="CV 1" class="p-thumb">
+                            <div class="p-info"><span class="p-cat">Managerial</span><h3 class="p-title">CV Transformasi FMCG</h3><p class="p-desc">Membantu klien pindah ke perusahaan multinasional.</p></div>
+                        </div>
+                        <div class="portfolio-card">
+                            <img src="https://picsum.photos/seed/cv4/500/350" alt="CV 2" class="p-thumb">
+                            <div class="p-info"><span class="p-cat">Tech & IT</span><h3 class="p-title">Resume Software Engineer</h3><p class="p-desc">Fokus pada proyek GitHub dan tech stack.</p></div>
+                        </div>
+                        <div class="portfolio-card">
+                            <img src="https://picsum.photos/seed/cv5/500/350" alt="CV 3" class="p-thumb">
+                            <div class="p-info"><span class="p-cat">Finance</span><h3 class="p-title">LinkedIn Makeover</h3><p class="p-desc">Meningkatkan connection view hingga 300%.</p></div>
+                        </div>
+                    </div>
+                    <div style="text-align: center; margin-top: 3rem;">
+                        <a href="#" class="btn btn-outline">Lihat Instagram <i class="fa-brands fa-instagram"></i></a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PRICING SECTION -->
+            <section id="pricing" class="section pricing">
+                <div class="container">
+                    <div class="section-header">
+                        <span class="badge">Harga</span>
+                        <h2>Pilih Paket</h2>
+                        <p>Investasi terbaik untuk masa depan Anda.</p>
+                    </div>
+                    <div class="pricing-wrapper">
+                        <div class="price-card">
+                            <h3>Basic</h3>
+                            <div class="price">Rp 249k</div>
+                            <ul class="feat-list">
+                                <li><i class="fa-solid fa-circle-check"></i> CV ATS Friendly</li>
+                                <li><i class="fa-solid fa-circle-check"></i> Desain Modern</li>
+                                <li><i class="fa-solid fa-circle-check"></i> 1x Revisi</li>
+                            </ul>
+                            <a href="#" class="btn btn-outline" style="width: 100%;">Pilih</a>
+                        </div>
+                        <div class="price-card popular">
+                            <div class="pop-tag">BEST VALUE</div>
+                            <h3>Professional</h3>
+                            <div class="price">Rp 499k</div>
+                            <ul class="feat-list">
+                                <li><i class="fa-solid fa-circle-check"></i> CV + Cover Letter</li>
+                                <li><i class="fa-solid fa-circle-check"></i> LinkedIn Opt.</li>
+                                <li><i class="fa-solid fa-circle-check"></i> Unlimited Revisi</li>
+                            </ul>
+                            <a href="#" class="btn btn-primary" style="width: 100%;">Pilih</a>
+                        </div>
+                        <div class="price-card">
+                            <h3>Executive</h3>
+                            <div class="price">Rp 899k</div>
+                            <ul class="feat-list">
+                                <li><i class="fa-solid fa-circle-check"></i> Full Package</li>
+                                <li><i class="fa-solid fa-circle-check"></i> Bio Writing</li>
+                                <li><i class="fa-solid fa-circle-check"></i> Konsultasi Karir</li>
+                            </ul>
+                            <a href="#" class="btn btn-outline" style="width: 100%;">Pilih</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TESTIMONIALS -->
+            <section id="testimonials" class="section">
+                <div class="container">
+                    <div class="section-header">
+                        <span class="badge">Testimoni</span>
+                        <h2>Kata Mereka</h2>
+                    </div>
+                    <div class="testi-grid">
+                        <div class="testi-card">
+                            <i class="fa-solid fa-quote-right"></i>
+                            <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                            <p class="testi-text">"Saya coba apply ke 10 perusahaan setelah pakai CV baru, 8 diantaranya memanggil interview. Luar biasa!"</p>
+                            <div class="user-info">
+                                <img src="https://picsum.photos/seed/u1/100/100" alt="User" class="avatar">
+                                <div><div style="font-weight: 700; color: var(--text-heading);">Rina Kartika</div><div style="font-size: 0.85rem; color: var(--text-muted);">Marketing Manager</div></div>
+                            </div>
+                        </div>
+                        <div class="testi-card">
+                            <i class="fa-solid fa-quote-right"></i>
+                            <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                            <p class="testi-text">"Optimasi LinkedIn-nya juara. Sekarang headhunter dari luar negeri sering menghubungi saya."</p>
+                            <div class="user-info">
+                                <img src="https://picsum.photos/seed/u3/100/100" alt="User" class="avatar">
+                                <div><div style="font-weight: 700; color: var(--text-heading);">Sarah Wijaya</div><div style="font-size: 0.85rem; color: var(--text-muted);">Software Engineer</div></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- FAQ SECTION -->
+            <section id="faq" class="faq-section">
+                <div class="container">
+                    <div class="section-header">
+                        <span class="badge">FAQ</span>
+                        <h2>Pertanyaan Umum</h2>
+                    </div>
+                    <div class="faq-container">
+                        <details>
+                            <summary>Berapa lama proses pengerjaannya?</summary>
+                            <p>Untuk paket Basic, proses memakan waktu 3-4 hari kerja setelah data lengkap kami terima. Untuk paket Professional dan Executive, kami menargetkan penyelesaian dalam 2-3 hari kerja.</p>
+                        </details>
+                        <details>
+                            <summary>Apakah data saya aman?</summary>
+                            <p>Sangat aman. Kami menjaga kerahasiaan data klien dengan ketat. Data Anda hanya digunakan untuk keperluan penulisan dokumen dan akan dihapus dari server kami setelah 30 hari.</p>
+                        </details>
+                        <details>
+                            <summary>Bagaimana sistem revisinya?</summary>
+                            <p>Kami menyediakan revisi untuk memastikan dokumen sudah sesuai dengan ekspektasi Anda. Revisi mencakup perbaikan tata bahasa, struktur, atau gaya penulisan, namun tidak menambah pengalaman kerja baru.</p>
+                        </details>
+                        <details>
+                            <summary>Apa bedanya CV ATS dengan CV biasa?</summary>
+                            <p>CV ATS dirancang dengan format dan kata kunci tertentu agar bisa dibaca oleh software rekruter perusahaan besar. CV biasa seringkali gagal melewati sistem ini meskipun kualifikasi Anda bagus.</p>
+                        </details>
+                    </div>
+                </div>
+            </section>
+
+            <!-- FOOTER -->
+            <footer>
+                <div class="container">
+                    <div class="footer-content">
+                        <div>
+                            <div class="footer-brand">
+                                <img src="https://via.placeholder.com/30x30/221E82/FFFFFF?text=W" alt="Logo" style="border-radius:4px; margin-right:8px;">
+                                WriteHubIndo
+                            </div>
+                            <p style="margin-bottom: 1.5rem;">Membantu profesional Indonesia tampil terbaik melalui dokumen karir berkualitas tinggi.</p>
+                            <div class="social-row">
+                                <a href="#" class="s-btn"><i class="fa-brands fa-instagram"></i></a>
+                                <a href="#" class="s-btn"><i class="fa-brands fa-linkedin-in"></i></a>
+                                <a href="#" class="s-btn"><i class="fa-brands fa-tiktok"></i></a>
+                            </div>
+                        </div>
+                        <div class="f-col">
+                            <h4>Layanan</h4>
+                            <ul><li><a href="#">CV Writing</a></li><li><a href="#">Resume</a></li><li><a href="#">LinkedIn</a></li></ul>
+                        </div>
+                        <div class="f-col">
+                            <h4>Perusahaan</h4>
+                            <ul><li><a href="#">Tentang Kami</a></li><li><a href="#">Kontak</a></li></ul>
+                        </div>
+                        <div>
+                            <h4 style="color:white; margin-bottom:1.5rem;">Hubungi Kami</h4>
+                            <ul style="color: #94A3B8;">
+                                <li style="margin-bottom:0.5rem;"><i class="fa-solid fa-envelope" style="color:var(--brand-color); margin-right:8px;"></i> hello@writehubindo.com</li>
+                                <li><i class="fa-brands fa-whatsapp" style="color:var(--brand-color); margin-right:8px;"></i> +62 812 3456 7890</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="copyright">&copy; 2023 WriteHubIndo. All Rights Reserved.</div>
+                </div>
+            </footer>
+        </main>
     </div>
 
     <script>
-        // --- MOBILE MENU ---
-        function toggleMenu() {
-            const nav = document.querySelector('.nav-menu');
-            nav.classList.toggle('active');
-            
-            const icon = document.querySelector('.hamburger i');
-            if(nav.classList.contains('active')) {
-                icon.classList.remove('fa-bars');
-                icon.classList.add('fa-xmark');
-            } else {
-                icon.classList.remove('fa-xmark');
-                icon.classList.add('fa-bars');
-            }
+        // --- SIDEBAR TOGGLE ---
+        function toggleSidebar() {
+            const sidebar = document.querySelector('.sidebar');
+            sidebar.classList.toggle('active');
         }
-
-        function closeMenu() {
-            const nav = document.querySelector('.nav-menu');
-            if (nav.classList.contains('active')) {
-                nav.classList.remove('active');
-                const icon = document.querySelector('.hamburger i');
-                icon.classList.remove('fa-xmark');
-                icon.classList.add('fa-bars');
-            }
-        }
-
-        // --- SCROLL ANIMATIONS ---
-        const observerOptions = {
-            threshold: 0.15,
-            rootMargin: "0px 0px -50px 0px"
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('active');
-                    observer.unobserve(entry.target); 
-                }
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth <= 1024) document.querySelector('.sidebar').classList.remove('active');
             });
-        }, observerOptions);
-
-        document.querySelectorAll('.reveal').forEach(el => {
-            observer.observe(el);
         });
 
-        // --- CONTENT PROTECTION ---
-        document.addEventListener('contextmenu', event => {
-            event.preventDefault();
-            showToast();
-        });
-
-        document.onkeydown = function(e) {
-            if (e.keyCode == 123 || 
-                (e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) || 
-                (e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) || 
-                (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) || 
-                (e.ctrlKey && e.keyCode == 'S'.charCodeAt(0))
-            ) {
-                return false;
+        // --- THEME TOGGLE ---
+        function toggleTheme() {
+            const body = document.body;
+            const isDark = body.getAttribute('data-theme') === 'dark';
+            const newTheme = isDark ? 'light' : 'dark';
+            body.setAttribute('data-theme', newTheme);
+            const icon = document.getElementById('theme-icon');
+            const text = document.getElementById('theme-text');
+            if (newTheme === 'dark') {
+                icon.className = 'fa-solid fa-sun';
+                text.textContent = ' Mode Terang';
+            } else {
+                icon.className = 'fa-solid fa-moon';
+                text.textContent = ' Mode Gelap';
             }
         }
 
-        function showToast() {
-            const toast = document.getElementById("protection-toast");
-            toast.style.visibility = "visible";
-            setTimeout(() => { toast.style.visibility = "hidden"; }, 2000);
-        }
+        // --- COUNTER ---
+        const counters = document.querySelectorAll('.counter');
+        let counted = false;
+        const observer = new IntersectionObserver((entries) => {
+            if(entries[0].isIntersecting && !counted) {
+                counters.forEach(counter => {
+                    const target = +counter.getAttribute('data-target');
+                    const inc = target / 80; let count = 0;
+                    const updateCount = () => {
+                        count += inc;
+                        if(count < target) { counter.innerText = Math.ceil(count); requestAnimationFrame(updateCount); }
+                        else { counter.innerText = target + (target > 100 ? '+' : '%'); }
+                    };
+                    updateCount();
+                });
+                counted = true;
+            }
+        }, { threshold: 0.5 });
+        const statsSection = document.querySelector('.stats-bar');
+        if(statsSection) observer.observe(statsSection);
 
-        // --- SMOOTH SCROLL OFFSET (Dynamic) ---
+        // --- SMOOTH SCROLL ---
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
-                const targetId = this.getAttribute('href');
-                if (targetId === '#') return;
-                
-                const targetElement = document.querySelector(targetId);
-                if(!targetElement) return;
-
-                const headerHeight = document.querySelector('.navbar').offsetHeight;
-                const elementPosition = targetElement.getBoundingClientRect().top;
-                const offsetPosition = elementPosition + window.pageYOffset - headerHeight;
-
-                window.scrollTo({
-                    top: offsetPosition,
-                    behavior: "smooth"
-                });
+                const target = document.querySelector(this.getAttribute('href'));
+                if(target) {
+                    const offset = window.innerWidth > 1024 ? 0 : 70;
+                    const top = target.offsetTop - offset;
+                    window.scrollTo({ top: top, behavior: 'smooth' });
+                }
             });
         });
+
+        // --- CONTENT PROTECTION ---
+        document.addEventListener('contextmenu', e => e.preventDefault());
+        document.onkeydown = e => {
+            if(e.keyCode == 123) return false;
+            if(e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) return false;
+            if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) return false;
+        };
     </script>
 </body>
 </html>
