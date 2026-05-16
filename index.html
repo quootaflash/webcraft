@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" class="scroll-smooth">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Beranda | WriteHub</title>
+    <title>Tentang & Layanan | WriteHub</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -30,11 +30,16 @@
                             DEFAULT: '#221E82', 
                             dark: '#1a174e',
                             light: '#3833a0',
-                            bg: '#F8FAFC'
+                            bg: '#F8FAFC',
+                            accent: '#F59E0B' // Gold accent for professionalism
                         }
                     },
                     fontFamily: {
                         sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'soft': '0 10px 40px -10px rgba(0,0,0,0.08)',
+                        'glow': '0 0 20px rgba(34, 30, 130, 0.3)'
                     }
                 }
             }
@@ -119,11 +124,7 @@
         .tilt-card { transform-style: preserve-3d; transform: perspective(1000px); }
     </style>
 </head>
-<body class="font-sans text-gray-800 antialiased">
-
-    <!-- Cursor Elements -->
-    <div class="cursor-dot"></div>
-    <div class="cursor-outline"></div>
+<body class="font-sans text-gray-800 antialiased selection:bg-brand selection:text-white">
 
     <!-- Mobile Overlay -->
     <div id="sidebar-overlay" class="sidebar-overlay" onclick="closeSidebar()"></div>
@@ -141,6 +142,7 @@
             <!-- Menu List -->
             <ul class="sidebar-menu flex flex-col gap-2 px-4 py-4">
                 <li><a href="#home" class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-brand/5 hover:text-brand transition font-medium group" onclick="closeSidebarMobile()"><i class="fa-solid fa-house w-5 text-center group-hover:scale-110 transition-transform"></i> Beranda</a></li>
+                <li><a href="#about" class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-brand/5 hover:text-brand transition font-medium group" onclick="closeSidebarMobile()"><i class="fa-solid fa-users w-5 text-center group-hover:scale-110 transition-transform"></i> Tentang Kami</a></li>
                 <li><a href="#products" class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-brand/5 hover:text-brand transition font-medium group" onclick="closeSidebarMobile()"><i class="fa-solid fa-layer-group w-5 text-center group-hover:scale-110 transition-transform"></i> Layanan</a></li>
                 <li><a href="#testimoni" class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-brand/5 hover:text-brand transition font-medium group" onclick="closeSidebarMobile()"><i class="fa-solid fa-images w-5 text-center group-hover:scale-110 transition-transform"></i> Bukti</a></li>
                 <li><a href="#tiktok" class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-brand/5 hover:text-brand transition font-medium group" onclick="closeSidebarMobile()"><i class="fa-brands fa-tiktok w-5 text-center group-hover:scale-110 transition-transform"></i> Video Tips</a></li>
@@ -199,6 +201,103 @@
                 </div>
             </section>
 
+            <!-- NEW: ABOUT US SECTION -->
+            <section id="about" class="py-24 bg-white relative overflow-hidden">
+                <div class="absolute -left-20 top-20 w-64 h-64 bg-brand/5 rounded-full blur-3xl"></div>
+                
+                <div class="max-w-7xl mx-auto px-6 relative z-10">
+                    <div class="grid md:grid-cols-2 gap-16 items-center mb-20">
+                        <div data-aos="fade-right">
+                            <h2 class="text-sm font-bold text-brand uppercase tracking-widest mb-2">Tentang WriteHub</h2>
+                            <h3 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-6 leading-tight">
+                                Lebih Dari Sekadar <br>Penulis CV, Kami adalah <br><span class="text-brand">Mentor Karir Anda.</span>
+                            </h3>
+                            <p class="text-gray-600 mb-6 leading-relaxed">
+                                Didirikan pada tahun 2020, WriteHub berawal dari keresahan melihat banyak talenta muda Indonesia yang sebenarnya berpotensi, namun tersandung oleh dokumen lamaran yang kurang representatif.
+                            </p>
+                            <p class="text-gray-600 leading-relaxed">
+                                Kami berdedikasi untuk menjembatani kesenjangan antara <strong>potensi Anda</strong> dan <strong>perusahaan impian</strong>. Dengan tim berisi praktisi HR dan Recruiter dari perusahaan Top (Unicorn & BUMN), kami tahu persis apa yang dicari oleh sistem ATS dan mata manusia.
+                            </p>
+                            
+                            <div class="mt-8 grid grid-cols-2 gap-6">
+                                <div class="flex items-start gap-4">
+                                    <div class="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center text-brand flex-shrink-0">
+                                        <i class="fa-solid fa-bullseye text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-bold text-gray-900">Visi Kami</h4>
+                                        <p class="text-sm text-gray-500 mt-1">Menjadi partner karir terdepan bagi profesional Indonesia.</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start gap-4">
+                                    <div class="w-12 h-12 rounded-xl bg-yellow-50 flex items-center justify-center text-yellow-600 flex-shrink-0">
+                                        <i class="fa-solid fa-handshake text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-bold text-gray-900">Misi Kami</h4>
+                                        <p class="text-sm text-gray-500 mt-1">Membantu 10.000 kandidat mendapat pekerjaan layak setiap tahunnya.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="relative" data-aos="fade-left">
+                            <div class="grid grid-cols-2 gap-4">
+                                <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Team Meeting" class="rounded-2xl shadow-lg w-full h-64 object-cover mt-8">
+                                <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="HR Interview" class="rounded-2xl shadow-lg w-full h-64 object-cover">
+                            </div>
+                            <!-- Floating Card -->
+                            <div class="absolute -bottom-6 -left-6 bg-white p-6 rounded-2xl shadow-xl border border-gray-100 max-w-xs">
+                                <div class="flex items-center gap-4 mb-3">
+                                    <div class="flex -space-x-2">
+                                        <img class="w-10 h-10 rounded-full border-2 border-white" src="https://i.pravatar.cc/100?img=1" alt="User">
+                                        <img class="w-10 h-10 rounded-full border-2 border-white" src="https://i.pravatar.cc/100?img=5" alt="User">
+                                        <img class="w-10 h-10 rounded-full border-2 border-white" src="https://i.pravatar.cc/100?img=8" alt="User">
+                                    </div>
+                                    <div class="text-sm font-bold text-gray-700">Tim Ahli HR</div>
+                                </div>
+                                <div class="text-3xl font-extrabold text-brand">5+ Tahun</div>
+                                <p class="text-xs text-gray-500">Pengalaman rata-rata tim rekrutmen kami.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Trust Indicators -->
+                    <div class="bg-brand-bg rounded-3xl p-8 md:p-12 border border-gray-100" data-aos="fade-up">
+                        <h4 class="text-center font-bold text-gray-900 mb-10 text-lg">Mengapa Perusahaan Memilih Klien Kami?</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-4 gap-8 text-center">
+                            <div class="group">
+                                <div class="w-16 h-16 mx-auto bg-white rounded-full flex items-center justify-center text-brand text-2xl shadow-sm mb-4 group-hover:scale-110 transition">
+                                    <i class="fa-solid fa-robot"></i>
+                                </div>
+                                <h5 class="font-bold text-gray-900 mb-2">ATS Friendly</h5>
+                                <p class="text-xs text-gray-500">Dirancang untuk lolos sistem bot rekrutmen perusahaan.</p>
+                            </div>
+                            <div class="group">
+                                <div class="w-16 h-16 mx-auto bg-white rounded-full flex items-center justify-center text-brand text-2xl shadow-sm mb-4 group-hover:scale-110 transition">
+                                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                                </div>
+                                <h5 class="font-bold text-gray-900 mb-2">Copywriting</h5>
+                                <p class="text-xs text-gray-500">Menggunakan kata-kata persuasif yang menjual skill Anda.</p>
+                            </div>
+                            <div class="group">
+                                <div class="w-16 h-16 mx-auto bg-white rounded-full flex items-center justify-center text-brand text-2xl shadow-sm mb-4 group-hover:scale-110 transition">
+                                    <i class="fa-solid fa-eye"></i>
+                                </div>
+                                <h5 class="font-bold text-gray-900 mb-2">Eye-Catching</h5>
+                                <p class="text-xs text-gray-500">Desain visual profesional yang mudah dibaca recruiter.</p>
+                            </div>
+                            <div class="group">
+                                <div class="w-16 h-16 mx-auto bg-white rounded-full flex items-center justify-center text-brand text-2xl shadow-sm mb-4 group-hover:scale-110 transition">
+                                    <i class="fa-solid fa-file-shield"></i>
+                                </div>
+                                <h5 class="font-bold text-gray-900 mb-2">Data Privacy</h5>
+                                <p class="text-xs text-gray-500">Kerahasiaan data dijamin 100% aman dan terenkripsi.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             <!-- STATS -->
             <section class="py-10 bg-white border-y border-gray-100">
                 <div class="container mx-auto max-w-6xl px-4">
@@ -209,7 +308,8 @@
                         <div class="group cursor-default" data-aos="fade-up" data-aos-delay="300"><h3 class="text-3xl font-extrabold text-brand mb-1 group-hover:scale-110 transition-transform">5x</h3><p class="text-sm text-gray-500 uppercase tracking-wide">More Callbacks</p></div>
                     </div>
                 </div>
-            </section>>
+            </section>
+
             <!-- PRODUK SCROLLABLE (SIDESWIPE) -->
             <section id="products" class="py-24 bg-gray-50">
                 <div class="max-w-7xl mx-auto px-6">
@@ -347,7 +447,7 @@
                 </div>
             </section>
 
-                <!-- NEW: TIKTOK TIPS VIDEO SECTION -->
+            <!-- NEW: TIKTOK TIPS VIDEO SECTION -->
             <section id="tiktok" class="py-24 bg-white">
                 <div class="max-w-7xl mx-auto px-6">
                     <div class="text-center mb-16">
@@ -358,8 +458,8 @@
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
                         <!-- TikTok 1 -->
                         <a href="https://www.tiktok.com/@writehub" target="_blank" class="block group" data-aos="fade-up">
-                            <div class="tiktok-card bg-gray-900 relative">
-                                <img src="https://images.unsplash.com/photo-1587620962725-abab7fe55159?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Tips 1" class="w-full h-full object-cover opacity-80 group-hover:opacity-100">
+                            <div class="tiktok-card bg-gray-900 relative rounded-xl overflow-hidden aspect-[9/16]">
+                                <img src="https://images.unsplash.com/photo-1587620962725-abab7fe55159?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Tips 1" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition duration-500">
                                 <div class="absolute inset-0 flex items-center justify-center">
                                     <div class="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-white border border-white/30 group-hover:scale-110 transition">
                                         <i class="fa-solid fa-play text-xl ml-1"></i>
@@ -373,8 +473,8 @@
 
                         <!-- TikTok 2 -->
                         <a href="https://www.tiktok.com/@writehub" target="_blank" class="block group" data-aos="fade-up" data-aos-delay="100">
-                            <div class="tiktok-card bg-gray-900 relative">
-                                <img src="https://images.unsplash.com/photo-1551836022-d5d88e9218df?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Tips 2" class="w-full h-full object-cover opacity-80 group-hover:opacity-100">
+                            <div class="tiktok-card bg-gray-900 relative rounded-xl overflow-hidden aspect-[9/16]">
+                                <img src="https://images.unsplash.com/photo-1551836022-d5d88e9218df?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Tips 2" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition duration-500">
                                 <div class="absolute inset-0 flex items-center justify-center">
                                     <div class="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-white border border-white/30 group-hover:scale-110 transition">
                                         <i class="fa-solid fa-play text-xl ml-1"></i>
@@ -388,8 +488,8 @@
 
                         <!-- TikTok 3 -->
                         <a href="https://www.tiktok.com/@writehub" target="_blank" class="block group" data-aos="fade-up" data-aos-delay="200">
-                            <div class="tiktok-card bg-gray-900 relative">
-                                <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Tips 3" class="w-full h-full object-cover opacity-80 group-hover:opacity-100">
+                            <div class="tiktok-card bg-gray-900 relative rounded-xl overflow-hidden aspect-[9/16]">
+                                <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Tips 3" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition duration-500">
                                 <div class="absolute inset-0 flex items-center justify-center">
                                     <div class="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-white border border-white/30 group-hover:scale-110 transition">
                                         <i class="fa-solid fa-play text-xl ml-1"></i>
@@ -403,8 +503,8 @@
 
                         <!-- TikTok 4 -->
                         <a href="https://www.tiktok.com/@writehub" target="_blank" class="block group" data-aos="fade-up" data-aos-delay="300">
-                            <div class="tiktok-card bg-gray-900 relative">
-                                <img src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Tips 4" class="w-full h-full object-cover opacity-80 group-hover:opacity-100">
+                            <div class="tiktok-card bg-gray-900 relative rounded-xl overflow-hidden aspect-[9/16]">
+                                <img src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Tips 4" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition duration-500">
                                 <div class="absolute inset-0 flex items-center justify-center">
                                     <div class="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-white border border-white/30 group-hover:scale-110 transition">
                                         <i class="fa-solid fa-play text-xl ml-1"></i>
@@ -537,27 +637,10 @@
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script>
-        // 1. Cursor Follower Effect
-        const cursorDot = document.querySelector('.cursor-dot');
-        const cursorOutline = document.querySelector('.cursor-outline');
-
-        window.addEventListener('mousemove', (e) => {
-            const posX = e.clientX;
-            const posY = e.clientY;
-
-            cursorDot.style.left = `${posX}px`;
-            cursorDot.style.top = `${posY}px`;
-
-            cursorOutline.animate({
-                left: `${posX}px`,
-                top: `${posY}px`,
-            }, { duration: 500, fill: "forwards" });
-        });
-
-        // 2. AOS Init
+        // 1. AOS Init
         AOS.init({ duration: 800, once: true, offset: 50 });
 
-        // 3. Sidebar Logic
+        // 2. Sidebar Logic
         const sidebar = document.getElementById('sidebar');
         const overlay = document.getElementById('sidebar-overlay');
         function toggleSidebar() {
@@ -572,7 +655,7 @@
             if (window.innerWidth < 1024) { closeSidebar(); }
         }
 
-        // 4. Filter Logic
+        // 3. Filter Logic
         const filterBtns = document.querySelectorAll('.filter-btn');
         const productSlides = document.querySelectorAll('.swiper-slide');
 
@@ -591,7 +674,7 @@
                 // Filter Swiper Slides
                 productSlides.forEach(slide => {
                     if (filterValue === 'all' || slide.getAttribute('data-category') === filterValue) {
-                        slide.style.display = 'block'; // Reset display to let swiper handle layout
+                        slide.style.display = 'block'; 
                     } else {
                         slide.style.display = 'none';
                     }
@@ -602,7 +685,7 @@
             });
         });
 
-        // 5. Init Swiper Products (Horizontal Scroll)
+        // 4. Init Swiper Products (Horizontal Scroll)
         const productSwiper = new Swiper('.productSwiper', {
             slidesPerView: 1,
             spaceBetween: 20,
@@ -622,7 +705,7 @@
             }
         });
 
-        // 6. Init Swiper Testimoni (Horizontal Scroll) -->
+        // 5. Init Swiper Testimoni (Horizontal Scroll) -->
         const testimonialSwiper = new Swiper('.testimonialSwiper', {
             slidesPerView: 1.5,
             spaceBetween: 30,
@@ -642,7 +725,7 @@
             }
         });
 
-        // 7. 3D Tilt Effect
+        // 6. 3D Tilt Effect
         const tiltCards = document.querySelectorAll('.tilt-card');
         tiltCards.forEach(card => {
             card.addEventListener('mousemove', (e) => {
@@ -659,7 +742,8 @@
                 card.style.transform = `perspective(1000px) rotateX(0) rotateY(0) scale(1)`;
             });
         });
-    // --- CONTENT PROTECTION ---
+
+        // 7. Content Protection
         document.addEventListener('contextmenu', event => {
             event.preventDefault();
             showToast();
@@ -678,9 +762,10 @@
 
         function showToast() {
             const toast = document.getElementById("protection-toast");
-            toast.style.visibility = "visible";
-            setTimeout(() => { toast.style.visibility = "hidden"; }, 2000);
+            // Simplified toast logic for this snippet
+            alert("Konten dilindungi hak cipta.");
         }
+
         // 8. Back To Top Button Logic
         const backToTop = document.getElementById('backToTop');
         window.addEventListener('scroll', () => {
