@@ -624,18 +624,12 @@
         
         .qris-actions {
             display: flex; gap: 10px;
+            justify-content: center;
         }
-        .btn-download {
-            background: var(--primary); color: white; padding: 12px;
-            border-radius: 12px; font-weight: 600; cursor: pointer; flex: 1;
-            display: flex; align-items: center; justify-content: center; gap: 8px;
-            transition: 0.2s;
-        }
-        .btn-download:hover { background: var(--primary-dark); }
-        
+        /* Tombol Download Dihapus, hanya sisakan tombol close */
         .btn-close-qris {
-            background: var(--bg-body); color: var(--text-main); padding: 12px;
-            border-radius: 12px; font-weight: 600; cursor: pointer; flex: 1;
+            background: var(--bg-body); color: var(--text-main); padding: 12px 24px;
+            border-radius: 12px; font-weight: 600; cursor: pointer;
             transition: 0.2s; border: 1px solid var(--border);
         }
         .btn-close-qris:hover { background: #e2e8f0; }
@@ -714,13 +708,9 @@
             <div class="slider-dots" id="sliderDots"></div>
         </section>
 
-        <!-- Filter Bar -->
-        <div class="filter-bar">
-            <div class="filter-chip active" onclick="setCategory('all', this)">Semua</div>
-            <div class="filter-chip" onclick="setCategory('Creative', this)">Creative</div>
-            <div class="filter-chip" onclick="setCategory('Formal', this)">Formal</div>
-            <div class="filter-chip" onclick="setCategory('Tech', this)">Tech</div>
-            <div class="filter-chip" onclick="setCategory('Simple', this)">Minimalis</div>
+        <!-- Filter Bar (Dinamis dari DB) -->
+        <div class="filter-bar" id="filterBar">
+            <!-- Chip akan digenerate oleh JS -->
         </div>
 
         <!-- Product Grid -->
@@ -851,7 +841,7 @@
         </div>
     </div>
 
-    <!-- POPUP QRIS (UPDATED) -->
+    <!-- POPUP QRIS (UPDATED - TANPA DOWNLOAD) -->
     <div class="qris-modal-overlay" id="qrisModal">
         <div class="qris-modal-content">
             <div class="qris-modal-title">Scan QRIS</div>
@@ -872,9 +862,7 @@
             </div>
             
             <div class="qris-actions">
-                <button class="btn-download" onclick="downloadQris()">
-                    <i class="fas fa-download"></i> Download
-                </button>
+                <!-- Tombol Download Dihapus -->
                 <button class="btn-close-qris" onclick="closeQrisModal()">Tutup</button>
             </div>
         </div>
@@ -1005,34 +993,7 @@
             });
         };
 
-        // Fitur Download QRIS
-        window.downloadQris = function() {
-            const imgSrc = document.getElementById('qrisDisplayImage').src;
-            if (!imgSrc) return;
-
-            // Cek apakah URL asing (CORS issue handling sederhana)
-            fetch(imgSrc)
-                .then(response => response.blob())
-                .then(blob => {
-                    const url = window.URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.style.display = 'none';
-                    a.href = url;
-                    // Nama file: QRIS-Tanggal-Jam.png
-                    const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-                    a.download = `QRIS-Payment-${timestamp}.png`;
-                    document.body.appendChild(a);
-                    a.click();
-                    window.URL.revokeObjectURL(url);
-                    showToast('QRIS berhasil diunduh!', 'success');
-                })
-                .catch(() => {
-                    // Fallback jika CORS memblokir fetch (misal gambar dari wikipedia tanpa proxy)
-                    // Buka di tab baru agar user bisa save manual
-                    window.open(imgSrc, '_blank');
-                    showToast('Gambar dibuka di tab baru. Silakan simpan manual.', 'success');
-                });
-        };
+        // Fitur Download QRIS DIHAPUS
 
         // Tutup modal jika klik di luar area konten
         document.getElementById('qrisModal').addEventListener('click', (e) => {
@@ -1061,6 +1022,35 @@
                 sold_count: keys.find(k => k.toLowerCase().includes('terjual') || k.toLowerCase().includes('sold')) || 'sold_count'
             };
             fields = map;
+        }
+
+        // --- RENDER CATEGORIES (DYNAMIC) ---
+        function renderCategories() {
+            const container = document.getElementById('filterBar');
+            container.innerHTML = ''; // Bersihkan
+
+            // 1. Tombol "Semua" (All)
+            const allChip = document.createElement('div');
+            allChip.className = 'filter-chip active';
+            allChip.innerText = 'Semua';
+            allChip.onclick = function() { setCategory('all', this); };
+            container.appendChild(allChip);
+
+            // 2. Ambil kategori unik dari data produk
+            const categories = [...new Set(products.map(p => getField(p, 'category')))];
+            
+            // 3. Urutkan secara alfabetis
+            categories.sort();
+
+            // 4. Buat tombol untuk setiap kategori
+            categories.forEach(cat => {
+                if(!cat) return; // Skip jika kategori kosong
+                const chip = document.createElement('div');
+                chip.className = 'filter-chip';
+                chip.innerText = cat;
+                chip.onclick = function() { setCategory(cat, this); };
+                container.appendChild(chip);
+            });
         }
 
         // --- FETCH FUNCTIONS ---
@@ -1112,6 +1102,10 @@
                 await new Promise(r => setTimeout(r, 800));
                 products = dummyData;
             }
+            
+            // Panggil renderCategories setelah data produk dimuat
+            renderCategories();
+            
             filterLogic();
         }
 
@@ -1492,7 +1486,7 @@
             await fetchAdminNumbers(); 
             await fetchCoverLetterPrice();
             await fetchPaymentMethods(); 
-            await fetchProducts();
+            await fetchProducts(); // Ini akan memanggil renderCategories
             await fetchAd();
             renderProducts();
         }
