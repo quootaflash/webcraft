@@ -953,10 +953,10 @@
 
         // --- DATA DUMMY ---
         const dummyData = [
-            { id: 1, title: "Modern Creative Portfolio", category: "Creative", price: 50000, original_price: 75000, sold_count: 120, description: "Template dengan layout asimetris yang modern. Cocok untuk desainer, arsitek, dan profesional kreatif.\n\nFitur Utama:\n- Format PDF & Word\n- Mudah diedit\n- Font gratis included", image: "https://picsum.photos/seed/clean1/600/600", images: ["https://picsum.photos/seed/clean1/600/600", "https://picsum.photos/seed/clean1b/600/600", "https://picsum.photos/seed/clean1c/600/600"] },
-            { id: 2, title: "Executive Formal Blue", category: "Formal", price: 75000, original_price: null, sold_count: 85, description: "Struktur profesional untuk level manajerial. Memberikan kesan serius dan terpercaya.\n\nWarna biru navy yang elegan.", image: "https://picsum.photos/seed/clean2/600/600", images: ["https://picsum.photos/seed/clean2/600/600", "https://picsum.photos/seed/clean2b/600/600"] },
-            { id: 3, title: "Developer Dark Mode", category: "Tech", price: 90000, original_price: 120000, sold_count: 200, description: "Tema gelap elegan untuk programmer. High contrast untuk keterbacaan maksimal.", image: "https://picsum.photos/seed/clean3/600/600", images: ["https://picsum.photos/seed/clean3/600/600"] },
-            { id: 4, title: "Clean Minimalist", category: "Simple", price: 35000, original_price: null, sold_count: 500, description: "Fokus pada konten tanpa gangguan visual. Pilihan terbaik untuk fresh graduate.", image: "https://picsum.photos/seed/clean4/600/600", images: ["https://picsum.photos/seed/clean4/600/600", "https://picsum.photos/seed/clean4b/600/600", "https://picsum.photos/seed/clean4c/600/600"] }
+            { id: 1, title: "Modern Creative Portfolio", category: "Creative", price: 50000, original_price: 75000, sold_count: 120, description: "Template dengan layout asimetris yang modern. Cocok untuk desainer, arsitek, dan profesional kreatif.\n\nFitur Utama:\n- Format PDF & Word\n- Mudah diedit\n- Font gratis included", image: "https://picsum.photos/seed/clean1/600/600", images: ["https://picsum.photos/seed/clean1/600/600", "https://picsum.photos/seed/clean1b/600/600", "https://picsum.photos/seed/clean1c/600/600"], cover_letter_price: 25000, allow_addon: true },
+            { id: 2, title: "Executive Formal Blue", category: "Formal", price: 75000, original_price: null, sold_count: 85, description: "Struktur profesional untuk level manajerial. Memberikan kesan serius dan terpercaya.\n\nWarna biru navy yang elegan.", image: "https://picsum.photos/seed/clean2/600/600", images: ["https://picsum.photos/seed/clean2/600/600", "https://picsum.photos/seed/clean2b/600/600"], cover_letter_price: null, allow_addon: true }, // Harga null = Addon disembunyikan
+            { id: 3, title: "Developer Dark Mode", category: "Tech", price: 90000, original_price: 120000, sold_count: 200, description: "Tema gelap elegan untuk programmer. High contrast untuk keterbacaan maksimal.", image: "https://picsum.photos/seed/clean3/600/600", images: ["https://picsum.photos/seed/clean3/600/600"], allow_addon: false },
+            { id: 4, title: "Clean Minimalist", category: "Simple", price: 35000, original_price: null, sold_count: 500, description: "Fokus pada konten tanpa gangguan visual. Pilihan terbaik untuk fresh graduate.", image: "https://picsum.photos/seed/clean4/600/600", images: ["https://picsum.photos/seed/clean4/600/600", "https://picsum.photos/seed/clean4b/600/600", "https://picsum.photos/seed/clean4c/600/600"], cover_letter_price: 10000, allow_addon: true }
         ];
 
         // --- DATA PEMBAYARAN DUMMY (Jika DB Gagal) ---
@@ -1441,9 +1441,10 @@
             // Kolom DB: allow_addon (boolean). Jika null/true, izinkan.
             const allowAddon = getField(currentProduct, 'allow_addon');
             
-            if (allowAddon === false || allowAddon === 'false') {
+            // LOGIC UPDATE: Sembunyikan jika allow_addon false ATAU customPrice NULL
+            if (allowAddon === false || allowAddon === 'false' || getField(currentProduct, 'cover_letter_price') === null) {
                 addonSection.style.display = 'none';
-                toggleSwitch.checked = false;
+                toggleSwitch.checked = false; // Reset toggle
             } else {
                 addonSection.style.display = 'block';
                 // Cek harga custom per produk
