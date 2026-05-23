@@ -41,7 +41,7 @@
             line-height: 1.5;
             -webkit-font-smoothing: antialiased;
             overflow-x: hidden;
-            padding-bottom: 80px; /* Space for mobile nav if needed */
+            padding-bottom: 80px;
         }
 
         a { text-decoration: none; color: inherit; transition: var(--transition); }
@@ -471,7 +471,7 @@
 
         .payment-header {
             display: flex;
-            align-items: center;
+            align-items: center,
             gap: 10px;
             margin-bottom: 24px;
             padding-bottom: 16px;
@@ -559,10 +559,52 @@
         
         .mt-auto { margin-top: auto; }
 
+        /* --- QRIS POPUP MODAL (NEW) --- */
+        .qris-modal-overlay {
+            position: fixed; inset: 0; background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(5px);
+            z-index: 2000; display: flex; align-items: center; justify-content: center;
+            opacity: 0; pointer-events: none; transition: 0.3s; padding: 16px;
+        }
+        .qris-modal-overlay.active { opacity: 1; pointer-events: all; }
+
+        .qris-modal-content {
+            background: white; width: 100%; max-width: 400px; border-radius: 20px;
+            padding: 30px 20px; text-align: center;
+            box-shadow: var(--shadow-lg); transform: scale(0.9); transition: 0.3s; position: relative;
+        }
+        .qris-modal-overlay.active .qris-modal-content { transform: scale(1); }
+
+        .qris-modal-title {
+            font-size: 1.2rem; font-weight: 700; color: var(--text-main); margin-bottom: 20px;
+        }
+        .qris-modal-image-wrapper {
+            background: #fff;
+            padding: 10px;
+            border: 2px dashed var(--border);
+            border-radius: 12px;
+            margin-bottom: 20px;
+            display: flex; justify-content: center;
+        }
+        .qris-modal-image-wrapper img {
+            width: 200px; height: 200px; object-fit: contain;
+        }
+        .qris-modal-total {
+            font-size: 1.5rem; font-weight: 800; color: var(--danger); margin-bottom: 10px;
+        }
+        .qris-modal-desc {
+            font-size: 0.9rem; color: var(--text-muted); margin-bottom: 24px;
+        }
+        .btn-close-qris {
+            background: var(--bg-body); color: var(--text-main); padding: 12px 24px;
+            border-radius: 50px; font-weight: 600; cursor: pointer; width: 100%;
+            transition: 0.2s; border: 1px solid var(--border);
+        }
+        .btn-close-qris:hover { background: #e2e8f0; }
+
         /* --- TOAST NOTIFICATION --- */
         .toast-container {
             position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
-            z-index: 2000; display: flex; flex-direction: column; gap: 10px;
+            z-index: 3000; display: flex; flex-direction: column; gap: 10px;
             pointer-events: none; width: 90%; max-width: 400px;
         }
         .toast {
@@ -770,6 +812,19 @@
         </div>
     </div>
 
+    <!-- POPUP QRIS (NEW) -->
+    <div class="qris-modal-overlay" id="qrisModal">
+        <div class="qris-modal-content">
+            <div class="qris-modal-title">Scan QRIS</div>
+            <div class="qris-modal-image-wrapper">
+                <img id="qrisDisplayImage" src="" alt="QRIS Code">
+            </div>
+            <div class="qris-modal-total" id="qrisDisplayTotal">Rp 0</div>
+            <div class="qris-modal-desc">Nominal Unik ini untuk verifikasi otomatis.</div>
+            <button class="btn-close-qris" onclick="closeQrisModal()">Tutup</button>
+        </div>
+    </div>
+
     <!-- POPUP IKLAN -->
     <div class="ad-popup" id="adPopup">
         <div class="ad-close" onclick="closeAd()"><i class="fas fa-times"></i></div>
@@ -821,12 +876,11 @@
         ];
 
         // --- DATA PEMBAYARAN DUMMY (Jika DB Gagal) ---
-        // Menambahkan QRIS dan Logo Bank Placeholder
         const dummyPaymentMethods = [
             { id: 1, type: 'bank', bank_name: "BCA", account_number: "1234567890", owner_name: "WriteHub Admin", logo: "https://placehold.co/100x50/FFFFFF/0056b3?text=BCA&font=roboto" },
             { id: 2, type: 'bank', bank_name: "MANDIRI", account_number: "0987654321", owner_name: "WriteHub Admin", logo: "https://placehold.co/100x50/FFFFFF/003d79?text=MANDIRI&font=roboto" },
             { id: 3, type: 'bank', bank_name: "BRI", account_number: "1122334455", owner_name: "WriteHub Official", logo: "https://placehold.co/100x50/FFFFFF/1a3b7c?text=BRI&font=roboto" },
-            { id: 4, type: 'qris', bank_name: "QRIS", account_number: "N/A", owner_name: "WriteHub", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Logo_QRIS.svg/1200px-Logo_QRIS.svg.png" } // Contoh QRIS
+            { id: 4, type: 'qris', bank_name: "QRIS", account_number: "N/A", owner_name: "WriteHub", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Logo_QRIS.svg/1200px-Logo_QRIS.svg.png" }
         ];
 
         let products = [];
@@ -835,7 +889,7 @@
         let coverLetterPrice = DEFAULT_COVER_PRICE;
         let paymentMethods = [];
         let adminNumbersList = [];
-        let currentUniqueTotal = 0; // Menyimpan total nominal unik saat ini
+        let currentUniqueTotal = 0; 
 
         // Mapping Fields
         let fields = {
@@ -849,22 +903,38 @@
             const container = document.getElementById('toastContainer');
             const toast = document.createElement('div');
             toast.className = `toast ${type}`;
-            
             let icon = type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle';
-            
             toast.innerHTML = `
                 <i class="fas ${icon}"></i>
                 <div class="toast-message">${message}</div>
             `;
-            
             container.appendChild(toast);
-
-            // Hapus otomatis setelah 3 detik
             setTimeout(() => {
                 toast.style.animation = 'fadeOut 0.3s ease-in forwards';
                 setTimeout(() => toast.remove(), 300);
             }, 3000);
         }
+
+        // --- QRIS MODAL FUNCTIONS (NEW) ---
+        window.openQrisModal = function(imageUrl) {
+            const modal = document.getElementById('qrisModal');
+            const img = document.getElementById('qrisDisplayImage');
+            const totalText = document.getElementById('qrisDisplayTotal');
+            
+            img.src = imageUrl;
+            totalText.innerText = formatRupiah(currentUniqueTotal);
+            
+            modal.classList.add('active');
+        };
+
+        window.closeQrisModal = function() {
+            document.getElementById('qrisModal').classList.remove('active');
+        };
+
+        // Tutup modal jika klik di luar area konten
+        document.getElementById('qrisModal').addEventListener('click', (e) => {
+            if(e.target.id === 'qrisModal') closeQrisModal();
+        });
 
         // --- HELPERS ---
         const formatRupiah = (num) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(num);
@@ -1008,6 +1078,7 @@
                     
                     const qrisImg = method.image || "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Logo_QRIS.svg/1200px-Logo_QRIS.svg.png";
                     
+                    // PERUBAHAN DI SINI: Tombol Scan sekarang memanggil openQrisModal
                     div.innerHTML = `
                         <div style="display:flex; justify-content:space-between; width:100%; margin-bottom:12px;">
                             <div class="bank-info">
@@ -1016,22 +1087,19 @@
                         </div>
                         <div style="display:flex; align-items:center; justify-content:space-between; width:100%;">
                             <img src="${qrisImg}" class="qris-img" alt="QRIS">
-                            <button class="btn-copy" onclick="copyToClipboard('Scan QRIS di atas')">
+                            <button class="btn-copy" onclick="openQrisModal('${qrisImg}')">
                                 <i class="fas fa-expand"></i> Scan
                             </button>
                         </div>
                     `;
                 } else {
                     div.className = 'payment-option-card';
-                    // Mapping kolom database
                     const bank = method.bank_name || method.nama_bank || 'Bank';
                     const number = method.account_number || method.no_rekening || '---';
                     const owner = method.owner_name || method.atas_nama || '---';
                     
-                    // Generate Logo URL jika tidak ada di database (menggunakan placeholder)
                     let logoUrl = method.logo;
                     if (!logoUrl) {
-                         // Menggunakan layanan placeholder teks agar selalu ada logo nama bank
                          const cleanName = encodeURIComponent(bank);
                          logoUrl = `https://placehold.co/100x50/f8f9fa/333333?text=${cleanName}&font=roboto`;
                     }
@@ -1056,7 +1124,6 @@
 
         window.copyToClipboard = function(text) {
             navigator.clipboard.writeText(text).then(() => {
-                // Menggunakan Custom Toast
                 if(text === 'Scan QRIS di atas') {
                     showToast('Silakan scan QRIS pada gambar.', 'success');
                 } else {
@@ -1196,19 +1263,13 @@
         const btnGotoPayment = document.getElementById('btn-goto-payment');
 
         btnGotoPayment.onclick = function() {
-            // 1. Hitung Harga Dasar
             const basePrice = Number(getField(currentProduct, 'price'));
             const isAddOn = toggleSwitch.checked;
-            
-            // 2. Generate Kode Unik (1 - 499)
             const uniqueCode = Math.floor(Math.random() * 499) + 1;
-            
-            // 3. Hitung Total Akhir
             const finalPrice = isAddOn ? (basePrice + coverLetterPrice) : basePrice;
             const totalWithUnique = finalPrice + uniqueCode;
-            currentUniqueTotal = totalWithUnique; // Simpan untuk WA
+            currentUniqueTotal = totalWithUnique; 
             
-            // 4. Populate Data UI
             document.getElementById('p-product-name').innerText = getField(currentProduct, 'title');
             document.getElementById('p-unit-price').innerText = formatRupiah(basePrice);
             
@@ -1220,16 +1281,12 @@
                 addonRow.style.display = 'none';
             }
             
-            // 5. Tampilkan Total dengan Warna Merah/Oranye agar mencolok
             const totalEl = document.getElementById('p-total-price');
             totalEl.innerText = formatRupiah(totalWithUnique);
-            totalEl.style.color = 'var(--danger)'; // Merah untuk perhatian
+            totalEl.style.color = 'var(--danger)'; 
 
-            // Switch View
             productView.style.display = 'none';
             paymentView.classList.add('active');
-            
-            // 6. Tampilkan Toast Peringatan Tambahan
             showToast(`Kode unik Rp ${uniqueCode} ditambahkan untuk verifikasi.`, 'success');
         };
 
@@ -1314,10 +1371,7 @@
 
             message += `\n\nSaya sudah transfer sesuai nominal unik. Mohon segera diproses ya Min.`;
 
-            // Rotasi Nomor Admin
             const adminNumber = getRotatedAdminNumber();
-            
-            // Direct ke WhatsApp
             const waLink = `https://wa.me/${adminNumber}?text=${encodeURIComponent(message)}`;
             
             showToast('Mengalihkan ke WhatsApp...', 'success');
