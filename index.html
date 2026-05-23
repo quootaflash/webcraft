@@ -857,7 +857,7 @@
             <div class="qris-modal-title">Scan QRIS</div>
             
             <div class="qris-modal-image-wrapper">
-                <img id="qrisDisplayImage" src="" alt="QRIS Code">
+                <img id="qrisDisplayImage" src="" alt="QRIS Code" crossorigin="anonymous">
             </div>
 
             <!-- Area Harga (Bisa Diklik untuk Copy) -->
@@ -1005,33 +1005,61 @@
             });
         };
 
-        // Fitur Download QRIS
+        // Fitur Download QRIS (FIXED: Force Download via Base64)
         window.downloadQris = function() {
             const imgSrc = document.getElementById('qrisDisplayImage').src;
             if (!imgSrc) return;
 
-            // Cek apakah URL asing (CORS issue handling sederhana)
-            fetch(imgSrc)
-                .then(response => response.blob())
-                .then(blob => {
-                    const url = window.URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.style.display = 'none';
-                    a.href = url;
-                    // Nama file: QRIS-Tanggal-Jam.png
+            showToast('Sedang memproses gambar...', 'success');
+
+            // Membuat gambar sementara untuk di-convert ke Base64
+            const img = new Image();
+            img.crossOrigin = "Anonymous"; // Penting untuk CORS
+            
+            img.onload = function() {
+                const canvas = document.createElement('canvas');
+                canvas.width = img.width;
+                canvas.height = img.height;
+                const ctx = canvas.getContext('2d');
+                
+                // Menggambar background putih (transparan jadi putih)
+                ctx.fillStyle = "#ffffff";
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                // Menggambar gambar QRIS di atas canvas
+                ctx.drawImage(img, 0, 0);
+                
+                try {
+                    // Konversi canvas ke Data URL (Base64 PNG)
+                    const dataUrl = canvas.toDataURL('image/png');
+                    
+                    // Membuat link download virtual
+                    const link = document.createElement('a');
+                    link.href = dataUrl;
+                    
+                    // Nama file dengan timestamp
                     const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-                    a.download = `QRIS-Payment-${timestamp}.png`;
-                    document.body.appendChild(a);
-                    a.click();
-                    window.URL.revokeObjectURL(url);
-                    showToast('QRIS berhasil diunduh!', 'success');
-                })
-                .catch(() => {
-                    // Fallback jika CORS memblokir fetch (misal gambar dari wikipedia tanpa proxy)
-                    // Buka di tab baru agar user bisa save manual
-                    window.open(imgSrc, '_blank');
-                    showToast('Gambar dibuka di tab baru. Silakan simpan manual.', 'success');
-                });
+                    link.download = `QRIS-Payment-${timestamp}.png`;
+                    
+                    // Trigger download
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    
+                    showToast('QRIS berhasil diunduh ke HP!', 'success');
+                } catch (e) {
+                    console.error(e);
+                    showToast('Gagal mengunduh otomatis.', 'error');
+                }
+            };
+
+            img.onerror = function() {
+                // Jika gambar gagal dimuat (misal CORS ketat), buka di tab baru
+                window.open(imgSrc, '_blank');
+                showToast('Gambar dibuka di tab baru. Silakan simpan manual.', 'success');
+            };
+
+            img.src = imgSrc;
         };
 
         // Tutup modal jika klik di luar area konten
