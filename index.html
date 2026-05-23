@@ -28,6 +28,8 @@
             --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
             --radius: 16px;
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --danger: #ef4444;
+            --success: #10b981;
         }
 
         /* --- RESET --- */
@@ -39,6 +41,7 @@
             line-height: 1.5;
             -webkit-font-smoothing: antialiased;
             overflow-x: hidden;
+            padding-bottom: 80px; /* Space for mobile nav if needed */
         }
 
         a { text-decoration: none; color: inherit; transition: var(--transition); }
@@ -373,15 +376,14 @@
             color: var(--primary);
         }
 
-        /* Deskripsi Dinamis */
         .modal-desc { 
             color: var(--text-muted); 
             font-size: 0.95rem; 
             line-height: 1.6; 
-            flex-grow: 1; /* Ini membuat deskripsi memenuhi sisa ruang */
+            flex-grow: 1; 
             overflow-y: auto; 
             margin-bottom: 16px;
-            white-space: pre-wrap; /* Menjaga format paragraf */
+            white-space: pre-wrap; 
         }
         
         /* --- ADDON: COVER LETTER SWITCH --- */
@@ -454,7 +456,7 @@
         }
         .btn-close:hover { background: var(--bg-body); }
 
-        /* --- MODAL STAGE 2: PAYMENT DETAIL (Hidden by default) --- */
+        /* --- MODAL STAGE 2: PAYMENT DETAIL --- */
         .payment-view {
             display: none;
             padding: 30px 24px;
@@ -495,25 +497,55 @@
             margin-bottom: 0;
         }
 
+        /* Alert Unique Amount */
+        .unique-amount-alert {
+            background: #fff7ed;
+            border: 1px solid #ffedd5;
+            color: #c2410c;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            margin-bottom: 20px;
+            display: flex;
+            gap: 10px;
+            align-items: start;
+        }
+        .unique-amount-alert i { margin-top: 3px; }
+        .unique-amount-alert strong { color: #ea580c; }
+
         .payment-methods {
             display: flex; flex-direction: column; gap: 12px; margin-bottom: 24px;
         }
-        .bank-card {
+        
+        /* Card for Bank/QRIS */
+        .payment-option-card {
             border: 1px solid var(--border); border-radius: 12px; padding: 16px;
             display: flex; justify-content: space-between; align-items: center;
             background: white; transition: 0.2s;
         }
-        .bank-card:hover { border-color: var(--primary); box-shadow: var(--shadow-sm); }
+        .payment-option-card:hover { border-color: var(--primary); box-shadow: var(--shadow-sm); }
         
-        .bank-info h4 { font-size: 1rem; margin-bottom: 4px; display: flex; align-items: center; gap: 8px; }
+        /* Logos & QRIS Styles */
+        .bank-info { display: flex; align-items: center; gap: 12px; }
+        .bank-logo-img {
+            width: 60px; height: auto; max-height: 30px; object-fit: contain;
+        }
+        .qris-img {
+            width: 80px; height: 80px; border-radius: 8px; border: 1px solid #eee;
+        }
+        .qris-container {
+            display: flex; align-items: center; gap: 16px;
+        }
+
+        .bank-details h4 { font-size: 0.95rem; margin-bottom: 2px; display: flex; align-items: center; gap: 8px; color: #333; }
         .bank-number { font-family: monospace; font-size: 1.1rem; letter-spacing: 1px; color: var(--text-main); font-weight: 600; }
-        .bank-name { font-size: 0.85rem; color: var(--text-muted); }
+        .bank-name { font-size: 0.75rem; color: var(--text-muted); }
 
         .btn-copy {
             background: var(--bg-body); border: 1px solid var(--border);
             padding: 8px 12px; border-radius: 8px; cursor: pointer;
             font-size: 0.8rem; color: var(--primary); display: flex; align-items: center; gap: 6px;
-            transition: 0.2s;
+            transition: 0.2s; flex-shrink: 0;
         }
         .btn-copy:hover { background: var(--primary-light); border-color: var(--primary); }
 
@@ -526,6 +558,29 @@
         .btn-confirm-wa:hover { background: #1ebc57; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3); }
         
         .mt-auto { margin-top: auto; }
+
+        /* --- TOAST NOTIFICATION --- */
+        .toast-container {
+            position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+            z-index: 2000; display: flex; flex-direction: column; gap: 10px;
+            pointer-events: none; width: 90%; max-width: 400px;
+        }
+        .toast {
+            background: white; color: var(--text-main);
+            padding: 12px 16px; border-radius: 10px;
+            box-shadow: var(--shadow-lg); border-left: 4px solid var(--primary);
+            display: flex; align-items: center; gap: 12px;
+            animation: slideDown 0.3s ease-out forwards; opacity: 0; transform: translateY(-20px);
+            pointer-events: all;
+        }
+        .toast.success { border-left-color: var(--success); }
+        .toast.error { border-left-color: var(--danger); }
+        .toast i { font-size: 1.2rem; }
+        .toast.success i { color: var(--success); }
+        .toast.error i { color: var(--danger); }
+        
+        @keyframes slideDown { to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeOut { to { opacity: 0; transform: translateY(-10px); } }
 
         /* --- AD POPUP --- */
         .ad-popup {
@@ -544,12 +599,14 @@
 
         footer { border-top: 1px solid var(--border); padding: 30px 0; margin-top: 40px; text-align: center; color: var(--text-muted); font-size: 0.85rem; background: white; }
 
-        /* Hide Scrollbar for modal body but allow scroll */
         .modal-info::-webkit-scrollbar, .payment-view::-webkit-scrollbar { width: 6px; }
         .modal-info::-webkit-scrollbar-thumb, .payment-view::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
     </style>
 </head>
 <body oncontextmenu="return false;">
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
 
     <!-- Header -->
     <header>
@@ -651,7 +708,6 @@
                         </div>
                     </div>
 
-                    <!-- Deskripsi Dinamis: Flex-grow 1 -->
                     <p id="m-desc" class="modal-desc">Description here...</p>
                     
                     <div style="margin-bottom: 20px; font-size: 0.9rem; color: var(--text-muted); flex-shrink: 0;">
@@ -671,6 +727,14 @@
                     <h3 style="margin:0; font-size:1.1rem; font-weight:700;">Detail Pembayaran</h3>
                 </div>
 
+                <!-- ALERT NOMINAL UNIK -->
+                <div class="unique-amount-alert">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <div>
+                        <strong>PENTING:</strong> Mohon transfer sesuai <strong>Total Nominal Unik</strong> di bawah ini (termasuk 3 digit terakhir) untuk verifikasi otomatis dan mencegah penipuan.
+                    </div>
+                </div>
+
                 <div class="summary-card">
                     <div class="summary-row">
                         <span>Produk</span>
@@ -685,23 +749,20 @@
                         <span id="p-addon-price">Rp 0</span>
                     </div>
                     <div class="summary-row total">
-                        <span>Total Bayar</span>
-                        <span id="p-total-price" style="color:var(--primary);">Rp 0</span>
+                        <span>Total Bayar (Unik)</span>
+                        <span id="p-total-price" style="color:var(--danger);">Rp 0</span>
                     </div>
                 </div>
 
-                <h4 style="margin-bottom:12px; font-size:0.9rem; font-weight:600; color:var(--text-muted);">Pilih Metode Pembayaran</h4>
+                <h4 style="margin-bottom:12px; font-size:0.9rem; font-weight:600; color:var(--text-muted);">Metode Pembayaran</h4>
                 <div class="payment-methods" id="paymentMethodsList">
-                    <!-- Rekening akan di-inject JS di sini -->
-                    <div style="text-align:center; color:var(--text-muted); padding:20px;">Memuat rekening...</div>
+                    <!-- Rekening & QRIS di-inject JS di sini -->
+                    <div style="text-align:center; color:var(--text-muted); padding:20px;">Memuat metode pembayaran...</div>
                 </div>
 
                 <div class="mt-auto">
-                    <p style="font-size:0.8rem; color:var(--text-muted); text-align:center; margin-bottom:12px;">
-                        <i class="fas fa-info-circle"></i> Transfer sesuai total, lalu konfirmasi via WhatsApp
-                    </p>
                     <button id="btn-confirm-whatsapp" class="btn-confirm-wa">
-                        <i class="fab fa-whatsapp" style="font-size:1.2rem;"></i> Konfirmasi Pembayaran
+                        <i class="fab fa-whatsapp" style="font-size:1.2rem;"></i> Lanjutkan ke WhatsApp
                     </button>
                 </div>
             </div>
@@ -760,10 +821,12 @@
         ];
 
         // --- DATA PEMBAYARAN DUMMY (Jika DB Gagal) ---
+        // Menambahkan QRIS dan Logo Bank Placeholder
         const dummyPaymentMethods = [
-            { id: 1, bank_name: "BCA", account_number: "1234567890", owner_name: "WriteHub Admin" },
-            { id: 2, bank_name: "DANA", account_number: "08123456789", owner_name: "WriteHub Official" },
-            { id: 3, bank_name: "ShopeePay", account_number: "08123456789", owner_name: "WriteHub Official" }
+            { id: 1, type: 'bank', bank_name: "BCA", account_number: "1234567890", owner_name: "WriteHub Admin", logo: "https://placehold.co/100x50/FFFFFF/0056b3?text=BCA&font=roboto" },
+            { id: 2, type: 'bank', bank_name: "MANDIRI", account_number: "0987654321", owner_name: "WriteHub Admin", logo: "https://placehold.co/100x50/FFFFFF/003d79?text=MANDIRI&font=roboto" },
+            { id: 3, type: 'bank', bank_name: "BRI", account_number: "1122334455", owner_name: "WriteHub Official", logo: "https://placehold.co/100x50/FFFFFF/1a3b7c?text=BRI&font=roboto" },
+            { id: 4, type: 'qris', bank_name: "QRIS", account_number: "N/A", owner_name: "WriteHub", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Logo_QRIS.svg/1200px-Logo_QRIS.svg.png" } // Contoh QRIS
         ];
 
         let products = [];
@@ -772,6 +835,7 @@
         let coverLetterPrice = DEFAULT_COVER_PRICE;
         let paymentMethods = [];
         let adminNumbersList = [];
+        let currentUniqueTotal = 0; // Menyimpan total nominal unik saat ini
 
         // Mapping Fields
         let fields = {
@@ -779,6 +843,28 @@
             image: 'image', images: 'images', category: 'category',
             description: 'description', sold_count: 'sold_count'
         };
+
+        // --- CUSTOM ALERT (TOAST) ---
+        window.showToast = function(message, type = 'success') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            
+            let icon = type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle';
+            
+            toast.innerHTML = `
+                <i class="fas ${icon}"></i>
+                <div class="toast-message">${message}</div>
+            `;
+            
+            container.appendChild(toast);
+
+            // Hapus otomatis setelah 3 detik
+            setTimeout(() => {
+                toast.style.animation = 'fadeOut 0.3s ease-in forwards';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
 
         // --- HELPERS ---
         const formatRupiah = (num) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(num);
@@ -826,12 +912,10 @@
 
         async function fetchPaymentMethods() {
             if (useSupabase) {
-                // Asumsi tabel 'payment' dengan kolom: bank_name, account_number, owner_name
                 const { data, error } = await supabase.from('payment').select('*');
                 if (data && data.length > 0) {
                     paymentMethods = data;
                 } else {
-                    console.warn("Tabel payment kosong/error, gunakan dummy.");
                     paymentMethods = dummyPaymentMethods;
                 }
             } else {
@@ -913,54 +997,80 @@
             
             paymentMethods.forEach(method => {
                 const div = document.createElement('div');
-                div.className = 'bank-card';
-                // Mapping kolom database (bank_name, account_number, owner_name)
-                // Support Indonesian column names too
-                const bank = method.bank_name || method.nama_bank || 'Bank';
-                const number = method.account_number || method.no_rekening || '---';
-                const owner = method.owner_name || method.atas_nama || '---';
-                const iconClass = getBankIcon(bank);
+                
+                // Cek tipe metode (Bank atau QRIS)
+                const isQRIS = (method.bank_name || '').toLowerCase().includes('qris') || method.type === 'qris';
 
-                div.innerHTML = `
-                    <div class="bank-info">
-                        <h4><i class="${iconClass}" style="color:#333;"></i> ${bank}</h4>
-                        <div class="bank-number">${number}</div>
-                        <div class="bank-name">a.n ${owner}</div>
-                    </div>
-                    <button class="btn-copy" onclick="copyToClipboard('${number}')">
-                        <i class="far fa-copy"></i> Salin
-                    </button>
-                `;
+                if (isQRIS) {
+                    div.className = 'payment-option-card qris-container';
+                    div.style.flexDirection = 'column';
+                    div.style.alignItems = 'flex-start';
+                    
+                    const qrisImg = method.image || "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Logo_QRIS.svg/1200px-Logo_QRIS.svg.png";
+                    
+                    div.innerHTML = `
+                        <div style="display:flex; justify-content:space-between; width:100%; margin-bottom:12px;">
+                            <div class="bank-info">
+                                <h4><i class="fas fa-qrcode"></i> QRIS</h4>
+                            </div>
+                        </div>
+                        <div style="display:flex; align-items:center; justify-content:space-between; width:100%;">
+                            <img src="${qrisImg}" class="qris-img" alt="QRIS">
+                            <button class="btn-copy" onclick="copyToClipboard('Scan QRIS di atas')">
+                                <i class="fas fa-expand"></i> Scan
+                            </button>
+                        </div>
+                    `;
+                } else {
+                    div.className = 'payment-option-card';
+                    // Mapping kolom database
+                    const bank = method.bank_name || method.nama_bank || 'Bank';
+                    const number = method.account_number || method.no_rekening || '---';
+                    const owner = method.owner_name || method.atas_nama || '---';
+                    
+                    // Generate Logo URL jika tidak ada di database (menggunakan placeholder)
+                    let logoUrl = method.logo;
+                    if (!logoUrl) {
+                         // Menggunakan layanan placeholder teks agar selalu ada logo nama bank
+                         const cleanName = encodeURIComponent(bank);
+                         logoUrl = `https://placehold.co/100x50/f8f9fa/333333?text=${cleanName}&font=roboto`;
+                    }
+
+                    div.innerHTML = `
+                        <div class="bank-info">
+                            <img src="${logoUrl}" class="bank-logo-img" alt="${bank}">
+                            <div class="bank-details">
+                                <h4>${bank}</h4>
+                                <div class="bank-number">${number}</div>
+                                <div class="bank-name">a.n ${owner}</div>
+                            </div>
+                        </div>
+                        <button class="btn-copy" onclick="copyToClipboard('${number}')">
+                            <i class="far fa-copy"></i> Salin
+                        </button>
+                    `;
+                }
                 container.appendChild(div);
             });
         }
 
-        function getBankIcon(bankName) {
-            const name = bankName.toLowerCase();
-            if (name.includes('bca')) return 'fas fa-university'; // Generic bank icon
-            if (name.includes('mandiri')) return 'fas fa-university';
-            if (name.includes('bni')) return 'fas fa-university';
-            if (name.includes('bri')) return 'fas fa-university';
-            if (name.includes('dana')) return 'fas fa-wallet';
-            if (name.includes('gopay')) return 'fas fa-wallet';
-            if (name.includes('ovo')) return 'fas fa-wallet';
-            if (name.includes('shopee')) return 'fas fa-shopping-bag';
-            return 'fas fa-credit-card';
-        }
-
         window.copyToClipboard = function(text) {
             navigator.clipboard.writeText(text).then(() => {
-                alert('Nomor rekening berhasil disalin!');
+                // Menggunakan Custom Toast
+                if(text === 'Scan QRIS di atas') {
+                    showToast('Silakan scan QRIS pada gambar.', 'success');
+                } else {
+                    showToast(`Nomor ${text} berhasil disalin!`, 'success');
+                }
             }).catch(err => {
                 console.error('Gagal menyalin', err);
-                // Fallback for older browsers or non-secure contexts
                 const textArea = document.createElement("textarea");
                 textArea.value = text;
                 document.body.appendChild(textArea);
                 textArea.select();
                 document.execCommand("Copy");
                 textArea.remove();
-                alert('Nomor rekening berhasil disalin!');
+                showToast(`Nomor ${text} berhasil disalin!`, 'success');
             });
         }
 
@@ -1086,11 +1196,19 @@
         const btnGotoPayment = document.getElementById('btn-goto-payment');
 
         btnGotoPayment.onclick = function() {
-            // Populate Payment Data
+            // 1. Hitung Harga Dasar
             const basePrice = Number(getField(currentProduct, 'price'));
             const isAddOn = toggleSwitch.checked;
-            const finalPrice = isAddOn ? (basePrice + coverLetterPrice) : basePrice;
             
+            // 2. Generate Kode Unik (1 - 499)
+            const uniqueCode = Math.floor(Math.random() * 499) + 1;
+            
+            // 3. Hitung Total Akhir
+            const finalPrice = isAddOn ? (basePrice + coverLetterPrice) : basePrice;
+            const totalWithUnique = finalPrice + uniqueCode;
+            currentUniqueTotal = totalWithUnique; // Simpan untuk WA
+            
+            // 4. Populate Data UI
             document.getElementById('p-product-name').innerText = getField(currentProduct, 'title');
             document.getElementById('p-unit-price').innerText = formatRupiah(basePrice);
             
@@ -1102,16 +1220,22 @@
                 addonRow.style.display = 'none';
             }
             
-            document.getElementById('p-total-price').innerText = formatRupiah(finalPrice);
+            // 5. Tampilkan Total dengan Warna Merah/Oranye agar mencolok
+            const totalEl = document.getElementById('p-total-price');
+            totalEl.innerText = formatRupiah(totalWithUnique);
+            totalEl.style.color = 'var(--danger)'; // Merah untuk perhatian
 
             // Switch View
             productView.style.display = 'none';
             paymentView.classList.add('active');
+            
+            // 6. Tampilkan Toast Peringatan Tambahan
+            showToast(`Kode unik Rp ${uniqueCode} ditambahkan untuk verifikasi.`, 'success');
         };
 
         window.backToProduct = function() {
             paymentView.classList.remove('active');
-            productView.style.display = 'flex'; // Restore flex for layout
+            productView.style.display = 'flex'; 
         };
 
         // --- OPEN MODAL ---
@@ -1120,13 +1244,11 @@
             carouselIndex = 0;
             toggleSwitch.checked = false;
 
-            // Populate Info
             document.getElementById('m-cat').innerText = getField(p, 'category') || 'CATEGORY';
             document.getElementById('m-title').innerText = getField(p, 'title') || 'Product Title';
             document.getElementById('m-desc').innerText = getField(p, 'description') || "Deskripsi tidak tersedia.";
             document.getElementById('m-sold').innerText = getField(p, 'sold_count') || 0;
 
-            // Setup Carousel
             const mainImage = getField(p, 'image');
             const extraImages = getField(p, 'images');
             if (Array.isArray(extraImages) && extraImages.length > 0) {
@@ -1148,7 +1270,6 @@
             if(carouselImages.length > 1) navs.forEach(n => n.style.display = 'flex');
             else navs.forEach(n => n.style.display = 'none');
 
-            // Reset View to Product
             paymentView.classList.remove('active');
             productView.style.display = 'flex';
 
@@ -1168,14 +1289,13 @@
             if(e.target.id === 'productModal') closeModal();
         });
 
-        // --- CONFIRM WHATSAPP BUTTON ---
+        // --- CONFIRM WHATSAPP BUTTON (LANJUTKAN) ---
         document.getElementById('btn-confirm-whatsapp').onclick = function() {
-            const basePrice = Number(getField(currentProduct, 'price'));
-            const isAddOn = toggleSwitch.checked;
-            const finalPrice = isAddOn ? (basePrice + coverLetterPrice) : basePrice;
-            const formattedPrice = formatRupiah(finalPrice);
-            
+            if(!currentProduct) return;
+
             const templateName = getField(currentProduct, 'title');
+            const formattedTotal = formatRupiah(currentUniqueTotal);
+            
             const orderTime = new Date().toLocaleString('id-ID', {
                 weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
                 hour: '2-digit', minute: '2-digit'
@@ -1184,18 +1304,26 @@
             let message = `Halo Min, saya ingin membeli CV berikut:
 
 *Jenis CV:* ${templateName}
-*Total Harga:* ${formattedPrice}
+*Total Pembayaran (Unik):* ${formattedTotal}
 *Waktu Pesanan:* ${orderTime}`;
 
+            const isAddOn = toggleSwitch.checked;
             if(isAddOn) {
                 message += `\n\n*Addon:* Surat Lamaran Kerja (+${formatRupiah(coverLetterPrice)})`;
             }
 
-            message += `\n\nSaya sudah transfer. Mohon segera diproses ya Min.`;
+            message += `\n\nSaya sudah transfer sesuai nominal unik. Mohon segera diproses ya Min.`;
 
+            // Rotasi Nomor Admin
             const adminNumber = getRotatedAdminNumber();
+            
+            // Direct ke WhatsApp
             const waLink = `https://wa.me/${adminNumber}?text=${encodeURIComponent(message)}`;
-            window.open(waLink, '_blank');
+            
+            showToast('Mengalihkan ke WhatsApp...', 'success');
+            setTimeout(() => {
+                window.open(waLink, '_blank');
+            }, 1000);
         }
 
         function getRotatedAdminNumber() {
@@ -1213,7 +1341,7 @@
             initSlider();
             await fetchAdminNumbers(); 
             await fetchCoverLetterPrice();
-            await fetchPaymentMethods(); // Fetch Rekening
+            await fetchPaymentMethods(); 
             await fetchProducts();
             await fetchAd();
             renderProducts();
