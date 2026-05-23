@@ -193,23 +193,97 @@
 
         .card-image {
             position: relative;
-            padding-top: 100%;
+            padding-top: 100%; /* 1:1 Aspect Ratio */
             background: #f1f5f9;
             overflow: hidden;
         }
 
-        .card-image img {
-            position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease;
-        }
-        .cv-card:hover .card-image img { transform: scale(1.05); }
-
-        .badge {
-            position: absolute; top: 10px; left: 10px;
-            background: rgba(255, 255, 255, 0.95); color: var(--text-main);
-            padding: 4px 8px; border-radius: 4px; font-size: 0.65rem;
-            font-weight: 600; box-shadow: var(--shadow-sm); z-index: 2;
+        /* --- CARD BADGE (SASH & SHIMMER) --- */
+        .badge-sash {
+            position: absolute;
+            top: 10px;
+            left: -5px; /* Agar sudut pita pas di luar */
+            background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 5px 15px;
+            font-size: 0.7rem;
+            font-weight: 700;
             text-transform: uppercase;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+            z-index: 10;
+            transform: rotate(-45deg);
+            transform-origin: 0 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 100px;
+            overflow: hidden;
         }
+
+        /* Efek Kilau (Shimmer) */
+        .badge-sash::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.6) 50%, rgba(255,255,255,0) 100%);
+            transform: skewX(-20deg);
+            animation: shimmerMove 3s infinite;
+        }
+
+        @keyframes shimmerMove {
+            0% { left: -100%; }
+            20% { left: 200%; }
+            100% { left: 200%; }
+        }
+
+        /* --- CARD IMAGE SLIDER --- */
+        .card-slider-track {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.5s ease-in-out;
+        }
+        
+        .card-slider-slide {
+            min-width: 100%;
+            height: 100%;
+        }
+
+        .card-slider-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Card Slider Controls */
+        .card-slider-nav {
+            position: absolute; top: 50%; transform: translateY(-50%);
+            width: 24px; height: 24px; border-radius: 50%;
+            background: rgba(255,255,255,0.8); color: #333;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; z-index: 5; font-size: 0.7rem;
+            opacity: 0; transition: opacity 0.2s;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .cv-card:hover .card-slider-nav { opacity: 1; }
+        .c-s-prev { left: 5px; }
+        .c-s-next { right: 5px; }
+
+        .card-slider-dots {
+            position: absolute; bottom: 8px; left: 0; right: 0;
+            display: flex; justify-content: center; gap: 4px; z-index: 5;
+        }
+        .c-s-dot {
+            width: 4px; height: 4px; border-radius: 50%; background: rgba(255,255,255,0.5); cursor: pointer; transition: 0.2s;
+        }
+        .c-s-dot.active { background: white; width: 12px; border-radius: 4px; }
+
+        .cv-card:hover .card-image img { transform: scale(1.05); }
 
         .card-content {
             padding: 12px;
@@ -217,6 +291,8 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            z-index: 2;
+            background: white; /* Cover image overflow if any */
         }
 
         .card-title {
@@ -394,7 +470,11 @@
             margin-bottom: 16px;
             border: 1px solid var(--border);
             flex-shrink: 0;
+            /* Hidden by default, controlled by JS */
+            display: none; 
         }
+        .addon-section.visible { display: block; } /* Class helper */
+
         .addon-header {
             display: flex;
             justify-content: space-between;
@@ -763,7 +843,8 @@
                         <!-- Diisi oleh JS -->
                     </div>
 
-                    <div class="addon-section">
+                    <!-- Addon Section (Hidden by default) -->
+                    <div class="addon-section" id="modalAddonSection">
                         <div class="addon-header">
                             <div class="addon-title">
                                 <i class="fas fa-file-alt" style="color: var(--primary);"></i>
@@ -912,10 +993,14 @@
 
         // --- DATA DUMMY ---
         const dummyData = [
-            { id: 1, title: "Modern Creative Portfolio", category: "Creative", price: 50000, original_price: 75000, sold_count: 120, description: "Template dengan layout asimetris yang modern. Cocok untuk desainer, arsitek, dan profesional kreatif.\n\nFitur Utama:\n- Format PDF & Word\n- Mudah diedit\n- Font gratis included", image: "https://picsum.photos/seed/clean1/600/600", images: ["https://picsum.photos/seed/clean1/600/600", "https://picsum.photos/seed/clean1b/600/600", "https://picsum.photos/seed/clean1c/600/600"] },
-            { id: 2, title: "Executive Formal Blue", category: "Formal", price: 75000, original_price: null, sold_count: 85, description: "Struktur profesional untuk level manajerial. Memberikan kesan serius dan terpercaya.\n\nWarna biru navy yang elegan.", image: "https://picsum.photos/seed/clean2/600/600", images: ["https://picsum.photos/seed/clean2/600/600", "https://picsum.photos/seed/clean2b/600/600"] },
-            { id: 3, title: "Developer Dark Mode", category: "Tech", price: 90000, original_price: 120000, sold_count: 200, description: "Tema gelap elegan untuk programmer. High contrast untuk keterbacaan maksimal.", image: "https://picsum.photos/seed/clean3/600/600", images: ["https://picsum.photos/seed/clean3/600/600"] },
-            { id: 4, title: "Clean Minimalist", category: "Simple", price: 35000, original_price: null, sold_count: 500, description: "Fokus pada konten tanpa gangguan visual. Pilihan terbaik untuk fresh graduate.", image: "https://picsum.photos/seed/clean4/600/600", images: ["https://picsum.photos/seed/clean4/600/600", "https://picsum.photos/seed/clean4b/600/600", "https://picsum.photos/seed/clean4c/600/600"] }
+            // Produk 1: Multi gambar + Ada Addon
+            { id: 1, title: "Modern Creative Portfolio", category: "Creative", price: 50000, original_price: 75000, sold_count: 120, description: "Template dengan layout asimetris yang modern. Cocok untuk desainer, arsitek, dan profesional kreatif.\n\nFitur Utama:\n- Format PDF & Word\n- Mudah diedit\n- Font gratis included", image: "https://picsum.photos/seed/clean1/600/600", images: ["https://picsum.photos/seed/clean1/600/600", "https://picsum.photos/seed/clean1b/600/600", "https://picsum.photos/seed/clean1c/600/600"], allow_cover_letter: true },
+            // Produk 2: Multi gambar + Tidak Ada Addon
+            { id: 2, title: "Executive Formal Blue", category: "Formal", price: 75000, original_price: null, sold_count: 85, description: "Struktur profesional untuk level manajerial. Memberikan kesan serius dan terpercaya.\n\nWarna biru navy yang elegan.", image: "https://picsum.photos/seed/clean2/600/600", images: ["https://picsum.photos/seed/clean2/600/600", "https://picsum.photos/seed/clean2b/600/600"], allow_cover_letter: false },
+            // Produk 3: Satu gambar + Ada Addon
+            { id: 3, title: "Developer Dark Mode", category: "Tech", price: 90000, original_price: 120000, sold_count: 200, description: "Tema gelap elegan untuk programmer. High contrast untuk keterbacaan maksimal.", image: "https://picsum.photos/seed/clean3/600/600", images: ["https://picsum.photos/seed/clean3/600/600"], allow_cover_letter: true },
+            // Produk 4: Multi gambar + Tidak Ada Addon
+            { id: 4, title: "Clean Minimalist", category: "Simple", price: 35000, original_price: null, sold_count: 500, description: "Fokus pada konten tanpa gangguan visual. Pilihan terbaik untuk fresh graduate.", image: "https://picsum.photos/seed/clean4/600/600", images: ["https://picsum.photos/seed/clean4/600/600", "https://picsum.photos/seed/clean4b/600/600", "https://picsum.photos/seed/clean4c/600/600"], allow_cover_letter: false }
         ];
 
         // --- DATA PEMBAYARAN DUMMY (Jika DB Gagal) ---
@@ -938,7 +1023,8 @@
         let fields = {
             title: 'title', price: 'price', original_price: 'original_price',
             image: 'image', images: 'images', category: 'category',
-            description: 'description', sold_count: 'sold_count'
+            description: 'description', sold_count: 'sold_count',
+            allow_cover_letter: 'allow_cover_letter' // Tambahkan mapping field ini
         };
 
         // --- CUSTOM ALERT (TOAST) ---
@@ -993,8 +1079,6 @@
             });
         };
 
-        // Fitur Download QRIS DIHAPUS
-
         // Tutup modal jika klik di luar area konten
         document.getElementById('qrisModal').addEventListener('click', (e) => {
             if(e.target.id === 'qrisModal') closeQrisModal();
@@ -1019,7 +1103,8 @@
                 images: keys.find(k => k.toLowerCase().includes('images') || k.toLowerCase().includes('galeri') || k.toLowerCase().includes('photos')) || 'images',
                 category: keys.find(k => k.toLowerCase().includes('kategori') || k.toLowerCase().includes('category')) || 'category',
                 description: keys.find(k => k.toLowerCase().includes('deskripsi') || k.toLowerCase().includes('desc')) || 'description',
-                sold_count: keys.find(k => k.toLowerCase().includes('terjual') || k.toLowerCase().includes('sold')) || 'sold_count'
+                sold_count: keys.find(k => k.toLowerCase().includes('terjual') || k.toLowerCase().includes('sold')) || 'sold_count',
+                allow_cover_letter: keys.find(k => k.toLowerCase().includes('allow_cover_letter') || k.toLowerCase().includes('surat')) || 'allow_cover_letter'
             };
             fields = map;
         }
@@ -1119,10 +1204,48 @@
             }
         }
 
+        // --- CARD SLIDER LOGIC (NEW) ---
+        // Menyimpan interval untuk setiap kartu agar bisa di-clear saat re-render
+        const cardIntervals = {}; 
+
+        function startCardSlider(cardId, track, images, dotsContainer) {
+            let idx = 0;
+            const count = images.length;
+
+            function updateSlide() {
+                track.style.transform = `translateX(-${idx * 100}%)`;
+                // Update dots
+                Array.from(dotsContainer.children).forEach((d, i) => {
+                    d.className = `c-s-dot ${i === idx ? 'active' : ''}`;
+                });
+            }
+
+            // Auto slide
+            cardIntervals[cardId] = setInterval(() => {
+                idx = (idx + 1) % count;
+                updateSlide();
+            }, 3000);
+
+            // Manual click
+            Array.from(dotsContainer.children).forEach((dot, i) => {
+                dot.onclick = () => {
+                    clearInterval(cardIntervals[cardId]); // Stop auto sementara saat klik manual (opsional)
+                    idx = i;
+                    updateSlide();
+                    // Restart auto (opsional)
+                    // cardIntervals[cardId] = setInterval(..., 3000);
+                };
+            });
+        }
+
         // --- RENDER FUNCTIONS ---
         function renderProducts() {
             const grid = document.getElementById('productGrid');
             grid.innerHTML = '';
+            
+            // Clear existing intervals to prevent memory leaks
+            Object.values(cardIntervals).forEach(int => clearInterval(int));
+            
             if(filteredProducts.length === 0) {
                 grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;padding:20px;">CV tidak ditemukan</p>';
                 return;
@@ -1136,7 +1259,48 @@
                 const originalPrice = getField(p, 'original_price');
                 const category = getField(p, 'category');
                 const image = getField(p, 'image');
+                const extraImages = getField(p, 'images');
                 const soldCount = getField(p, 'sold_count');
+                
+                // Determine if slider is needed
+                const hasMultipleImages = Array.isArray(extraImages) && extraImages.length > 0;
+                const allImages = hasMultipleImages ? [image, ...extraImages] : [image];
+
+                let imageHTML = '';
+                const cardId = `card-${p.id || Math.random().toString(36).substr(2, 9)}`;
+
+                if (hasMultipleImages) {
+                    // Build Slider HTML
+                    let slidesHTML = '';
+                    let dotsHTML = '';
+                    allImages.forEach((img, idx) => {
+                        slidesHTML += `<div class="card-slider-slide"><img src="${img}" loading="lazy" alt="${title}"></div>`;
+                        dotsHTML += `<div class="c-s-dot ${idx===0?'active':''}"></div>`;
+                    });
+
+                    imageHTML = `
+                        <div class="card-slider-track" id="${cardId}-track">
+                            ${slidesHTML}
+                        </div>
+                        <div class="card-slider-nav c-s-prev" onclick="moveCardSlider('${cardId}', -1)"><i class="fas fa-chevron-left"></i></div>
+                        <div class="card-slider-nav c-s-next" onclick="moveCardSlider('${cardId}', 1)"><i class="fas fa-chevron-right"></i></div>
+                        <div class="card-slider-dots" id="${cardId}-dots">
+                            ${dotsHTML}
+                        </div>
+                    `;
+                    
+                    // Initialize JS logic for this specific card after append
+                    setTimeout(() => {
+                        const trackEl = document.getElementById(`${cardId}-track`);
+                        const dotsEl = document.getElementById(`${cardId}-dots`);
+                        if(trackEl && dotsEl) {
+                            startCardSlider(cardId, trackEl, allImages, dotsEl);
+                        }
+                    }, 100);
+                } else {
+                    // Static Image
+                    imageHTML = `<img src="${image || 'https://picsum.photos/seed/fallback/600/600'}" loading="lazy" alt="${title}">`;
+                }
 
                 let priceHTML = '';
                 if (originalPrice && Number(originalPrice) > Number(price)) {
@@ -1144,9 +1308,12 @@
                 } else {
                     priceHTML = `<div class="price-main">${formatRupiah(price)}</div>`;
                 }
-                const displayImage = image || 'https://picsum.photos/seed/fallback/600/600';
+
                 card.innerHTML = `
-                    <div class="card-image"><span class="badge">${category || 'Produk'}</span><img src="${displayImage}" loading="lazy" alt="${title}"></div>
+                    <div class="card-image">
+                        <div class="badge-sash">${category || 'Produk'}</div>
+                        ${imageHTML}
+                    </div>
                     <div class="card-content">
                         <h3 class="card-title">${title || 'Tanpa Judul'}</h3>
                         <div class="card-footer">
@@ -1156,6 +1323,53 @@
                     </div>`;
                 grid.appendChild(card);
             });
+        }
+
+        // Helper untuk manual slider di kartu
+        window.moveCardSlider = function(cardId, direction) {
+            // Kita perlu track index manual secara global atau ambil dari DOM state
+            // Untuk simplifikasi di kode ini, kita biarkan auto-play berjalan, 
+            // tapi tombol manual bisa memanipulasi langsung DOM transform.
+            // Cara paling robust tanpa state kompleks:
+            const track = document.getElementById(`${cardId}-track`);
+            if(!track) return;
+            
+            // Ambil current transform
+            const currentTransform = track.style.transform;
+            const currentTranslate = parseInt(currentTransform.replace(/[^0-9-]/g, '')) || 0;
+            const slideWidth = track.offsetWidth; // 100%
+            const totalSlides = track.children.length;
+            
+            // Hitung index saat ini
+            let currentIndex = Math.abs(Math.round(currentTranslate / slideWidth));
+            
+            let newIndex = currentIndex + direction;
+            if(newIndex >= totalSlides) newIndex = 0;
+            if(newIndex < 0) newIndex = totalSlides - 1;
+            
+            // Apply transform
+            track.style.transform = `translateX(-${newIndex * 100}%)`;
+            
+            // Update dots
+            const dotsContainer = document.getElementById(`${cardId}-dots`);
+            Array.from(dotsContainer.children).forEach((d, i) => {
+                d.className = `c-s-dot ${i === newIndex ? 'active' : ''}`;
+            });
+
+            // Reset interval agar tidak konflik
+            if(cardIntervals[cardId]) clearInterval(cardIntervals[cardId]);
+            const dots = dotsContainer;
+            const trackRef = track;
+            
+            cardIntervals[cardId] = setInterval(() => {
+                let idx = newIndex;
+                idx = (idx + 1) % totalSlides;
+                trackRef.style.transform = `translateX(-${idx * 100}%)`;
+                Array.from(dots.children).forEach((d, i) => {
+                    d.className = `c-s-dot ${i === idx ? 'active' : ''}`;
+                });
+                newIndex = idx; // Update closure variable
+            }, 3000);
         }
 
         function renderPaymentMethods() {
@@ -1395,6 +1609,18 @@
             document.getElementById('m-title').innerText = getField(p, 'title') || 'Product Title';
             document.getElementById('m-desc').innerText = getField(p, 'description') || "Deskripsi tidak tersedia.";
             document.getElementById('m-sold').innerText = getField(p, 'sold_count') || 0;
+
+            // --- LOGIC DYNAMIC ADDON ---
+            const addonSection = document.getElementById('modalAddonSection');
+            const allowAddon = getField(p, 'allow_cover_letter'); // Cek field DB
+            // Jika field tidak ada di DB, default true (kompabilitas), jika false baru hide
+            if (allowAddon === false || allowAddon === 0) {
+                addonSection.classList.remove('visible');
+                addonSection.style.display = 'none';
+            } else {
+                addonSection.classList.add('visible');
+                addonSection.style.display = 'block';
+            }
 
             const mainImage = getField(p, 'image');
             const extraImages = getField(p, 'images');
