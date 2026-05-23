@@ -559,7 +559,7 @@
         
         .mt-auto { margin-top: auto; }
 
-        /* --- QRIS POPUP MODAL (NEW) --- */
+        /* --- QRIS POPUP MODAL (UPDATED) --- */
         .qris-modal-overlay {
             position: fixed; inset: 0; background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(5px);
             z-index: 2000; display: flex; align-items: center; justify-content: center;
@@ -588,15 +588,54 @@
         .qris-modal-image-wrapper img {
             width: 200px; height: 200px; object-fit: contain;
         }
+        
+        /* Clickable Price Area */
+        .qris-modal-price-area {
+            background: var(--bg-body);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: 0.2s;
+            position: relative;
+        }
+        .qris-modal-price-area:active {
+            background: #e2e8f0;
+            transform: scale(0.98);
+        }
+        .qris-modal-price-area:hover {
+            border-color: var(--primary);
+        }
+        .copy-hint {
+            font-size: 0.7rem; color: var(--primary); margin-bottom: 4px; font-weight: 600; text-transform: uppercase;
+        }
         .qris-modal-total {
-            font-size: 1.5rem; font-weight: 800; color: var(--danger); margin-bottom: 10px;
+            font-size: 1.5rem; font-weight: 800; color: var(--danger);
         }
+        .copy-icon-overlay {
+            position: absolute; top: 10px; right: 10px;
+            color: var(--primary); opacity: 0.5;
+        }
+
         .qris-modal-desc {
-            font-size: 0.9rem; color: var(--text-muted); margin-bottom: 24px;
+            font-size: 0.85rem; color: var(--text-muted); margin-bottom: 20px; line-height: 1.4;
         }
+        
+        .qris-actions {
+            display: flex; gap: 10px;
+        }
+        .btn-download {
+            background: var(--primary); color: white; padding: 12px;
+            border-radius: 12px; font-weight: 600; cursor: pointer; flex: 1;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            transition: 0.2s;
+        }
+        .btn-download:hover { background: var(--primary-dark); }
+        
         .btn-close-qris {
-            background: var(--bg-body); color: var(--text-main); padding: 12px 24px;
-            border-radius: 50px; font-weight: 600; cursor: pointer; width: 100%;
+            background: var(--bg-body); color: var(--text-main); padding: 12px;
+            border-radius: 12px; font-weight: 600; cursor: pointer; flex: 1;
             transition: 0.2s; border: 1px solid var(--border);
         }
         .btn-close-qris:hover { background: #e2e8f0; }
@@ -812,16 +851,32 @@
         </div>
     </div>
 
-    <!-- POPUP QRIS (NEW) -->
+    <!-- POPUP QRIS (UPDATED) -->
     <div class="qris-modal-overlay" id="qrisModal">
         <div class="qris-modal-content">
             <div class="qris-modal-title">Scan QRIS</div>
+            
             <div class="qris-modal-image-wrapper">
                 <img id="qrisDisplayImage" src="" alt="QRIS Code">
             </div>
-            <div class="qris-modal-total" id="qrisDisplayTotal">Rp 0</div>
-            <div class="qris-modal-desc">Nominal Unik ini untuk verifikasi otomatis.</div>
-            <button class="btn-close-qris" onclick="closeQrisModal()">Tutup</button>
+
+            <!-- Area Harga (Bisa Diklik untuk Copy) -->
+            <div class="qris-modal-price-area" onclick="copyTotalPrice()">
+                <div class="copy-hint"><i class="fas fa-hand-pointer"></i> Klik untuk Salin</div>
+                <div class="qris-modal-total" id="qrisDisplayTotal">Rp 0</div>
+                <i class="far fa-copy copy-icon-overlay"></i>
+            </div>
+
+            <div class="qris-modal-desc">
+                Nominal unik ini ditambahkan untuk verifikasi otomatis. Gunakan aplikasi pembayaran (GoPay/OVO/Dana) untuk scan QR ini.
+            </div>
+            
+            <div class="qris-actions">
+                <button class="btn-download" onclick="downloadQris()">
+                    <i class="fas fa-download"></i> Download
+                </button>
+                <button class="btn-close-qris" onclick="closeQrisModal()">Tutup</button>
+            </div>
         </div>
     </div>
 
@@ -915,20 +970,68 @@
             }, 3000);
         }
 
-        // --- QRIS MODAL FUNCTIONS (NEW) ---
+        // --- QRIS MODAL FUNCTIONS (UPDATED) ---
         window.openQrisModal = function(imageUrl) {
             const modal = document.getElementById('qrisModal');
             const img = document.getElementById('qrisDisplayImage');
             const totalText = document.getElementById('qrisDisplayTotal');
             
             img.src = imageUrl;
-            totalText.innerText = formatRupiah(currentUniqueTotal);
+            // Format ulang total tanpa simbol mata uang agar mudah diinput manual jika perlu
+            const rawTotal = new Intl.NumberFormat('id-ID').format(currentUniqueTotal);
+            totalText.innerText = "Rp " + rawTotal;
             
             modal.classList.add('active');
         };
 
         window.closeQrisModal = function() {
             document.getElementById('qrisModal').classList.remove('active');
+        };
+
+        // Fitur Copy Total Harga
+        window.copyTotalPrice = function() {
+            const totalText = document.getElementById('qrisDisplayTotal').innerText;
+            navigator.clipboard.writeText(totalText).then(() => {
+                showToast('Nominal unik berhasil disalin!', 'success');
+            }).catch(err => {
+                // Fallback
+                const textArea = document.createElement("textarea");
+                textArea.value = totalText;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand("Copy");
+                textArea.remove();
+                showToast('Nominal unik berhasil disalin!', 'success');
+            });
+        };
+
+        // Fitur Download QRIS
+        window.downloadQris = function() {
+            const imgSrc = document.getElementById('qrisDisplayImage').src;
+            if (!imgSrc) return;
+
+            // Cek apakah URL asing (CORS issue handling sederhana)
+            fetch(imgSrc)
+                .then(response => response.blob())
+                .then(blob => {
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.style.display = 'none';
+                    a.href = url;
+                    // Nama file: QRIS-Tanggal-Jam.png
+                    const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+                    a.download = `QRIS-Payment-${timestamp}.png`;
+                    document.body.appendChild(a);
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                    showToast('QRIS berhasil diunduh!', 'success');
+                })
+                .catch(() => {
+                    // Fallback jika CORS memblokir fetch (misal gambar dari wikipedia tanpa proxy)
+                    // Buka di tab baru agar user bisa save manual
+                    window.open(imgSrc, '_blank');
+                    showToast('Gambar dibuka di tab baru. Silakan simpan manual.', 'success');
+                });
         };
 
         // Tutup modal jika klik di luar area konten
@@ -1067,8 +1170,6 @@
             
             paymentMethods.forEach(method => {
                 const div = document.createElement('div');
-                
-                // Cek tipe metode (Bank atau QRIS)
                 const isQRIS = (method.bank_name || '').toLowerCase().includes('qris') || method.type === 'qris';
 
                 if (isQRIS) {
@@ -1078,7 +1179,6 @@
                     
                     const qrisImg = method.image || "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Logo_QRIS.svg/1200px-Logo_QRIS.svg.png";
                     
-                    // PERUBAHAN DI SINI: Tombol Scan sekarang memanggil openQrisModal
                     div.innerHTML = `
                         <div style="display:flex; justify-content:space-between; width:100%; margin-bottom:12px;">
                             <div class="bank-info">
@@ -1124,11 +1224,7 @@
 
         window.copyToClipboard = function(text) {
             navigator.clipboard.writeText(text).then(() => {
-                if(text === 'Scan QRIS di atas') {
-                    showToast('Silakan scan QRIS pada gambar.', 'success');
-                } else {
-                    showToast(`Nomor ${text} berhasil disalin!`, 'success');
-                }
+                showToast(`Nomor ${text} berhasil disalin!`, 'success');
             }).catch(err => {
                 console.error('Gagal menyalin', err);
                 const textArea = document.createElement("textarea");
