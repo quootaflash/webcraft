@@ -542,7 +542,35 @@
             border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 0.7rem;
         }
 
-        footer { border-top: 1px solid var(--border); padding: 30px 0; margin-top: 40px; text-align: center; color: var(--text-muted); font-size: 0.85rem; background: white; }
+        /* --- FOOTER UPDATE --- */
+        footer { 
+            border-top: 1px solid var(--border); 
+            padding: 40px 0; 
+            margin-top: 40px; 
+            text-align: center; 
+            color: var(--text-muted); 
+            font-size: 0.85rem; 
+            background: white; 
+        }
+
+        .footer-links {
+            margin-top: 12px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            color: var(--primary);
+            text-decoration: underline;
+        }
 
         /* Hide Scrollbar for modal body but allow scroll */
         .modal-info::-webkit-scrollbar, .payment-view::-webkit-scrollbar { width: 6px; }
@@ -607,9 +635,14 @@
         </div>
     </main>
 
+    <!-- Footer Update -->
     <footer>
         <div class="container">
             <p>&copy; 2026 WriteHub. All Rights Reserved.</p>
+            <div class="footer-links">
+                <!-- GANTI URL DI BAWAH INI DENGAN LINK KEBIJAKAN ANDA -->
+                <a href="https://link-anda.com/kebijakan-pengembalian-dana" target="_blank">Kebijakan Pengembalian Dana</a>
+            </div>
         </div>
     </footer>
 
@@ -1237,4 +1270,3 @@
     </script>
 </body>
 </html>
-
