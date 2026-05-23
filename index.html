@@ -113,7 +113,7 @@
             margin-top: 20px;
             position: relative;
             width: 100%;
-            aspect-ratio: 21 / 9; 
+            aspect-rio: 21 / 9; 
             background: #e2e8f0;
             border-radius: var(--radius);
             overflow: hidden;
@@ -198,26 +198,26 @@
             overflow: hidden;
         }
 
-        /* --- CARD BADGE (SASH FIXED) --- */
+        /* --- CARD BADGE (UPDATED: STANDARD PILL WITH SHIMMER) --- */
         .badge-sash {
             position: absolute;
-            top: 10px; /* Diperbaiki: Pastikan badge terlihat di atas */
-            left: -5px; 
+            top: 10px;
+            left: 10px; /* Diubah posisi ke pojok kiri atas standar */
             background: linear-gradient(45deg, var(--primary), var(--primary-dark));
             color: white;
-            padding: 5px 15px; /* Padding proporsional */
-            font-size: 0.75rem; /* Font size disesuaikan agar proporsional */
+            padding: 4px 12px; /* Padding standar pill */
+            font-size: 0.7rem;
             font-weight: 700;
             text-transform: uppercase;
             box-shadow: 0 4px 6px rgba(0,0,0,0.15);
-            z-index: 20; /* Z-index tinggi agar selalu di atas */
-            transform: rotate(-45deg);
-            transform-origin: 0 100%; /* Titik putar disesuaikan agar bentuk pita simetris */
-            display: flex;
+            z-index: 20;
+            
+            /* Bentuk Standar (Bukan sash/diagonal lagi) */
+            display: inline-flex; /* Agar muat teks tepat */
             align-items: center;
             justify-content: center;
-            min-width: 90px; /* Lebar minimum agar teks muat */
-            overflow: hidden;
+            border-radius: 50px; /* Sudut membulat */
+            overflow: hidden; /* Penting untuk memotong shimmer */
             white-space: nowrap;
         }
 
@@ -230,7 +230,7 @@
             width: 50%;
             height: 100%;
             background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.8) 50%, rgba(255,255,255,0) 100%);
-            transform: skewX(-20deg);
+            transform: skewX(-20deg); /* Sedikit miring agar kilau terlihat dinamis */
             animation: shimmerMove 3s infinite;
         }
 
@@ -995,7 +995,7 @@
         // --- DATA DUMMY ---
         const dummyData = [
             // Produk 1: Multi gambar + Ada Addon
-            { id: 1, title: "Modern Creative Portfolio", category: "Creative", price: 50000, original_price: 75000, sold_count: 120, description: "Template dengan layout asimetris yang modern. Cocok untuk desainer, arsitek, dan profesional kreatif.\n\nFitur Utama:\n- Format PDF & Word\n- Mudah diedit\n- Font gratis included", image: "https://picsum.photos/seed/clean1/600/600", images: ["https://picsum.photos/seed/clean1/600/600", "https://picsum.photos/seed/clean1b/600/600", "https://picsum.photos/seed/clean1c/600/600"], allow_cover_letter: true },
+            { id: 1, title: "Modern Creative Portfolio", category: "Creative", price: 50000, original_price: 75000, sold_count: 120, description: "Template dengan layout asimetris yang modern. Cocok untuk desainer, arsitek, dan profesional kreatif.\n\nFitur Utama:\n- Format PDF & Word\n- Mudah diedit\n- Font gratis included", image: "https://picsum.photos/seed/clean1/600/600", images: ["https://picsum.photos/seed/clean1/600/600", "https://piscum.photos/seed/clean1b/600/600", "https://picsum.photos/seed/clean1c/600/600"], allow_cover_letter: true },
             // Produk 2: Multi gambar + Tidak Ada Addon
             { id: 2, title: "Executive Formal Blue", category: "Formal", price: 75000, original_price: null, sold_count: 85, description: "Struktur profesional untuk level manajerial. Memberikan kesan serius dan terpercaya.\n\nWarna biru navy yang elegan.", image: "https://picsum.photos/seed/clean2/600/600", images: ["https://picsum.photos/seed/clean2/600/600", "https://picsum.photos/seed/clean2b/600/600"], allow_cover_letter: false },
             // Produk 3: Satu gambar + Ada Addon
@@ -1123,7 +1123,7 @@
             container.appendChild(allChip);
 
             // 2. Ambil kategori unik dari data produk
-            const categories = [...new Set(products.map(p => getField(p, 'category')))];
+            const categories = [...new Set(products.map(p => getField(p, 'category'))];
             
             // 3. Urutkan secara alfabetis
             categories.sort();
