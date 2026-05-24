@@ -82,6 +82,8 @@
         .search-box {
             flex: 1;
             position: relative;
+            /* ZIndex tinggi agar suggestions muncul di atas elemen lain */
+            z-index: 1000; 
         }
 
         .search-box input {
@@ -106,6 +108,57 @@
             transform: translateY(-50%);
             color: var(--text-muted);
             font-size: 0.85rem;
+            z-index: 2;
+        }
+
+        /* --- SEARCH SUGGESTIONS (NEW) --- */
+        .search-suggestions {
+            position: absolute;
+            top: 110%;
+            left: 0;
+            right: 0;
+            background: white;
+            border-radius: 12px;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border);
+            display: none; /* Hidden by default */
+            flex-direction: column;
+            max-height: 300px;
+            overflow-y: auto;
+            z-index: 1001;
+            padding: 8px 0;
+        }
+        .search-suggestions.active {
+            display: flex;
+            animation: slideDownFade 0.2s ease-out;
+        }
+        @keyframes slideDownFade {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .suggestion-item {
+            padding: 10px 16px;
+            font-size: 0.9rem;
+            color: var(--text-main);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: background 0.1s;
+        }
+        .suggestion-item:hover {
+            background: var(--bg-body);
+            color: var(--primary);
+        }
+        .suggestion-item i {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
+        .no-suggestion {
+            padding: 12px 16px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-align: center;
         }
 
         /* --- HERO SLIDER --- */
@@ -317,7 +370,7 @@
         /* --- MODAL --- */
         .modal-overlay {
             position: fixed; inset: 0; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px);
-            z-index: 1000; display: flex; align-items: center; justify-content: center;
+            z-index: 2000; display: flex; align-items: center; justify-content: center;
             opacity: 0; pointer-events: none; transition: 0.3s; padding: 16px;
         }
         .modal-overlay.active { opacity: 1; pointer-events: all; }
@@ -610,7 +663,7 @@
         /* --- QRIS POPUP MODAL (UPDATED) --- */
         .qris-modal-overlay {
             position: fixed; inset: 0; background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(5px);
-            z-index: 2000; display: flex; align-items: center; justify-content: center;
+            z-index: 3000; display: flex; align-items: center; justify-content: center;
             opacity: 0; pointer-events: none; transition: 0.3s; padding: 16px;
         }
         .qris-modal-overlay.active { opacity: 1; pointer-events: all; }
@@ -684,7 +737,7 @@
         /* --- TOAST NOTIFICATION --- */
         .toast-container {
             position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
-            z-index: 3000; display: flex; flex-direction: column; gap: 10px;
+            z-index: 4000; display: flex; flex-direction: column; gap: 10px;
             pointer-events: none; width: 90%; max-width: 400px;
         }
         .toast {
@@ -704,17 +757,17 @@
         @keyframes slideDown { to { opacity: 1; transform: translateY(0); } }
         @keyframes fadeOut { to { opacity: 0; transform: translateY(-10px); } }
 
-        /* --- CORNER AD POPUP (ORIGINAL STYLE + TRANSPARENCY SUPPORT) --- */
+        /* --- CORNER AD POPUP (UPDATED TRANSPARENCY LOGIC) --- */
         .ad-popup {
             position: fixed; 
             bottom: 20px; 
             left: 20px; 
             z-index: 900;
             width: 260px; /* Default width */
-            background: white; /* Default background (bisa diubah via JS) */
+            background: white; /* Default background (solid) */
             border-radius: 16px;
             box-shadow: var(--shadow-lg); 
-            overflow: hidden; 
+            overflow: visible; /* Changed to visible to allow transparent elements to bleed out if needed, though usually contained */
             display: none;
             animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1);
         }
@@ -722,7 +775,9 @@
         /* Class untuk Gambar Transparan (Background jadi transparan) */
         .ad-popup.transparent-mode {
             background: transparent !important;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2); /* Shadow lebih tegas agar terlihat di bg transparan */
+            box-shadow: none; /* Hapus shadow default jika transparan, atau gunakan drop-shadow filter pada gambar jika perlu */
+            /* Drop shadow untuk konten gambar saja jika diinginkan */
+            filter: drop-shadow(0 10px 15px rgba(0,0,0,0.2));
         }
 
         @keyframes slideUp { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
@@ -738,15 +793,17 @@
             border-radius: 16px;
         }
 
-        /* Mode Transparan: Gambar Contain (Agar tidak terpotong) */
+        /* Mode Transparan: Gambar Contain (Agar tidak terpotong dan transparansi terlihat) */
         .ad-popup.transparent-mode .ad-img img {
             object-fit: contain;
             border-radius: 0;
+            /* Background div img harus transparan agar melihat transparansi asli */
+            background: transparent; 
         }
 
         .ad-close {
-            position: absolute; top: 8px; right: 8px;
-            background: rgba(0,0,0,0.6); 
+            position: absolute; top: -10px; right: -10px;
+            background: var(--danger); 
             color: white; 
             width: 24px; height: 24px;
             border-radius: 50%; 
@@ -754,9 +811,10 @@
             cursor: pointer; font-size: 0.7rem;
             z-index: 10;
             transition: 0.2s;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
         .ad-close:hover {
-            background: var(--danger);
+            transform: scale(1.1);
         }
 
         footer { border-top: 1px solid var(--border); padding: 30px 0; margin-top: 40px; text-align: center; color: var(--text-muted); font-size: 0.85rem; background: white; }
@@ -780,7 +838,9 @@
             
             <div class="search-box">
                 <i class="fas fa-search"></i>
-                <input type="text" id="searchInput" placeholder="Cari CV...">
+                <input type="text" id="searchInput" placeholder="Cari CV..." autocomplete="off">
+                <!-- Search Suggestions Dropdown -->
+                <div class="search-suggestions" id="searchSuggestions"></div>
             </div>
         </div>
     </header>
@@ -955,7 +1015,7 @@
         </div>
     </div>
 
-    <!-- POPUP IKLAN (ORIGINAL POSITION + TRANSPARENCY LOGIC) -->
+    <!-- POPUP IKLAN (UPDATED LOGIC TRANSPARANSI) -->
     <div class="ad-popup" id="adPopup">
         <div class="ad-close" onclick="closeAd()"><i class="fas fa-times"></i></div>
         <a href="#" target="_blank" id="adLink">
@@ -1155,6 +1215,80 @@
             fields = map;
         }
 
+        // --- SEARCH SUGGESTIONS LOGIC (NEW) ---
+        const searchInput = document.getElementById('searchInput');
+        const suggestionsBox = document.getElementById('searchSuggestions');
+
+        function renderSuggestions(query) {
+            suggestionsBox.innerHTML = '';
+            if (!query) {
+                suggestionsBox.classList.remove('active');
+                return;
+            }
+
+            // Ambil kata kunci unik dari judul produk
+            const keywords = new Set();
+            const matches = [];
+
+            products.forEach(p => {
+                const title = (getField(p, 'title') || '').toLowerCase();
+                const category = (getField(p, 'category') || '').toLowerCase();
+                
+                if (title.includes(query)) {
+                    matches.push({ type: 'product', text: getField(p, 'title') });
+                    // Tambahkan kata individual (hanya jika panjang > 3)
+                    title.split(' ').forEach(w => { if(w.length > 3) keywords.add(w); });
+                }
+                if (category.includes(query) && !matches.some(m => m.text === category)) {
+                    matches.push({ type: 'category', text: getField(p, 'category') });
+                }
+            });
+
+            // Jika tidak ada match produk, cari di keywords tambahan
+            if (matches.length === 0) {
+                 keywords.forEach(k => {
+                     if(k.includes(query)) matches.push({ type: 'keyword', text: k });
+                 });
+            }
+
+            if (matches.length === 0) {
+                const div = document.createElement('div');
+                div.className = 'no-suggestion';
+                div.innerText = 'Tidak ada saran pencarian';
+                suggestionsBox.appendChild(div);
+            } else {
+                // Batasi maksimal 5 saran
+                matches.slice(0, 5).forEach(match => {
+                    const div = document.createElement('div');
+                    div.className = 'suggestion-item';
+                    let icon = 'fa-search';
+                    if (match.type === 'category') icon = 'fa-tags';
+                    
+                    div.innerHTML = `<i class="fas ${icon}"></i> ${match.text}`;
+                    div.onclick = () => {
+                        searchInput.value = match.text;
+                        suggestionsBox.classList.remove('active');
+                        filterLogic(); // Trigger pencarian
+                    };
+                    suggestionsBox.appendChild(div);
+                });
+            }
+            suggestionsBox.classList.add('active');
+        }
+
+        // Event Listener untuk Search
+        searchInput.addEventListener('input', (e) => {
+            renderSuggestions(e.target.value.toLowerCase());
+            filterLogic(); // Tetap filter real-time
+        });
+
+        // Tutup suggestions jika klik di luar
+        document.addEventListener('click', (e) => {
+            if (!searchInput.contains(e.target) && !suggestionsBox.contains(e.target)) {
+                suggestionsBox.classList.remove('active');
+            }
+        });
+
         // --- RENDER CATEGORIES (DYNAMIC) ---
         function renderCategories() {
             const container = document.getElementById('filterBar');
@@ -1240,7 +1374,7 @@
             filterLogic();
         }
 
-        // --- FETCH & HANDLE AD WITH TRANSPARENCY LOGIC ---
+        // --- FETCH & HANDLE AD WITH TRANSPARENCY LOGIC (UPDATED) ---
         async function fetchAd() {
             if (!useSupabase) return;
             
@@ -1267,19 +1401,18 @@
                     // Gambar ke canvas untuk membaca pixel
                     ctx.drawImage(this, 0, 0);
                     
-                    // Ambil data pixel (sudah didecode otomatis oleh browser)
-                    // Kita ambil sampel pixel, misal di tengah dan pojok
-                    // Cek pixel tengah
-                    const centerPixel = ctx.getImageData(canvas.width/2, canvas.height/2, 1, 1).data;
-                    const isCenterTransparent = centerPixel[3] === 0;
+                    // Ambil data pixel di pojok kiri atas (0,0) sebagai sampel cek transparansi
+                    const pixelData = ctx.getImageData(0, 0, 1, 1).data;
+                    const alphaChannel = pixelData[3]; // Index 3 adalah Alpha
 
-                    // Jika center pixel transparan, kita asumsikan gambar ini transparan
-                    if (isCenterTransparent) {
+                    // Logika: Jika Alpha 0 (benar-benar transparan), gunakan mode transparan
+                    // Jika Alpha > 0 (Solid), gunakan mode default (background putih + border)
+                    if (alphaChannel === 0) {
                         popup.classList.add('transparent-mode');
-                        console.log('Ad Mode: Transparent');
+                        console.log('Ad Mode: Transparent (Alpha=0)');
                     } else {
                         popup.classList.remove('transparent-mode');
-                        console.log('Ad Mode: Solid/Poster');
+                        console.log('Ad Mode: Solid/Poster (Alpha>0)');
                     }
                 };
 
@@ -1516,7 +1649,6 @@
             });
             renderProducts();
         }
-        document.getElementById('searchInput').addEventListener('input', filterLogic);
 
         /* ----------------------------------------------------
            MODAL LOGIC (PRODUCT & PAYMENT)
