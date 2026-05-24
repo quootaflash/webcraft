@@ -598,6 +598,16 @@
             transition: 0.3s;
         }
         .btn-confirm-wa:hover { background: #1ebc57; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3); }
+
+        /* --- STYLE TAMBAHAN: TIMER LOCKED --- */
+        .btn-confirm-wa.locked {
+            background-color: #9ca3af; /* Warna Abu-abu */
+            cursor: not-allowed;
+            opacity: 0.7;
+            pointer-events: none; /* Tidak bisa diklik */
+            box-shadow: none;
+            transform: none;
+        }
         
         .mt-auto { margin-top: auto; }
 
@@ -975,6 +985,10 @@
         let adminNumbersList = [];
         let currentUniqueTotal = 0; 
 
+        // --- TIMER VARIABLES ---
+        let paymentLockTimer = null; // Menyimpan ID timeout
+        const LOCK_DURATION_MS = 120000; // 2 Menit dalam milidetik
+
         // Mapping Fields
         let fields = {
             title: 'title', price: 'price', original_price: 'original_price',
@@ -1035,12 +1049,49 @@
             });
         };
 
-        // Fitur Download QRIS DIHAPUS
-
         // Tutup modal jika klik di luar area konten
         document.getElementById('qrisModal').addEventListener('click', (e) => {
             if(e.target.id === 'qrisModal') closeQrisModal();
         });
+
+        // --- TIMER LOGIC FUNCTIONS ---
+        function lockWhatsAppButton() {
+            const btn = document.getElementById('btn-confirm-whatsapp');
+            
+            // Hapus timer lama jika ada (reset)
+            if (paymentLockTimer) clearTimeout(paymentLockTimer);
+
+            // Tambahkan class locked (Abu-abu)
+            btn.classList.add('locked');
+            
+            // Ubah teks agar user tahu sedang menunggu (tanpa menampilkan detik)
+            btn.innerHTML = `<i class="fas fa-clock"></i> Mohon Tunggu...`;
+
+            // Mulai timer 2 menit
+            paymentLockTimer = setTimeout(() => {
+                unlockWhatsAppButton();
+            }, LOCK_DURATION_MS);
+        }
+
+        function unlockWhatsAppButton() {
+            const btn = document.getElementById('btn-confirm-whatsapp');
+            
+            // Hapus class locked
+            btn.classList.remove('locked');
+            
+            // Kembalikan teks asli
+            btn.innerHTML = `<i class="fab fa-whatsapp" style="font-size:1.2rem;"></i> Lanjutkan ke WhatsApp`;
+            
+            // Opsional: Beri notifikasi kecil jika user sedang melihat layar
+            // showToast('Silakan lanjutkan konfirmasi pembayaran.', 'success');
+        }
+
+        function clearPaymentTimer() {
+            if (paymentLockTimer) {
+                clearTimeout(paymentLockTimer);
+                paymentLockTimer = null;
+            }
+        }
 
         // --- HELPERS ---
         const formatRupiah = (num) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(num);
@@ -1512,9 +1563,15 @@
             productView.style.display = 'none';
             paymentView.classList.add('active');
             showToast(`Kode unik Rp ${uniqueCode} ditambahkan untuk verifikasi.`, 'success');
+
+            // --- START TIMER DISINI ---
+            lockWhatsAppButton();
         };
 
         window.backToProduct = function() {
+            // Hentikan timer jika user kembali
+            clearPaymentTimer();
+            
             paymentView.classList.remove('active');
             productView.style.display = 'flex'; 
         };
@@ -1557,11 +1614,21 @@
             // Update Addon UI Dinamis
             updateCoverLetterUI();
 
+            // Pastikan timer bersih saat membuka modal baru
+            clearPaymentTimer();
+            // Reset tampilan tombol ke kondisi normal (untuk antisipasi cache)
+            const btn = document.getElementById('btn-confirm-whatsapp');
+            btn.classList.remove('locked');
+            btn.innerHTML = `<i class="fab fa-whatsapp" style="font-size:1.2rem;"></i> Lanjutkan ke WhatsApp`;
+
             document.getElementById('productModal').classList.add('active');
             document.body.style.overflow = 'hidden';
         }
 
         window.closeModal = function() {
+            // Hentikan timer saat modal ditutup total
+            clearPaymentTimer();
+            
             document.getElementById('productModal').classList.remove('active');
             document.body.style.overflow = 'auto';
             currentProduct = null;
