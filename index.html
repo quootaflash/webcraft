@@ -30,7 +30,6 @@
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             --danger: #ef4444;
             --success: #10b981;
-            --fire-color: #ff4500; /* Warna Ikon Api */
         }
 
         /* --- RESET --- */
@@ -111,7 +110,7 @@
             z-index: 2;
         }
 
-        /* --- SEARCH SUGGESTIONS (UPDATED) --- */
+        /* --- SEARCH SUGGESTIONS (UPDATED WITH TOP BADGE) --- */
         .search-suggestions {
             position: absolute;
             top: 110%;
@@ -143,7 +142,7 @@
             cursor: pointer;
             display: flex;
             align-items: center;
-            justify-content: space-between; /* Space between for fire icon */
+            justify-content: space-between;
             transition: background 0.1s;
         }
         .suggestion-item:hover {
@@ -159,21 +158,26 @@
         .suggestion-item i.icon-type {
             color: var(--text-muted);
             font-size: 0.8rem;
-            width: 20px; /* Fixed width for alignment */
+            width: 20px;
             text-align: center;
         }
-        /* Ikon Api yang diminta */
-        .fire-icon {
-            color: var(--fire-color);
-            font-size: 0.9rem;
-            animation: pulse-fire 1.5s infinite;
+
+        /* --- BADGE 'TOP' DESIGN --- */
+        .top-badge {
+            background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%); /* Gradasi Emas ke Oranye */
+            color: white;
+            font-size: 0.65rem;
+            font-weight: 800;
+            padding: 2px 6px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 2px 4px rgba(217, 119, 6, 0.2);
+            flex-shrink: 0; /* Mencegah badge mengecil */
+            display: inline-block;
             margin-left: 8px;
         }
-        @keyframes pulse-fire {
-            0% { transform: scale(1); opacity: 0.8; }
-            50% { transform: scale(1.2); opacity: 1; text-shadow: 0 0 5px rgba(255, 69, 0, 0.5); }
-            100% { transform: scale(1); opacity: 0.8; }
-        }
+
         .no-suggestion {
             padding: 12px 16px;
             font-size: 0.85rem;
@@ -670,17 +674,17 @@
 
         /* --- STYLE TAMBAHAN: TIMER LOCKED --- */
         .btn-confirm-wa.locked {
-            background-color: #9ca3af;
+            background-color: #9ca3af; 
             cursor: not-allowed;
             opacity: 0.7;
-            pointer-events: none;
+            pointer-events: none; 
             box-shadow: none;
             transform: none;
         }
         
         .mt-auto { margin-top: auto; }
 
-        /* --- QRIS POPUP MODAL (UPDATED) --- */
+        /* --- QRIS POPUP MODAL --- */
         .qris-modal-overlay {
             position: fixed; inset: 0; background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(5px);
             z-index: 3000; display: flex; align-items: center; justify-content: center;
@@ -777,7 +781,7 @@
         @keyframes slideDown { to { opacity: 1; transform: translateY(0); } }
         @keyframes fadeOut { to { opacity: 0; transform: translateY(-10px); } }
 
-        /* --- CORNER AD POPUP (UPDATED TRANSPARENCY LOGIC) --- */
+        /* --- CORNER AD POPUP --- */
         .ad-popup {
             position: fixed; 
             bottom: 20px; 
@@ -792,7 +796,6 @@
             animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1);
         }
         
-        /* Class untuk Gambar Transparan (Background jadi transparan) */
         .ad-popup.transparent-mode {
             background: transparent !important;
             box-shadow: none; 
@@ -806,13 +809,11 @@
             display: block; 
         }
 
-        /* Default: Gambar Cover */
         .ad-popup .ad-img img {
             object-fit: cover;
             border-radius: 16px;
         }
 
-        /* Mode Transparan: Gambar Contain */
         .ad-popup.transparent-mode .ad-img img {
             object-fit: contain;
             border-radius: 0;
@@ -1163,7 +1164,7 @@
             if(e.target.id === 'qrisModal') closeQrisModal();
         });
 
-        // --- TIMER LOGIC FUNCTIONS ---
+        // --- TIMER LOGIC FUNCTIONS --- ---
         function lockWhatsAppButton() {
             const btn = document.getElementById('btn-confirm-whatsapp');
             if (paymentLockTimer) clearTimeout(paymentLockTimer);
@@ -1187,7 +1188,7 @@
             }
         }
 
-        // --- HELPERS ---
+        // --- HELPERS --- ---
         const formatRupiah = (num) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(num);
         
         function getField(item, fieldKey) {
@@ -1213,7 +1214,7 @@
             fields = map;
         }
 
-        // --- SEARCH SUGGESTIONS LOGIC (UPDATED: RANKING BY SOLD & FIRE ICON) ---
+        // --- SEARCH SUGGESTIONS LOGIC (UPDATED: TOP BADGE) --- ---
         const searchInput = document.getElementById('searchInput');
         const suggestionsBox = document.getElementById('searchSuggestions');
 
@@ -1233,9 +1234,7 @@
                 const category = (getField(p, 'category') || '').toLowerCase();
                 const soldCount = Number(getField(p, 'sold_count')) || 0;
 
-                // Cek kesesuaian judul atau kategori
                 if (title.includes(query) || category.includes(query)) {
-                    // Gunakan title utama sebagai kunci unik agar tidak duplikat
                     const displayTitle = getField(p, 'title');
                     
                     if (!seenTitles.has(displayTitle)) {
@@ -1266,23 +1265,23 @@
                     // Tentukan Ikon
                     let iconHtml = '<i class="fas fa-search icon-type"></i>';
                     
-                    // LOGIKA IKON API: Jika Index 0 (Paling teratas/Terlaris), tambahkan api
-                    let fireIconHtml = '';
+                    // LOGIKA BADGE TOP: Jika Index 0 (Paling teratas), tampilkan badge
+                    let topBadgeHtml = '';
                     if (index === 0) {
-                        fireIconHtml = '<i class="fas fa-fire fire-icon" title="Paling Banyak Terpakai"></i>';
+                        topBadgeHtml = '<span class="top-badge">TOP</span>';
                     }
 
                     div.innerHTML = `
                         <div class="suggestion-content">
                             ${iconHtml} ${item.text}
                         </div>
-                        ${fireIconHtml}
+                        ${topBadgeHtml}
                     `;
                     
                     div.onclick = () => {
                         searchInput.value = item.text;
                         suggestionsBox.classList.remove('active');
-                        filterLogic(); // Trigger pencarian
+                        filterLogic(); 
                     };
                     suggestionsBox.appendChild(div);
                 });
@@ -1301,7 +1300,7 @@
             }
         });
 
-        // --- RENDER CATEGORIES (DYNAMIC) ---
+        // --- RENDER CATEGORIES (DYNAMIC) --- ---
         function renderCategories() {
             const container = document.getElementById('filterBar');
             container.innerHTML = ''; 
@@ -1325,7 +1324,7 @@
             });
         }
 
-        // --- FETCH FUNCTIONS ---
+        // --- FETCH FUNCTIONS --- ---
         async function fetchAdminNumbers() {
             if (useSupabase) {
                 const { data } = await supabase.from('no_wa').select('nomor');
@@ -1412,7 +1411,7 @@
             }
         }
 
-        // --- MANAJER SLIDER GAMBAR KARTU PRODUK ---
+        // --- MANAJER SLIDER GAMBAR KARTU PRODUK --- ---
         const cardSliders = {}; 
 
         function initCardSlider(cardElement, productId) {
@@ -1446,7 +1445,7 @@
             start();
         }
 
-        // --- RENDER FUNCTIONS ---
+        // --- RENDER FUNCTIONS --- ---
         function renderProducts() {
             const grid = document.getElementById('productGrid');
             grid.innerHTML = '';
@@ -1576,7 +1575,7 @@
             });
         }
 
-        // --- INIT & HERO SLIDER ---
+        // --- INIT & HERO SLIDER --- ---
         let slideIndex = 0;
         let slideInterval;
 
@@ -1613,7 +1612,7 @@
         window.nextSlide = nextSlide;
         window.prevSlide = prevSlide;
 
-        // --- FILTER ---
+        // --- FILTER --- ---
         window.setCategory = function(cat, el) {
             currentCategory = cat;
             document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
