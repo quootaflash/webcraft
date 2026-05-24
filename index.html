@@ -7,7 +7,7 @@
     <title>WRITEHUB - INDONESIA</title>
     
     <!-- Font Google: Inter -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
     <!-- Ikon FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -31,6 +31,7 @@
             --danger: #ef4444;
             --success: #10b981;
             --warning: #f59e0b;
+            --category-color: #8b5cf6; /* Ungu untuk kategori */
         }
 
         /* --- RESET --- */
@@ -73,10 +74,11 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            font-weight: 700;
-            font-size: 1.1rem;
+            font-weight: 800;
+            font-size: 1.2rem;
             color: var(--text-main);
             white-space: nowrap;
+            letter-spacing: -0.5px;
         }
         .logo img { height: 28px; width: auto; }
 
@@ -88,7 +90,7 @@
 
         .search-box input {
             width: 100%;
-            padding: 10px 16px 10px 36px;
+            padding: 11px 16px 11px 42px; /* Padding kiri lebih besar untuk ruang badge */
             border-radius: 50px;
             background: var(--bg-body);
             border: 1px solid transparent;
@@ -107,11 +109,11 @@
             top: 50%;
             transform: translateY(-50%);
             color: var(--text-muted);
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             z-index: 2;
         }
 
-        /* --- SEARCH SUGGESTIONS (FIXED & ALIGNED) --- */
+        /* --- SEARCH SUGGESTIONS (NEW LOGIC: NO ICONS, COLOR BADGES, SMART RANKING) --- */
         .search-suggestions {
             position: absolute;
             top: 115%;
@@ -146,9 +148,9 @@
             font-size: 0.9rem;
             color: var(--text-main);
             cursor: pointer;
-            display: flex;       /* Flexbox utama */
-            align-items: center; /* PENTING: Menjaga ikon dan teks sejajar vertikal */
-            gap: 12px;          /* Jarak tetap */
+            display: flex;       
+            align-items: center; 
+            gap: 12px;          
             transition: background 0.2s;
             border-radius: 8px; 
             margin: 0 8px; 
@@ -162,50 +164,33 @@
             background: var(--primary-light);
         }
 
-        /* Wrapper Ikon FIXED - Tidak akan keluar kotak */
-        .suggestion-icon-wrapper {
-            width: 36px;      /* Ukuran tetap */
-            height: 36px;
-            min-width: 36px; /* Mencegah menyusut di layar kecil */
-            min-height: 36px;
-            
-            display: flex;
-            align-items: center;
-            justify-content: center; /* Posisi ikon tepat di tengah kotak */
-            
-            border-radius: 10px; /* Sedikit rounded agar lebih modern */
-            flex-shrink: 0; /* PENTING: Mencegah ikon tertekan/bergerak */
-        }
-        
-        .suggestion-icon-wrapper i {
-            font-size: 1rem;   /* Ukuran ikon pas di tengah */
-            line-height: 1;
+        /* --- BADGE WARNA (PENGGANTI IKON) --- */
+        .suggestion-badge {
+            width: 10px;     /* Lebar tetap */
+            height: 10px;
+            border-radius: 50%; /* Bulat sempurna (Dot) */
+            flex-shrink: 0; 
         }
 
-        /* --- VARIASI WARNA BERDASARKAN TIPE --- */
-
-        /* 1. Tipe: PRODUK (Biru Utama) */
-        .type-product .suggestion-icon-wrapper {
-            background-color: rgba(37, 99, 235, 0.1); 
-            color: var(--primary);
+        /* 1. PRODUK (Biru) */
+        .type-product .suggestion-badge {
+            background-color: var(--primary);
         }
 
-        /* 2. Tipe: KATEGORI (Oranye) */
-        .type-category .suggestion-icon-wrapper {
-            background-color: rgba(245, 158, 11, 0.1); 
-            color: var(--warning);
+        /* 2. KATEGORI (Ungu) */
+        .type-category .suggestion-badge {
+            background-color: var(--category-color);
         }
 
-        /* 3. Tipe: KATA KUNCI (Abu-abu) */
-        .type-keyword .suggestion-icon-wrapper {
-            background-color: #f1f5f9; 
-            color: var(--text-muted);
+        /* 3. POPULER / BEST SELLER (Emas) */
+        .type-popular .suggestion-badge {
+            background-color: var(--warning);
+            box-shadow: 0 0 6px rgba(245, 158, 11, 0.4); /* Efek glow untuk menarik perhatian */
         }
 
-        /* 4. Tipe: TIDAK ADA (Merah Muda) */
-        .type-none .suggestion-icon-wrapper {
-            background-color: rgba(239, 68, 68, 0.1);
-            color: var(--danger);
+        /* 4. TIDAK ADA (Merah) */
+        .type-none .suggestion-badge {
+            background-color: var(--danger);
         }
 
         /* Styling Area Teks */
@@ -215,8 +200,20 @@
             white-space: nowrap;  
             overflow: hidden;     
             text-overflow: ellipsis; 
-            line-height: 1.2;
+            line-height: 1.3;
             font-weight: 500;
+        }
+
+        .suggestion-subtext {
+            font-size: 0.7rem;
+            color: var(--warning);
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-left: auto; /* Dorong ke kanan */
+            background: rgba(245, 158, 11, 0.1);
+            padding: 2px 6px;
+            border-radius: 4px;
+            white-space: nowrap;
         }
 
         .no-suggestion {
@@ -227,7 +224,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
+            gap: 8px;
         }
 
         /* Scrollbar kustom */
@@ -904,7 +901,7 @@
         .modal-info::-webkit-scrollbar-thumb, .payment-view::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
     </style>
 </head>
-<body oncontextmenu="return false;">
+<body>
 
     <!-- Toast Container -->
     <div class="toast-container" id="toastContainer"></div>
@@ -1296,7 +1293,7 @@
             fields = map;
         }
 
-        // --- SEARCH SUGGESTIONS LOGIC (FINAL ALIGNMENT) ---
+        // --- SEARCH SUGGESTIONS LOGIC (AGGRESSIVE & COLOR BADGES) --- */
         const searchInput = document.getElementById('searchInput');
         const suggestionsBox = document.getElementById('searchSuggestions');
 
@@ -1314,18 +1311,28 @@
             products.forEach(p => {
                 const title = (getField(p, 'title') || '').toLowerCase();
                 const category = (getField(p, 'category') || '').toLowerCase();
+                const soldCount = Number(getField(p, 'sold_count') || 0);
                 
+                // Logika Agresif: Cek Judul
                 if (title.includes(query)) {
-                    matches.push({ type: 'product', text: getField(p, 'title') });
-                    // Tambahkan kata individual (hanya jika panjang > 3)
+                    // Tambahkan properti tambahan untuk ranking
+                    matches.push({ 
+                        type: 'product', 
+                        text: getField(p, 'title'),
+                        soldCount: soldCount,
+                        isPopular: soldCount > 100 // Contoh threshold populer
+                    });
+                    // Tambahkan kata individual
                     title.split(' ').forEach(w => { if(w.length > 3) keywords.add(w); });
                 }
+                
+                // Logika Agresif: Cek Kategori
                 if (category.includes(query) && !matches.some(m => m.text === category)) {
                     matches.push({ type: 'category', text: getField(p, 'category') });
                 }
             });
 
-            // Jika tidak ada match produk, cari di keywords tambahan
+            // Fallback: Cari di keywords tambahan jika tidak ada produk
             if (matches.length === 0) {
                  keywords.forEach(k => {
                      if(k.includes(query)) matches.push({ type: 'keyword', text: k });
@@ -1336,42 +1343,57 @@
                 const div = document.createElement('div');
                 div.className = 'no-suggestion type-none';
                 div.innerHTML = `
-                    <div class="suggestion-icon-wrapper">
-                        <i class="fas fa-circle-exclamation"></i>
-                    </div>
+                    <div class="suggestion-badge"></div>
                     <span>Tidak ada saran pencarian</span>
                 `;
                 suggestionsBox.appendChild(div);
             } else {
+                // --- SMART RANKING LOGIC ---
+                // Urutkan berdasarkan Popularitas (soldCount) terlebih dahulu
+                // Produk populer akan naik ke atas (Aggressive Ranking)
+                matches.sort((a, b) => {
+                    const scoreA = (a.soldCount || 0) + (a.type === 'category' ? 50 : 0); // Beri poin sedikit ke kategori agar tetap muncul
+                    const scoreB = (b.soldCount || 0) + (b.type === 'category' ? 50 : 0);
+                    return scoreB - scoreA;
+                });
+
                 // Batasi maksimal 5 saran
                 matches.slice(0, 5).forEach(match => {
                     const div = document.createElement('div');
                     div.className = 'suggestion-item';
                     
-                    // Tentukan Kelas & Ikon berdasarkan Tipe
+                    // Tentukan Kelas Wana (Tanpa Ikon, hanya Badge)
                     let typeClass = '';
-                    let iconClass = '';
-
+                    
                     if (match.type === 'product') {
-                        typeClass = 'type-product';
-                        iconClass = 'fa-layer-group';
+                        // Jika populer, gunakan style emas, jika tidak gunakan biru
+                        typeClass = match.isPopular ? 'type-popular' : 'type-product';
                     } else if (match.type === 'category') {
                         typeClass = 'type-category';
-                        iconClass = 'fa-tags';
                     } else {
-                        typeClass = 'type-keyword';
-                        iconClass = 'fa-magnifying-glass';
+                        typeClass = 'type-keyword'; // Asumsi keyword menggunakan style default/abu (tidak didefinisikan khusus di CSS, biarkan inherit atau buat abu jika mau)
+                        // Kita biarkan tanpa class khusus untuk keyword agar lebih clean (atau bisa buat abu-abu)
+                        // Di sini kita biarkan kosong untuk Keyword agar tampil bersih, atau gunakan type-product sebagai default
+                        typeClass = 'type-product';
                     }
                     
                     div.classList.add(typeClass);
                     
+                    // Struktur HTML: Hanya Badge Warna + Teks
+                    let htmlBadge = `<div class="suggestion-badge"></div>`;
+                    let htmlSubtext = '';
+
+                    // Tambahkan label "Paling Banyak Terpakai" jika produk populer
+                    if (match.isPopular) {
+                        htmlSubtext = `<div class="suggestion-subtext">Paling Banyak Terpakai</div>`;
+                    }
+                    
                     div.innerHTML = `
-                        <div class="suggestion-icon-wrapper">
-                            <i class="fas ${iconClass}"></i>
-                        </div>
+                        ${htmlBadge}
                         <div class="suggestion-text">
                             ${match.text}
                         </div>
+                        ${htmlSubtext}
                     `;
                     
                     div.onclick = () => {
@@ -2021,6 +2043,7 @@
         init();
     </script>
     <script>
+        // Proteksi Klik Kanan dan Inspect Element tetap aktif sesuai standar web modern
         document.addEventListener('contextmenu', e => e.preventDefault());
         document.onkeydown = function(e) {
             if(e.keyCode == 123 || 
