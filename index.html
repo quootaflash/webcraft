@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
@@ -194,12 +194,19 @@
             text-align: center;
         }
 
-        /* --- HERO SLIDER --- */
+        /* --- HERO SLIDER (UPDATED TO 1280x500 ASPECT RATIO) --- */
         .hero-section {
             margin-top: 20px;
             position: relative;
             width: 100%;
-            aspect-ratio: 21 / 9; 
+            /* Diperbarui: Rasio asli 1280 / 500 = 2.56 */
+            aspect-ratio: 1280 / 500; 
+            
+            /* Agar tidak melebar melebihi ukuran asli gambar pada layar ultra-wide */
+            max-width: 1280px;
+            margin-left: auto;
+            margin-right: auto;
+
             background: #e2e8f0;
             border-radius: var(--radius);
             overflow: hidden;
