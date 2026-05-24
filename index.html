@@ -111,7 +111,7 @@
             z-index: 2;
         }
 
-        /* --- SEARCH SUGGESTIONS (PROFESSIONAL GROUPING) --- */
+        /* --- SEARCH SUGGESTIONS (FIXED & ALIGNED) --- */
         .search-suggestions {
             position: absolute;
             top: 115%;
@@ -146,12 +146,12 @@
             font-size: 0.9rem;
             color: var(--text-main);
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 12px;
+            display: flex;       /* Flexbox utama */
+            align-items: center; /* PENTING: Menjaga ikon dan teks sejajar vertikal */
+            gap: 12px;          /* Jarak tetap */
             transition: background 0.2s;
-            border-radius: 8px; /* Rounded corners untuk item agar rapi */
-            margin: 0 8px; /* Margin horizontal agar tidak menempel pinggir */
+            border-radius: 8px; 
+            margin: 0 8px; 
         }
 
         .suggestion-item:hover {
@@ -162,42 +162,47 @@
             background: var(--primary-light);
         }
 
-        /* Wrapper Ikon dengan Background (Badge Style) */
+        /* Wrapper Ikon FIXED - Tidak akan keluar kotak */
         .suggestion-icon-wrapper {
-            width: 32px; /* Ukuran tetap kotak ikon */
-            height: 32px;
+            width: 36px;      /* Ukuran tetap */
+            height: 36px;
+            min-width: 36px; /* Mencegah menyusut di layar kecil */
+            min-height: 36px;
+            
             display: flex;
             align-items: center;
-            justify-content: center;
-            border-radius: 8px; /* Rounded Square */
-            flex-shrink: 0; /* Mencegah ikon mengecil */
+            justify-content: center; /* Posisi ikon tepat di tengah kotak */
+            
+            border-radius: 10px; /* Sedikit rounded agar lebih modern */
+            flex-shrink: 0; /* PENTING: Mencegah ikon tertekan/bergerak */
         }
         
         .suggestion-icon-wrapper i {
-            font-size: 0.9rem;
+            font-size: 1rem;   /* Ukuran ikon pas di tengah */
+            line-height: 1;
         }
 
-        /* --- VARIASI WARNA & IKON BERDASARKAN TIPE --- */
+        /* --- VARIASI WARNA BERDASARKAN TIPE --- */
 
         /* 1. Tipe: PRODUK (Biru Utama) */
         .type-product .suggestion-icon-wrapper {
-            background-color: rgba(37, 99, 235, 0.1); /* Biru sangat muda */
+            background-color: rgba(37, 99, 235, 0.1); 
             color: var(--primary);
         }
 
-        /* 2. Tipe: KATEGORI (Oranye/Warning) */
+        /* 2. Tipe: KATEGORI (Oranye) */
         .type-category .suggestion-icon-wrapper {
-            background-color: rgba(245, 158, 11, 0.1); /* Oranye sangat muda */
+            background-color: rgba(245, 158, 11, 0.1); 
             color: var(--warning);
         }
 
-        /* 3. Tipe: KATA KUNCI/KEYWORD (Abu-abu) */
+        /* 3. Tipe: KATA KUNCI (Abu-abu) */
         .type-keyword .suggestion-icon-wrapper {
-            background-color: #f1f5f9; /* Abu muda */
+            background-color: #f1f5f9; 
             color: var(--text-muted);
         }
 
-        /* 4. Tipe: TIDAK ADA HASIL (Merah Muda) */
+        /* 4. Tipe: TIDAK ADA (Merah Muda) */
         .type-none .suggestion-icon-wrapper {
             background-color: rgba(239, 68, 68, 0.1);
             color: var(--danger);
@@ -222,7 +227,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            gap: 10px;
         }
 
         /* Scrollbar kustom */
@@ -1291,7 +1296,7 @@
             fields = map;
         }
 
-        // --- SEARCH SUGGESTIONS LOGIC (CLEAN GROUPING) ---
+        // --- SEARCH SUGGESTIONS LOGIC (FINAL ALIGNMENT) ---
         const searchInput = document.getElementById('searchInput');
         const suggestionsBox = document.getElementById('searchSuggestions');
 
@@ -1349,16 +1354,15 @@
 
                     if (match.type === 'product') {
                         typeClass = 'type-product';
-                        iconClass = 'fa-layer-group'; // Ikon Tumpukan/Koleksi
+                        iconClass = 'fa-layer-group';
                     } else if (match.type === 'category') {
                         typeClass = 'type-category';
-                        iconClass = 'fa-tags'; // Ikon Label
+                        iconClass = 'fa-tags';
                     } else {
                         typeClass = 'type-keyword';
-                        iconClass = 'fa-magnifying-glass'; // Ikon Cari
+                        iconClass = 'fa-magnifying-glass';
                     }
                     
-                    // Struktur HTML yang bersih
                     div.classList.add(typeClass);
                     
                     div.innerHTML = `
