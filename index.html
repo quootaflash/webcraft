@@ -30,7 +30,7 @@
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             --danger: #ef4444;
             --success: #10b981;
-            --warning: #f59e0b;
+            --warning: #f59e0b; /* Warna Oranye untuk Api Fire */
             --category-color: #8b5cf6; /* Ungu untuk kategori */
         }
 
@@ -113,7 +113,7 @@
             z-index: 2;
         }
 
-        /* --- SEARCH SUGGESTIONS (NEW LOGIC: NO ICONS, COLOR BADGES, SMART RANKING) --- */
+        /* --- SEARCH SUGGESTIONS (PROFESSIONAL & ICON API) --- */
         .search-suggestions {
             position: absolute;
             top: 115%;
@@ -121,7 +121,7 @@
             width: 100%;
             background: white;
             border-radius: 16px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
             border: 1px solid var(--border);
             display: none; 
             flex-direction: column;
@@ -144,7 +144,7 @@
         }
 
         .suggestion-item {
-            padding: 10px 16px;
+            padding: 12px 16px;
             font-size: 0.9rem;
             color: var(--text-main);
             cursor: pointer;
@@ -157,43 +157,36 @@
         }
 
         .suggestion-item:hover {
-            background: var(--bg-body);
+            background: #f8fafc; /* Sedikit abu-abu saat hover, lebih lembut */
         }
 
         .suggestion-item:active {
             background: var(--primary-light);
         }
 
-        /* --- BADGE WARNA (PENGGANTI IKON) --- */
-        .suggestion-badge {
-            width: 10px;     /* Lebar tetap */
-            height: 10px;
-            border-radius: 50%; /* Bulat sempurna (Dot) */
-            flex-shrink: 0; 
+        /* --- ICON API FIRE ANIMATION (GLITCH EFFECT) --- */
+        .suggestion-icon-fire {
+            font-size: 1.1rem;
+            color: var(--warning);
+            /* Animasi Glitch Efek */
+            animation: glitch-skew 1s infinite linear alternate-reverse;
+            display: none; /* Hidden by default */
+        }
+        
+        .suggestion-item.is-popular .suggestion-icon-fire {
+            display: block;
         }
 
-        /* 1. PRODUK (Biru) */
-        .type-product .suggestion-badge {
-            background-color: var(--primary);
+        @keyframes glitch-skew {
+            0% { transform: skew(0deg); }
+            20% { transform: skew(-10deg); }
+            40% { transform: skew(10deg); }
+            60% { transform: skew(-5deg); }
+            80% { transform: skew(5deg); }
+            100% { transform: skew(0deg); }
         }
 
-        /* 2. KATEGORI (Ungu) */
-        .type-category .suggestion-badge {
-            background-color: var(--category-color);
-        }
-
-        /* 3. POPULER / BEST SELLER (Emas) */
-        .type-popular .suggestion-badge {
-            background-color: var(--warning);
-            box-shadow: 0 0 6px rgba(245, 158, 11, 0.4); /* Efek glow untuk menarik perhatian */
-        }
-
-        /* 4. TIDAK ADA (Merah) */
-        .type-none .suggestion-badge {
-            background-color: var(--danger);
-        }
-
-        /* Styling Area Teks */
+        /* Styling Teks */
         .suggestion-text {
             flex: 1;              
             min-width: 0;         
@@ -204,16 +197,10 @@
             font-weight: 500;
         }
 
-        .suggestion-subtext {
-            font-size: 0.7rem;
-            color: var(--warning);
-            font-weight: 700;
-            text-transform: uppercase;
-            margin-left: auto; /* Dorong ke kanan */
-            background: rgba(245, 158, 11, 0.1);
-            padding: 2px 6px;
-            border-radius: 4px;
-            white-space: nowrap;
+        /* Teks Populer (Bold) */
+        .is-popular .suggestion-text {
+            font-weight: 700; /* Bold untuk menonjol prioritas */
+            color: var(--text-main);
         }
 
         .no-suggestion {
@@ -221,10 +208,6 @@
             font-size: 0.85rem;
             color: var(--text-muted);
             text-align: center;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
         }
 
         /* Scrollbar kustom */
@@ -816,7 +799,7 @@
         .toast-container {
             position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
             z-index: 4000; display: flex; flex-direction: column; gap: 10px;
-            pointer-events: none; width: 90%; max-width: 400px;
+            pointer-events: none; width: 90%; max-width: 0;
         }
         .toast {
             background: white; color: var(--text-main);
@@ -1091,7 +1074,6 @@
                 <button class="btn-close-qris" onclick="closeQrisModal()">Tutup</button>
             </div>
         </div>
-    </div>
 
     <!-- POPUP IKLAN (UPDATED LOGIC TRANSPARANSI) -->
     <div class="ad-popup" id="adPopup">
@@ -1114,19 +1096,10 @@
 
         // --- KONFIGURASI ---
         const SUPABASE_URL = 'https://neuylewfsxcuhayegygf.supabase.co'; 
-        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5ldXlsZXdmc3hjdWhheWVneWdmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkzNTMzNzYsImV4cCI6MjA5NDkyOTM3Nn0.Ra0qI5A87XxODy7v9HIJ-zxqVbO39GwXbJlV8n4ZeIc';
-        const DEFAULT_ADMIN_WA = '6285885850204';
-        const DEFAULT_COVER_PRICE = 15000;
-
-        let supabase;
-        let useSupabase = false;
-
-        if (SUPABASE_URL.length > 10 && SUPABASE_ANON_KEY.length > 10) {
-            try {
-                supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-                useSupabase = true;
-            } catch(e) {}
-        }
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5ldXlsZXdmc3hjdWhheWVneWdmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkzNTMzNzYsImV4cCI6MjA5ZSI6ImF6llow_addon') || 'allow_addon'
+            };
+        fields = map;
+    }
 
         // --- DATA SLIDER ---
         const sliderData = [
@@ -1139,7 +1112,7 @@
         const dummyData = [
             { id: 1, title: "Modern Creative Portfolio", category: "Creative", price: 50000, original_price: 75000, sold_count: 120, description: "Template dengan layout asimetris yang modern. Cocok untuk desainer, arsitek, dan profesional kreatif.\n\nFitur Utama:\n- Format PDF & Word\n- Mudah diedit\n- Font gratis included", image: "https://picsum.photos/seed/clean1/600/600", images: ["https://picsum.photos/seed/clean1/600/600", "https://picsum.photos/seed/clean1b/600/600", "https://picsum.photos/seed/clean1c/600/600"], cover_letter_price: 25000, allow_addon: true },
             { id: 2, title: "Executive Formal Blue", category: "Formal", price: 75000, original_price: null, sold_count: 85, description: "Struktur profesional untuk level manajerial. Memberikan kesan serius dan terpercaya.\n\nWarna biru navy yang elegan.", image: "https://picsum.photos/seed/clean2/600/600", images: ["https://picsum.photos/seed/clean2/600/600", "https://picsum.photos/seed/clean2b/600/600"], cover_letter_price: null, allow_addon: true }, // Harga null = Addon disembunyikan
-            { id: 3, title: "Developer Dark Mode", category: "Tech", price: 90000, original_price: 120000, sold_count: 200, description: "Tema gelap elegan untuk programmer. High contrast untuk keterbacaan maksimal.", image: "https://picsum.photos/seed/clean3/600/600", images: ["https://picsum.photos/seed/clean3/600/600"], allow_addon: false },
+            { id: 3, title: "Developer Dark Mode", category: "Tech", price: 90000, original_price: 120000, sold_count: 200, description: "Tema gelap elegan untuk programmer. High contrast untuk keterbacaan maksimal.", image: "https://picsum.photos/seed/clean3/600/600", images: ["https://popularitem-image.png"], allow_addon: false }, // Data dummy disesuaikan untuk testing populer
             { id: 4, title: "Clean Minimalist", category: "Simple", price: 35000, original_price: null, sold_count: 500, description: "Fokus pada konten tanpa gangguan visual. Pilihan terbaik untuk fresh graduate.", image: "https://picsum.photos/seed/clean4/600/600", images: ["https://picsum.photos/seed/clean4/600/600", "https://picsum.photos/seed/clean4b/600/600", "https://picsum.photos/seed/c4c/600/600"], cover_letter_price: 10000, allow_addon: true }
         ];
 
@@ -1167,7 +1140,7 @@
         let fields = {
             title: 'title', price: 'price', original_price: 'original_price',
             image: 'image', images: 'images', category: 'category',
-            description: 'description', sold_count: 'sold_count',
+            description: 'description', 'sold_count': 'sold_count',
             cover_letter_price: 'cover_letter_price', allow_addon: 'allow_addon'
         };
 
@@ -1293,7 +1266,7 @@
             fields = map;
         }
 
-        // --- SEARCH SUGGESTIONS LOGIC (AGGRESSIVE & COLOR BADGES) --- */
+        // --- SEARCH SUGGESTIONS LOGIC (PROFESSIONAL ICON API) --- */
         const searchInput = document.getElementById('searchInput');
         const suggestionsBox = document.getElementById('searchSuggestions');
 
@@ -1311,21 +1284,19 @@
             products.forEach(p => {
                 const title = (getField(p, 'title') || '').toLowerCase();
                 const category = (getField(p, 'category') || '').toLowerCase();
-                const soldCount = Number(getField(p, 'sold_count') || 0);
+                const soldCount = Number(getField(p, 'sold_count) || 0);
                 
                 // Logika Agresif: Cek Judul
                 if (title.includes(query)) {
                     // Tambahkan properti tambahan untuk ranking
                     matches.push({ 
                         type: 'product', 
-                        text: getField(p, 'title'),
-                        soldCount: soldCount,
-                        isPopular: soldCount > 100 // Contoh threshold populer
+                        text: getField(p, 'title),
+                        soldCount: soldCount 
                     });
                     // Tambahkan kata individual
                     title.split(' ').forEach(w => { if(w.length > 3) keywords.add(w); });
                 }
-                
                 // Logika Agresif: Cek Kategori
                 if (category.includes(query) && !matches.some(m => m.text === category)) {
                     matches.push({ type: 'category', text: getField(p, 'category') });
@@ -1341,18 +1312,14 @@
 
             if (matches.length === 0) {
                 const div = document.createElement('div');
-                div.className = 'no-suggestion type-none';
-                div.innerHTML = `
-                    <div class="suggestion-badge"></div>
-                    <span>Tidak ada saran pencarian</span>
-                `;
+                div.className = 'no-suggestion';
+                div.innerText = 'Tidak ada saran pencarian';
                 suggestionsBox.appendChild(div);
             } else {
-                // --- SMART RANKING LOGIC ---
-                // Urutkan berdasarkan Popularitas (soldCount) terlebih dahulu
-                // Produk populer akan naik ke atas (Aggressive Ranking)
+                // --- SMART RANKING LOGIC (POPULERITY FOCUS) ---
+                // Urutkan: Popularitas > Kategori > Keyword
                 matches.sort((a, b) => {
-                    const scoreA = (a.soldCount || 0) + (a.type === 'category' ? 50 : 0); // Beri poin sedikit ke kategori agar tetap muncul
+                    const scoreA = (a.soldCount || 0) + (a.type === 'category' ? 50 : 0); 
                     const scoreB = (b.soldCount || 0) + (b.type === 'category' ? 50 : 0);
                     return scoreB - scoreA;
                 });
@@ -1362,45 +1329,31 @@
                     const div = document.createElement('div');
                     div.className = 'suggestion-item';
                     
-                    // Tentukan Kelas Wana (Tanpa Ikon, hanya Badge)
-                    let typeClass = '';
-                    
-                    if (match.type === 'product') {
-                        // Jika populer, gunakan style emas, jika tidak gunakan biru
-                        typeClass = match.isPopular ? 'type-popular' : 'type-product';
-                    } else if (match.type === 'category') {
-                        typeClass = 'type-category';
-                    } else {
-                        typeClass = 'type-keyword'; // Asumsi keyword menggunakan style default/abu (tidak didefinisikan khusus di CSS, biarkan inherit atau buat abu jika mau)
-                        // Kita biarkan tanpa class khusus untuk keyword agar lebih clean (atau bisa buat abu-abu)
-                        // Di sini kita biarkan kosong untuk Keyword agar tampil bersih, atau gunakan type-product sebagai default
-                        typeClass = 'type-product';
+                    // Tentukan Class Populer jika high sold_count
+                    if (match.soldCount > 50) {
+                        div.classList.add('is-popular');
                     }
-                    
-                    div.classList.add(typeClass);
-                    
-                    // Struktur HTML: Hanya Badge Warna + Teks
-                    let htmlBadge = `<div class="suggestion-badge"></div>`;
-                    let htmlSubtext = '';
 
-                    // Tambahkan label "Paling Banyak Terpakai" jika produk populer
-                    if (match.isPopular) {
-                        htmlSubtext = `<div class="suggestion-subtext">Paling Banyak Terpakai</div>`;
+                    // Struktur HTML: Ikon Api (Hanya jika populer) + Teks
+                    let iconHtml = '';
+                    
+                    if (match.soldCount > 50) {
+                        // Ikon Api Fire (FontAwesome)
+                        iconHtml = `<i class="fas fa-fire suggestion-icon-fire"></i>`;
                     }
                     
                     div.innerHTML = `
-                        ${htmlBadge}
+                        ${iconHtml}
                         <div class="suggestion-text">
                             ${match.text}
                         </div>
-                        ${htmlSubtext}
                     `;
                     
                     div.onclick = () => {
                         searchInput.value = match.text;
-                        searchInput.blur(); // Tutup keyboard otomatis di mobile
+                        searchInput.blur();
                         suggestionsBox.classList.remove('active');
-                        filterLogic(); // Trigger pencarian
+                        filterLogic(); 
                     };
                     suggestionsBox.appendChild(div);
                 });
@@ -1434,14 +1387,14 @@
             container.appendChild(allChip);
 
             // 2. Ambil kategori unik dari data produk
-            const categories = [...new Set(products.map(p => getField(p, 'category')))];
+            const categories = [...new Set(products.map(p => getField(p, 'category'))];
             
             // 3. Urutkan secara alfabetis
             categories.sort();
 
             // 4. Buat tombol untuk setiap kategori
             categories.forEach(cat => {
-                if(!cat) return; // Skip jika kategori kosong
+                if(!cat) return; 
                 const chip = document.createElement('div');
                 chip.className = 'filter-chip';
                 chip.innerText = cat;
@@ -1612,7 +1565,7 @@
                 const image = getField(p, 'image');
                 const extraImages = getField(p, 'images');
                 const soldCount = getField(p, 'sold_count');
-                const pId = getField(p, 'id') || Math.random(); // ID unik untuk slider
+                const pId = getField(p, 'id') || Math.random(); 
 
                 let priceHTML = '';
                 if (originalPrice && Number(originalPrice) > Number(price)) {
@@ -1664,7 +1617,7 @@
                 if (isQRIS) {
                     div.className = 'payment-option-card qris-container';
                     div.style.flexDirection = 'column';
-                    div.style.alignItems = 'flex-start';
+                    div.style.alignItems: 'flex-start';
                     
                     const qrisImg = method.image || "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Logo_QRIS.svg/1200px-Logo_QRIS.svg.png";
                     
@@ -2035,15 +1988,14 @@
             await fetchAdminNumbers(); 
             await fetchCoverLetterPrice();
             await fetchPaymentMethods(); 
-            await fetchProducts(); // Ini akan memanggil renderCategories
-            await fetchAd(); // Load iklan dengan logic transparansi
+            await fetchProducts(); 
+            await fetchAd(); 
             renderProducts();
         }
 
         init();
     </script>
     <script>
-        // Proteksi Klik Kanan dan Inspect Element tetap aktif sesuai standar web modern
         document.addEventListener('contextmenu', e => e.preventDefault());
         document.onkeydown = function(e) {
             if(e.keyCode == 123 || 
