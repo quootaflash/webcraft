@@ -156,12 +156,12 @@
             flex: 1;
         }
         
-        /* Highlighting Matched Keyword (Underline Blue) */
+        /* Highlighting Matched Keyword (Blue Underline, NO SPACING) */
         .highlight-match {
             color: var(--primary);
             text-decoration: underline;
-            text-decoration-thickness: 2px; /* Ketebalan garis */
-            text-underline-offset: 2px; /* Jarak garis ke teks */
+            text-decoration-thickness: 2px; 
+            /* text-underline-offset: 0; Dihapus agar no spacing */
             font-weight: 600;
         }
 
@@ -1232,7 +1232,7 @@
             fields = map;
         }
 
-        // --- SEARCH SUGGESTIONS LOGIC (UPDATED: UNDERLINE BLUE) --- ---
+        // --- SEARCH SUGGESTIONS LOGIC (UPDATED: NO SPACING) --- ---
         const searchInput = document.getElementById('searchInput');
         const suggestionsBox = document.getElementById('searchSuggestions');
 
@@ -1309,21 +1309,17 @@
                         rankHtml = `<span class="rank-badge">${rankNum}</span>`;
                     }
 
-                    // --- HIGHLIGHT MATCH LOGIC (UPDATED: UNDERLINE) ---
-                    // Cara kerja sama, tapi tanpa tag <span> untuk visual (hanya CSS)
-                    // Namun untuk pembungkus text gunakan split/join
-                    
+                    // --- HIGHLIGHT MATCH LOGIC (UPDATED: NO SPACING) ---
                     // Escape karakter regex
                     const safeQuery = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-                    const regex = new RegExp(`(${safeQuery})`, 'gi');
                     
-                    // Split teks berdasarkan kata kunci yang cocok
-                    // Ini memecah string, lalu menyisipkan span di antar potongan
+                    // Gunakan split/join untuk memisahkan berdasarkan query, 
+                    // memastikan tidak ada spasi tambahan saat menyisipkan span
+                    const regex = new RegExp(`(${safeQuery})`, 'gi');
                     const parts = item.text.split(regex);
                     
-                    // Rebuild HTML string dengan class highlight-match pada kata kunci
                     const highlightedText = parts.map(part => {
-                        // Jika bagian ini cocok dengan query (abaikan case sensitive untuk highlight)
+                        // Cek persamaan (abaikan case sensitive untuk highlight)
                         if (part.toLowerCase() === query) {
                             return `<span class="highlight-match">${part}</span>`;
                         }
@@ -1338,7 +1334,7 @@
                     `;
                     
                     div.onclick = () => {
-                        searchInput.value = item.text; // Set value ke full text (tanpa tag html)
+                        searchInput.value = item.text; 
                         suggestionsBox.classList.remove('active');
                         filterLogic(); 
                     };
