@@ -100,7 +100,7 @@
             border-color: var(--primary);
             box-shadow: 0 0 0 3px var(--primary-light);
         }
-        .search-box i {
+        .search-box i.fa-search {
             position: absolute;
             left: 14px;
             top: 50%;
@@ -110,7 +110,7 @@
             z-index: 2;
         }
 
-        /* --- SEARCH SUGGESTIONS (UPDATED WITH TOP BADGE) --- */
+        /* --- SEARCH SUGGESTIONS (UPDATED: CLEAN & HIERARCHICAL) --- */
         .search-suggestions {
             position: absolute;
             top: 110%;
@@ -125,7 +125,7 @@
             max-height: 300px;
             overflow-y: auto;
             z-index: 1001;
-            padding: 8px 0;
+            padding: 6px 0;
         }
         .search-suggestions.active {
             display: flex;
@@ -155,27 +155,36 @@
             gap: 10px;
             flex: 1;
         }
-        .suggestion-item i.icon-type {
-            color: var(--text-muted);
-            font-size: 0.8rem;
-            width: 20px;
-            text-align: center;
-        }
-
-        /* --- BADGE 'TOP' DESIGN --- */
+        
+        /* --- HIERARCHY BADGES --- */
+        /* 1. Rank 1: TOP Badge (Gold) */
         .top-badge {
-            background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%); /* Gradasi Emas ke Oranye */
+            background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%); 
             color: white;
             font-size: 0.65rem;
             font-weight: 800;
-            padding: 2px 6px;
+            padding: 2px 8px;
             border-radius: 4px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
             box-shadow: 0 2px 4px rgba(217, 119, 6, 0.2);
-            flex-shrink: 0; /* Mencegah badge mengecil */
+            flex-shrink: 0; 
             display: inline-block;
+        }
+
+        /* 2. Rank 2 & 3: Number Badges (Gray) */
+        .rank-badge {
+            background: #f1f5f9;
+            color: #64748b;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 2px 6px;
+            border-radius: 4px;
+            min-width: 20px;
+            text-align: center;
+            flex-shrink: 0;
             margin-left: 8px;
+            border: 1px solid #e2e8f0;
         }
 
         .no-suggestion {
@@ -1111,7 +1120,7 @@
             cover_letter_price: 'cover_letter_price', allow_addon: 'allow_addon'
         };
 
-        // --- CUSTOM ALERT (TOAST) ---
+        // --- CUSTOM ALERT (TOAST) --- ---
         window.showToast = function(message, type = 'success') {
             const container = document.getElementById('toastContainer');
             const toast = document.createElement('div');
@@ -1214,7 +1223,7 @@
             fields = map;
         }
 
-        // --- SEARCH SUGGESTIONS LOGIC (UPDATED: TOP BADGE) --- ---
+        // --- SEARCH SUGGESTIONS LOGIC (UPDATED: SMARTER & HIERARCHY) --- ---
         const searchInput = document.getElementById('searchInput');
         const suggestionsBox = document.getElementById('searchSuggestions');
 
@@ -1228,28 +1237,49 @@
             const suggestionList = [];
             const seenTitles = new Set();
 
-            // 1. Kumpulkan produk yang cocok
+            // 1. Kumpulkan produk yang cocok & Hitung Skor Relevansi (Smart Ranking)
             products.forEach(p => {
                 const title = (getField(p, 'title') || '').toLowerCase();
                 const category = (getField(p, 'category') || '').toLowerCase();
                 const soldCount = Number(getField(p, 'sold_count')) || 0;
+                const displayTitle = getField(p, 'title');
 
                 if (title.includes(query) || category.includes(query)) {
-                    const displayTitle = getField(p, 'title');
-                    
                     if (!seenTitles.has(displayTitle)) {
                         seenTitles.add(displayTitle);
+
+                        // --- SMART SCORING ALGORITHM ---
+                        let score = 0;
+
+                        // Prioritas 1: Exact Match (Poin Tinggi)
+                        if (title === query) {
+                            score += 1000;
+                        } 
+                        // Prioritas 2: Starts With (Poin Sedang)
+                        else if (title.startsWith(query)) {
+                            score += 500;
+                        }
+                        // Prioritas 3: Contains (Poin Rendah)
+                        else if (title.includes(query)) {
+                            score += 100;
+                        }
+
+                        // Tambahkan bobot penjualan (Agar produk laris tetap di atas jika relevansi sama)
+                        // Kita normalisasi sedikit (misal max sold 500 -> score tambah max 50)
+                        score += (soldCount * 0.1); 
+
                         suggestionList.push({
                             type: 'product',
                             text: displayTitle,
-                            sold: soldCount
+                            sold: soldCount,
+                            score: score // Gunakan score untuk sorting
                         });
                     }
                 }
             });
 
-            // 2. URUTKAN berdasarkan sold_count (Terbanyak paling atas)
-            suggestionList.sort((a, b) => b.sold - a.sold);
+            // 2. URUTKAN berdasarkan Score (Cerdas) JETIKA Sold Count (Paling laris)
+            suggestionList.sort((a, b) => b.score - a.score);
 
             if (suggestionList.length === 0) {
                 const div = document.createElement('div');
@@ -1262,20 +1292,26 @@
                     const div = document.createElement('div');
                     div.className = 'suggestion-item';
                     
-                    // Tentukan Ikon
-                    let iconHtml = '<i class="fas fa-search icon-type"></i>';
+                    // --- HIERARKI BADGE SYSTEM ---
+                    // Tidak ada ikon kaca pembesar, hanya badge peringkat
                     
-                    // LOGIKA BADGE TOP: Jika Index 0 (Paling teratas), tampilkan badge
-                    let topBadgeHtml = '';
+                    let rankHtml = '';
+
                     if (index === 0) {
-                        topBadgeHtml = '<span class="top-badge">TOP</span>';
+                        // Rank 1: TOP Badge (Gold)
+                        rankHtml = '<span class="top-badge">TOP</span>';
+                    } else if (index === 1 || index === 2) {
+                        // Rank 2 & 3: Angka Badge (Gray)
+                        const rankNum = index + 1;
+                        rankHtml = `<span class="rank-badge">${rankNum}</span>`;
                     }
+                    // Rank 4+ : Tidak ada badge (bersih)
 
                     div.innerHTML = `
                         <div class="suggestion-content">
-                            ${iconHtml} ${item.text}
+                            ${item.text}
                         </div>
-                        ${topBadgeHtml}
+                        ${rankHtml}
                     `;
                     
                     div.onclick = () => {
