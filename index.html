@@ -30,6 +30,7 @@
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             --danger: #ef4444;
             --success: #10b981;
+            --warning: #f59e0b;
         }
 
         /* --- RESET --- */
@@ -110,7 +111,7 @@
             z-index: 2;
         }
 
-        /* --- SEARCH SUGGESTIONS (ADVANCED LAYOUT) --- */
+        /* --- SEARCH SUGGESTIONS (PROFESSIONAL GROUPING) --- */
         .search-suggestions {
             position: absolute;
             top: 115%;
@@ -125,7 +126,7 @@
             max-height: 50vh;
             overflow-y: auto;
             z-index: 1002; 
-            padding: 6px 0; /* Sedikit padding vertical */
+            padding: 8px 0; 
             overscroll-behavior: contain; 
             -webkit-overflow-scrolling: touch; 
         }
@@ -141,45 +142,76 @@
         }
 
         .suggestion-item {
-            padding: 12px 16px; /* Area sentuh nyaman */
-            font-size: 0.9rem; /* Ukuran font standar & profesional */
+            padding: 10px 16px;
+            font-size: 0.9rem;
             color: var(--text-main);
             cursor: pointer;
-            display: flex;       /* Menggunakan Flexbox */
-            align-items: center; /* Posisikan ikon dan teks di tengah secara vertikal */
-            gap: 12px;          /* Jarak tetap antara ikon dan teks */
+            display: flex;
+            align-items: center;
+            gap: 12px;
             transition: background 0.2s;
+            border-radius: 8px; /* Rounded corners untuk item agar rapi */
+            margin: 0 8px; /* Margin horizontal agar tidak menempel pinggir */
         }
 
         .suggestion-item:hover {
             background: var(--bg-body);
-            color: var(--primary);
         }
 
         .suggestion-item:active {
             background: var(--primary-light);
         }
 
-        /* Styling Ikon */
-        .suggestion-icon {
-            color: var(--primary); 
-            font-size: 0.95rem;
-            width: 20px;           /* Lebar tetap agar teks rata */
-            text-align: center;
-            flex-shrink: 0;       /* PENTING: Mencegah ikon mengecil/menimpa teks */
+        /* Wrapper Ikon dengan Background (Badge Style) */
+        .suggestion-icon-wrapper {
+            width: 32px; /* Ukuran tetap kotak ikon */
+            height: 32px;
             display: flex;
             align-items: center;
             justify-content: center;
+            border-radius: 8px; /* Rounded Square */
+            flex-shrink: 0; /* Mencegah ikon mengecil */
+        }
+        
+        .suggestion-icon-wrapper i {
+            font-size: 0.9rem;
+        }
+
+        /* --- VARIASI WARNA & IKON BERDASARKAN TIPE --- */
+
+        /* 1. Tipe: PRODUK (Biru Utama) */
+        .type-product .suggestion-icon-wrapper {
+            background-color: rgba(37, 99, 235, 0.1); /* Biru sangat muda */
+            color: var(--primary);
+        }
+
+        /* 2. Tipe: KATEGORI (Oranye/Warning) */
+        .type-category .suggestion-icon-wrapper {
+            background-color: rgba(245, 158, 11, 0.1); /* Oranye sangat muda */
+            color: var(--warning);
+        }
+
+        /* 3. Tipe: KATA KUNCI/KEYWORD (Abu-abu) */
+        .type-keyword .suggestion-icon-wrapper {
+            background-color: #f1f5f9; /* Abu muda */
+            color: var(--text-muted);
+        }
+
+        /* 4. Tipe: TIDAK ADA HASIL (Merah Muda) */
+        .type-none .suggestion-icon-wrapper {
+            background-color: rgba(239, 68, 68, 0.1);
+            color: var(--danger);
         }
 
         /* Styling Area Teks */
         .suggestion-text {
-            flex: 1;              /* PENTING: Teks mengambil sisa ruang yang tersedia */
-            min-width: 0;         /* PENTING: Mengizinkan teks mengecil jika ruang habis */
-            white-space: nowrap;  /* Teks satu baris */
-            overflow: hidden;     /* Sembunyikan overflow */
-            text-overflow: ellipsis; /* Tampilkan '...' jika teks terlalu panjang */
+            flex: 1;              
+            min-width: 0;         
+            white-space: nowrap;  
+            overflow: hidden;     
+            text-overflow: ellipsis; 
             line-height: 1.2;
+            font-weight: 500;
         }
 
         .no-suggestion {
@@ -187,6 +219,10 @@
             font-size: 0.85rem;
             color: var(--text-muted);
             text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
 
         /* Scrollbar kustom */
@@ -1255,7 +1291,7 @@
             fields = map;
         }
 
-        // --- SEARCH SUGGESTIONS LOGIC (ADVANCED LAYOUT) ---
+        // --- SEARCH SUGGESTIONS LOGIC (CLEAN GROUPING) ---
         const searchInput = document.getElementById('searchInput');
         const suggestionsBox = document.getElementById('searchSuggestions');
 
@@ -1293,8 +1329,13 @@
 
             if (matches.length === 0) {
                 const div = document.createElement('div');
-                div.className = 'no-suggestion';
-                div.innerText = 'Tidak ada saran pencarian';
+                div.className = 'no-suggestion type-none';
+                div.innerHTML = `
+                    <div class="suggestion-icon-wrapper">
+                        <i class="fas fa-circle-exclamation"></i>
+                    </div>
+                    <span>Tidak ada saran pencarian</span>
+                `;
                 suggestionsBox.appendChild(div);
             } else {
                 // Batasi maksimal 5 saran
@@ -1302,13 +1343,26 @@
                     const div = document.createElement('div');
                     div.className = 'suggestion-item';
                     
-                    // Tentukan Ikon
-                    let iconClass = 'fa-search';
-                    if (match.type === 'category') iconClass = 'fa-tags';
+                    // Tentukan Kelas & Ikon berdasarkan Tipe
+                    let typeClass = '';
+                    let iconClass = '';
+
+                    if (match.type === 'product') {
+                        typeClass = 'type-product';
+                        iconClass = 'fa-layer-group'; // Ikon Tumpukan/Koleksi
+                    } else if (match.type === 'category') {
+                        typeClass = 'type-category';
+                        iconClass = 'fa-tags'; // Ikon Label
+                    } else {
+                        typeClass = 'type-keyword';
+                        iconClass = 'fa-magnifying-glass'; // Ikon Cari
+                    }
                     
-                    // Struktur HTML yang lebih rapi dan terstruktur
+                    // Struktur HTML yang bersih
+                    div.classList.add(typeClass);
+                    
                     div.innerHTML = `
-                        <div class="suggestion-icon">
+                        <div class="suggestion-icon-wrapper">
                             <i class="fas ${iconClass}"></i>
                         </div>
                         <div class="suggestion-text">
