@@ -82,7 +82,6 @@
         .search-box {
             flex: 1;
             position: relative;
-            /* ZIndex tinggi agar suggestions muncul di atas elemen lain */
             z-index: 1000; 
         }
 
@@ -111,54 +110,82 @@
             z-index: 2;
         }
 
-        /* --- SEARCH SUGGESTIONS (NEW) --- */
+        /* --- SEARCH SUGGESTIONS (OPTIMIZED FOR MOBILE) --- */
         .search-suggestions {
             position: absolute;
-            top: 110%;
+            top: 115%; /* Sedikit jarak dari input */
             left: 0;
-            right: 0;
+            width: 100%;
             background: white;
-            border-radius: 12px;
-            box-shadow: var(--shadow-lg);
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15); /* Shadow lebih tegas untuk kontras */
             border: 1px solid var(--border);
-            display: none; /* Hidden by default */
+            display: none; 
             flex-direction: column;
-            max-height: 300px;
+            max-height: 50vh; /* Batasi tinggi di mobile agar tidak tertutup keyboard */
             overflow-y: auto;
-            z-index: 1001;
+            z-index: 1002; /* Di atas header dan slider */
             padding: 8px 0;
+            overscroll-behavior: contain; /* Mencegah scroll body saat scroll list */
+            -webkit-overflow-scrolling: touch; /* Scroll halus di iOS */
         }
+        
         .search-suggestions.active {
             display: flex;
             animation: slideDownFade 0.2s ease-out;
         }
+
         @keyframes slideDownFade {
             from { opacity: 0; transform: translateY(-10px); }
             to { opacity: 1; transform: translateY(0); }
         }
+
         .suggestion-item {
-            padding: 10px 16px;
-            font-size: 0.9rem;
+            padding: 14px 16px; /* Padding lebih besar untuk area sentuh jari */
+            font-size: 0.95rem; /* Font sedikit lebih besar untuk readability mobile */
             color: var(--text-main);
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
             transition: background 0.1s;
         }
+
         .suggestion-item:hover {
             background: var(--bg-body);
             color: var(--primary);
         }
-        .suggestion-item i {
-            color: var(--text-muted);
-            font-size: 0.8rem;
+
+        /* Aktif state untuk touch device */
+        .suggestion-item:active {
+            background: var(--primary-light);
         }
+
+        .suggestion-item i {
+            color: var(--primary); /* Warna ikon lebih kontras */
+            font-size: 1rem; /* Ukuran ikon diperbesar untuk visibilitas mobile */
+            width: 20px; /* Lebar tetap agar teks rata */
+            text-align: center;
+            flex-shrink: 0;
+        }
+
         .no-suggestion {
-            padding: 12px 16px;
-            font-size: 0.85rem;
+            padding: 16px;
+            font-size: 0.9rem;
             color: var(--text-muted);
             text-align: center;
+        }
+
+        /* Scrollbar kustom untuk suggestions agar rapi */
+        .search-suggestions::-webkit-scrollbar {
+            width: 4px;
+        }
+        .search-suggestions::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .search-suggestions::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
         }
 
         /* --- HERO SLIDER --- */
@@ -1215,7 +1242,7 @@
             fields = map;
         }
 
-        // --- SEARCH SUGGESTIONS LOGIC (NEW) ---
+        // --- SEARCH SUGGESTIONS LOGIC (OPTIMIZED) ---
         const searchInput = document.getElementById('searchInput');
         const suggestionsBox = document.getElementById('searchSuggestions');
 
@@ -1267,6 +1294,7 @@
                     div.innerHTML = `<i class="fas ${icon}"></i> ${match.text}`;
                     div.onclick = () => {
                         searchInput.value = match.text;
+                        searchInput.blur(); // Tutup keyboard otomatis di mobile
                         suggestionsBox.classList.remove('active');
                         filterLogic(); // Trigger pencarian
                     };
