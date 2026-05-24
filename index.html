@@ -110,7 +110,7 @@
             z-index: 2;
         }
 
-        /* --- SEARCH SUGGESTIONS (ADVANCED & NO OVERLAP) --- */
+        /* --- SEARCH SUGGESTIONS (ADVANCED LAYOUT) --- */
         .search-suggestions {
             position: absolute;
             top: 115%;
@@ -124,10 +124,10 @@
             flex-direction: column;
             max-height: 50vh;
             overflow-y: auto;
-            z-index: 1002;
-            padding: 8px 0;
-            overscroll-behavior: contain;
-            -webkit-overflow-scrolling: touch;
+            z-index: 1002; 
+            padding: 6px 0; /* Sedikit padding vertical */
+            overscroll-behavior: contain; 
+            -webkit-overflow-scrolling: touch; 
         }
         
         .search-suggestions.active {
@@ -140,17 +140,15 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Layout Utama Item: Flexbox Space-Between mencegah overlap */
         .suggestion-item {
-            padding: 12px 16px;
-            font-size: 0.95rem;
+            padding: 12px 16px; /* Area sentuh nyaman */
+            font-size: 0.9rem; /* Ukuran font standar & profesional */
             color: var(--text-main);
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: space-between; /* PENTING: Pisahkan Kiri (Ikon) dan Kanan (Teks) */
-            gap: 12px;
-            transition: background 0.1s;
+            display: flex;       /* Menggunakan Flexbox */
+            align-items: center; /* Posisikan ikon dan teks di tengah secara vertikal */
+            gap: 12px;          /* Jarak tetap antara ikon dan teks */
+            transition: background 0.2s;
         }
 
         .suggestion-item:hover {
@@ -162,41 +160,36 @@
             background: var(--primary-light);
         }
 
-        /* Area Kiri: Ikon tetap */
+        /* Styling Ikon */
         .suggestion-icon {
-            color: var(--primary);
-            font-size: 1rem;
-            width: 24px;
+            color: var(--primary); 
+            font-size: 0.95rem;
+            width: 20px;           /* Lebar tetap agar teks rata */
             text-align: center;
-            flex-shrink: 0; /* Jangan mengecil */
+            flex-shrink: 0;       /* PENTING: Mencegah ikon mengecil/menimpa teks */
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
-        /* Area Kanan: Teks yang bisa panjang */
-        .suggestion-text-wrapper {
-            flex-grow: 1;
-            overflow: hidden; /* Potong teks jika terlalu panjang */
-            white-space: nowrap;
-            text-overflow: ellipsis;
-            text-align: left;
-        }
-
-        /* Style untuk Highlight (Tebal & Biru) */
-        .highlight {
-            font-weight: 700;
-            color: var(--primary);
+        /* Styling Area Teks */
+        .suggestion-text {
+            flex: 1;              /* PENTING: Teks mengambil sisa ruang yang tersedia */
+            min-width: 0;         /* PENTING: Mengizinkan teks mengecil jika ruang habis */
+            white-space: nowrap;  /* Teks satu baris */
+            overflow: hidden;     /* Sembunyikan overflow */
+            text-overflow: ellipsis; /* Tampilkan '...' jika teks terlalu panjang */
+            line-height: 1.2;
         }
 
         .no-suggestion {
             padding: 16px;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: var(--text-muted);
             text-align: center;
         }
 
-        /* Scrollbar Kustom */
+        /* Scrollbar kustom */
         .search-suggestions::-webkit-scrollbar {
             width: 4px;
         }
@@ -1262,16 +1255,9 @@
             fields = map;
         }
 
-        // --- SEARCH SUGGESTIONS LOGIC (ADVANCED LAYOUT & HIGHLIGHT) ---
+        // --- SEARCH SUGGESTIONS LOGIC (ADVANCED LAYOUT) ---
         const searchInput = document.getElementById('searchInput');
         const suggestionsBox = document.getElementById('searchSuggestions');
-
-        // Fungsi Helper untuk membuat Highlight HTML
-        function getHighlightedText(text, query) {
-            if (!query) return text;
-            const regex = new RegExp(`(${query})`, 'gi');
-            return text.replace(regex, '<span class="highlight">$1</span>');
-        }
 
         function renderSuggestions(query) {
             suggestionsBox.innerHTML = '';
@@ -1316,16 +1302,18 @@
                     const div = document.createElement('div');
                     div.className = 'suggestion-item';
                     
-                    let icon = 'fa-search';
-                    if (match.type === 'category') icon = 'fa-tags';
+                    // Tentukan Ikon
+                    let iconClass = 'fa-search';
+                    if (match.type === 'category') iconClass = 'fa-tags';
                     
-                    // Terapkan Highlight pada teks
-                    const highlightedText = getHighlightedText(match.text, query);
-
-                    // Struktur Layout Flexbox: Ikon (Kiri) | Teks (Kanan)
+                    // Struktur HTML yang lebih rapi dan terstruktur
                     div.innerHTML = `
-                        <div class="suggestion-icon"><i class="fas ${icon}"></i></div>
-                        <div class="suggestion-text-wrapper">${highlightedText}</div>
+                        <div class="suggestion-icon">
+                            <i class="fas ${iconClass}"></i>
+                        </div>
+                        <div class="suggestion-text">
+                            ${match.text}
+                        </div>
                     `;
                     
                     div.onclick = () => {
@@ -1840,4 +1828,153 @@
             lockWhatsAppButton();
         };
 
-        window.backToProduct = function()
+        window.backToProduct = function() {
+            // Hentikan timer jika user kembali
+            clearPaymentTimer();
+            
+            paymentView.classList.remove('active');
+            productView.style.display = 'flex'; 
+        };
+
+        // --- OPEN MODAL ---
+        window.openModal = function(p) {
+            currentProduct = p;
+            carouselIndex = 0;
+            toggleSwitch.checked = false;
+
+            document.getElementById('m-cat').innerText = getField(p, 'category') || 'CATEGORY';
+            document.getElementById('m-title').innerText = getField(p, 'title') || 'Product Title';
+            document.getElementById('m-desc').innerText = getField(p, 'description') || "Deskripsi tidak tersedia.";
+            document.getElementById('m-sold').innerText = getField(p, 'sold_count') || 0;
+
+            const mainImage = getField(p, 'image');
+            const extraImages = getField(p, 'images');
+            if (Array.isArray(extraImages) && extraImages.length > 0) {
+                carouselImages = [mainImage, ...extraImages].filter(img => img);
+            } else {
+                carouselImages = [mainImage];
+            }
+            const track = document.getElementById('carouselTrack');
+            track.innerHTML = '';
+            carouselImages.forEach(imgSrc => {
+                const slide = document.createElement('div');
+                slide.className = 'carousel-slide';
+                slide.innerHTML = `<img src="${imgSrc || 'https://picsum.photos/seed/modal/800/600'}" alt="Slide">`;
+                track.appendChild(slide);
+            });
+            updateCarouselUI();
+            
+            const navs = document.querySelectorAll('.carousel-nav');
+            if(carouselImages.length > 1) navs.forEach(n => n.style.display = 'flex');
+            else navs.forEach(n => n.style.display = 'none');
+
+            paymentView.classList.remove('active');
+            productView.style.display = 'flex';
+
+            // Update Addon UI Dinamis
+            updateCoverLetterUI();
+
+            // Pastikan timer bersih saat membuka modal baru
+            clearPaymentTimer();
+            // Reset tampilan tombol ke kondisi normal (untuk antisipasi cache)
+            const btn = document.getElementById('btn-confirm-whatsapp');
+            btn.classList.remove('locked');
+            btn.innerHTML = `<i class="fab fa-whatsapp" style="font-size:1.2rem;"></i> Lanjutkan ke WhatsApp`;
+
+            document.getElementById('productModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        window.closeModal = function() {
+            // Hentikan timer saat modal ditutup total
+            clearPaymentTimer();
+            
+            document.getElementById('productModal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+            currentProduct = null;
+        }
+
+        document.getElementById('productModal').addEventListener('click', (e) => {
+            if(e.target.id === 'productModal') closeModal();
+        });
+
+        // --- CONFIRM WHATSAPP BUTTON (LANJUTKAN) ---
+        document.getElementById('btn-confirm-whatsapp').onclick = function() {
+            if(!currentProduct) return;
+
+            const templateName = getField(currentProduct, 'title');
+            const formattedTotal = formatRupiah(currentUniqueTotal);
+            
+            const orderTime = new Date().toLocaleString('id-ID', {
+                weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
+                hour: '2-digit', minute: '2-digit'
+            });
+
+            let message = `Halo Min, saya ingin membeli CV berikut:
+
+*Jenis CV:* ${templateName}
+*Total Pembayaran (Unik):* ${formattedTotal}
+*Waktu Pesanan:* ${orderTime}`;
+
+            const isAddOn = toggleSwitch.checked;
+            if(isAddOn) {
+                // Ambil harga addon yang digunakan (bisa custom atau default)
+                const customPrice = getField(currentProduct, 'cover_letter_price');
+                const finalPrice = (customPrice && !isNaN(customPrice)) ? Number(customPrice) : coverLetterPrice;
+                message += `\n\n*Addon:* Surat Lamaran Kerja (+${formatRupiah(finalPrice)})`;
+            }
+
+            message += `\n\nSaya sudah transfer sesuai nominal unik. Mohon segera diproses ya Min.`;
+
+            const adminNumber = getRotatedAdminNumber();
+            const waLink = `https://wa.me/${adminNumber}?text=${encodeURIComponent(message)}`;
+            
+            showToast('Mengalihkan ke WhatsApp...', 'success');
+            setTimeout(() => {
+                window.open(waLink, '_blank');
+            }, 1000);
+        }
+
+        function getRotatedAdminNumber() {
+            let currentIndex = parseInt(localStorage.getItem('wa_admin_index') || '0');
+            const selectedNumber = adminNumbersList[currentIndex];
+            let nextIndex = (currentIndex + 1) % adminNumbersList.length;
+            localStorage.setItem('wa_admin_index', nextIndex.toString());
+            return selectedNumber;
+        }
+
+        window.closeAd = function() { 
+            const popup = document.getElementById('adPopup');
+            // Sembunyikan dengan animasi fade out sederhana atau display none
+            popup.style.display = 'none'; 
+        }
+
+        // --- MAIN INIT ---
+        async function init() {
+            initSlider();
+            await fetchAdminNumbers(); 
+            await fetchCoverLetterPrice();
+            await fetchPaymentMethods(); 
+            await fetchProducts(); // Ini akan memanggil renderCategories
+            await fetchAd(); // Load iklan dengan logic transparansi
+            renderProducts();
+        }
+
+        init();
+    </script>
+    <script>
+        document.addEventListener('contextmenu', e => e.preventDefault());
+        document.onkeydown = function(e) {
+            if(e.keyCode == 123 || 
+               (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74 || e.keyCode == 67)) || 
+               (e.ctrlKey && e.keyCode == 85)) return false;
+        };
+        document.addEventListener('keydown', function(e) {
+            if ((e.ctrlKey || e.metaKey) && (e.key === '+' || e.key === '-' || e.key === '0')) e.preventDefault();
+        });
+        document.addEventListener('wheel', function(e) {
+            if (e.ctrlKey) e.preventDefault();
+        }, { passive: false });
+    </script>
+</body>
+</html>
