@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
@@ -156,15 +156,6 @@
             flex: 1;
         }
         
-        /* Highlighting Matched Keyword (Blue Underline, NO SPACING) */
-        .highlight-match {
-            color: var(--primary);
-            text-decoration: underline;
-            text-decoration-thickness: 2px; 
-            /* text-underline-offset: 0; Dihapus agar no spacing */
-            font-weight: 600;
-        }
-
         /* --- HIERARCHY BADGES --- */
         /* 1. Rank 1: TOP Badge (Gold) */
         .top-badge {
@@ -1232,7 +1223,7 @@
             fields = map;
         }
 
-        // --- SEARCH SUGGESTIONS LOGIC (UPDATED: NO SPACING) --- ---
+        // --- SEARCH SUGGESTIONS LOGIC (UPDATED: SMARTER & HIERARCHY) --- ---
         const searchInput = document.getElementById('searchInput');
         const suggestionsBox = document.getElementById('searchSuggestions');
 
@@ -1274,19 +1265,20 @@
                         }
 
                         // Tambahkan bobot penjualan (Agar produk laris tetap di atas jika relevansi sama)
+                        // Kita normalisasi sedikit (misal max sold 500 -> score tambah max 50)
                         score += (soldCount * 0.1); 
 
                         suggestionList.push({
                             type: 'product',
                             text: displayTitle,
                             sold: soldCount,
-                            score: score 
+                            score: score // Gunakan score untuk sorting
                         });
                     }
                 }
             });
 
-            // 2. URUTKAN berdasarkan Score (Cerdas)
+            // 2. URUTKAN berdasarkan Score (Cerdas) JETIKA Sold Count (Paling laris)
             suggestionList.sort((a, b) => b.score - a.score);
 
             if (suggestionList.length === 0) {
@@ -1301,40 +1293,29 @@
                     div.className = 'suggestion-item';
                     
                     // --- HIERARKI BADGE SYSTEM ---
+                    // Tidak ada ikon kaca pembesar, hanya badge peringkat
+                    
                     let rankHtml = '';
+
                     if (index === 0) {
+                        // Rank 1: TOP Badge (Gold)
                         rankHtml = '<span class="top-badge">TOP</span>';
                     } else if (index === 1 || index === 2) {
+                        // Rank 2 & 3: Angka Badge (Gray)
                         const rankNum = index + 1;
                         rankHtml = `<span class="rank-badge">${rankNum}</span>`;
                     }
-
-                    // --- HIGHLIGHT MATCH LOGIC (UPDATED: NO SPACING) ---
-                    // Escape karakter regex
-                    const safeQuery = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-                    
-                    // Gunakan split/join untuk memisahkan berdasarkan query, 
-                    // memastikan tidak ada spasi tambahan saat menyisipkan span
-                    const regex = new RegExp(`(${safeQuery})`, 'gi');
-                    const parts = item.text.split(regex);
-                    
-                    const highlightedText = parts.map(part => {
-                        // Cek persamaan (abaikan case sensitive untuk highlight)
-                        if (part.toLowerCase() === query) {
-                            return `<span class="highlight-match">${part}</span>`;
-                        }
-                        return part;
-                    }).join('');
+                    // Rank 4+ : Tidak ada badge (bersih)
 
                     div.innerHTML = `
                         <div class="suggestion-content">
-                            ${highlightedText}
+                            ${item.text}
                         </div>
                         ${rankHtml}
                     `;
                     
                     div.onclick = () => {
-                        searchInput.value = item.text; 
+                        searchInput.value = item.text;
                         suggestionsBox.classList.remove('active');
                         filterLogic(); 
                     };
