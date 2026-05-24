@@ -156,9 +156,12 @@
             flex: 1;
         }
         
-        /* Highlighting Matched Keyword */
+        /* Highlighting Matched Keyword (Underline Blue) */
         .highlight-match {
-            color: var(--primary); /* Warna Biru */
+            color: var(--primary);
+            text-decoration: underline;
+            text-decoration-thickness: 2px; /* Ketebalan garis */
+            text-underline-offset: 2px; /* Jarak garis ke teks */
             font-weight: 600;
         }
 
@@ -1229,7 +1232,7 @@
             fields = map;
         }
 
-        // --- SEARCH SUGGESTIONS LOGIC (UPDATED: BLUE HIGHLIGHT) --- ---
+        // --- SEARCH SUGGESTIONS LOGIC (UPDATED: UNDERLINE BLUE) --- ---
         const searchInput = document.getElementById('searchInput');
         const suggestionsBox = document.getElementById('searchSuggestions');
 
@@ -1306,12 +1309,26 @@
                         rankHtml = `<span class="rank-badge">${rankNum}</span>`;
                     }
 
-                    // --- HIGHLIGHT MATCH LOGIC (UPDATED) ---
-                    // Membungkus kata kunci yang cocok dengan span biru
-                    // Escape karakter khusus regex agar tidak error jika user mengetik simbol
+                    // --- HIGHLIGHT MATCH LOGIC (UPDATED: UNDERLINE) ---
+                    // Cara kerja sama, tapi tanpa tag <span> untuk visual (hanya CSS)
+                    // Namun untuk pembungkus text gunakan split/join
+                    
+                    // Escape karakter regex
                     const safeQuery = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
                     const regex = new RegExp(`(${safeQuery})`, 'gi');
-                    const highlightedText = item.text.replace(regex, '<span class="highlight-match">$1</span>');
+                    
+                    // Split teks berdasarkan kata kunci yang cocok
+                    // Ini memecah string, lalu menyisipkan span di antar potongan
+                    const parts = item.text.split(regex);
+                    
+                    // Rebuild HTML string dengan class highlight-match pada kata kunci
+                    const highlightedText = parts.map(part => {
+                        // Jika bagian ini cocok dengan query (abaikan case sensitive untuk highlight)
+                        if (part.toLowerCase() === query) {
+                            return `<span class="highlight-match">${part}</span>`;
+                        }
+                        return part;
+                    }).join('');
 
                     div.innerHTML = `
                         <div class="suggestion-content">
