@@ -26,7 +26,6 @@
             --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
             --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
             --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
             --radius: 16px;
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             --danger: #ef4444;
@@ -705,118 +704,59 @@
         @keyframes slideDown { to { opacity: 1; transform: translateY(0); } }
         @keyframes fadeOut { to { opacity: 0; transform: translateY(-10px); } }
 
-        /* --- ADVANCED PROFESSIONAL AD POPUP (UPDATED) --- */
-        .ad-overlay {
-            position: fixed; inset: 0; 
-            background: rgba(15, 23, 42, 0.4); 
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            z-index: 950; /* Di bawah Modal Produk (1000), di atas Header (100) */
-            display: flex; 
-            align-items: center; 
-            justify-content: center;
-            opacity: 0; 
-            pointer-events: none; 
-            transition: opacity 0.4s ease;
-            padding: 20px;
-        }
-
-        .ad-overlay.active {
-            opacity: 1; 
-            pointer-events: all;
-        }
-
-        .ad-card {
-            position: relative;
-            background: transparent; /* Transparan untuk mendukung PNG transparan */
-            width: 100%;
-            max-width: 360px; /* Ukuran standar poster vertical */
-            border-radius: 24px;
-            box-shadow: var(--shadow-xl);
-            animation: adPopUp 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            /* Border tipis halus untuk memisahkan dari background blur jika gambar transparan */
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        /* Khusus jika gambar adalah poster solid (bukan transparan) */
-        .ad-card.solid-mode {
-            background: white;
-            border: none;
-        }
-
-        @keyframes adPopUp {
-            0% { transform: scale(0.8) translateY(20px); opacity: 0; }
-            100% { transform: scale(1) translateY(0); opacity: 1; }
-        }
-
-        .ad-link-wrapper {
-            display: block;
-            width: 100%;
-            height: 100%;
-            text-decoration: none;
-        }
-
-        .ad-image-container {
-            width: 100%;
-            /* Aspect ratio container */
-            aspect-ratio: 9 / 16; 
-            background: transparent;
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .ad-image-container img {
-            width: 100%;
-            height: 100%;
-            display: block;
-            transition: transform 0.3s ease;
-        }
-
-        /* Styling gambar berdasarkan tipe */
-        /* Poster: Mengisi penuh (cover) */
-        .ad-card.solid-mode .ad-image-container img {
-            object-fit: cover;
+        /* --- CORNER AD POPUP (ORIGINAL STYLE + TRANSPARENCY SUPPORT) --- */
+        .ad-popup {
+            position: fixed; 
+            bottom: 20px; 
+            left: 20px; 
+            z-index: 900;
+            width: 260px; /* Default width */
+            background: white; /* Default background (bisa diubah via JS) */
+            border-radius: 16px;
+            box-shadow: var(--shadow-lg); 
+            overflow: hidden; 
+            display: none;
+            animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1);
         }
         
-        /* Transparan: Menampilkan utuh tanpa potong (contain) */
-        .ad-card.transparent-mode .ad-image-container img {
+        /* Class untuk Gambar Transparan (Background jadi transparan) */
+        .ad-popup.transparent-mode {
+            background: transparent !important;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2); /* Shadow lebih tegas agar terlihat di bg transparan */
+        }
+
+        @keyframes slideUp { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        
+        .ad-img img { 
+            width: 100%; 
+            display: block; 
+        }
+
+        /* Default: Gambar Cover (Untuk Poster Solid) */
+        .ad-popup .ad-img img {
+            object-fit: cover;
+            border-radius: 16px;
+        }
+
+        /* Mode Transparan: Gambar Contain (Agar tidak terpotong) */
+        .ad-popup.transparent-mode .ad-img img {
             object-fit: contain;
+            border-radius: 0;
         }
 
-        .ad-close-icon {
-            position: absolute;
-            top: -12px;
-            right: -12px;
-            width: 36px;
-            height: 36px;
-            background: white;
-            color: var(--text-main);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            z-index: 20;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+        .ad-close {
+            position: absolute; top: 8px; right: 8px;
+            background: rgba(0,0,0,0.6); 
+            color: white; 
+            width: 24px; height: 24px;
+            border-radius: 50%; 
+            display: flex; align-items: center; justify-content: center; 
+            cursor: pointer; font-size: 0.7rem;
+            z-index: 10;
             transition: 0.2s;
-            border: 1px solid rgba(0,0,0,0.05);
         }
-
-        .ad-close-icon:hover {
+        .ad-close:hover {
             background: var(--danger);
-            color: white;
-            transform: rotate(90deg);
-        }
-
-        /* Efek hover pada kartu iklan */
-        .ad-card:hover .ad-image-container img {
-            transform: scale(1.03);
         }
 
         footer { border-top: 1px solid var(--border); padding: 30px 0; margin-top: 40px; text-align: center; color: var(--text-muted); font-size: 0.85rem; background: white; }
@@ -829,20 +769,6 @@
 
     <!-- Toast Container -->
     <div class="toast-container" id="toastContainer"></div>
-
-    <!-- ADVANCED AD POPUP -->
-    <div id="advancedAdModal" class="ad-overlay">
-        <div class="ad-card" id="adCardElement">
-            <button class="ad-close-icon" onclick="closeAdvancedAd()" aria-label="Tutup Iklan">
-                <i class="fas fa-times"></i>
-            </button>
-            <a href="#" target="_blank" id="adLink" class="ad-link-wrapper">
-                <div class="ad-image-container">
-                    <img id="adImage" src="" alt="Iklan Spesial">
-                </div>
-            </a>
-        </div>
-    </div>
 
     <!-- Header -->
     <header>
@@ -1029,6 +955,16 @@
         </div>
     </div>
 
+    <!-- POPUP IKLAN (ORIGINAL POSITION + TRANSPARENCY LOGIC) -->
+    <div class="ad-popup" id="adPopup">
+        <div class="ad-close" onclick="closeAd()"><i class="fas fa-times"></i></div>
+        <a href="#" target="_blank" id="adLink">
+            <div class="ad-img">
+                <img id="adImage" src="" alt="Ad">
+            </div>
+        </a>
+    </div>
+
     <!-- CSS Animation untuk Skeleton -->
     <style>
         @keyframes pulse { 0% { opacity: 0.6; } 50% { opacity: 1; } 100% { opacity: 0.6; } }
@@ -1066,7 +1002,7 @@
             { id: 1, title: "Modern Creative Portfolio", category: "Creative", price: 50000, original_price: 75000, sold_count: 120, description: "Template dengan layout asimetris yang modern. Cocok untuk desainer, arsitek, dan profesional kreatif.\n\nFitur Utama:\n- Format PDF & Word\n- Mudah diedit\n- Font gratis included", image: "https://picsum.photos/seed/clean1/600/600", images: ["https://picsum.photos/seed/clean1/600/600", "https://picsum.photos/seed/clean1b/600/600", "https://picsum.photos/seed/clean1c/600/600"], cover_letter_price: 25000, allow_addon: true },
             { id: 2, title: "Executive Formal Blue", category: "Formal", price: 75000, original_price: null, sold_count: 85, description: "Struktur profesional untuk level manajerial. Memberikan kesan serius dan terpercaya.\n\nWarna biru navy yang elegan.", image: "https://picsum.photos/seed/clean2/600/600", images: ["https://picsum.photos/seed/clean2/600/600", "https://picsum.photos/seed/clean2b/600/600"], cover_letter_price: null, allow_addon: true }, // Harga null = Addon disembunyikan
             { id: 3, title: "Developer Dark Mode", category: "Tech", price: 90000, original_price: 120000, sold_count: 200, description: "Tema gelap elegan untuk programmer. High contrast untuk keterbacaan maksimal.", image: "https://picsum.photos/seed/clean3/600/600", images: ["https://picsum.photos/seed/clean3/600/600"], allow_addon: false },
-            { id: 4, title: "Clean Minimalist", category: "Simple", price: 35000, original_price: null, sold_count: 500, description: "Fokus pada konten tanpa gangguan visual. Pilihan terbaik untuk fresh graduate.", image: "https://picsum.photos/seed/clean4/600/600", images: ["https://picsum.photos/seed/clean4/600/600", "https://picsum.photos/seed/clean4b/600/600", "https://picsum.photos/seed/clean4c/600/600"], cover_letter_price: 10000, allow_addon: true }
+            { id: 4, title: "Clean Minimalist", category: "Simple", price: 35000, original_price: null, sold_count: 500, description: "Fokus pada konten tanpa gangguan visual. Pilihan terbaik untuk fresh graduate.", image: "https://picsum.photos/seed/clean4/600/600", images: ["https://picsum.photos/seed/clean4/600/600", "https://picsum.photos/seed/clean4b/600/600", "https://picsum.photos/seed/c4c/600/600"], cover_letter_price: 10000, allow_addon: true }
         ];
 
         // --- DATA PEMBAYARAN DUMMY (Jika DB Gagal) ---
@@ -1304,55 +1240,53 @@
             filterLogic();
         }
 
-        // --- FETCH & DISPLAY ADVANCED AD POPUP ---
+        // --- FETCH & HANDLE AD WITH TRANSPARENCY LOGIC ---
         async function fetchAd() {
-            // Cek session storage agar iklan tidak muncul terus menerus jika sudah ditutup
-            const adClosedSession = sessionStorage.getItem('writehub_ad_closed');
-            if (adClosedSession) return;
-
-            let adData = null;
-
-            if (useSupabase) {
-                const { data } = await supabase.from('iklan').select('*').eq('is_active', true).single();
-                if (data) adData = data;
-            }
-
-            // Fallback ke Dummy Data untuk demo jika DB kosong atau dimatikan
-            if (!adData) {
-                // Kita bisa set ini null jika tidak ingin iklan dummy muncul di real app
-                // Tapi untuk demo, kita gunakan data dummy
-                adData = {
-                    image_url: 'https://picsum.photos/seed/promo123/360/640', // Contoh Poster
-                    link_url: '#',
-                    is_transparent: false // Set true jika ingin gambar transparan
-                };
-            }
-
-            if (adData && adData.image_url) {
-                const modal = document.getElementById('advancedAdModal');
-                const card = document.getElementById('adCardElement');
+            if (!useSupabase) return;
+            
+            const { data } = await supabase.from('iklan').select('*').eq('is_active', true).single();
+            
+            if (data && data.image_url) {
+                const popup = document.getElementById('adPopup');
                 const img = document.getElementById('adImage');
                 const link = document.getElementById('adLink');
 
-                img.src = adData.image_url;
-                link.href = adData.link_url || '#';
+                // Set Link
+                link.href = data.link_url || '#';
 
-                // Handle Mode Transparan vs Poster
-                // Jika kolom DB is_transparent ada dan bernilai true
-                const isTransparent = adData.is_transparent === true;
+                // Handle Transparansi via Canvas Detection
+                img.src = data.image_url;
+                
+                // Event saat gambar selesai dimuat
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    canvas.width = this.naturalWidth;
+                    canvas.height = this.naturalHeight;
+                    
+                    // Gambar ke canvas untuk membaca pixel
+                    ctx.drawImage(this, 0, 0);
+                    
+                    // Ambil data pixel (sudah didecode otomatis oleh browser)
+                    // Kita ambil sampel pixel, misal di tengah dan pojok
+                    // Cek pixel tengah
+                    const centerPixel = ctx.getImageData(canvas.width/2, canvas.height/2, 1, 1).data;
+                    const isCenterTransparent = centerPixel[3] === 0;
 
-                if (isTransparent) {
-                    card.classList.remove('solid-mode');
-                    card.classList.add('transparent-mode');
-                } else {
-                    card.classList.remove('transparent-mode');
-                    card.classList.add('solid-mode');
-                }
+                    // Jika center pixel transparan, kita asumsikan gambar ini transparan
+                    if (isCenterTransparent) {
+                        popup.classList.add('transparent-mode');
+                        console.log('Ad Mode: Transparent');
+                    } else {
+                        popup.classList.remove('transparent-mode');
+                        console.log('Ad Mode: Solid/Poster');
+                    }
+                };
 
-                // Tampilkan iklan dengan delay sedikit agar lebih natural
+                // Tampilkan Popup setelah delay
                 setTimeout(() => {
-                    modal.classList.add('active');
-                }, 2500); // Muncul setelah 2.5 detik
+                    popup.style.display = 'block';
+                }, 2000);
             }
         }
 
@@ -1825,12 +1759,10 @@
             return selectedNumber;
         }
 
-        // --- ADVANCED AD POPUP LOGIC ---
-        window.closeAdvancedAd = function() {
-            const modal = document.getElementById('advancedAdModal');
-            modal.classList.remove('active');
-            // Simpan status ke session storage agar tidak muncul lagi saat refresh
-            sessionStorage.setItem('writehub_ad_closed', 'true');
+        window.closeAd = function() { 
+            const popup = document.getElementById('adPopup');
+            // Sembunyikan dengan animasi fade out sederhana atau display none
+            popup.style.display = 'none'; 
         }
 
         // --- MAIN INIT ---
@@ -1840,7 +1772,7 @@
             await fetchCoverLetterPrice();
             await fetchPaymentMethods(); 
             await fetchProducts(); // Ini akan memanggil renderCategories
-            await fetchAd(); // Load iklan baru
+            await fetchAd(); // Load iklan dengan logic transparansi
             renderProducts();
         }
 
