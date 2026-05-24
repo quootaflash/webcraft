@@ -18,7 +18,7 @@
             --primary: #2563eb;       
             --primary-dark: #1e40af;
             --primary-light: #eff6ff;
-            --bg-body: #f8fafc;
+            --bg-body: #ffffff; /* Background default putih bersih */
             --bg-card: #ffffff;
             --text-main: #0f172a;
             --text-muted: #64748b;
@@ -30,8 +30,8 @@
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             --danger: #ef4444;
             --success: #10b981;
-            --warning: #f59e0b; /* Warna Oranye untuk Api Fire */
-            --category-color: #8b5cf6; /* Ungu untuk kategori */
+            --warning: #f59e0b;
+            --pop-color: #f59e0b; /* Warna API Icon Api Populer */
         }
 
         /* --- RESET --- */
@@ -99,7 +99,7 @@
             transition: var(--transition);
         }
         .search-box input:focus {
-            background: var(--bg-card);
+            background: #f1f5f9; /* Sedikit abu-abu agar input lebih menonjol */
             border-color: var(--primary);
             box-shadow: 0 0 0 3px var(--primary-light);
         }
@@ -113,22 +113,22 @@
             z-index: 2;
         }
 
-        /* --- SEARCH SUGGESTIONS (PROFESSIONAL & ICON API) --- */
+        /* --- SEARCH SUGGESTIONS (CLEAN, PROFESSIONAL, API ICON FOR POPULAR) --- */
         .search-suggestions {
             position: absolute;
             top: 115%;
             left: 0;
             width: 100%;
             background: white;
-            border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            border-radius: 12px; /* Sudah sedikit lebih tajam (radius lebih kecil = lebih modern) */
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.08); /* Shadow halus, profesional */
             border: 1px solid var(--border);
             display: none; 
             flex-direction: column;
             max-height: 50vh;
             overflow-y: auto;
             z-index: 1002; 
-            padding: 8px 0; 
+            padding: 4px 0; 
             overscroll-behavior: contain; 
             -webkit-overflow-scrolling: touch; 
         }
@@ -144,49 +144,44 @@
         }
 
         .suggestion-item {
-            padding: 12px 16px;
-            font-size: 0.9rem;
+            padding: 10px 16px;
+            font-size: 0.95rem; /* Font sedikit lebih besar untuk readability */
             color: var(--text-main);
             cursor: pointer;
             display: flex;       
             align-items: center; 
             gap: 12px;          
             transition: background 0.2s;
-            border-radius: 8px; 
+            /* Border radius dihilangkan agar tampilan sangat bersih */
+            border-radius: 0; 
             margin: 0 8px; 
+            /* Background transparan default, berubah warna saat hover */
+            border-bottom: 1px solid transparent;
         }
-
+        
+        /* Hover state: Highlight bar bawah saja */
         .suggestion-item:hover {
-            background: #f8fafc; /* Sedikit abu-abu saat hover, lebih lembut */
+            background: #f8fafc;
+            border-bottom: 1px solid #e2e8f0;
         }
 
         .suggestion-item:active {
-            background: var(--primary-light);
+            background: #f1f5f9;
         }
 
-        /* --- ICON API FIRE ANIMATION (GLITCH EFFECT) --- */
-        .suggestion-icon-fire {
-            font-size: 1.1rem;
-            color: var(--warning);
-            /* Animasi Glitch Efek */
-            animation: glitch-skew 1s infinite linear alternate-reverse;
+        /* --- ICON API UNTUK POPULER (FA-FLAME) --- */
+        .popular-api-icon {
+            color: var(--pop-color);
+            font-size: 1rem;
             display: none; /* Hidden by default */
         }
         
-        .suggestion-item.is-popular .suggestion-icon-fire {
-            display: block;
+        .suggestion-item.is-popular .popular-api-icon {
+            display: inline-block;
+            margin-right: 8px;
         }
 
-        @keyframes glitch-skew {
-            0% { transform: skew(0deg); }
-            20% { transform: skew(-10deg); }
-            40% { transform: skew(10deg); }
-            60% { transform: skew(-5deg); }
-            80% { transform: skew(5deg); }
-            100% { transform: skew(0deg); }
-        }
-
-        /* Styling Teks */
+        /* Styling Area Teks */
         .suggestion-text {
             flex: 1;              
             min-width: 0;         
@@ -197,29 +192,27 @@
             font-weight: 500;
         }
 
-        /* Teks Populer (Bold) */
-        .is-popular .suggestion-text {
-            font-weight: 700; /* Bold untuk menonjol prioritas */
-            color: var(--text-main);
-        }
-
         .no-suggestion {
             padding: 16px;
             font-size: 0.85rem;
             color: var(--text-muted);
             text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
 
-        /* Scrollbar kustom */
+        /* Scrollbar kustom (Sangat halus agar minimalis) */
         .search-suggestions::-webkit-scrollbar {
-            width: 4px;
+            width: 3px;
         }
         .search-suggestions::-webkit-scrollbar-track {
             background: transparent;
         }
         .search-suggestions::-webkit-scrollbar-thumb {
             background: #cbd5e1;
-            border-radius: 4px;
+            border-radius: 10px;
         }
 
         /* --- HERO SLIDER --- */
@@ -799,7 +792,7 @@
         .toast-container {
             position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
             z-index: 4000; display: flex; flex-direction: column; gap: 10px;
-            pointer-events: none; width: 90%; max-width: 0;
+            pointer-events: none; width: 90%; max-width: 400px;
         }
         .toast {
             background: white; color: var(--text-main);
@@ -884,7 +877,7 @@
         .modal-info::-webkit-scrollbar-thumb, .payment-view::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
     </style>
 </head>
-<body>
+<body oncontextmenu="return false;">
 
     <!-- Toast Container -->
     <div class="toast-container" id="toastContainer"></div>
@@ -913,7 +906,7 @@
             <div class="slider-container" id="sliderTrack"></div>
             <button class="slider-btn prev-btn" onclick="window.prevSlide()"><i class="fas fa-chevron-left"></i></button>
             <button class="slider-btn next-btn" onclick="window.nextSlide()"><i class="fas fa-chevron-right"></i></button>
-            <div class="slider-dots" id="sliderDots"></div>
+            <div class="scrollbar-dots" id="sliderDots"></div>
         </section>
 
         <!-- Filter Bar (Dinamis dari DB) -->
@@ -960,7 +953,7 @@
                     <div class="carousel-track" id="carouselTrack"></div>
                     <div class="carousel-nav c-prev" onclick="moveCarousel(-1)"><i class="fas fa-chevron-left"></i></div>
                     <div class="carousel-nav c-next" onclick="moveCarousel(1)"><i class="fas fa-chevron-right"></i></div>
-                    <div class="carousel-dots" id="carouselDots"></div>
+                    <div class="scrollbar-dots" id="carouselDots"></div>
                 </div>
 
                 <div class="modal-info">
@@ -1096,10 +1089,19 @@
 
         // --- KONFIGURASI ---
         const SUPABASE_URL = 'https://neuylewfsxcuhayegygf.supabase.co'; 
-        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5ldXlsZXdmc3hjdWhheWVneWdmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkzNTMzNzYsImV4cCI6MjA5ZSI6ImF6llow_addon') || 'allow_addon'
-            };
-        fields = map;
-    }
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5ldXlsZXdmc3hjdWhheWVneWdmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkzNTMzNzYsImV4cCI6MjA5MDAwIjE3NzkzNTMzNn0.Ra0qI5A87XxODy7v9HIJ-zxqVbO39GwXbJlV8n4ZeIc';
+        const DEFAULT_ADMIN_WA = '6285885850204';
+        const DEFAULT_COVER_PRICE = 15000;
+
+        let supabase;
+        let useSupabase = false;
+
+        if (SUGABASE_URL.length > 10 && SUPABASE_ANON_KEY.length > 10) {
+            try {
+                supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+                useSupabase = true;
+            } catch(e) {}
+        }
 
         // --- DATA SLIDER ---
         const sliderData = [
@@ -1112,8 +1114,8 @@
         const dummyData = [
             { id: 1, title: "Modern Creative Portfolio", category: "Creative", price: 50000, original_price: 75000, sold_count: 120, description: "Template dengan layout asimetris yang modern. Cocok untuk desainer, arsitek, dan profesional kreatif.\n\nFitur Utama:\n- Format PDF & Word\n- Mudah diedit\n- Font gratis included", image: "https://picsum.photos/seed/clean1/600/600", images: ["https://picsum.photos/seed/clean1/600/600", "https://picsum.photos/seed/clean1b/600/600", "https://picsum.photos/seed/clean1c/600/600"], cover_letter_price: 25000, allow_addon: true },
             { id: 2, title: "Executive Formal Blue", category: "Formal", price: 75000, original_price: null, sold_count: 85, description: "Struktur profesional untuk level manajerial. Memberikan kesan serius dan terpercaya.\n\nWarna biru navy yang elegan.", image: "https://picsum.photos/seed/clean2/600/600", images: ["https://picsum.photos/seed/clean2/600/600", "https://picsum.photos/seed/clean2b/600/600"], cover_letter_price: null, allow_addon: true }, // Harga null = Addon disembunyikan
-            { id: 3, title: "Developer Dark Mode", category: "Tech", price: 90000, original_price: 120000, sold_count: 200, description: "Tema gelap elegan untuk programmer. High contrast untuk keterbacaan maksimal.", image: "https://picsum.photos/seed/clean3/600/600", images: ["https://popularitem-image.png"], allow_addon: false }, // Data dummy disesuaikan untuk testing populer
-            { id: 4, title: "Clean Minimalist", category: "Simple", price: 35000, original_price: null, sold_count: 500, description: "Fokus pada konten tanpa gangguan visual. Pilihan terbaik untuk fresh graduate.", image: "https://picsum.photos/seed/clean4/600/600", images: ["https://picsum.photos/seed/clean4/600/600", "https://picsum.photos/seed/clean4b/600/600", "https://picsum.photos/seed/c4c/600/600"], cover_letter_price: 10000, allow_addon: true }
+            { id: 3, title: "Developer Dark Mode", category: "Tech", price: 90000, original_price: 120000, sold_count: 200, description: "Tema gelap elegan untuk programmer. High contrast untuk keterbacaan maksimal.", image: "https://picsum.photos/seed/clean3/600/600", images: ["https://picsum.photos/seed/clean3/600/600"], allow_addon: false },
+            { id: 4, title: "Clean Minimalist", category: "Simple", price: 35000, original_price: null, sold_count: 500, description: "Fokus pada konten tanpa gangguan visual. Pilihan terbaik untuk fresh graduate.", image: "https://picsum.photos/seed/clean4/600/600", images: ["https://pipsum.photos/seed/clean4/600/600", "https://picsum.photos/seed/clean4b/600/600", "https://picsum.photos/seed/c4c/600/600"], cover_letter_price: 10000, allow_addon: true }
         ];
 
         // --- DATA PEMBAYARAN DUMMY (Jika DB Gagal) ---
@@ -1140,7 +1142,7 @@
         let fields = {
             title: 'title', price: 'price', original_price: 'original_price',
             image: 'image', images: 'images', category: 'category',
-            description: 'description', 'sold_count': 'sold_count',
+            description: 'description', sold_count: 'sold_count',
             cover_letter_price: 'cover_letter_price', allow_addon: 'allow_addon'
         };
 
@@ -1266,9 +1268,9 @@
             fields = map;
         }
 
-        // --- SEARCH SUGGESTIONS LOGIC (PROFESSIONAL ICON API) --- */
-        const searchInput = document.getElementById('searchInput');
-        const suggestionsBox = document.getElementById('searchSuggestions');
+        // --- SEARCH SUGGESTIONS LOGIC (CLEAN, PROFESSIONAL, ICON API FOR POPULAR) --- */
+        const searchInput = document.getElementById('search-input');
+        const suggestionsBox = document.getElementById('search-suggestions');
 
         function renderSuggestions(query) {
             suggestionsBox.innerHTML = '';
@@ -1284,26 +1286,25 @@
             products.forEach(p => {
                 const title = (getField(p, 'title') || '').toLowerCase();
                 const category = (getField(p, 'category') || '').toLowerCase();
-                const soldCount = Number(getField(p, 'sold_count) || 0);
+                const soldCount = Number(getField(p, 'sold_count') || 0);
                 
-                // Logika Agresif: Cek Judul
+                // Aggressive Search: Cocokan jika query ada di judul
                 if (title.includes(query)) {
-                    // Tambahkan properti tambahan untuk ranking
                     matches.push({ 
                         type: 'product', 
                         text: getField(p, 'title),
-                        soldCount: soldCount 
+                        soldCount: soldCount
                     });
                     // Tambahkan kata individual
                     title.split(' ').forEach(w => { if(w.length > 3) keywords.add(w); });
                 }
-                // Logika Agresif: Cek Kategori
+                // Aggressive Search: Cocokan jika query ada di kategori
                 if (category.includes(query) && !matches.some(m => m.text === category)) {
                     matches.push({ type: 'category', text: getField(p, 'category') });
                 }
             });
 
-            // Fallback: Cari di keywords tambahan jika tidak ada produk
+            // Fallback ke keyword jika produk kosong
             if (matches.length === 0) {
                  keywords.forEach(k => {
                      if(k.includes(query)) matches.push({ type: 'keyword', text: k });
@@ -1312,12 +1313,16 @@
 
             if (matches.length === 0) {
                 const div = document.createElement('div');
-                div.className = 'no-suggestion';
-                div.innerText = 'Tidak ada saran pencarian';
+                div.className = 'no-suggestion type-none';
+                div.innerHTML = `
+                    <div class="suggestion-badge"></div>
+                    <span>Tidak ada saran pencarian</span>
+                `;
                 suggestionsBox.appendChild(div);
             } else {
-                // --- SMART RANKING LOGIC (POPULERITY FOCUS) ---
-                // Urutkan: Popularitas > Kategori > Keyword
+                // --- SMART RANKING LOGIC (PRIORITAS POPULER) ---
+                // Urutkan berdasarkan Popularitas (soldCount) terlebih dahulu (Aggressive)
+                // Kategori diberi bobot poin kecil agar tetap muncul, tapi produk populer tetap di atas.
                 matches.sort((a, b) => {
                     const scoreA = (a.soldCount || 0) + (a.type === 'category' ? 50 : 0); 
                     const scoreB = (b.soldCount || 0) + (b.type === 'category' ? 50 : 0);
@@ -1329,21 +1334,17 @@
                     const div = document.createElement('div');
                     div.className = 'suggestion-item';
                     
-                    // Tentukan Class Populer jika high sold_count
-                    if (match.soldCount > 50) {
+                    // Tentukan Class Popular untuk styling ikon api
+                    let isPopular = (match.soldCount && match.sold_count > 100);
+                    if (isPopular) {
                         div.classList.add('is-popular');
                     }
 
-                    // Struktur HTML: Ikon Api (Hanya jika populer) + Teks
-                    let iconHtml = '';
-                    
-                    if (match.soldCount > 50) {
-                        // Ikon Api Fire (FontAwesome)
-                        iconHtml = `<i class="fas fa-fire suggestion-icon-fire"></i>`;
-                    }
+                    // Struktur HTML: Ikon API + Teks
+                    let htmlIcon = `<i class="fas fa-fire popular-api-icon"></i>`;
                     
                     div.innerHTML = `
-                        ${iconHtml}
+                        ${htmlIcon}
                         <div class="suggestion-text">
                             ${match.text}
                         </div>
@@ -1351,9 +1352,9 @@
                     
                     div.onclick = () => {
                         searchInput.value = match.text;
-                        searchInput.blur();
+                        searchInput.blur(); // Tutup keyboard otomatis di mobile
                         suggestionsBox.classList.remove('active');
-                        filterLogic(); 
+                        filterLogic(); // Trigger pencarian
                     };
                     suggestionsBox.appendChild(div);
                 });
@@ -1394,7 +1395,7 @@
 
             // 4. Buat tombol untuk setiap kategori
             categories.forEach(cat => {
-                if(!cat) return; 
+                if(!cat) return; // Skip jika kategori kosong
                 const chip = document.createElement('div');
                 chip.className = 'filter-chip';
                 chip.innerText = cat;
@@ -1565,7 +1566,7 @@
                 const image = getField(p, 'image');
                 const extraImages = getField(p, 'images');
                 const soldCount = getField(p, 'sold_count');
-                const pId = getField(p, 'id') || Math.random(); 
+                const pId = getField(p, 'id') || Math.random(); // ID unik untuk slider
 
                 let priceHTML = '';
                 if (originalPrice && Number(originalPrice) > Number(price)) {
@@ -1617,7 +1618,7 @@
                 if (isQRIS) {
                     div.className = 'payment-option-card qris-container';
                     div.style.flexDirection = 'column';
-                    div.style.alignItems: 'flex-start';
+                    div.style.alignItems = 'flex-start';
                     
                     const qrisImg = method.image || "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Logo_QRIS.svg/1200px-Logo_QRIS.svg.png";
                     
@@ -1643,7 +1644,7 @@
                     let logoUrl = method.logo;
                     if (!logoUrl) {
                          const cleanName = encodeURIComponent(bank);
-                         logoUrl = `https://placehold.co/100x50/f8f9fa/333333?text=${cleanName}&font=roboto`;
+                         logoUrl = `https://playhold.co/100x50/f8f9fa/333333?text=${cleanName}&font=roboto`;
                     }
 
                     div.innerHTML = `
@@ -1685,7 +1686,7 @@
 
         function initSlider() {
             const track = document.getElementById('sliderTrack');
-            const dots = document.getElementById('sliderDots');
+            const dots = document.getElementById('scrollbar-dots');
             sliderData.forEach((s, i) => {
                 const div = document.createElement('div');
                 div.className = `slide ${i===0?'active':''}`;
@@ -1724,7 +1725,7 @@
             filterLogic();
         }
         function filterLogic() {
-            const q = document.getElementById('searchInput').value.toLowerCase();
+            const q = document.getElementById('search-input').value.toLowerCase();
             filteredProducts = products.filter(p => {
                 const title = (getField(p, 'title') || '').toLowerCase();
                 const category = (getField(p, 'category') || '').toLowerCase();
@@ -1759,8 +1760,8 @@
         }
 
         function updateCarouselUI() {
-            const track = document.getElementById('carouselTrack');
-            const dotsContainer = document.getElementById('carouselDots');
+            const track = document.getElementById('carousel-track');
+            const dotsContainer = document.getElementById('scrollbar-dots');
             track.style.transform = `translateX(-${carouselIndex * 100}%)`;
             dotsContainer.innerHTML = '';
             carouselImages.forEach((_, idx) => {
@@ -1810,7 +1811,7 @@
             const finalAddonPrice = (customAddonPrice && !isNaN(customAddonPrice)) ? Number(customAddonPrice) : coverLetterPrice;
 
             const isAddOn = toggleSwitch.checked;
-            const finalPrice = isAddOn ? (Number(basePrice) + finalAddonPrice) : Number(basePrice);
+            const finalPrice = isAddOn ? (Number(basePrice + finalAddonPrice) : Number(basePrice);
             const priceWrap = document.getElementById('m-price-wrap');
 
             if (originalPrice && Number(originalPrice) > Number(basePrice)) {
@@ -1822,7 +1823,7 @@
 
         // --- NAVIGATION MODAL ---
         const productView = document.getElementById('productView');
-        const paymentView = document.getElementById('paymentView');
+        const paymentView = document.getElementById('payment-view');
         const btnGotoPayment = document.getElementById('btn-goto-payment');
 
         btnGotoPayment.onclick = function() {
@@ -1836,14 +1837,14 @@
             const uniqueCode = Math.floor(Math.random() * 499) + 1;
             const finalPrice = isAddOn ? (basePrice + finalAddonPrice) : basePrice;
             const totalWithUnique = finalPrice + uniqueCode;
-            currentUniqueTotal = totalWithUnique; 
+            currentUniqueTotal = totalWithUniqueTotal; 
             
             document.getElementById('p-product-name').innerText = getField(currentProduct, 'title');
             document.getElementById('p-unit-price').innerText = formatRupiah(basePrice);
             
             const addonRow = document.getElementById('row-addon');
             if(isAddOn) {
-                addonRow.style.display = 'flex';
+                addonRow.style.display = flex';
                 document.getElementById('p-addon-price').innerText = formatRupiah(finalAddonPrice);
             } else {
                 addonRow.style.display = 'none';
@@ -1887,7 +1888,7 @@
             } else {
                 carouselImages = [mainImage];
             }
-            const track = document.getElementById('carouselTrack');
+            const track = document.getElementById('carousel-track');
             track.innerHTML = '';
             carouselImages.forEach(imgSrc => {
                 const slide = document.createElement('div');
@@ -1988,14 +1989,15 @@
             await fetchAdminNumbers(); 
             await fetchCoverLetterPrice();
             await fetchPaymentMethods(); 
-            await fetchProducts(); 
-            await fetchAd(); 
+            await fetchProducts(); // Ini akan memanggil renderCategories
+            await fetchAd(); // Load iklan dengan logic transparansi
             renderProducts();
         }
 
         init();
     </script>
     <script>
+        // Proteksi Klik Kanan dan Inspect Element tetap aktif sesuai standar web modern
         document.addEventListener('contextmenu', e => e.preventDefault());
         document.onkeydown = function(e) {
             if(e.keyCode == 123 || 
