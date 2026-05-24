@@ -156,6 +156,12 @@
             flex: 1;
         }
         
+        /* Highlighting Matched Keyword */
+        .highlight-match {
+            color: var(--primary); /* Warna Biru */
+            font-weight: 600;
+        }
+
         /* --- HIERARCHY BADGES --- */
         /* 1. Rank 1: TOP Badge (Gold) */
         .top-badge {
@@ -1223,7 +1229,7 @@
             fields = map;
         }
 
-        // --- SEARCH SUGGESTIONS LOGIC (UPDATED: SMARTER & HIERARCHY) --- ---
+        // --- SEARCH SUGGESTIONS LOGIC (UPDATED: BLUE HIGHLIGHT) --- ---
         const searchInput = document.getElementById('searchInput');
         const suggestionsBox = document.getElementById('searchSuggestions');
 
@@ -1265,20 +1271,19 @@
                         }
 
                         // Tambahkan bobot penjualan (Agar produk laris tetap di atas jika relevansi sama)
-                        // Kita normalisasi sedikit (misal max sold 500 -> score tambah max 50)
                         score += (soldCount * 0.1); 
 
                         suggestionList.push({
                             type: 'product',
                             text: displayTitle,
                             sold: soldCount,
-                            score: score // Gunakan score untuk sorting
+                            score: score 
                         });
                     }
                 }
             });
 
-            // 2. URUTKAN berdasarkan Score (Cerdas) JETIKA Sold Count (Paling laris)
+            // 2. URUTKAN berdasarkan Score (Cerdas)
             suggestionList.sort((a, b) => b.score - a.score);
 
             if (suggestionList.length === 0) {
@@ -1293,29 +1298,30 @@
                     div.className = 'suggestion-item';
                     
                     // --- HIERARKI BADGE SYSTEM ---
-                    // Tidak ada ikon kaca pembesar, hanya badge peringkat
-                    
                     let rankHtml = '';
-
                     if (index === 0) {
-                        // Rank 1: TOP Badge (Gold)
                         rankHtml = '<span class="top-badge">TOP</span>';
                     } else if (index === 1 || index === 2) {
-                        // Rank 2 & 3: Angka Badge (Gray)
                         const rankNum = index + 1;
                         rankHtml = `<span class="rank-badge">${rankNum}</span>`;
                     }
-                    // Rank 4+ : Tidak ada badge (bersih)
+
+                    // --- HIGHLIGHT MATCH LOGIC (UPDATED) ---
+                    // Membungkus kata kunci yang cocok dengan span biru
+                    // Escape karakter khusus regex agar tidak error jika user mengetik simbol
+                    const safeQuery = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                    const regex = new RegExp(`(${safeQuery})`, 'gi');
+                    const highlightedText = item.text.replace(regex, '<span class="highlight-match">$1</span>');
 
                     div.innerHTML = `
                         <div class="suggestion-content">
-                            ${item.text}
+                            ${highlightedText}
                         </div>
                         ${rankHtml}
                     `;
                     
                     div.onclick = () => {
-                        searchInput.value = item.text;
+                        searchInput.value = item.text; // Set value ke full text (tanpa tag html)
                         suggestionsBox.classList.remove('active');
                         filterLogic(); 
                     };
