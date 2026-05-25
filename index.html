@@ -2,13 +2,18 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
+    <!-- Proteksi Zoom Tetap Aktif -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>WRITEHUB - INDONESIA</title>
     
+    <!-- Font Google: Inter -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Ikon FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
+        /* --- CSS VARIABLES --- */
         :root {
             --primary: #2563eb;       
             --primary-dark: #1e40af;
@@ -25,18 +30,9 @@
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             --danger: #ef4444;
             --success: #10b981;
-            --chat-bg: #0f172a;
-            --chat-surface: #1e293b;
-            --chat-surface-2: #334155;
-            --chat-accent: #2563eb;
-            --chat-accent-glow: rgba(37, 99, 235, 0.25);
-            --chat-user-bubble: #2563eb;
-            --chat-bot-bubble: #1e293b;
-            --chat-text: #f1f5f9;
-            --chat-text-muted: #94a3b8;
-            --chat-border: #334155;
         }
 
+        /* --- RESET --- */
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
         
         body { 
@@ -54,6 +50,7 @@
 
         .container { max-width: 1200px; margin: 0 auto; padding: 0 16px; }
 
+        /* --- HEADER --- */
         header {
             background: rgba(255, 255, 255, 0.9);
             backdrop-filter: blur(12px);
@@ -113,6 +110,7 @@
             z-index: 2;
         }
 
+        /* --- SEARCH SUGGESTIONS (UPDATED: CLEAN & HIERARCHICAL) --- */
         .search-suggestions {
             position: absolute;
             top: 110%;
@@ -158,6 +156,8 @@
             flex: 1;
         }
         
+        /* --- HIERARCHY BADGES --- */
+        /* 1. Rank 1: TOP Badge (Gold) */
         .top-badge {
             background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%); 
             color: white;
@@ -172,6 +172,7 @@
             display: inline-block;
         }
 
+        /* 2. Rank 2 & 3: Number Badges (Gray) */
         .rank-badge {
             background: #f1f5f9;
             color: #64748b;
@@ -193,14 +194,19 @@
             text-align: center;
         }
 
+        /* --- HERO SLIDER (UPDATED TO 1280x500 ASPECT RATIO) --- */
         .hero-section {
             margin-top: 20px;
             position: relative;
             width: 100%;
+            /* Diperbarui: Rasio asli 1280 / 500 = 2.56 */
             aspect-ratio: 1280 / 500; 
+            
+            /* Agar tidak melebar melebihi ukuran asli gambar pada layar ultra-wide */
             max-width: 1280px;
             margin-left: auto;
             margin-right: auto;
+
             background: #e2e8f0;
             border-radius: var(--radius);
             overflow: hidden;
@@ -230,6 +236,7 @@
         .dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.5); cursor: pointer; transition: 0.3s; }
         .dot.active { background: white; width: 20px; border-radius: 10px; }
 
+        /* --- FILTER BAR --- */
         .filter-bar {
             display: flex; gap: 10px; margin: 24px 0;
             overflow-x: auto; padding-bottom: 4px;
@@ -246,6 +253,7 @@
             box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2);
         }
 
+        /* --- PRODUCT GRID --- */
         .product-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -256,6 +264,7 @@
         @media (min-width: 640px) { .product-grid { grid-template-columns: repeat(3, 1fr); gap: 16px; } }
         @media (min-width: 1024px) { .product-grid { grid-template-columns: repeat(4, 1fr); gap: 20px; } }
 
+        /* --- CARD STYLE --- */
         .cv-card {
             background: var(--bg-card);
             border-radius: 12px;
@@ -282,6 +291,7 @@
             overflow: hidden;
         }
 
+        /* Efek Kilau pada Badge */
         .badge {
             position: absolute; top: 10px; left: 10px;
             background: rgba(255, 255, 255, 0.95);
@@ -301,7 +311,12 @@
             top: 0; left: -100%;
             width: 50%;
             height: 100%;
-            background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.8) 50%, rgba(255,255,255,0) 100%);
+            background: linear-gradient(
+                to right,
+                rgba(255, 255, 255, 0) 0%,
+                rgba(255, 255, 255, 0.8) 50%,
+                rgba(255, 255, 255, 0) 100%
+            );
             transform: skewX(-25deg);
             animation: shimmer 3s infinite;
         }
@@ -312,12 +327,17 @@
             100% { left: 200%; }
         }
 
+        /* Slider Gambar di Kartu Produk */
         .card-slider-container {
             position: absolute; inset: 0; width: 100%; height: 100%;
             display: flex; transition: transform 0.5s ease;
         }
-        .card-slide { min-width: 100%; height: 100%; }
-        .card-slide img { width: 100%; height: 100%; object-fit: cover; }
+        .card-slide {
+            min-width: 100%; height: 100%;
+        }
+        .card-slide img {
+            width: 100%; height: 100%; object-fit: cover;
+        }
 
         .card-content {
             padding: 12px;
@@ -343,6 +363,7 @@
             -webkit-box-orient: vertical;
         }
 
+        /* --- CARD FOOTER (PRICING) --- */
         .card-footer {
             display: flex;
             justify-content: space-between;
@@ -350,17 +371,27 @@
             margin-top: auto;
         }
 
-        .price-container { display: flex; flex-direction: column; align-items: flex-start; }
+        .price-container {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
 
         .price-original {
-            font-size: 0.7rem; color: var(--text-muted);
-            text-decoration: line-through; font-weight: 500;
-            margin-bottom: 2px; white-space: nowrap;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-decoration: line-through;
+            font-weight: 500;
+            margin-bottom: 2px;
+            white-space: nowrap;
         }
 
         .price-main {
-            font-size: 1rem; font-weight: 700;
-            color: var(--primary); line-height: 1.1; white-space: nowrap;
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--primary);
+            line-height: 1.1;
+            white-space: nowrap;
         }
 
         @media (min-width: 768px) {
@@ -369,8 +400,14 @@
             .price-main { font-size: 1.2rem; }
         }
 
-        .sold-info { font-size: 0.7rem; color: var(--text-muted); text-align: right; white-space: nowrap; }
+        .sold-info {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-align: right;
+            white-space: nowrap;
+        }
 
+        /* --- MODAL --- */
         .modal-overlay {
             position: fixed; inset: 0; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px);
             z-index: 2000; display: flex; align-items: center; justify-content: center;
@@ -386,6 +423,7 @@
         }
         .modal-overlay.active .modal-content { transform: scale(1); }
 
+        /* --- MODAL STAGE 1: PRODUCT DETAIL --- */
         .modal-body { display: flex; flex-direction: column; overflow: hidden; height: 100%; }
         
         @media (min-width: 768px) {
@@ -395,15 +433,35 @@
         }
 
         .modal-img-wrapper {
-            position: relative; background: #000; overflow: hidden;
-            height: 300px; flex-shrink: 0;
+            position: relative;
+            background: #000;
+            overflow: hidden;
+            height: 300px; /* Mobile height */
+            flex-shrink: 0;
         }
         @media (min-width: 768px) { .modal-img-wrapper { height: 100%; } }
 
-        .carousel-track { display: flex; height: 100%; transition: transform 0.3s ease-out; cursor: grab; }
+        .carousel-track {
+            display: flex;
+            height: 100%;
+            transition: transform 0.3s ease-out;
+            cursor: grab;
+        }
         .carousel-track:active { cursor: grabbing; }
-        .carousel-slide { min-width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; }
-        .carousel-slide img { width: 100%; height: 100%; object-fit: contain; background: white; }
+
+        .carousel-slide {
+            min-width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .carousel-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            background: white;
+        }
 
         .carousel-nav {
             position: absolute; top: 50%; transform: translateY(-50%);
@@ -416,31 +474,101 @@
         .c-prev { left: 10px; }
         .c-next { right: 10px; }
 
-        .carousel-dots { position: absolute; bottom: 15px; left: 0; right: 0; display: flex; justify-content: center; gap: 6px; z-index: 5; }
-        .c-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.5); cursor: pointer; }
+        .carousel-dots {
+            position: absolute; bottom: 15px; left: 0; right: 0;
+            display: flex; justify-content: center; gap: 6px; z-index: 5;
+        }
+        .c-dot {
+            width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.5); cursor: pointer;
+        }
         .c-dot.active { background: white; transform: scale(1.3); }
         
         .modal-info { padding: 24px; display: flex; flex-direction: column; overflow-y: auto; height: 100%; }
+        
         .modal-cat { color: var(--primary); font-weight: 600; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
         .modal-title { font-size: 1.4rem; font-weight: 700; color: var(--text-main); margin-bottom: 12px; line-height: 1.3; flex-shrink: 0; }
         
-        .modal-price-wrap { display: flex; align-items: baseline; gap: 10px; margin-bottom: 16px; flex-shrink: 0; }
-        .modal-price-original { font-size: 1rem; color: var(--text-muted); text-decoration: line-through; font-weight: 500; }
-        .modal-price-final { font-size: 1.5rem; font-weight: 700; color: var(--primary); }
+        .modal-price-wrap {
+            display: flex;
+            align-items: baseline;
+            gap: 10px;
+            margin-bottom: 16px;
+            flex-shrink: 0;
+        }
+        .modal-price-original {
+            font-size: 1rem;
+            color: var(--text-muted);
+            text-decoration: line-through;
+            font-weight: 500;
+        }
+        .modal-price-final {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
 
-        .modal-desc { color: var(--text-muted); font-size: 0.95rem; line-height: 1.6; flex-grow: 1; overflow-y: auto; margin-bottom: 16px; white-space: pre-wrap; }
+        .modal-desc { 
+            color: var(--text-muted); 
+            font-size: 0.95rem; 
+            line-height: 1.6; 
+            flex-grow: 1; 
+            overflow-y: auto; 
+            margin-bottom: 16px;
+            white-space: pre-wrap; 
+        }
         
-        .addon-section { background: var(--bg-body); padding: 12px; border-radius: 12px; margin-bottom: 16px; border: 1px solid var(--border); flex-shrink: 0; }
-        .addon-header { display: flex; justify-content: space-between; align-items: center; }
-        .addon-title { font-size: 0.9rem; font-weight: 600; color: var(--text-main); display: flex; align-items: center; gap: 8px; }
-        .addon-price { font-size: 0.8rem; color: var(--text-muted); }
+        /* --- ADDON: COVER LETTER SWITCH --- */
+        .addon-section {
+            background: var(--bg-body);
+            padding: 12px;
+            border-radius: 12px;
+            margin-bottom: 16px;
+            border: 1px solid var(--border);
+            flex-shrink: 0;
+        }
+        .addon-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .addon-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .addon-price {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
         
-        .switch { position: relative; display: inline-block; width: 44px; height: 24px; }
+        /* Toggle Switch */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 24px;
+        }
         .switch input { opacity: 0; width: 0; height: 0; }
-        .slider-toggle { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 34px; }
-        .slider-toggle:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; }
-        input:checked + .slider-toggle { background-color: var(--primary); }
-        input:checked + .slider-toggle:before { transform: translateX(20px); }
+        .slider {
+            position: absolute; cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+        .slider:before {
+            position: absolute; content: "";
+            height: 18px; width: 18px;
+            left: 3px; bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        input:checked + .slider { background-color: var(--primary); }
+        input:checked + .slider:before { transform: translateX(20px); }
 
         .btn-buy {
             background: var(--primary); color: white; padding: 16px;
@@ -450,396 +578,326 @@
         }
         .btn-buy:hover { background: var(--primary-dark); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3); }
 
-        .btn-close-modal {
+        .btn-close {
             position: absolute; top: 20px; right: 20px;
             background: white; width: 36px; height: 36px; border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
             cursor: pointer; z-index: 20; box-shadow: var(--shadow-md);
             color: var(--text-main); transition: 0.2s;
         }
-        .btn-close-modal:hover { background: var(--bg-body); }
+        .btn-close:hover { background: var(--bg-body); }
 
-        .payment-view { display: none; padding: 30px 24px; height: 100%; overflow-y: auto; flex-direction: column; animation: fadeIn 0.3s ease; }
+        /* --- MODAL STAGE 2: PAYMENT DETAIL --- */
+        .payment-view {
+            display: none;
+            padding: 30px 24px;
+            height: 100%;
+            overflow-y: auto;
+            flex-direction: column;
+            animation: fadeIn 0.3s ease;
+        }
         .payment-view.active { display: flex; }
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        .payment-header { display: flex; align-items: center; gap: 10px; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
-        .btn-back { background: none; font-size: 1.2rem; cursor: pointer; color: var(--text-muted); padding: 5px; }
+        .payment-header {
+            display: flex;
+            align-items: center,
+            gap: 10px;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border);
+        }
+        .btn-back {
+            background: none; font-size: 1.2rem; cursor: pointer; color: var(--text-muted); padding: 5px;
+        }
         .btn-back:hover { color: var(--primary); }
 
-        .summary-card { background: var(--bg-body); border-radius: 12px; padding: 16px; margin-bottom: 24px; }
-        .summary-row { display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 0.9rem; color: var(--text-muted); }
-        .summary-row.total { margin-top: 16px; padding-top: 12px; border-top: 1px dashed var(--border); font-weight: 700; color: var(--text-main); font-size: 1.1rem; margin-bottom: 0; }
+        .summary-card {
+            background: var(--bg-body);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 24px;
+        }
+        .summary-row {
+            display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 0.9rem; color: var(--text-muted);
+        }
+        .summary-row.total {
+            margin-top: 16px; padding-top: 12px; border-top: 1px dashed var(--border);
+            font-weight: 700; color: var(--text-main); font-size: 1.1rem;
+            margin-bottom: 0;
+        }
 
-        .unique-amount-alert { background: #fff7ed; border: 1px solid #ffedd5; color: #c2410c; padding: 12px; border-radius: 8px; font-size: 0.85rem; margin-bottom: 20px; display: flex; gap: 10px; align-items: start; }
+        /* Alert Unique Amount */
+        .unique-amount-alert {
+            background: #fff7ed;
+            border: 1px solid #ffedd5;
+            color: #c2410c;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            margin-bottom: 20px;
+            display: flex;
+            gap: 10px;
+            align-items: start;
+        }
         .unique-amount-alert i { margin-top: 3px; }
         .unique-amount-alert strong { color: #ea580c; }
 
-        .payment-methods { display: flex; flex-direction: column; gap: 12px; margin-bottom: 24px; }
-        .payment-option-card { border: 1px solid var(--border); border-radius: 12px; padding: 16px; display: flex; justify-content: space-between; align-items: center; background: white; transition: 0.2s; }
+        .payment-methods {
+            display: flex; flex-direction: column; gap: 12px; margin-bottom: 24px;
+        }
+        
+        /* Card for Bank/QRIS */
+        .payment-option-card {
+            border: 1px solid var(--border); border-radius: 12px; padding: 16px;
+            display: flex; justify-content: space-between; align-items: center;
+            background: white; transition: 0.2s;
+        }
         .payment-option-card:hover { border-color: var(--primary); box-shadow: var(--shadow-sm); }
+        
+        /* Logos & QRIS Styles */
         .bank-info { display: flex; align-items: center; gap: 12px; }
-        .bank-logo-img { width: 60px; height: auto; max-height: 30px; object-fit: contain; }
-        .qris-img { width: 80px; height: 80px; border-radius: 8px; border: 1px solid #eee; }
-        .qris-container { display: flex; align-items: center; gap: 16px; }
+        .bank-logo-img {
+            width: 60px; height: auto; max-height: 30px; object-fit: contain;
+        }
+        .qris-img {
+            width: 80px; height: 80px; border-radius: 8px; border: 1px solid #eee;
+        }
+        .qris-container {
+            display: flex; align-items: center; gap: 16px;
+        }
+
         .bank-details h4 { font-size: 0.95rem; margin-bottom: 2px; display: flex; align-items: center; gap: 8px; color: #333; }
         .bank-number { font-family: monospace; font-size: 1.1rem; letter-spacing: 1px; color: var(--text-main); font-weight: 600; }
         .bank-name { font-size: 0.75rem; color: var(--text-muted); }
 
-        .btn-copy { background: var(--bg-body); border: 1px solid var(--border); padding: 8px 12px; border-radius: 8px; cursor: pointer; font-size: 0.8rem; color: var(--primary); display: flex; align-items: center; gap: 6px; transition: 0.2s; flex-shrink: 0; }
+        .btn-copy {
+            background: var(--bg-body); border: 1px solid var(--border);
+            padding: 8px 12px; border-radius: 8px; cursor: pointer;
+            font-size: 0.8rem; color: var(--primary); display: flex; align-items: center; gap: 6px;
+            transition: 0.2s; flex-shrink: 0;
+        }
         .btn-copy:hover { background: var(--primary-light); border-color: var(--primary); }
 
-        .btn-confirm-wa { background: #25D366; color: white; padding: 16px; border-radius: 12px; font-weight: 600; font-size: 1rem; text-align: center; width: 100%; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; transition: 0.3s; }
+        .btn-confirm-wa {
+            background: #25D366; color: white; padding: 16px;
+            border-radius: 12px; font-weight: 600; font-size: 1rem; text-align: center;
+            width: 100%; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px;
+            transition: 0.3s;
+        }
         .btn-confirm-wa:hover { background: #1ebc57; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3); }
-        .btn-confirm-wa.locked { background-color: #9ca3af; cursor: not-allowed; opacity: 0.7; pointer-events: none; box-shadow: none; transform: none; }
+
+        /* --- STYLE TAMBAHAN: TIMER LOCKED --- */
+        .btn-confirm-wa.locked {
+            background-color: #9ca3af; 
+            cursor: not-allowed;
+            opacity: 0.7;
+            pointer-events: none; 
+            box-shadow: none;
+            transform: none;
+        }
+        
         .mt-auto { margin-top: auto; }
 
-        .qris-modal-overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(5px); z-index: 3000; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: 0.3s; padding: 16px; }
+        /* --- QRIS POPUP MODAL --- */
+        .qris-modal-overlay {
+            position: fixed; inset: 0; background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(5px);
+            z-index: 3000; display: flex; align-items: center; justify-content: center;
+            opacity: 0; pointer-events: none; transition: 0.3s; padding: 16px;
+        }
         .qris-modal-overlay.active { opacity: 1; pointer-events: all; }
-        .qris-modal-content { background: white; width: 100%; max-width: 400px; border-radius: 20px; padding: 30px 20px; text-align: center; box-shadow: var(--shadow-lg); transform: scale(0.9); transition: 0.3s; position: relative; }
+
+        .qris-modal-content {
+            background: white; width: 100%; max-width: 400px; border-radius: 20px;
+            padding: 30px 20px; text-align: center;
+            box-shadow: var(--shadow-lg); transform: scale(0.9); transition: 0.3s; position: relative;
+        }
         .qris-modal-overlay.active .qris-modal-content { transform: scale(1); }
-        .qris-modal-title { font-size: 1.2rem; font-weight: 700; color: var(--text-main); margin-bottom: 20px; }
-        .qris-modal-image-wrapper { background: #fff; padding: 10px; border: 2px dashed var(--border); border-radius: 12px; margin-bottom: 20px; display: flex; justify-content: center; }
-        .qris-modal-image-wrapper img { width: 200px; height: 200px; object-fit: contain; }
-        .qris-modal-price-area { background: var(--bg-body); border: 1px solid var(--border); border-radius: 12px; padding: 15px; margin-bottom: 10px; cursor: pointer; transition: 0.2s; position: relative; }
-        .qris-modal-price-area:active { background: #e2e8f0; transform: scale(0.98); }
-        .qris-modal-price-area:hover { border-color: var(--primary); }
-        .copy-hint { font-size: 0.7rem; color: var(--primary); margin-bottom: 4px; font-weight: 600; text-transform: uppercase; }
-        .qris-modal-total { font-size: 1.5rem; font-weight: 800; color: var(--danger); }
-        .copy-icon-overlay { position: absolute; top: 10px; right: 10px; color: var(--primary); opacity: 0.5; }
-        .qris-modal-desc { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 20px; line-height: 1.4; }
-        .qris-actions { display: flex; gap: 10px; justify-content: center; }
-        .btn-close-qris { background: var(--bg-body); color: var(--text-main); padding: 12px 24px; border-radius: 12px; font-weight: 600; cursor: pointer; transition: 0.2s; border: 1px solid var(--border); }
+
+        .qris-modal-title {
+            font-size: 1.2rem; font-weight: 700; color: var(--text-main); margin-bottom: 20px;
+        }
+        .qris-modal-image-wrapper {
+            background: #fff;
+            padding: 10px;
+            border: 2px dashed var(--border);
+            border-radius: 12px;
+            margin-bottom: 20px;
+            display: flex; justify-content: center;
+        }
+        .qris-modal-image-wrapper img {
+            width: 200px; height: 200px; object-fit: contain;
+        }
+        
+        /* Clickable Price Area */
+        .qris-modal-price-area {
+            background: var(--bg-body);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: 0.2s;
+            position: relative;
+        }
+        .qris-modal-price-area:active {
+            background: #e2e8f0;
+            transform: scale(0.98);
+        }
+        .qris-modal-price-area:hover {
+            border-color: var(--primary);
+        }
+        .copy-hint {
+            font-size: 0.7rem; color: var(--primary); margin-bottom: 4px; font-weight: 600; text-transform: uppercase;
+        }
+        .qris-modal-total {
+            font-size: 1.5rem; font-weight: 800; color: var(--danger);
+        }
+        .copy-icon-overlay {
+            position: absolute; top: 10px; right: 10px;
+            color: var(--primary); opacity: 0.5;
+        }
+
+        .qris-modal-desc {
+            font-size: 0.85rem; color: var(--text-muted); margin-bottom: 20px; line-height: 1.4;
+        }
+        
+        .qris-actions {
+            display: flex; gap: 10px;
+            justify-content: center;
+        }
+        .btn-close-qris {
+            background: var(--bg-body); color: var(--text-main); padding: 12px 24px;
+            border-radius: 12px; font-weight: 600; cursor: pointer;
+            transition: 0.2s; border: 1px solid var(--border);
+        }
         .btn-close-qris:hover { background: #e2e8f0; }
 
-        .toast-container { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 4000; display: flex; flex-direction: column; gap: 10px; pointer-events: none; width: 90%; max-width: 400px; }
-        .toast { background: white; color: var(--text-main); padding: 12px 16px; border-radius: 10px; box-shadow: var(--shadow-lg); border-left: 4px solid var(--primary); display: flex; align-items: center; gap: 12px; animation: slideDownToast 0.3s ease-out forwards; opacity: 0; transform: translateY(-20px); pointer-events: all; }
+        /* --- TOAST NOTIFICATION --- */
+        .toast-container {
+            position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+            z-index: 4000; display: flex; flex-direction: column; gap: 10px;
+            pointer-events: none; width: 90%; max-width: 400px;
+        }
+        .toast {
+            background: white; color: var(--text-main);
+            padding: 12px 16px; border-radius: 10px;
+            box-shadow: var(--shadow-lg); border-left: 4px solid var(--primary);
+            display: flex; align-items: center; gap: 12px;
+            animation: slideDown 0.3s ease-out forwards; opacity: 0; transform: translateY(-20px);
+            pointer-events: all;
+        }
         .toast.success { border-left-color: var(--success); }
         .toast.error { border-left-color: var(--danger); }
         .toast i { font-size: 1.2rem; }
         .toast.success i { color: var(--success); }
         .toast.error i { color: var(--danger); }
-        @keyframes slideDownToast { to { opacity: 1; transform: translateY(0); } }
-        @keyframes fadeOutToast { to { opacity: 0; transform: translateY(-10px); } }
+        
+        @keyframes slideDown { to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeOut { to { opacity: 0; transform: translateY(-10px); } }
 
-        .ad-popup { position: fixed; bottom: 20px; left: 20px; z-index: 900; width: 260px; background: white; border-radius: 16px; box-shadow: var(--shadow-lg); overflow: visible; display: none; animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
-        .ad-popup.transparent-mode { background: transparent !important; box-shadow: none; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.2)); }
+        /* --- CORNER AD POPUP --- */
+        .ad-popup {
+            position: fixed; 
+            bottom: 20px; 
+            left: 20px; 
+            z-index: 900;
+            width: 260px; 
+            background: white; 
+            border-radius: 16px;
+            box-shadow: var(--shadow-lg); 
+            overflow: visible; 
+            display: none;
+            animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        .ad-popup.transparent-mode {
+            background: transparent !important;
+            box-shadow: none; 
+            filter: drop-shadow(0 10px 15px rgba(0,0,0,0.2));
+        }
+
         @keyframes slideUp { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        .ad-img img { width: 100%; display: block; }
-        .ad-popup .ad-img img { object-fit: cover; border-radius: 16px; }
-        .ad-popup.transparent-mode .ad-img img { object-fit: contain; border-radius: 0; background: transparent; }
-        .ad-close { position: absolute; top: -10px; right: -10px; background: var(--danger); color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 0.7rem; z-index: 10; transition: 0.2s; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
-        .ad-close:hover { transform: scale(1.1); }
+        
+        .ad-img img { 
+            width: 100%; 
+            display: block; 
+        }
+
+        .ad-popup .ad-img img {
+            object-fit: cover;
+            border-radius: 16px;
+        }
+
+        .ad-popup.transparent-mode .ad-img img {
+            object-fit: contain;
+            border-radius: 0;
+            background: transparent; 
+        }
+
+        .ad-close {
+            position: absolute; top: -10px; right: -10px;
+            background: var(--danger); 
+            color: white; 
+            width: 24px; height: 24px;
+            border-radius: 50%; 
+            display: flex; align-items: center; justify-content: center; 
+            cursor: pointer; font-size: 0.7rem;
+            z-index: 10;
+            transition: 0.2s;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        .ad-close:hover {
+            transform: scale(1.1);
+        }
 
         footer { border-top: 1px solid var(--border); padding: 30px 0; margin-top: 40px; text-align: center; color: var(--text-muted); font-size: 0.85rem; background: white; }
+
         .modal-info::-webkit-scrollbar, .payment-view::-webkit-scrollbar { width: 6px; }
         .modal-info::-webkit-scrollbar-thumb, .payment-view::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
-        @keyframes pulse { 0% { opacity: 0.6; } 50% { opacity: 1; } 100% { opacity: 0.6; } }
-
-        /* ============================================
-           CHATBOT STYLES — FIXED LAYOUT
-           ============================================ */
-        .chatbot-fab {
-            position: fixed; bottom: 24px; right: 24px; z-index: 1500;
-            width: 60px; height: 60px; border-radius: 50%;
-            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
-            color: white; display: flex; align-items: center; justify-content: center;
-            cursor: pointer; box-shadow: 0 8px 32px rgba(37, 99, 235, 0.4);
-            transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
-            border: none; outline: none;
-        }
-        .chatbot-fab:hover { transform: scale(1.1); box-shadow: 0 12px 40px rgba(37, 99, 235, 0.5); }
-        .chatbot-fab:active { transform: scale(0.95); }
-        .chatbot-fab.open { transform: rotate(90deg) scale(1); background: var(--chat-surface); box-shadow: 0 4px 16px rgba(0,0,0,0.3); }
-        .chatbot-fab.open:hover { transform: rotate(90deg) scale(1.1); }
-        .chatbot-fab .fab-icon { font-size: 1.5rem; transition: transform 0.3s; }
-
-        .chatbot-badge {
-            position: absolute; top: -2px; right: -2px; width: 20px; height: 20px;
-            border-radius: 50%; background: #ef4444; color: white;
-            font-size: 0.65rem; font-weight: 700;
-            display: flex; align-items: center; justify-content: center;
-            border: 2px solid var(--bg-body);
-            animation: badgePop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-            pointer-events: none;
-        }
-        @keyframes badgePop { 0% { transform: scale(0); } 100% { transform: scale(1); } }
-
-        .chatbot-fab::before {
-            content: ''; position: absolute; inset: -4px; border-radius: 50%;
-            border: 2px solid var(--chat-accent); opacity: 0;
-            animation: fabPulse 2.5s ease-out infinite;
-        }
-        .chatbot-fab.open::before { display: none; }
-        @keyframes fabPulse { 0% { transform: scale(0.8); opacity: 0.6; } 100% { transform: scale(1.5); opacity: 0; } }
-
-        /* Chat Window */
-        .chatbot-window {
-            position: fixed; bottom: 96px; right: 24px; z-index: 1499;
-            width: 380px; max-width: calc(100vw - 32px); height: 560px;
-            max-height: calc(100vh - 140px);
-            background: var(--chat-bg); border-radius: 24px;
-            display: flex; flex-direction: column; overflow: hidden;
-            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255,255,255,0.05);
-            transform: scale(0.5) translateY(40px); transform-origin: bottom right;
-            opacity: 0; pointer-events: none;
-            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-        .chatbot-window.open { transform: scale(1) translateY(0); opacity: 1; pointer-events: all; }
-
-        .chat-header {
-            background: var(--chat-surface); padding: 16px 20px;
-            display: flex; align-items: center; gap: 12px;
-            border-bottom: 1px solid var(--chat-border); flex-shrink: 0;
-        }
-        .chat-avatar {
-            width: 40px; height: 40px; border-radius: 12px;
-            background: linear-gradient(135deg, #2563eb, #7c3aed);
-            display: flex; align-items: center; justify-content: center;
-            color: white; font-size: 1rem; flex-shrink: 0; position: relative;
-        }
-        .chat-avatar .online-dot {
-            position: absolute; bottom: -1px; right: -1px;
-            width: 12px; height: 12px; border-radius: 50%;
-            background: #22c55e; border: 2px solid var(--chat-surface);
-        }
-        .chat-header-info h3 { font-size: 0.95rem; font-weight: 700; color: var(--chat-text); line-height: 1.2; }
-        .chat-header-info p { font-size: 0.72rem; color: #22c55e; font-weight: 500; }
-        .chat-header-actions { margin-left: auto; display: flex; gap: 4px; }
-        .chat-header-btn {
-            width: 32px; height: 32px; border-radius: 8px; background: transparent;
-            color: var(--chat-text-muted); display: flex; align-items: center;
-            justify-content: center; cursor: pointer; transition: 0.2s;
-            border: none; font-size: 0.85rem;
-        }
-        .chat-header-btn:hover { background: var(--chat-surface-2); color: var(--chat-text); }
-
-        /* Messages Area — padding bawah cukup agar tidak ketutupan */
-        .chat-messages {
-            flex: 1; overflow-y: auto; padding: 20px 16px 16px;
-            display: flex; flex-direction: column; gap: 10px;
-            scroll-behavior: smooth;
-        }
-        .chat-messages::-webkit-scrollbar { width: 4px; }
-        .chat-messages::-webkit-scrollbar-thumb { background: var(--chat-surface-2); border-radius: 2px; }
-        .chat-messages::-webkit-scrollbar-track { background: transparent; }
-
-        /* Message Bubbles */
-        .chat-msg {
-            display: flex; gap: 8px; max-width: 88%;
-            animation: msgSlideIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-        @keyframes msgSlideIn {
-            0% { opacity: 0; transform: translateY(12px) scale(0.95); }
-            100% { opacity: 1; transform: translateY(0) scale(1); }
-        }
-        .chat-msg.bot { align-self: flex-start; }
-        .chat-msg.user { align-self: flex-end; flex-direction: row-reverse; }
-
-        .msg-avatar {
-            width: 28px; height: 28px; border-radius: 8px; flex-shrink: 0;
-            display: flex; align-items: center; justify-content: center; font-size: 0.65rem; margin-top: 2px;
-        }
-        .chat-msg.bot .msg-avatar { background: linear-gradient(135deg, #2563eb, #7c3aed); color: white; }
-        .chat-msg.user .msg-avatar { background: var(--chat-surface-2); color: var(--chat-text-muted); }
-
-        .msg-bubble {
-            padding: 12px 16px; border-radius: 16px;
-            font-size: 0.875rem; line-height: 1.55; word-break: break-word;
-            position: relative; overflow: hidden;
-        }
-        .chat-msg.bot .msg-bubble {
-            background: var(--chat-surface); color: var(--chat-text);
-            border-bottom-left-radius: 4px;
-        }
-        .chat-msg.user .msg-bubble {
-            background: var(--chat-user-bubble); color: white;
-            border-bottom-right-radius: 4px;
-        }
-
-        /* Shimmer efek pada bubble bot */
-        .chat-msg.bot .msg-bubble::after {
-            content: '';
-            position: absolute; top: 0; left: -100%;
-            width: 40%; height: 100%;
-            background: linear-gradient(to right, transparent, rgba(255,255,255,0.04), transparent);
-            animation: bubbleShimmer 4s ease-in-out infinite;
-            pointer-events: none;
-        }
-        @keyframes bubbleShimmer {
-            0% { left: -100%; }
-            50% { left: 150%; }
-            100% { left: 150%; }
-        }
-
-        .msg-bubble strong { font-weight: 700; color: #60a5fa; }
-        .chat-msg.user .msg-bubble strong { color: #bfdbfe; }
-        .msg-bubble del { opacity: 0.5; }
-
-        .msg-time { font-size: 0.65rem; color: var(--chat-text-muted); margin-top: 4px; padding: 0 4px; }
-        .chat-msg.user .msg-time { text-align: right; }
-
-        /* Product Card di dalam Chat */
-        .chat-product-card {
-            background: var(--chat-surface-2); border-radius: 12px;
-            overflow: hidden; margin-top: 8px; cursor: pointer;
-            transition: 0.2s; border: 1px solid transparent;
-        }
-        .chat-product-card:hover { border-color: var(--chat-accent); transform: translateY(-1px); }
-        .chat-product-card img { width: 100%; height: 120px; object-fit: cover; }
-        .chat-product-info { padding: 10px 12px; }
-        .chat-product-info h4 {
-            font-size: 0.82rem; font-weight: 600; color: var(--chat-text);
-            margin-bottom: 4px; line-height: 1.3;
-            display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
-        }
-        .chat-product-price { font-size: 0.85rem; font-weight: 700; color: #60a5fa; }
-        .chat-product-sold { font-size: 0.7rem; color: var(--chat-text-muted); margin-top: 2px; }
-
-        /* ============================================
-           QUICK REPLIES — TIDAK MENIMPA TOMBOL SEND
-           Ditampilkan sebagai baris terpisah di bawah bubble,
-           tanpa avatar, tanpa gap avatar, rata kiri penuh.
-           ============================================ */
-        .chat-quick-replies-row {
-            align-self: flex-start;
-            width: 100%;
-            padding-left: 36px; /* = lebar avatar (28px) + gap (8px) */
-            animation: msgSlideIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-
-        .chat-quick-replies {
-            display: flex; flex-wrap: wrap; gap: 6px;
-        }
-        .quick-reply-btn {
-            padding: 6px 14px; border-radius: 50px;
-            background: transparent; border: 1px solid var(--chat-accent);
-            color: #60a5fa; font-size: 0.78rem; font-weight: 500;
-            cursor: pointer; transition: 0.2s; white-space: nowrap;
-        }
-        .quick-reply-btn:hover { background: var(--chat-accent); color: white; transform: translateY(-1px); }
-        .quick-reply-btn:active { transform: scale(0.95); }
-
-        /* Typing Indicator — diperlakukan sama seperti msg biasa */
-        .typing-indicator {
-            display: none; align-self: flex-start;
-        }
-        .typing-indicator.active {
-            display: flex; gap: 8px; align-items: flex-end;
-            animation: msgSlideIn 0.3s ease;
-        }
-        .typing-dots {
-            display: flex; gap: 4px; padding: 14px 18px;
-            background: var(--chat-surface); border-radius: 16px; border-bottom-left-radius: 4px;
-        }
-        .typing-dots span {
-            width: 7px; height: 7px; border-radius: 50%;
-            background: var(--chat-text-muted);
-            animation: typingBounce 1.2s ease-in-out infinite;
-        }
-        .typing-dots span:nth-child(2) { animation-delay: 0.15s; }
-        .typing-dots span:nth-child(3) { animation-delay: 0.3s; }
-        @keyframes typingBounce {
-            0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
-            30% { transform: translateY(-6px); opacity: 1; }
-        }
-
-        /* Chat Input Area */
-        .chat-input-area {
-            padding: 10px 12px 14px; background: var(--chat-surface);
-            border-top: 1px solid var(--chat-border); flex-shrink: 0;
-        }
-        .chat-input-wrapper {
-            display: flex; align-items: center; gap: 8px;
-            background: var(--chat-bg); border-radius: 14px;
-            padding: 4px 4px 4px 16px; border: 1px solid var(--chat-border);
-            transition: border-color 0.2s;
-        }
-        .chat-input-wrapper:focus-within {
-            border-color: var(--chat-accent);
-            box-shadow: 0 0 0 3px var(--chat-accent-glow);
-        }
-        .chat-input-wrapper input {
-            flex: 1; background: transparent; color: var(--chat-text);
-            font-size: 0.875rem; padding: 8px 0; border: none; outline: none;
-        }
-        .chat-input-wrapper input::placeholder { color: var(--chat-text-muted); }
-        .chat-send-btn {
-            width: 38px; height: 38px; border-radius: 10px;
-            background: var(--chat-accent); color: white;
-            display: flex; align-items: center; justify-content: center;
-            cursor: pointer; transition: 0.2s; border: none;
-            flex-shrink: 0; font-size: 0.9rem;
-        }
-        .chat-send-btn:hover { background: #1d4ed8; transform: scale(1.05); }
-        .chat-send-btn:active { transform: scale(0.92); }
-        .chat-send-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
-
-        .chat-disclaimer {
-            text-align: center; font-size: 0.62rem;
-            color: var(--chat-text-muted); margin-top: 6px; opacity: 0.6;
-        }
-
-        /* Scroll to bottom button */
-        .chat-scroll-btn {
-            position: absolute; bottom: 80px; left: 50%; transform: translateX(-50%) translateY(20px);
-            width: 36px; height: 36px; border-radius: 50%;
-            background: var(--chat-surface-2); color: var(--chat-text-muted);
-            display: flex; align-items: center; justify-content: center;
-            cursor: pointer; border: none; font-size: 0.8rem;
-            opacity: 0; pointer-events: none; transition: all 0.3s;
-            z-index: 5; box-shadow: var(--shadow-md);
-        }
-        .chat-scroll-btn.visible {
-            opacity: 1; pointer-events: all; transform: translateX(-50%) translateY(0);
-        }
-        .chat-scroll-btn:hover { background: var(--chat-accent); color: white; }
-
-        .chat-date-sep {
-            text-align: center; font-size: 0.68rem; color: var(--chat-text-muted);
-            padding: 4px 12px; background: var(--chat-surface-2);
-            border-radius: 50px; align-self: center; margin: 4px 0;
-        }
-
-        /* Responsif: fullscreen di mobile */
-        @media (max-width: 480px) {
-            .chatbot-window {
-                bottom: 0; right: 0; width: 100%; max-width: 100%;
-                height: 100%; max-height: 100%; border-radius: 0;
-            }
-            .chatbot-window.open { border-radius: 0; }
-            .chatbot-fab { bottom: 16px; right: 16px; }
-        }
     </style>
 </head>
 <body oncontextmenu="return false;">
 
+    <!-- Toast Container -->
     <div class="toast-container" id="toastContainer"></div>
 
+    <!-- Header -->
     <header>
         <div class="container nav-wrapper">
             <a href="#" class="logo">
                 <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjzgVAIKgZMS9W7eJKCaRyaFnoDviThQstfeD9l9mcwPxUDoovGo7xB3RQByxTXo15fGX0DIeTMxOWkVovnB4FC35iJN6ArGLOlBRI9U4d4gJ7VOTOp-Ki47RIaViiIs12QGjxRmGs2cQzCFniRpBE0GyNLW3s_03rvTcpPeHAruMaUdrIKNX8jaFZ1TcBw/s3264/28063.png" alt="Logo">
                 <span></span>
             </a>
+            
             <div class="search-box">
                 <i class="fas fa-search"></i>
                 <input type="text" id="searchInput" placeholder="Cari CV..." autocomplete="off">
+                <!-- Search Suggestions Dropdown -->
                 <div class="search-suggestions" id="searchSuggestions"></div>
             </div>
         </div>
     </header>
 
     <main class="container">
+        
+        <!-- Hero Slider -->
         <section class="hero-section" id="heroSlider">
             <div class="slider-container" id="sliderTrack"></div>
             <button class="slider-btn prev-btn" onclick="window.prevSlide()"><i class="fas fa-chevron-left"></i></button>
             <button class="slider-btn next-btn" onclick="window.nextSlide()"><i class="fas fa-chevron-right"></i></button>
             <div class="slider-dots" id="sliderDots"></div>
         </section>
-        <div class="filter-bar" id="filterBar"></div>
+
+        <!-- Filter Bar (Dinamis dari DB) -->
+        <div class="filter-bar" id="filterBar">
+            <!-- Chip akan digenerate oleh JS -->
+        </div>
+
+        <!-- Product Grid -->
         <div class="product-grid" id="productGrid">
+            <!-- Skeleton Loading -->
             <div class="cv-card" style="cursor: default;">
                 <div class="card-image" style="background:#e2e8f0; animation: pulse 1.5s infinite;"></div>
                 <div class="card-content">
@@ -865,54 +923,12 @@
         </div>
     </footer>
 
-    <!-- CHATBOT FAB -->
-    <button class="chatbot-fab" id="chatFab" aria-label="Buka Chatbot">
-        <i class="fas fa-comment-dots fab-icon" id="fabIcon"></i>
-        <span class="chatbot-badge" id="chatBadge">1</span>
-    </button>
-
-    <!-- CHATBOT WINDOW -->
-    <div class="chatbot-window" id="chatWindow" style="position:relative;">
-        <div class="chat-header">
-            <div class="chat-avatar">
-                <i class="fas fa-robot"></i>
-                <span class="online-dot"></span>
-            </div>
-            <div class="chat-header-info">
-                <h3>WriteHub Assistant</h3>
-                <p>Online sekarang</p>
-            </div>
-            <div class="chat-header-actions">
-                <button class="chat-header-btn" id="chatClearBtn" title="Hapus percakapan">
-                    <i class="fas fa-trash-alt"></i>
-                </button>
-            </div>
-        </div>
-        <div class="chat-messages" id="chatMessages"></div>
-        <button class="chat-scroll-btn" id="chatScrollBtn" title="Gulir ke bawah">
-            <i class="fas fa-chevron-down"></i>
-        </button>
-        <div class="typing-indicator" id="typingIndicator">
-            <div class="msg-avatar" style="background: linear-gradient(135deg, #2563eb, #7c3aed); color: white; width:28px; height:28px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:0.65rem;">
-                <i class="fas fa-robot"></i>
-            </div>
-            <div class="typing-dots"><span></span><span></span><span></span></div>
-        </div>
-        <div class="chat-input-area">
-            <div class="chat-input-wrapper">
-                <input type="text" id="chatInput" placeholder="Tanya tentang CV..." autocomplete="off">
-                <button class="chat-send-btn" id="chatSendBtn" disabled>
-                    <i class="fas fa-paper-plane"></i>
-                </button>
-            </div>
-            <div class="chat-disclaimer">AI Assistant — data dari database WriteHub</div>
-        </div>
-    </div>
-
-    <!-- MODAL DETAIL -->
+    <!-- MODAL DETAIL (2 Steps: Product & Payment) -->
     <div class="modal-overlay" id="productModal">
         <div class="modal-content">
-            <div class="btn-close-modal" onclick="closeModal()"><i class="fas fa-times"></i></div>
+            <div class="btn-close" onclick="closeModal()"><i class="fas fa-times"></i></div>
+            
+            <!-- STEP 1: PRODUCT VIEW -->
             <div class="modal-body" id="productView">
                 <div class="modal-img-wrapper" id="modalImgWrapper">
                     <div class="carousel-track" id="carouselTrack"></div>
@@ -920,45 +936,90 @@
                     <div class="carousel-nav c-next" onclick="moveCarousel(1)"><i class="fas fa-chevron-right"></i></div>
                     <div class="carousel-dots" id="carouselDots"></div>
                 </div>
+
                 <div class="modal-info">
                     <div id="m-cat" class="modal-cat">CATEGORY</div>
                     <h2 id="m-title" class="modal-title">Product Title</h2>
-                    <div class="modal-price-wrap" id="m-price-wrap"></div>
+                    
+                    <div class="modal-price-wrap" id="m-price-wrap">
+                        <!-- Diisi oleh JS -->
+                    </div>
+
                     <div class="addon-section" id="addonSection">
                         <div class="addon-header">
-                            <div class="addon-title"><i class="fas fa-file-alt" style="color: var(--primary);"></i> Tambah Surat Lamaran</div>
-                            <label class="switch"><input type="checkbox" id="coverLetterToggle"><span class="slider-toggle"></span></label>
+                            <div class="addon-title">
+                                <i class="fas fa-file-alt" style="color: var(--primary);"></i>
+                                Tambah Surat Lamaran
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" id="coverLetterToggle">
+                                <span class="slider"></span>
+                            </label>
                         </div>
-                        <div class="addon-price" id="coverLetterPriceText">+ Rp 0</div>
+                        <div class="addon-price" id="coverLetterPriceText">
+                            + Rp 0
+                        </div>
                     </div>
+
                     <p id="m-desc" class="modal-desc">Description here...</p>
+                    
                     <div style="margin-bottom: 20px; font-size: 0.9rem; color: var(--text-muted); flex-shrink: 0;">
                         <i class="fas fa-check-circle" style="color:var(--primary)"></i> Terpakai <span id="m-sold">0</span>x
                     </div>
-                    <button id="btn-goto-payment" class="btn-buy"><i class="fas fa-shopping-cart"></i> Pakai Sekarang</button>
+
+                    <button id="btn-goto-payment" class="btn-buy">
+                        <i class="fas fa-shopping-cart"></i> Pakai Sekarang
+                    </button>
                 </div>
             </div>
+
+            <!-- STEP 2: PAYMENT VIEW -->
             <div class="payment-view" id="paymentView">
                 <div class="payment-header">
                     <button class="btn-back" onclick="backToProduct()"><i class="fas fa-arrow-left"></i></button>
                     <h3 style="margin:0; font-size:1.1rem; font-weight:700;">Detail Pembayaran</h3>
                 </div>
+
+                <!-- ALERT NOMINAL UNIK -->
                 <div class="unique-amount-alert">
                     <i class="fas fa-exclamation-circle"></i>
-                    <div><strong>PENTING:</strong> Mohon transfer sesuai <strong>Total Nominal Unik</strong> di bawah ini (termasuk 3 digit terakhir) untuk verifikasi otomatis.</div>
+                    <div>
+                        <strong>PENTING:</strong> Mohon transfer sesuai <strong>Total Nominal Unik</strong> di bawah ini (termasuk 3 digit terakhir) untuk verifikasi otomatis.
+                    </div>
                 </div>
+
                 <div class="summary-card">
-                    <div class="summary-row"><span>Produk</span><span id="p-product-name" style="font-weight:600; color:var(--text-main);">Nama Produk</span></div>
-                    <div class="summary-row"><span>Harga Satuan</span><span id="p-unit-price">Rp 0</span></div>
-                    <div class="summary-row" id="row-addon" style="display:none;"><span>Surat Lamaran</span><span id="p-addon-price">Rp 0</span></div>
-                    <div class="summary-row total"><span>Total Bayar (Unik)</span><span id="p-total-price" style="color:var(--danger);">Rp 0</span></div>
+                    <div class="summary-row">
+                        <span>Produk</span>
+                        <span id="p-product-name" style="font-weight:600; color:var(--text-main);">Nama Produk</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Harga Satuan</span>
+                        <span id="p-unit-price">Rp 0</span>
+                    </div>
+                    <div class="summary-row" id="row-addon" style="display:none;">
+                        <span>Surat Lamaran</span>
+                        <span id="p-addon-price">Rp 0</span>
+                    </div>
+                    <div class="summary-row total">
+                        <span>Total Bayar (Unik)</span>
+                        <span id="p-total-price" style="color:var(--danger);">Rp 0</span>
+                    </div>
                 </div>
+
                 <h4 style="margin-bottom:12px; font-size:0.9rem; font-weight:600; color:var(--text-muted);">Metode Pembayaran</h4>
-                <div class="payment-methods" id="paymentMethodsList"><div style="text-align:center; color:var(--text-muted); padding:20px;">Memuat metode pembayaran...</div></div>
+                <div class="payment-methods" id="paymentMethodsList">
+                    <!-- Rekening & QRIS di-inject JS di sini -->
+                    <div style="text-align:center; color:var(--text-muted); padding:20px;">Memuat metode pembayaran...</div>
+                </div>
+
                 <div class="mt-auto">
-                    <button id="btn-confirm-whatsapp" class="btn-confirm-wa"><i class="fab fa-whatsapp" style="font-size:1.2rem;"></i> Lanjutkan ke WhatsApp</button>
+                    <button id="btn-confirm-whatsapp" class="btn-confirm-wa">
+                        <i class="fab fa-whatsapp" style="font-size:1.2rem;"></i> Lanjutkan ke WhatsApp
+                    </button>
                 </div>
             </div>
+
         </div>
     </div>
 
@@ -966,49 +1027,79 @@
     <div class="qris-modal-overlay" id="qrisModal">
         <div class="qris-modal-content">
             <div class="qris-modal-title">Scan QRIS</div>
-            <div class="qris-modal-image-wrapper"><img id="qrisDisplayImage" src="" alt="QRIS Code"></div>
+            
+            <div class="qris-modal-image-wrapper">
+                <img id="qrisDisplayImage" src="" alt="QRIS Code">
+            </div>
+
+            <!-- Area Harga (Bisa Diklik untuk Copy) -->
             <div class="qris-modal-price-area" onclick="copyTotalPrice()">
                 <div class="copy-hint"><i class="fas fa-hand-pointer"></i> Klik untuk Salin</div>
                 <div class="qris-modal-total" id="qrisDisplayTotal">Rp 0</div>
                 <i class="far fa-copy copy-icon-overlay"></i>
             </div>
-            <div class="qris-modal-desc">Nominal unik ini ditambahkan untuk verifikasi otomatis. Gunakan aplikasi pembayaran (GoPay/OVO/Dana) untuk scan QR ini.</div>
-            <div class="qris-actions"><button class="btn-close-qris" onclick="closeQrisModal()">Tutup</button></div>
+
+            <div class="qris-modal-desc">
+                Nominal unik ini ditambahkan untuk verifikasi otomatis. Gunakan aplikasi pembayaran (GoPay/OVO/Dana) untuk scan QR ini, silakan screenshot Qris diatas.
+            </div>
+            
+            <div class="qris-actions">
+                <button class="btn-close-qris" onclick="closeQrisModal()">Tutup</button>
+            </div>
         </div>
     </div>
 
     <!-- POPUP IKLAN -->
     <div class="ad-popup" id="adPopup">
         <div class="ad-close" onclick="closeAd()"><i class="fas fa-times"></i></div>
-        <a href="#" target="_blank" id="adLink"><div class="ad-img"><img id="adImage" src="" alt="Ad"></div></a>
+        <a href="#" target="_blank" id="adLink">
+            <div class="ad-img">
+                <img id="adImage" src="" alt="Ad">
+            </div>
+        </a>
     </div>
 
+    <!-- CSS Animation untuk Skeleton -->
+    <style>
+        @keyframes pulse { 0% { opacity: 0.6; } 50% { opacity: 1; } 100% { opacity: 0.6; } }
+    </style>
+
+    <!-- JAVASCRIPT -->
     <script type="module">
         import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 
+        // --- KONFIGURASI ---
         const SUPABASE_URL = 'https://neuylewfsxcuhayegygf.supabase.co'; 
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5ldXlsZXdmc3hjdWhheWVneWdmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkzNTMzNzYsImV4cCI6MjA5NDkyOTM3Nn0.Ra0qI5A87XxODy7v9HIJ-zxqVbO39GwXbJlV8n4ZeIc';
         const DEFAULT_ADMIN_WA = '6285885850204';
         const DEFAULT_COVER_PRICE = 15000;
 
-        let supabase, useSupabase = false;
+        let supabase;
+        let useSupabase = false;
+
         if (SUPABASE_URL.length > 10 && SUPABASE_ANON_KEY.length > 10) {
-            try { supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY); useSupabase = true; } catch(e) {}
+            try {
+                supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+                useSupabase = true;
+            } catch(e) {}
         }
 
+        // --- DATA SLIDER ---
         const sliderData = [
             { image: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgieMxVSq4yNK45tjG9DdAsuMaQ7dxXJ96XvbYe1Tw6iTMHlm0ETWVM70OBZY2RRoEZ98oCilYCgm7-PYHz9Vo3GBTJ4fMbqRovUaZLtxgdwREVayDd6uq-iJZWVhxoV2RitsUXz-3QR2M2MZkZtoFdjtefvHDmrUGWqyPq1W7JLRHJZwRvLv-vwL_QG8Ni/s3264/29467.png', link: '#' },
             { image: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjPwQ1jrQVR3aj8aOC12lSM7v4NwlaBip0dO76hxPZxVboWB6Pkt4wyTE6wcWUGrAWm-yOFIXa3GbKOLT0J2DsPPPUsYqDHwOSW0r1Ima3StZIVOvPk5CUy4ds6l8FGTt-7_2mPjq92rDMciTnYL-SW6X-9Tks4pZm2fCZv8xiFCdCo5qOHyHXPfqKU2K71/s3264/29445.png', link: '#' },
             { image: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjxTWsbzLOqH1aruzJhxr0MLHze9wHTVlrmjev9HIsR5T0jDuN1tzoTuzgIebdHebK2rY3qt1Ey-rLMssu_WWUOtmI4XdYCaii9_TR54mKVeNHinPZtix0UDc3IHzOiq7vXhnIVzHKp8J-iWFOkHnk7YhjfvQ_NKtcycA6pw-gJGvCR7vByb7dnV0gAisRF/s3264/29463.png', link: '#' }
         ];
 
+        // --- DATA DUMMY ---
         const dummyData = [
-            { id: 1, title: "Modern Creative Portfolio", category: "Creative", price: 50000, original_price: 75000, sold_count: 120, description: "Template dengan layout asimetris yang modern. Cocok untuk desainer, arsitek, dan profesional kreatif.\n\nFitur Utama:\n- Format PDF & Word\n- Mudah diedit\n- Font gratis included", image: "https://picsum.photos/seed/clean1/600/600", images: ["https://picsum.photos/seed/clean1/600/600","https://picsum.photos/seed/clean1b/600/600","https://picsum.photos/seed/clean1c/600/600"], cover_letter_price: 25000, allow_addon: true },
-            { id: 2, title: "Executive Formal Blue", category: "Formal", price: 75000, original_price: null, sold_count: 85, description: "Struktur profesional untuk level manajerial. Memberikan kesan serius dan terpercaya.\n\nWarna biru navy yang elegan.", image: "https://picsum.photos/seed/clean2/600/600", images: ["https://picsum.photos/seed/clean2/600/600","https://picsum.photos/seed/clean2b/600/600"], cover_letter_price: null, allow_addon: true },
+            { id: 1, title: "Modern Creative Portfolio", category: "Creative", price: 50000, original_price: 75000, sold_count: 120, description: "Template dengan layout asimetris yang modern. Cocok untuk desainer, arsitek, dan profesional kreatif.\n\nFitur Utama:\n- Format PDF & Word\n- Mudah diedit\n- Font gratis included", image: "https://picsum.photos/seed/clean1/600/600", images: ["https://picsum.photos/seed/clean1/600/600", "https://picsum.photos/seed/clean1b/600/600", "https://picsum.photos/seed/clean1c/600/600"], cover_letter_price: 25000, allow_addon: true },
+            { id: 2, title: "Executive Formal Blue", category: "Formal", price: 75000, original_price: null, sold_count: 85, description: "Struktur profesional untuk level manajerial. Memberikan kesan serius dan terpercaya.\n\nWarna biru navy yang elegan.", image: "https://picsum.photos/seed/clean2/600/600", images: ["https://picsum.photos/seed/clean2/600/600", "https://picsum.photos/seed/clean2b/600/600"], cover_letter_price: null, allow_addon: true }, 
             { id: 3, title: "Developer Dark Mode", category: "Tech", price: 90000, original_price: 120000, sold_count: 200, description: "Tema gelap elegan untuk programmer. High contrast untuk keterbacaan maksimal.", image: "https://picsum.photos/seed/clean3/600/600", images: ["https://picsum.photos/seed/clean3/600/600"], allow_addon: false },
-            { id: 4, title: "Clean Minimalist", category: "Simple", price: 35000, original_price: null, sold_count: 500, description: "Fokus pada konten tanpa gangguan visual. Pilihan terbaik untuk fresh graduate.", image: "https://picsum.photos/seed/clean4/600/600", images: ["https://picsum.photos/seed/clean4/600/600","https://picsum.photos/seed/clean4b/600/600","https://picsum.photos/seed/c4c/600/600"], cover_letter_price: 10000, allow_addon: true }
+            { id: 4, title: "Clean Minimalist", category: "Simple", price: 35000, original_price: null, sold_count: 500, description: "Fokus pada konten tanpa gangguan visual. Pilihan terbaik untuk fresh graduate.", image: "https://picsum.photos/seed/clean4/600/600", images: ["https://picsum.photos/seed/clean4/600/600", "https://picsum.photos/seed/clean4b/600/600", "https://picsum.photos/seed/c4c/600/600"], cover_letter_price: 10000, allow_addon: true }
         ];
 
+        // --- DATA PEMBAYARAN DUMMY (Jika DB Gagal) ---
         const dummyPaymentMethods = [
             { id: 1, type: 'bank', bank_name: "BCA", account_number: "1234567890", owner_name: "WriteHub Admin", logo: "https://placehold.co/100x50/FFFFFF/0056b3?text=BCA&font=roboto" },
             { id: 2, type: 'bank', bank_name: "MANDIRI", account_number: "0987654321", owner_name: "WriteHub Admin", logo: "https://placehold.co/100x50/FFFFFF/003d79?text=MANDIRI&font=roboto" },
@@ -1016,374 +1107,823 @@
             { id: 4, type: 'qris', bank_name: "QRIS", account_number: "N/A", owner_name: "WriteHub", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Logo_QRIS.svg/1200px-Logo_QRIS.svg.png" }
         ];
 
-        let products = [], filteredProducts = [], currentCategory = 'all', coverLetterPrice = DEFAULT_COVER_PRICE;
-        let paymentMethods = [], adminNumbersList = [], currentUniqueTotal = 0;
-        let paymentLockTimer = null;
-        const LOCK_DURATION_MS = 120000;
+        let products = [];
+        let filteredProducts = [];
+        let currentCategory = 'all';
+        let coverLetterPrice = DEFAULT_COVER_PRICE;
+        let paymentMethods = [];
+        let adminNumbersList = [];
+        let currentUniqueTotal = 0; 
 
-        let fields = { title:'title', price:'price', original_price:'original_price', image:'image', images:'images', category:'category', description:'description', sold_count:'sold_count', cover_letter_price:'cover_letter_price', allow_addon:'allow_addon' };
+        // --- TIMER VARIABLES ---
+        let paymentLockTimer = null; 
+        const LOCK_DURATION_MS = 120000; // 2 Menit
 
-        window.showToast = function(message, type='success') {
-            const c = document.getElementById('toastContainer');
-            const t = document.createElement('div');
-            t.className = `toast ${type}`;
-            t.innerHTML = `<i class="fas ${type==='success'?'fa-check-circle':'fa-exclamation-circle'}"></i><div class="toast-message">${message}</div>`;
-            c.appendChild(t);
-            setTimeout(() => { t.style.animation = 'fadeOutToast 0.3s ease-in forwards'; setTimeout(() => t.remove(), 300); }, 3000);
+        // Mapping Fields
+        let fields = {
+            title: 'title', price: 'price', original_price: 'original_price',
+            image: 'image', images: 'images', category: 'category',
+            description: 'description', sold_count: 'sold_count',
+            cover_letter_price: 'cover_letter_price', allow_addon: 'allow_addon'
+        };
+
+        // --- CUSTOM ALERT (TOAST) --- ---
+        window.showToast = function(message, type = 'success') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            let icon = type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle';
+            toast.innerHTML = `
+                <i class="fas ${icon}"></i>
+                <div class="toast-message">${message}</div>
+            `;
+            container.appendChild(toast);
+            setTimeout(() => {
+                toast.style.animation = 'fadeOut 0.3s ease-in forwards';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
         }
 
-        window.openQrisModal = function(url) {
-            document.getElementById('qrisDisplayImage').src = url;
-            document.getElementById('qrisDisplayTotal').innerText = "Rp " + new Intl.NumberFormat('id-ID').format(currentUniqueTotal);
-            document.getElementById('qrisModal').classList.add('active');
+        // --- QRIS MODAL FUNCTIONS --- ---
+        window.openQrisModal = function(imageUrl) {
+            const modal = document.getElementById('qrisModal');
+            const img = document.getElementById('qrisDisplayImage');
+            const totalText = document.getElementById('qrisDisplayTotal');
+            
+            img.src = imageUrl;
+            const rawTotal = new Intl.NumberFormat('id-ID').format(currentUniqueTotal);
+            totalText.innerText = "Rp " + rawTotal;
+            
+            modal.classList.add('active');
         };
-        window.closeQrisModal = function() { document.getElementById('qrisModal').classList.remove('active'); };
+
+        window.closeQrisModal = function() {
+            document.getElementById('qrisModal').classList.remove('active');
+        };
+
         window.copyTotalPrice = function() {
-            const t = document.getElementById('qrisDisplayTotal').innerText;
-            navigator.clipboard.writeText(t).then(() => showToast('Nominal berhasil disalin!','success')).catch(() => { const ta=document.createElement("textarea"); ta.value=t; document.body.appendChild(ta); ta.select(); document.execCommand("Copy"); ta.remove(); showToast('Nominal berhasil disalin!','success'); });
+            const totalText = document.getElementById('qrisDisplayTotal').innerText;
+            navigator.clipboard.writeText(totalText).then(() => {
+                showToast('Nominal unik berhasil disalin!', 'success');
+            }).catch(err => {
+                const textArea = document.createElement("textarea");
+                textArea.value = totalText;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand("Copy");
+                textArea.remove();
+                showToast('Nominal unik berhasil disalin!', 'success');
+            });
         };
-        document.getElementById('qrisModal').addEventListener('click', e => { if(e.target.id==='qrisModal') closeQrisModal(); });
 
-        function lockWhatsAppButton() { const b=document.getElementById('btn-confirm-whatsapp'); if(paymentLockTimer)clearTimeout(paymentLockTimer); b.classList.add('locked'); b.innerHTML='<i class="fas fa-clock"></i> Menunggu...'; paymentLockTimer=setTimeout(unlockWhatsAppButton,LOCK_DURATION_MS); }
-        function unlockWhatsAppButton() { const b=document.getElementById('btn-confirm-whatsapp'); b.classList.remove('locked'); b.innerHTML='<i class="fab fa-whatsapp" style="font-size:1.2rem;"></i> Lanjutkan ke WhatsApp'; }
-        function clearPaymentTimer() { if(paymentLockTimer){clearTimeout(paymentLockTimer);paymentLockTimer=null;} }
+        document.getElementById('qrisModal').addEventListener('click', (e) => {
+            if(e.target.id === 'qrisModal') closeQrisModal();
+        });
 
-        const formatRupiah = (n) => new Intl.NumberFormat('id-ID',{style:'currency',currency:'IDR',minimumFractionDigits:0}).format(n);
-        function getField(item,fk) { return item[fields[fk]] || item[fk]; }
-
-        function autoMapColumns(s) {
-            if(!s)return; const k=Object.keys(s);
-            fields = {
-                title: k.find(x=>x.toLowerCase().includes('nama')||x.toLowerCase().includes('title'))||'title',
-                price: k.find(x=>x.toLowerCase().includes('harga')||x.toLowerCase().includes('price'))||'price',
-                original_price: k.find(x=>x.toLowerCase().includes('original')||x.toLowerCase().includes('coret')||x.toLowerCase().includes('asli'))||'original_price',
-                image: k.find(x=>x.toLowerCase().includes('gambar')||x.toLowerCase().includes('image')||x.toLowerCase().includes('url'))||'image',
-                images: k.find(x=>x.toLowerCase().includes('images')||x.toLowerCase().includes('galeri')||x.toLowerCase().includes('photos'))||'images',
-                category: k.find(x=>x.toLowerCase().includes('kategori')||x.toLowerCase().includes('category'))||'category',
-                description: k.find(x=>x.toLowerCase().includes('deskripsi')||x.toLowerCase().includes('desc'))||'description',
-                sold_count: k.find(x=>x.toLowerCase().includes('terjual')||x.toLowerCase().includes('sold'))||'sold_count',
-                cover_letter_price: k.find(x=>x.toLowerCase().includes('cover_letter_price')||x.toLowerCase().includes('harga_surat'))||'cover_letter_price',
-                allow_addon: k.find(x=>x.toLowerCase().includes('allow_addon')||x.toLowerCase().includes('aktifkan_addon'))||'allow_addon'
-            };
+        // --- TIMER LOGIC FUNCTIONS --- ---
+        function lockWhatsAppButton() {
+            const btn = document.getElementById('btn-confirm-whatsapp');
+            if (paymentLockTimer) clearTimeout(paymentLockTimer);
+            btn.classList.add('locked');
+            btn.innerHTML = `<i class="fas fa-clock"></i> Menunggu...`;
+            paymentLockTimer = setTimeout(() => {
+                unlockWhatsAppButton();
+            }, LOCK_DURATION_MS);
         }
 
+        function unlockWhatsAppButton() {
+            const btn = document.getElementById('btn-confirm-whatsapp');
+            btn.classList.remove('locked');
+            btn.innerHTML = `<i class="fab fa-whatsapp" style="font-size:1.2rem;"></i> Lanjutkan ke WhatsApp`;
+        }
+
+        function clearPaymentTimer() {
+            if (paymentLockTimer) {
+                clearTimeout(paymentLockTimer);
+                paymentLockTimer = null;
+            }
+        }
+
+        // --- HELPERS --- ---
+        const formatRupiah = (num) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(num);
+        
+        function getField(item, fieldKey) {
+            const key = fields[fieldKey];
+            return item[key] || item[fieldKey];
+        }
+
+        function autoMapColumns(sampleData) {
+            if (!sampleData) return;
+            const keys = Object.keys(sampleData);
+            const map = {
+                title: keys.find(k => k.toLowerCase().includes('nama') || k.toLowerCase().includes('title')) || 'title',
+                price: keys.find(k => k.toLowerCase().includes('harga') || k.toLowerCase().includes('price')) || 'price',
+                original_price: keys.find(k => k.toLowerCase().includes('original') || k.toLowerCase().includes('coret') || k.toLowerCase().includes('asli')) || 'original_price',
+                image: keys.find(k => k.toLowerCase().includes('gambar') || k.toLowerCase().includes('image') || k.toLowerCase().includes('url')) || 'image',
+                images: keys.find(k => k.toLowerCase().includes('images') || k.toLowerCase().includes('galeri') || k.toLowerCase().includes('photos')) || 'images',
+                category: keys.find(k => k.toLowerCase().includes('kategori') || k.toLowerCase().includes('category')) || 'category',
+                description: keys.find(k => k.toLowerCase().includes('deskripsi') || k.toLowerCase().includes('desc')) || 'description',
+                sold_count: keys.find(k => k.toLowerCase().includes('terjual') || k.toLowerCase().includes('sold')) || 'sold_count',
+                cover_letter_price: keys.find(k => k.toLowerCase().includes('cover_letter_price') || k.toLowerCase().includes('harga_surat')) || 'cover_letter_price',
+                allow_addon: keys.find(k => k.toLowerCase().includes('allow_addon') || k.toLowerCase().includes('aktifkan_addon')) || 'allow_addon'
+            };
+            fields = map;
+        }
+
+        // --- SEARCH SUGGESTIONS LOGIC (UPDATED: SMARTER & HIERARCHY) --- ---
         const searchInput = document.getElementById('searchInput');
         const suggestionsBox = document.getElementById('searchSuggestions');
 
-        function renderSuggestions(q) {
-            suggestionsBox.innerHTML='';
-            if(!q){suggestionsBox.classList.remove('active');return;}
-            const list=[],seen=new Set();
-            products.forEach(p=>{
-                const t=(getField(p,'title')||'').toLowerCase(),c=(getField(p,'category')||'').toLowerCase(),s=Number(getField(p,'sold_count'))||0,dt=getField(p,'title');
-                if((t.includes(q)||c.includes(q))&&!seen.has(dt)){seen.add(dt);let sc=0;if(t===q)sc+=1000;else if(t.startsWith(q))sc+=500;else if(t.includes(q))sc+=100;sc+=s*0.1;list.push({text:dt,score:sc});}
+        function renderSuggestions(query) {
+            suggestionsBox.innerHTML = '';
+            if (!query) {
+                suggestionsBox.classList.remove('active');
+                return;
+            }
+
+            const suggestionList = [];
+            const seenTitles = new Set();
+
+            // 1. Kumpulkan produk yang cocok & Hitung Skor Relevansi (Smart Ranking)
+            products.forEach(p => {
+                const title = (getField(p, 'title') || '').toLowerCase();
+                const category = (getField(p, 'category') || '').toLowerCase();
+                const soldCount = Number(getField(p, 'sold_count')) || 0;
+                const displayTitle = getField(p, 'title');
+
+                if (title.includes(query) || category.includes(query)) {
+                    if (!seenTitles.has(displayTitle)) {
+                        seenTitles.add(displayTitle);
+
+                        // --- SMART SCORING ALGORITHM ---
+                        let score = 0;
+
+                        // Prioritas 1: Exact Match (Poin Tinggi)
+                        if (title === query) {
+                            score += 1000;
+                        } 
+                        // Prioritas 2: Starts With (Poin Sedang)
+                        else if (title.startsWith(query)) {
+                            score += 500;
+                        }
+                        // Prioritas 3: Contains (Poin Rendah)
+                        else if (title.includes(query)) {
+                            score += 100;
+                        }
+
+                        // Tambahkan bobot penjualan (Agar produk laris tetap di atas jika relevansi sama)
+                        // Kita normalisasi sedikit (misal max sold 500 -> score tambah max 50)
+                        score += (soldCount * 0.1); 
+
+                        suggestionList.push({
+                            type: 'product',
+                            text: displayTitle,
+                            sold: soldCount,
+                            score: score // Gunakan score untuk sorting
+                        });
+                    }
+                }
             });
-            list.sort((a,b)=>b.score-a.score);
-            if(!list.length){const d=document.createElement('div');d.className='no-suggestion';d.innerText='Pencarian tidak ditemukan';suggestionsBox.appendChild(d);}
-            else list.slice(0,5).forEach((item,i)=>{
-                const d=document.createElement('div');d.className='suggestion-item';
-                let rh='';if(i===0)rh='<span class="top-badge">TOP</span>';else if(i===1||i===2)rh=`<span class="rank-badge">${i+1}</span>`;
-                d.innerHTML=`<div class="suggestion-content">${item.text}</div>${rh}`;
-                d.onclick=()=>{searchInput.value=item.text;suggestionsBox.classList.remove('active');filterLogic();};
-                suggestionsBox.appendChild(d);
-            });
+
+            // 2. URUTKAN berdasarkan Score (Cerdas) JETIKA Sold Count (Paling laris)
+            suggestionList.sort((a, b) => b.score - a.score);
+
+            if (suggestionList.length === 0) {
+                const div = document.createElement('div');
+                div.className = 'no-suggestion';
+                div.innerText = 'Pencarian tidak ditemukan';
+                suggestionsBox.appendChild(div);
+            } else {
+                // Ambil maksimal 5 saran teratas
+                suggestionList.slice(0, 5).forEach((item, index) => {
+                    const div = document.createElement('div');
+                    div.className = 'suggestion-item';
+                    
+                    // --- HIERARKI BADGE SYSTEM ---
+                    // Tidak ada ikon kaca pembesar, hanya badge peringkat
+                    
+                    let rankHtml = '';
+
+                    if (index === 0) {
+                        // Rank 1: TOP Badge (Gold)
+                        rankHtml = '<span class="top-badge">TOP</span>';
+                    } else if (index === 1 || index === 2) {
+                        // Rank 2 & 3: Angka Badge (Gray)
+                        const rankNum = index + 1;
+                        rankHtml = `<span class="rank-badge">${rankNum}</span>`;
+                    }
+                    // Rank 4+ : Tidak ada badge (bersih)
+
+                    div.innerHTML = `
+                        <div class="suggestion-content">
+                            ${item.text}
+                        </div>
+                        ${rankHtml}
+                    `;
+                    
+                    div.onclick = () => {
+                        searchInput.value = item.text;
+                        suggestionsBox.classList.remove('active');
+                        filterLogic(); 
+                    };
+                    suggestionsBox.appendChild(div);
+                });
+            }
             suggestionsBox.classList.add('active');
         }
 
-        searchInput.addEventListener('input',e=>{renderSuggestions(e.target.value.toLowerCase());filterLogic();});
-        document.addEventListener('click',e=>{if(!searchInput.contains(e.target)&&!suggestionsBox.contains(e.target))suggestionsBox.classList.remove('active');});
+        searchInput.addEventListener('input', (e) => {
+            renderSuggestions(e.target.value.toLowerCase());
+            filterLogic(); 
+        });
 
-        function renderCategories(){
-            const c=document.getElementById('filterBar');c.innerHTML='';
-            const a=document.createElement('div');a.className='filter-chip active';a.innerText='Semua';a.onclick=function(){setCategory('all',this);};c.appendChild(a);
-            [...new Set(products.map(p=>getField(p,'category')))].sort().forEach(cat=>{
-                if(!cat)return;const ch=document.createElement('div');ch.className='filter-chip';ch.innerText=cat;ch.onclick=function(){setCategory(cat,this);};c.appendChild(ch);
-            });
-        }
-
-        async function fetchAdminNumbers(){if(useSupabase){const{data}=await supabase.from('no_wa').select('nomor');if(data&&data.length>0)adminNumbersList=data.map(i=>i.nomor).filter(n=>n);}if(!adminNumbersList.length)adminNumbersList=[DEFAULT_ADMIN_WA];}
-        async function fetchCoverLetterPrice(){if(useSupabase){const{data}=await supabase.from('price_cover_letter').select('price,harga').single();if(data){const v=data.price||data.harga;if(v&&!isNaN(v))coverLetterPrice=Number(v);}}updateCoverLetterUI();}
-        async function fetchPaymentMethods(){if(useSupabase){const{data}=await supabase.from('payment').select('*');if(data&&data.length>0)paymentMethods=data;else paymentMethods=dummyPaymentMethods;}else paymentMethods=dummyPaymentMethods;renderPaymentMethods();}
-        async function fetchProducts(){if(useSupabase){const{data:sample}=await supabase.from('cvs').select('*').limit(1);if(sample&&sample.length>0){autoMapColumns(sample[0]);const{data}=await supabase.from('cvs').select('*');if(data)products=data;else products=dummyData;}else products=dummyData;}else{await new Promise(r=>setTimeout(r,800));products=dummyData;}renderCategories();filterLogic();}
-        async function fetchAd(){if(!useSupabase)return;const{data}=await supabase.from('iklan').select('*').eq('is_active',true).single();if(data&&data.image_url){const p=document.getElementById('adPopup');document.getElementById('adLink').href=data.link_url||'#';const img=document.getElementById('adImage');img.src=data.image_url;img.onload=function(){const c=document.createElement('canvas');const ctx=c.getContext('2d');c.width=this.naturalWidth;c.height=this.naturalHeight;ctx.drawImage(this,0,0);if(ctx.getImageData(0,0,1,1).data[3]===0)p.classList.add('transparent-mode');else p.classList.remove('transparent-mode');};setTimeout(()=>{p.style.display='block';},2000);}}
-
-        const cardSliders={};
-        function initCardSlider(card,pid){const c=card.querySelector('.card-slider-container');const imgs=c.querySelectorAll('.card-slide');if(imgs.length<=1)return;let idx=0,iv;const mv=()=>{idx=(idx+1)%imgs.length;c.style.transform=`translateX(-${idx*100}%)`;};const st=()=>{clearInterval(iv);iv=setInterval(mv,3000);};const sp=()=>{clearInterval(iv);};card.addEventListener('mouseenter',sp);card.addEventListener('mouseleave',st);card.addEventListener('touchstart',sp);card.addEventListener('touchend',st);cardSliders[pid]={start:st,stop:sp};st();}
-
-        function renderProducts(){
-            const g=document.getElementById('productGrid');g.innerHTML='';
-            if(!filteredProducts.length){g.innerHTML='<p style="grid-column:1/-1;text-align:center;padding:20px;">CV tidak ditemukan</p>';return;}
-            filteredProducts.forEach(p=>{
-                const card=document.createElement('div');card.className='cv-card';card.onclick=()=>openModal(p);
-                const title=getField(p,'title'),price=getField(p,'price'),originalPrice=getField(p,'original_price'),category=getField(p,'category'),image=getField(p,'image'),extraImages=getField(p,'images'),soldCount=getField(p,'sold_count'),pid=getField(p,'id')||Math.random();
-                let ph='';if(originalPrice&&Number(originalPrice)>Number(price))ph=`<div class="price-original">${formatRupiah(originalPrice)}</div><div class="price-main">${formatRupiah(price)}</div>`;else ph=`<div class="price-main">${formatRupiah(price)}</div>`;
-                let allImg=[image];if(Array.isArray(extraImages)&&extraImages.length>0)allImg=[image,...extraImages].filter(i=>i);
-                let sh='';allImg.forEach(s=>{sh+=`<div class="card-slide"><img src="${s||'https://picsum.photos/seed/fallback/600/600'}" loading="lazy" alt="${title}"></div>`;});
-                card.innerHTML=`<div class="card-image"><span class="badge">${category||'Produk'}</span><div class="card-slider-container">${sh}</div></div><div class="card-content"><h3 class="card-title">${title||'Tanpa Judul'}</h3><div class="card-footer"><div class="price-container">${ph}</div><div class="sold-info">${soldCount||0} Terpakai</div></div></div>`;
-                g.appendChild(card);initCardSlider(card,pid);
-            });
-        }
-
-        function renderPaymentMethods(){
-            const c=document.getElementById('paymentMethodsList');c.innerHTML='';
-            paymentMethods.forEach(m=>{
-                const d=document.createElement('div');const isQ=(m.bank_name||'').toLowerCase().includes('qris')||m.type==='qris';
-                if(isQ){d.className='payment-option-card qris-container';d.style.flexDirection='column';d.style.alignItems='flex-start';const qi=m.image||"https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Logo_QRIS.svg/1200px-Logo_QRIS.svg.png";d.innerHTML=`<div style="display:flex;justify-content:space-between;width:100%;margin-bottom:12px;"><div class="bank-info"><h4><i class="fas fa-qrcode"></i> QRIS</h4></div></div><div style="display:flex;align-items:center;justify-content:space-between;width:100%;"><img src="${qi}" class="qris-img" alt="QRIS"><button class="btn-copy" onclick="openQrisModal('${qi}')"><i class="fas fa-expand"></i> Scan</button></div>`;}
-                else{d.className='payment-option-card';const b=m.bank_name||m.nama_bank||'Bank',n=m.account_number||m.no_rekening||'---',o=m.owner_name||m.atas_nama||'---';let l=m.logo;if(!l)l=`https://placehold.co/100x50/f8f9fa/333333?text=${encodeURIComponent(b)}&font=roboto`;d.innerHTML=`<div class="bank-info"><img src="${l}" class="bank-logo-img" alt="${b}"><div class="bank-details"><h4>${b}</h4><div class="bank-number">${n}</div><div class="bank-name">a.n ${o}</div></div></div><button class="btn-copy" onclick="copyToClipboard('${n}')"><i class="far fa-copy"></i> Salin</button>`;}
-                c.appendChild(d);
-            });
-        }
-
-        window.copyToClipboard=function(t){navigator.clipboard.writeText(t).then(()=>showToast(`Nomor ${t} berhasil disalin!`,'success')).catch(()=>{const ta=document.createElement("textarea");ta.value=t;document.body.appendChild(ta);ta.select();document.execCommand("Copy");ta.remove();showToast(`Nomor ${t} berhasil disalin!`,'success');});};
-
-        let slideIndex=0,slideInterval;
-        function initSlider(){const t=document.getElementById('sliderTrack'),d=document.getElementById('sliderDots');sliderData.forEach((s,i)=>{const dv=document.createElement('div');dv.className=`slide ${i===0?'active':''}`;dv.innerHTML=`<a href="${s.link}"><img src="${s.image}" loading="lazy"></a>`;t.appendChild(dv);const dot=document.createElement('div');dot.className=`dot ${i===0?'active':''}`;dot.onclick=()=>goToSlide(i);d.appendChild(dot);});startSlide();document.getElementById('heroSlider').addEventListener('mouseenter',stopSlide);document.getElementById('heroSlider').addEventListener('mouseleave',startSlide);}
-        function goToSlide(n){document.querySelectorAll('.slide').forEach(s=>s.classList.remove('active'));document.querySelectorAll('.dot').forEach(d=>d.classList.remove('active'));document.querySelectorAll('.slide')[n].classList.add('active');document.querySelectorAll('.dot')[n].classList.add('active');slideIndex=n;}
-        function nextSlide(){goToSlide((slideIndex+1)%sliderData.length);}function prevSlide(){goToSlide((slideIndex-1+sliderData.length)%sliderData.length);}
-        function startSlide(){slideInterval=setInterval(nextSlide,5000);}function stopSlide(){clearInterval(slideInterval);}
-        window.nextSlide=nextSlide;window.prevSlide=prevSlide;
-
-        window.setCategory=function(cat,el){currentCategory=cat;document.querySelectorAll('.filter-chip').forEach(c=>c.classList.remove('active'));el.classList.add('active');filterLogic();};
-        function filterLogic(){const q=document.getElementById('searchInput').value.toLowerCase();filteredProducts=products.filter(p=>{const t=(getField(p,'title')||'').toLowerCase(),c=(getField(p,'category')||'').toLowerCase();return(currentCategory==='all'||c.includes(currentCategory.toLowerCase()))&&(t.includes(q)||c.includes(q));});renderProducts();}
-
-        let currentProduct=null,carouselIndex=0,carouselImages=[],touchStartX=0,touchEndX=0;
-        const trackEl=document.getElementById('carouselTrack');
-        trackEl.addEventListener('touchstart',e=>{touchStartX=e.changedTouches[0].screenX;},{passive:true});
-        trackEl.addEventListener('touchend',e=>{touchEndX=e.changedTouches[0].screenX;if(touchEndX<touchStartX-50)moveCarousel(1);if(touchEndX>touchStartX+50)moveCarousel(-1);},{passive:true});
-        window.moveCarousel=function(d){const c=carouselImages.length;if(c<=1)return;carouselIndex=(carouselIndex+d+c)%c;updateCarouselUI();};
-        function updateCarouselUI(){document.getElementById('carouselTrack').style.transform=`translateX(-${carouselIndex*100}%)`;const dc=document.getElementById('carouselDots');dc.innerHTML='';carouselImages.forEach((_,i)=>{const d=document.createElement('div');d.className=`c-dot ${i===carouselIndex?'active':''}`;d.onclick=()=>{carouselIndex=i;updateCarouselUI();};dc.appendChild(d);});}
-
-        const toggleSwitch=document.getElementById('coverLetterToggle');
-        toggleSwitch.addEventListener('change',updateModalPriceDisplay);
-        function updateCoverLetterUI(){if(!currentProduct)return;const as=document.getElementById('addonSection'),pt=document.getElementById('coverLetterPriceText'),aa=getField(currentProduct,'allow_addon');if(aa===false||aa==='false'||getField(currentProduct,'cover_letter_price')===null){as.style.display='none';toggleSwitch.checked=false;}else{as.style.display='block';const cp=getField(currentProduct,'cover_letter_price'),fp=(cp&&!isNaN(cp))?Number(cp):coverLetterPrice;pt.innerText=`+ ${formatRupiah(fp)}`;if(currentProduct)updateModalPriceDisplay();}}
-        function updateModalPriceDisplay(){if(!currentProduct)return;const bp=getField(currentProduct,'price'),op=getField(currentProduct,'original_price'),ca=getField(currentProduct,'cover_letter_price'),fa=(ca&&!isNaN(ca))?Number(ca):coverLetterPrice,ia=toggleSwitch.checked,fp=ia?(Number(bp)+fa):Number(bp),pw=document.getElementById('m-price-wrap');if(op&&Number(op)>Number(bp))pw.innerHTML=`<div class="modal-price-original">${formatRupiah(op)}</div><div class="modal-price-final">${formatRupiah(fp)}</div>`;else pw.innerHTML=`<div class="modal-price-final">${formatRupiah(fp)}</div>`;}
-
-        document.getElementById('btn-goto-payment').onclick=function(){const bp=Number(getField(currentProduct,'price')),ia=toggleSwitch.checked,ca=getField(currentProduct,'cover_letter_price'),fa=(ca&&!isNaN(ca))?Number(ca):coverLetterPrice,uc=Math.floor(Math.random()*499)+1,fp=ia?(bp+fa):bp,tw=fp+uc;currentUniqueTotal=tw;document.getElementById('p-product-name').innerText=getField(currentProduct,'title');document.getElementById('p-unit-price').innerText=formatRupiah(bp);const ar=document.getElementById('row-addon');if(ia){ar.style.display='flex';document.getElementById('p-addon-price').innerText=formatRupiah(fa);}else ar.style.display='none';const te=document.getElementById('p-total-price');te.innerText=formatRupiah(tw);te.style.color='var(--danger)';document.getElementById('productView').style.display='none';document.getElementById('paymentView').classList.add('active');showToast(`Kode unik Rp ${uc} ditambahkan.`,'success');lockWhatsAppButton();};
-        window.backToProduct=function(){clearPaymentTimer();document.getElementById('paymentView').classList.remove('active');document.getElementById('productView').style.display='flex';};
-
-        window.openModal=function(p){currentProduct=p;carouselIndex=0;toggleSwitch.checked=false;document.getElementById('m-cat').innerText=getField(p,'category')||'CATEGORY';document.getElementById('m-title').innerText=getField(p,'title')||'Product Title';document.getElementById('m-desc').innerText=getField(p,'description')||"Deskripsi tidak tersedia.";document.getElementById('m-sold').innerText=getField(p,'sold_count')||0;const mi=getField(p,'image'),ei=getField(p,'images');if(Array.isArray(ei)&&ei.length>0)carouselImages=[mi,...ei].filter(i=>i);else carouselImages=[mi];const tk=document.getElementById('carouselTrack');tk.innerHTML='';carouselImages.forEach(s=>{const sl=document.createElement('div');sl.className='carousel-slide';sl.innerHTML=`<img src="${s||'https://picsum.photos/seed/modal/800/600'}" alt="Slide">`;tk.appendChild(sl);});updateCarouselUI();const nv=document.querySelectorAll('.carousel-nav');if(carouselImages.length>1)nv.forEach(n=>n.style.display='flex');else nv.forEach(n=>n.style.display='none');document.getElementById('paymentView').classList.remove('active');document.getElementById('productView').style.display='flex';updateCoverLetterUI();clearPaymentTimer();const b=document.getElementById('btn-confirm-whatsapp');b.classList.remove('locked');b.innerHTML='<i class="fab fa-whatsapp" style="font-size:1.2rem;"></i> Lanjutkan ke WhatsApp';document.getElementById('productModal').classList.add('active');document.body.style.overflow='hidden';};
-        window.closeModal=function(){clearPaymentTimer();document.getElementById('productModal').classList.remove('active');document.body.style.overflow='auto';currentProduct=null;};
-        document.getElementById('productModal').addEventListener('click',e=>{if(e.target.id==='productModal')closeModal();});
-
-        document.getElementById('btn-confirm-whatsapp').onclick=function(){if(!currentProduct)return;const tn=getField(currentProduct,'title'),ft=formatRupiah(currentUniqueTotal),ot=new Date().toLocaleString('id-ID',{weekday:'long',year:'numeric',month:'long',day:'numeric',hour:'2-digit',minute:'2-digit'});let msg=`Halo Min, saya ingin membeli CV berikut:\n\n*Jenis CV:* ${tn}\n*Total Pembayaran (Unik):* ${ft}\n*Waktu Pesanan:* ${ot}`;if(toggleSwitch.checked){const cp=getField(currentProduct,'cover_letter_price'),fp=(cp&&!isNaN(cp))?Number(cp):coverLetterPrice;msg+=`\n\n*Addon:* Surat Lamaran Kerja (+${formatRupiah(fp)})`;}msg+='\n\nSaya sudah transfer sesuai nominal unik. Mohon segera diproses ya Min.';const an=getRotatedAdminNumber();showToast('Mengalihkan ke WhatsApp...','success');setTimeout(()=>{window.open(`https://wa.me/${an}?text=${encodeURIComponent(msg)}`,'_blank');},1000);};
-        function getRotatedAdminNumber(){let i=parseInt(localStorage.getItem('wa_admin_index')||'0');const s=adminNumbersList[i];localStorage.setItem('wa_admin_index',((i+1)%adminNumbersList.length).toString());return s;}
-        window.closeAd=function(){document.getElementById('adPopup').style.display='none';};
-
-        /* ============================================
-           CHATBOT ENGINE
-           ============================================ */
-        class WriteHubBot {
-            constructor(){this.products=[];this.conversationHistory=[];this.maxContext=6;this.intents=this._buildIntents();}
-            setData(p){this.products=p;}
-            _buildIntents(){return[
-                {id:'greeting',keywords:['hai','halo','hello','hi','selamat','pagi','siang','sore','malam','assalamualaikum','hey','bro','sis','min'],priority:100,responses:['Halo! Saya asisten WriteHub. Ada yang bisa saya bantu? Kamu bisa tanya tentang daftar CV, harga, kategori, atau rekomendasi template.','Hai, selamat datang di WriteHub! Mau lihat CV apa hari ini? Tanya saja langsung.','Halo! Saya siap bantu kamu menemukan CV yang sempurna. Coba sebutkan kebutuhan kamu.']},
-                {id:'thanks',keywords:['terima kasih','makasih','thanks','thx','trims','thank you'],priority:90,responses:['Sama-sama! Kalau ada pertanyaan lain, jangan ragu tanya ya.','Dengan senang hati! Semoga membantu.','Sama-sama! Semoga kamu nemukan CV yang pas.']},
-                {id:'list_all',keywords:['daftar','semua','list','tampil','show all','apa saja','gambar','lihat'],priority:80,handler:'handleListAll'},
-                {id:'price',keywords:['harga','berapa','biaya','cost','mahal','murah','diskon','promo'],priority:75,handler:'handlePrice'},
-                {id:'category',keywords:['kategori','jenis','macam','tipe','klasifikasi','kelompok'],priority:70,handler:'handleCategory'},
-                {id:'recommend',keywords:['rekomendasi','sarankan','cocok','rekomen','pilih','bagus','terbaik','populer','laris'],priority:65,handler:'handleRecommend'},
-                {id:'search',keywords:['cari','find','search','tentang','ada nggak','punya nggak','ada ga'],priority:60,handler:'handleSearch'},
-                {id:'fresh_grad',keywords:['fresh graduate','freshgrad','baru lulus','lulusan baru','pemula','magang','tanpa pengalaman','kerja pertama'],priority:55,handler:'handleFreshGrad'},
-                {id:'professional',keywords:['profesional','manager','manajerial','eksekutif','senior','pengalaman','experienced'],priority:55,handler:'handleProfessional'},
-                {id:'creative',keywords:['kreatif','desainer','designer','arsitek','artist','portfolio','creative'],priority:55,handler:'handleCreative'},
-                {id:'tech',keywords:['programmer','developer','it','teknologi','coding','software','engineer','dark mode'],priority:55,handler:'handleTech'},
-                {id:'how_to_order',keywords:['cara pesan','bagaimana','proses','order','beli','langkah','how to','panduan'],priority:50,responses:['Cara pesan sangat mudah:\n\n1. Pilih template CV yang kamu suka\n2. Klik untuk melihat detail\n3. Tambahkan surat lamaran jika perlu\n4. Klik "Pakai Sekarang"\n5. Pilih metode pembayaran (Transfer/QRIS)\n6. Konfirmasi via WhatsApp\n\nFile template akan dikirim setelah pembayaran dikonfirmasi.']},
-                {id:'payment',keywords:['bayar','pembayaran','transfer','payment','metode','bca','mandiri','bri','qris','gopay','ovo','dana'],priority:50,responses:['Kami menerima beberapa metode pembayaran:\n\n• Transfer Bank (BCA, Mandiri, BRI)\n• QRIS (GoPay, OVO, Dana, dll)\n\nSetelah memilih CV, sistem akan menampilkan nomor rekening atau QRIS. Transfer sesuai nominal unik untuk verifikasi otomatis.']},
-                {id:'cover_letter',keywords:['surat lamaran','cover letter','lampiran','tambahan surat'],priority:50,handler:'handleCoverLetter'},
-                {id:'cheapest',keywords:['termurah','paling murah','budget','hemat','murmer','low budget','terjangkau'],priority:60,handler:'handleCheapest'},
-                {id:'most_popular',keywords:['terlaris','paling laku','banyak dipesan','populer','terpopuler','best seller'],priority:60,handler:'handleMostPopular'},
-                {id:'format',keywords:['format','file','pdf','word','docx','editable','edit'],priority:45,responses:['Semua template CV tersedia dalam format yang mudah diedit, biasanya PDF dan/atau Word (DOCX). Detail format ada di deskripsi masing-masing produk.']},
-                {id:'goodbye',keywords:['bye','dadah','sampai jumpa','dah','selesai','udah'],priority:40,responses:['Sampai jumpa! Kalau butuh bantuannya lagi, saya selalu ada di sini.','Dadah! Semoga sukses melamar kerjanya ya!','Bye bye! Jangan ragu untuk kembali kapan saja.']},
-                {id:'who',keywords:['siapa kamu','kamu siapa','apa kamu','bot','robot','ai'],priority:40,responses:['Saya adalah asisten virtual WriteHub. Saya bisa membantu kamu menemukan template CV yang tepat, memberi info harga, dan rekomendasi berdasarkan kebutuhan kamu. Data saya langsung dari database WriteHub.','Saya AI assistant khusus WriteHub. Tugas saya memudahkan kamu menemukan CV impian. Tanya apa saja!']}
-            ];}
-            processMessage(text){const lower=text.toLowerCase().trim();this.conversationHistory.push({role:'user',text:lower});const dm=this._findDirectProductMatch(lower);if(dm&&lower.length>3){if(this._containsAny(lower,['harga','berapa']))return this._formatProductPrice(dm);return this._formatProductDetail(dm);}let bestIntent=null,bestScore=0;for(const intent of this.intents){let score=0;for(const kw of intent.keywords){if(lower.includes(kw)){if(lower===kw)score+=200;else if(lower.startsWith(kw))score+=100;else score+=50+(kw.length*2);}}score+=intent.priority*0.1;if(score>bestScore){bestScore=score;bestIntent=intent;}}if(!bestIntent||bestScore<30)return this._handleFallback(lower);if(bestIntent.handler)return this[bestIntent.handler](lower);return bestIntent.responses[Math.floor(Math.random()*bestIntent.responses.length)];}
-            _containsAny(t,w){return w.some(x=>t.includes(x));}
-            _findDirectProductMatch(text){let best=null,bestLen=0;for(const p of this.products){const title=(getField(p,'title')||'').toLowerCase();const tw=title.split(/\s+/).filter(w=>w.length>3);let mc=0;for(const w of tw){if(text.includes(w))mc++;}if(mc>0&&mc>=Math.ceil(tw.length*0.5)&&mc>bestLen){bestLen=mc;best=p;}if(text.includes(title)&&title.length>bestLen){bestLen=title.length;best=p;}}return best;}
-            _formatProductDetail(p){const t=getField(p,'title'),pr=getField(p,'price'),o=getField(p,'original_price'),c=getField(p,'category'),s=getField(p,'sold_count'),d=getField(p,'description'),im=getField(p,'image');let tx=`Berikut info tentang **${t}**:\n\nKategori: ${c||'-'}\nHarga: ${formatRupiah(pr)}`;if(o&&Number(o)>Number(pr))tx+=` (~~${formatRupiah(o)}~~)`;tx+=`\nTerpakai: ${s||0}x\n`;if(d)tx+=`\n${d.substring(0,150)}${d.length>150?'...':''}`;return{text:tx,product:p};}
-            _formatProductPrice(p){const t=getField(p,'title'),pr=getField(p,'price'),o=getField(p,'original_price');let tx=`Harga **${t}**: ${formatRupiah(pr)}`;if(o&&Number(o)>Number(pr)){const d=Math.round((1-Number(pr)/Number(o))*100);tx+=`\nHarga asli: ~~${formatRupiah(o)}~~ (diskon ${d}%)`;}return{text:tx,product:p};}
-            handleListAll(){if(!this.products.length)return'Belum ada data produk.';let r=`Kami punya **${this.products.length} template CV**:\n\n`;this.products.forEach((p,i)=>{r+=`${i+1}. **${getField(p,'title')}** — ${formatRupiah(getField(p,'price'))} (${getField(p,'sold_count')||0}x terpakai)\n`;});r+='\nKlik kartu produk di atas untuk lihat detail, atau tanya saya untuk rekomendasi!';return r;}
-            handlePrice(text){const mp=this._findProductsByKeywords(text);if(mp.length>0&&mp.length<=3){let r='';mp.forEach(p=>{const res=this._formatProductPrice(p);r+=(r?'\n\n':'')+res.text;});return r;}let r='Berikut daftar harga semua template:\n\n';const sorted=[...this.products].sort((a,b)=>Number(getField(a,'price'))-Number(getField(b,'price')));sorted.forEach((p,i)=>{let l=`${i+1}. **${getField(p,'title')}**: ${formatRupiah(getField(p,'price'))}`;if(getField(p,'original_price')&&Number(getField(p,'original_price'))>Number(getField(p,'price')))l+=` ~~${formatRupiah(getField(p,'original_price'))}~~`;r+=l+'\n';});r+=`\nTermurah: **${formatRupiah(getField(sorted[0],'price'))}** (${getField(sorted[0],'title')})`;r+=`\nTermahal: **${formatRupiah(getField(sorted[sorted.length-1],'price'))}** (${getField(sorted[sorted.length-1],'title')})`;return r;}
-            handleCategory(){const cats=[...new Set(this.products.map(p=>getField(p,'category')))].filter(Boolean);if(!cats.length)return'Belum ada data kategori.';let r='Kategori CV yang tersedia:\n\n';cats.forEach((c,i)=>{const cnt=this.products.filter(p=>(getField(p,'category')||'').toLowerCase()===c.toLowerCase()).length;r+=`${i+1}. **${c}** (${cnt} template)\n`;});r+='\nSebutkan kategori untuk melihat produk di dalamnya.';return r;}
-            handleRecommend(text){const ctx=this._getContextString();const combined=text+' '+ctx;let scored=this.products.map(p=>{let sc=0;const t=(getField(p,'title')||'').toLowerCase(),c=(getField(p,'category')||'').toLowerCase(),d=(getField(p,'description')||'').toLowerCase(),all=t+' '+c+' '+d,s=Number(getField(p,'sold_count'))||0;combined.split(/\s+/).forEach(w=>{if(w.length<3)return;if(all.includes(w))sc+=10;});sc+=Math.min(s*0.05,20);const pr=Number(getField(p,'price'))||0;const prices=this.products.map(pp=>Number(getField(pp,'price'))||0);if(pr<=prices.reduce((a,b)=>a+b,0)/prices.length)sc+=5;return{product:p,score:sc};});scored.sort((a,b)=>b.score-a.score);const top=scored.slice(0,3).filter(s=>s.score>0);if(!top.length){const byS=[...this.products].sort((a,b)=>(Number(getField(b,'sold_count'))||0)-(Number(getField(a,'sold_count'))||0));let r='Ini rekomendasi saya berdasarkan popularitas:\n\n';byS.slice(0,2).forEach((p,i)=>{r+=`${i+1}. **${getField(p,'title')}** — ${formatRupiah(getField(p,'price'))} (${getField(p,'sold_count')}x terpakai)\n`;});return r;}let r='Berdasarkan kebutuhan kamu, ini rekomendasi saya:\n\n';top.forEach((item,i)=>{r+=`${i+1}. **${getField(item.product,'title')}** — ${formatRupiah(getField(item.product,'price'))} [${getField(item.product,'category')}]\n`;});return{text:r,products:top.map(t=>t.product)};}
-            handleSearch(text){const f=this._findProductsByKeywords(text);if(!f.length)return`Maaf, saya tidak menemukan CV yang cocok dengan "${text}". Coba gunakan kata kunci lain.`;let r=`Ditemukan **${f.length} hasil**:\n\n`;f.slice(0,4).forEach((p,i)=>{r+=`${i+1}. **${getField(p,'title')}** — ${formatRupiah(getField(p,'price'))}\n`;});if(f.length>4)r+=`\n...dan ${f.length-4} lainnya.`;return{text:r,products:f.slice(0,2)};}
-            handleFreshGrad(){const c=this.products.filter(p=>{const a=(getField(p,'title')||'').toLowerCase()+' '+(getField(p,'category')||'').toLowerCase()+' '+(getField(p,'description')||'').toLowerCase();return a.includes('minimalis')||a.includes('simple')||a.includes('clean')||a.includes('fresh')||a.includes('pemula')||getField(p,'category')==='Simple';});if(c.length){let r='Untuk fresh graduate, saya rekomendasikan template yang clean dan simpel:\n\n';c.slice(0,3).forEach((p,i)=>{r+=`${i+1}. **${getField(p,'title')}** — ${formatRupiah(getField(p,'price'))}\n`;});return{text:r,products:c.slice(0,2)};}const s=[...this.products].sort((a,b)=>Number(getField(a,'price'))-Number(getField(b,'price')));let r='Untuk fresh graduate, template yang sederhana dan terjangkau:\n\n';s.slice(0,2).forEach((p,i)=>{r+=`${i+1}. **${getField(p,'title')}** — ${formatRupiah(getField(p,'price'))}\n`;});return{text:r,products:s.slice(0,2)};}
-            handleProfessional(){const c=this.products.filter(p=>{const a=(getField(p,'title')||'').toLowerCase()+' '+(getField(p,'category')||'').toLowerCase()+' '+(getField(p,'description')||'').toLowerCase();return a.includes('formal')||a.includes('executive')||a.includes('manajer')||a.includes('profesional')||getField(p,'category')==='Formal';});if(c.length){let r='Untuk posisi profesional/manajerial:\n\n';c.slice(0,3).forEach((p,i)=>{r+=`${i+1}. **${getField(p,'title')}** — ${formatRupiah(getField(p,'price'))}\n`;});return{text:r,products:c.slice(0,2)};}const s=[...this.products].sort((a,b)=>Number(getField(b,'price'))-Number(getField(a,'price')));let r='Untuk level profesional:\n\n';s.slice(0,2).forEach((p,i)=>{r+=`${i+1}. **${getField(p,'title')}** — ${formatRupiah(getField(p,'price'))}\n`;});return{text:r,products:s.slice(0,2)};}
-            handleCreative(){const c=this.products.filter(p=>{const a=(getField(p,'title')||'').toLowerCase()+' '+(getField(p,'category')||'').toLowerCase()+' '+(getField(p,'description')||'').toLowerCase();return a.includes('creative')||a.includes('kreatif')||a.includes('portfolio')||a.includes('desain')||getField(p,'category')==='Creative';});if(c.length){let r='Untuk profil kreatif:\n\n';c.slice(0,3).forEach((p,i)=>{r+=`${i+1}. **${getField(p,'title')}** — ${formatRupiah(getField(p,'price'))}\n`;});return{text:r,products:c.slice(0,2)};}let r='Saya belum menemukan template khusus kreatif, tapi ini yang paling cocok:\n\n';[...this.products].sort((a,b)=>(Number(getField(b,'sold_count'))||0)-(Number(getField(a,'sold_count'))||0)).slice(0,2).forEach((p,i)=>{r+=`${i+1}. **${getField(p,'title')}** — ${formatRupiah(getField(p,'price'))}\n`;});return r;}
-            handleTech(){const c=this.products.filter(p=>{const a=(getField(p,'title')||'').toLowerCase()+' '+(getField(p,'category')||'').toLowerCase()+' '+(getField(p,'description')||'').toLowerCase();return a.includes('developer')||a.includes('dark')||a.includes('tech')||a.includes('programmer')||a.includes('it')||getField(p,'category')==='Tech';});if(c.length){let r='Untuk profil tech/developer:\n\n';c.slice(0,3).forEach((p,i)=>{r+=`${i+1}. **${getField(p,'title')}** — ${formatRupiah(getField(p,'price'))}\n`;});return{text:r,products:c.slice(0,2)};}let r='Belum ada template khusus tech:\n\n';this.products.slice(0,2).forEach((p,i)=>{r+=`${i+1}. **${getField(p,'title')}** — ${formatRupiah(getField(p,'price'))}\n`;});return r;}
-            handleCoverLetter(){const wa=this.products.filter(p=>{const a=getField(p,'allow_addon');return a!==false&&a!=='false';});let r=`Fitur surat lamaran bisa ditambahkan ke beberapa template.\n\nHarga tambahan: ${formatRupiah(coverLetterPrice)}\n\n`;if(wa.length){r+='Template yang mendukung cover letter:\n';wa.slice(0,4).forEach((p,i)=>{r+=`\n${i+1}. **${getField(p,'title')}**`;});}return r;}
-            handleCheapest(){const s=[...this.products].sort((a,b)=>Number(getField(a,'price'))-Number(getField(b,'price')));const c=s[0];let r=`Template termurah: **${getField(c,'title')}** dengan harga ${formatRupiah(getField(c,'price'))}.\n\nSudah dipakai ${getField(c,'sold_count')||0}x. Cocok buat budget terbatas!`;return{text:r,product:c};}
-            handleMostPopular(){const s=[...this.products].sort((a,b)=>(Number(getField(b,'sold_count'))||0)-(Number(getField(a,'sold_count'))||0));const p=s[0];let r=`Template terlaris: **${getField(p,'title')}** dengan ${getField(p,'sold_count')||0} pemakaian!\n\nHarganya ${formatRupiah(getField(p,'price'))}. Ini bukti kualitasnya teruji.`;return{text:r,product:p};}
-            _handleFallback(text){const f=this._findProductsByKeywords(text);if(f.length){let r='Mungkin yang kamu maksud:\n\n';f.slice(0,3).forEach((p,i)=>{r+=`${i+1}. **${getField(p,'title')}** — ${formatRupiah(getField(p,'price'))}\n`;});return{text:r,products:f.slice(0,2)};}return['Hmm, saya belum paham maksud kamu. Coba tanya dengan cara lain, misalnya:\n• "Daftar CV"\n• "Rekomendasi untuk fresh graduate"\n• "Harga CV creative"\n• "Cari dark mode"','Maaf, saya tidak yakin apa yang kamu maksud. Kamu bisa tanya tentang daftar CV, harga, kategori, atau rekomendasi.','Saya belum bisa menjawab itu. Tapi saya bisa bantu soal pilihan CV, harga, cara pesan, dan metode pembayaran.'][Math.floor(Math.random()*3)];}
-            _findProductsByKeywords(text){const words=text.split(/\s+/).filter(w=>w.length>2);const stop=['yang','untuk','dengan','dari','dan','atau','ada','ini','itu','saja','bisa','mau','apa','bagaimana','berapa','harga','cari','tentang','template','cv'];const mf=words.filter(w=>!stop.includes(w));if(!mf.length)return[];return this.products.map(p=>{const t=(getField(p,'title')||'').toLowerCase(),c=(getField(p,'category')||'').toLowerCase(),d=(getField(p,'description')||'').toLowerCase(),a=t+' '+c+' '+d;let sc=0;mf.forEach(w=>{if(a.includes(w))sc+=w.length;for(const tk of a.split(/\s+/)){if(tk.startsWith(w)||w.startsWith(tk))sc+=1;}});return{product:p,score:sc};}).filter(i=>i.score>0).sort((a,b)=>b.score-a.score).map(i=>i.product);}
-            _getContextString(){return this.conversationHistory.slice(-this.maxContext).map(m=>m.text).join(' ');}
-        }
-
-        /* ============================================
-           CHATBOT UI CONTROLLER — FIXED LAYOUT
-           ============================================ */
-        const bot = new WriteHubBot();
-        let chatOpen = false, isFirstOpen = true;
-
-        const chatFab = document.getElementById('chatFab');
-        const chatWindow = document.getElementById('chatWindow');
-        const chatMessages = document.getElementById('chatMessages');
-        const chatInput = document.getElementById('chatInput');
-        const chatSendBtn = document.getElementById('chatSendBtn');
-        const typingIndicator = document.getElementById('typingIndicator');
-        const chatBadge = document.getElementById('chatBadge');
-        const fabIcon = document.getElementById('fabIcon');
-        const chatClearBtn = document.getElementById('chatClearBtn');
-        const chatScrollBtn = document.getElementById('chatScrollBtn');
-
-        /* Toggle chat */
-        chatFab.addEventListener('click', () => {
-            chatOpen = !chatOpen;
-            chatFab.classList.toggle('open', chatOpen);
-            chatWindow.classList.toggle('open', chatOpen);
-            fabIcon.className = chatOpen ? 'fas fa-times fab-icon' : 'fas fa-comment-dots fab-icon';
-            if (chatOpen) {
-                chatBadge.style.display = 'none';
-                if (isFirstOpen) { isFirstOpen = false; showWelcomeMessage(); }
-                setTimeout(() => chatInput.focus(), 400);
+        document.addEventListener('click', (e) => {
+            if (!searchInput.contains(e.target) && !suggestionsBox.contains(e.target)) {
+                suggestionsBox.classList.remove('active');
             }
         });
 
-        chatClearBtn.addEventListener('click', () => {
-            chatMessages.innerHTML = '';
-            bot.conversationHistory = [];
-            showWelcomeMessage();
-        });
+        // --- RENDER CATEGORIES (DYNAMIC) --- ---
+        function renderCategories() {
+            const container = document.getElementById('filterBar');
+            container.innerHTML = ''; 
 
-        /* Scroll to bottom button */
-        chatMessages.addEventListener('scroll', () => {
-            const isNearBottom = chatMessages.scrollHeight - chatMessages.scrollTop - chatMessages.clientHeight < 80;
-            chatScrollBtn.classList.toggle('visible', !isNearBottom);
-        });
-        chatScrollBtn.addEventListener('click', () => { scrollToBottom(); });
+            const allChip = document.createElement('div');
+            allChip.className = 'filter-chip active';
+            allChip.innerText = 'Semua';
+            allChip.onclick = function() { setCategory('all', this); };
+            container.appendChild(allChip);
 
-        chatInput.addEventListener('input', () => { chatSendBtn.disabled = !chatInput.value.trim(); });
-        chatInput.addEventListener('keydown', e => { if (e.key === 'Enter' && chatInput.value.trim()) sendMessage(); });
-        chatSendBtn.addEventListener('click', () => { if (chatInput.value.trim()) sendMessage(); });
+            const categories = [...new Set(products.map(p => getField(p, 'category')))];
+            categories.sort();
 
-        function sendMessage() {
-            const text = chatInput.value.trim();
-            if (!text) return;
-            appendMessage('user', text);
-            chatInput.value = '';
-            chatSendBtn.disabled = true;
-            showTyping();
-            const delay = Math.min(600 + text.length * 20, 2000);
-            setTimeout(() => { hideTyping(); handleBotResponse(bot.processMessage(text)); }, delay);
+            categories.forEach(cat => {
+                if(!cat) return; 
+                const chip = document.createElement('div');
+                chip.className = 'filter-chip';
+                chip.innerText = cat;
+                chip.onclick = function() { setCategory(cat, this); };
+                container.appendChild(chip);
+            });
         }
 
-        function handleBotResponse(response) {
-            let text = '', linkedProducts = [];
-            if (typeof response === 'string') { text = response; }
-            else { text = response.text || ''; if (response.product) linkedProducts = [response.product]; else if (response.products) linkedProducts = response.products; }
-            text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-            text = text.replace(/~~(.*?)~~/g, '<del>$1</del>');
-            text = text.replace(/\n/g, '<br>');
-            appendMessage('bot', text, linkedProducts);
-            showContextualQuickReplies(text);
+        // --- FETCH FUNCTIONS --- ---
+        async function fetchAdminNumbers() {
+            if (useSupabase) {
+                const { data } = await supabase.from('no_wa').select('nomor');
+                if (data && data.length > 0) adminNumbersList = data.map(i => i.nomor).filter(n => n);
+            }
+            if (adminNumbersList.length === 0) adminNumbersList = [DEFAULT_ADMIN_WA];
         }
 
-        function appendMessage(role, content, linkedProducts = []) {
-            const msgDiv = document.createElement('div');
-            msgDiv.className = `chat-msg ${role}`;
-            const time = new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
-            const avatarHTML = role === 'bot'
-                ? '<div class="msg-avatar"><i class="fas fa-robot"></i></div>'
-                : '<div class="msg-avatar"><i class="fas fa-user"></i></div>';
+        async function fetchCoverLetterPrice() {
+            if (useSupabase) {
+                const { data } = await supabase.from('price_cover_letter').select('price, harga').single();
+                if (data) {
+                    const val = data.price || data.harga;
+                    if (val && !isNaN(val)) coverLetterPrice = Number(val);
+                }
+            }
+            updateCoverLetterUI();
+        }
 
-            let productCardsHTML = '';
-            linkedProducts.forEach(p => {
-                const pid = getField(p, 'id');
-                productCardsHTML += `
-                    <div class="chat-product-card" data-product-id="${pid}" onclick="window.chatOpenProduct(${pid})">
-                        <img src="${getField(p, 'image') || 'https://picsum.photos/seed/chat/400/200'}" alt="${getField(p, 'title')}" loading="lazy">
-                        <div class="chat-product-info">
-                            <h4>${getField(p, 'title')}</h4>
-                            <div class="chat-product-price">${formatRupiah(getField(p, 'price'))}</div>
-                            <div class="chat-product-sold">${getField(p, 'sold_count') || 0}x terpakai</div>
+        async function fetchPaymentMethods() {
+            if (useSupabase) {
+                const { data, error } = await supabase.from('payment').select('*');
+                if (data && data.length > 0) {
+                    paymentMethods = data;
+                } else {
+                    paymentMethods = dummyPaymentMethods;
+                }
+            } else {
+                paymentMethods = dummyPaymentMethods;
+            }
+            renderPaymentMethods();
+        }
+
+        async function fetchProducts() {
+            if (useSupabase) {
+                const { data: sample } = await supabase.from('cvs').select('*').limit(1);
+                if (sample && sample.length > 0) {
+                    autoMapColumns(sample[0]);
+                    const { data } = await supabase.from('cvs').select('*');
+                    if (data) products = data;
+                    else products = dummyData;
+                } else {
+                    products = dummyData;
+                }
+            } else {
+                await new Promise(r => setTimeout(r, 800));
+                products = dummyData;
+            }
+            
+            renderCategories();
+            filterLogic();
+        }
+
+        // --- FETCH & HANDLE AD --- ---
+        async function fetchAd() {
+            if (!useSupabase) return;
+            
+            const { data } = await supabase.from('iklan').select('*').eq('is_active', true).single();
+            
+            if (data && data.image_url) {
+                const popup = document.getElementById('adPopup');
+                const img = document.getElementById('adImage');
+                const link = document.getElementById('adLink');
+                link.href = data.link_url || '#';
+                img.src = data.image_url;
+                
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    canvas.width = this.naturalWidth;
+                    canvas.height = this.naturalHeight;
+                    ctx.drawImage(this, 0, 0);
+                    const pixelData = ctx.getImageData(0, 0, 1, 1).data;
+                    const alphaChannel = pixelData[3]; 
+                    if (alphaChannel === 0) {
+                        popup.classList.add('transparent-mode');
+                        console.log('Ad Mode: Transparent (Alpha=0)');
+                    } else {
+                        popup.classList.remove('transparent-mode');
+                        console.log('Ad Mode: Solid/Poster (Alpha>0)');
+                    }
+                };
+                setTimeout(() => { popup.style.display = 'block'; }, 2000);
+            }
+        }
+
+        // --- MANAJER SLIDER GAMBAR KARTU PRODUK --- ---
+        const cardSliders = {}; 
+
+        function initCardSlider(cardElement, productId) {
+            const container = cardElement.querySelector('.card-slider-container');
+            const images = container.querySelectorAll('.card-slide');
+            if (images.length <= 1) return;
+
+            let index = 0;
+            let interval;
+
+            const move = () => {
+                index = (index + 1) % images.length;
+                container.style.transform = `translateX(-${index * 100}%)`;
+            };
+
+            const start = () => {
+                clearInterval(interval);
+                interval = setInterval(move, 3000); 
+            };
+
+            const stop = () => {
+                clearInterval(interval);
+            };
+
+            cardElement.addEventListener('mouseenter', stop);
+            cardElement.addEventListener('mouseleave', start);
+            cardElement.addEventListener('touchstart', stop);
+            cardElement.addEventListener('touchend', start);
+
+            cardSliders[productId] = { start, stop, move, index };
+            start();
+        }
+
+        // --- RENDER FUNCTIONS --- ---
+        function renderProducts() {
+            const grid = document.getElementById('productGrid');
+            grid.innerHTML = '';
+            if(filteredProducts.length === 0) {
+                grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;padding:20px;">CV tidak ditemukan</p>';
+                return;
+            }
+            filteredProducts.forEach(p => {
+                const card = document.createElement('div');
+                card.className = 'cv-card';
+                card.onclick = () => openModal(p);
+                const title = getField(p, 'title');
+                const price = getField(p, 'price');
+                const originalPrice = getField(p, 'original_price');
+                const category = getField(p, 'category');
+                const image = getField(p, 'image');
+                const extraImages = getField(p, 'images');
+                const soldCount = getField(p, 'sold_count');
+                const pId = getField(p, 'id') || Math.random(); 
+
+                let priceHTML = '';
+                if (originalPrice && Number(originalPrice) > Number(price)) {
+                    priceHTML = `<div class="price-original">${formatRupiah(originalPrice)}</div><div class="price-main">${formatRupiah(price)}</div>`;
+                } else {
+                    priceHTML = `<div class="price-main">${formatRupiah(price)}</div>`;
+                }
+
+                let allCardImages = [image];
+                if (Array.isArray(extraImages) && extraImages.length > 0) {
+                    allCardImages = [image, ...extraImages].filter(img => img);
+                }
+
+                let slidesHTML = '';
+                allCardImages.forEach(imgSrc => {
+                    slidesHTML += `<div class="card-slide"><img src="${imgSrc || 'https://picsum.photos/seed/fallback/600/600'}" loading="lazy" alt="${title}"></div>`;
+                });
+
+                card.innerHTML = `
+                    <div class="card-image">
+                        <span class="badge">${category || 'Produk'}</span>
+                        <div class="card-slider-container">
+                            ${slidesHTML}
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">${title || 'Tanpa Judul'}</h3>
+                        <div class="card-footer">
+                            <div class="price-container">${priceHTML}</div>
+                            <div class="sold-info">${soldCount || 0} Terpakai</div>
                         </div>
                     </div>`;
+                grid.appendChild(card);
+                initCardSlider(card, pId);
             });
-
-            msgDiv.innerHTML = `${avatarHTML}<div><div class="msg-bubble">${content}${productCardsHTML}</div><div class="msg-time">${time}</div></div>`;
-            chatMessages.appendChild(msgDiv);
-            scrollToBottom();
         }
 
-        window.chatOpenProduct = function(pid) {
-            const p = products.find(x => String(getField(x, 'id')) === String(pid));
-            if (p) openModal(p);
-        };
+        function renderPaymentMethods() {
+            const container = document.getElementById('paymentMethodsList');
+            container.innerHTML = '';
+            
+            paymentMethods.forEach(method => {
+                const div = document.createElement('div');
+                const isQRIS = (method.bank_name || '').toLowerCase().includes('qris') || method.type === 'qris';
 
-        function showTyping() { typingIndicator.classList.add('active'); scrollToBottom(); }
-        function hideTyping() { typingIndicator.classList.remove('active'); }
-        function scrollToBottom() { requestAnimationFrame(() => { chatMessages.scrollTop = chatMessages.scrollHeight; }); }
+                if (isQRIS) {
+                    div.className = 'payment-option-card qris-container';
+                    div.style.flexDirection = 'column';
+                    div.style.alignItems = 'flex-start';
+                    
+                    const qrisImg = method.image || "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Logo_QRIS.svg/1200px-Logo_QRIS.svg.png";
+                    
+                    div.innerHTML = `
+                        <div style="display:flex; justify-content:space-between; width:100%; margin-bottom:12px;">
+                            <div class="bank-info">
+                                <h4><i class="fas fa-qrcode"></i> QRIS</h4>
+                            </div>
+                        </div>
+                        <div style="display:flex; align-items:center; justify-content:space-between; width:100%;">
+                            <img src="${qrisImg}" class="qris-img" alt="QRIS">
+                            <button class="btn-copy" onclick="openQrisModal('${qrisImg}')">
+                                <i class="fas fa-expand"></i> Scan
+                            </button>
+                        </div>
+                    `;
+                } else {
+                    div.className = 'payment-option-card';
+                    const bank = method.bank_name || method.nama_bank || 'Bank';
+                    const number = method.account_number || method.no_rekening || '---';
+                    const owner = method.owner_name || method.atas_nama || '---';
+                    
+                    let logoUrl = method.logo;
+                    if (!logoUrl) {
+                         const cleanName = encodeURIComponent(bank);
+                         logoUrl = `https://placehold.co/100x50/f8f9fa/333333?text=${cleanName}&font=roboto`;
+                    }
 
-        function showWelcomeMessage() {
-            const ds = document.createElement('div');
-            ds.className = 'chat-date-sep';
-            ds.textContent = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
-            chatMessages.appendChild(ds);
-
-            const wt = `Halo! Saya asisten **WriteHub**. Saya bisa membantumu menemukan template CV yang tepat.\n\nCoba tanyakan hal seperti:\n• "Daftar semua CV"\n• "Rekomendasi untuk fresh graduate"\n• "CV termurah"\n• "Harga CV dark mode"`;
-            appendMessage('bot', wt);
-
-            /* Quick replies awal — baris terpisah tanpa avatar */
-            appendQuickReplies(['Daftar semua CV', 'Rekomendasi untuk fresh graduate', 'CV termurah', 'Cara pesan']);
+                    div.innerHTML = `
+                        <div class="bank-info">
+                            <img src="${logoUrl}" class="bank-logo-img" alt="${bank}">
+                            <div class="bank-details">
+                                <h4>${bank}</h4>
+                                <div class="bank-number">${number}</div>
+                                <div class="bank-name">a.n ${owner}</div>
+                            </div>
+                        </div>
+                        <button class="btn-copy" onclick="copyToClipboard('${number}')">
+                            <i class="far fa-copy"></i> Salin
+                        </button>
+                    `;
+                }
+                container.appendChild(div);
+            });
         }
 
-        window.chatQuickReply = function(text) {
-            chatInput.value = text;
-            chatSendBtn.disabled = false;
-            sendMessage();
-        };
-
-        function appendQuickReplies(replies) {
-            const row = document.createElement('div');
-            row.className = 'chat-quick-replies-row';
-            row.innerHTML = `<div class="chat-quick-replies">${replies.map(r => `<button class="quick-reply-btn" onclick="chatQuickReply('${r.replace(/'/g, "\\'")}')">${r}</button>`).join('')}</div>`;
-            chatMessages.appendChild(row);
-            scrollToBottom();
+        window.copyToClipboard = function(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                showToast(`Nomor ${text} berhasil disalin!`, 'success');
+            }).catch(err => {
+                console.error('Gagal menyalin', err);
+                const textArea = document.createElement("textarea");
+                textArea.value = text;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand("Copy");
+                textArea.remove();
+                showToast(`Nomor ${text} berhasil disalin!`, 'success');
+            });
         }
 
-        function showContextualQuickReplies(lastText) {
-            const l = lastText.toLowerCase();
-            let r = [];
-            if (l.includes('daftar') || l.includes('semua')) r = ['Termurah', 'Terlaris', 'Rekomendasi'];
-            else if (l.includes('fresh graduate') || l.includes('pemula')) r = ['Untuk profesional', 'Template termurah', 'Cara pesan'];
-            else if (l.includes('profesional') || l.includes('manager')) r = ['Untuk fresh graduate', 'CV formal', 'Harga'];
-            else if (l.includes('harga') || l.includes('termurah')) r = ['Terlaris', 'Daftar CV', 'Cara pesan'];
-            else if (l.includes('cara pesan') || l.includes('panduan')) r = ['Daftar CV', 'Metode pembayaran', 'Termurah'];
-            else if (l.includes('pembayaran') || l.includes('bayar') || l.includes('transfer')) r = ['Cara pesan', 'Harga CV', 'Daftar CV'];
-            else if (l.includes('rekomendasi')) r = ['Daftar CV', 'Termurah', 'Terlaris'];
-            if (!r.length) r = ['Daftar CV', 'Rekomendasi', 'Cara pesan'];
-            appendQuickReplies(r);
-        }
+        // --- INIT & HERO SLIDER --- ---
+        let slideIndex = 0;
+        let slideInterval;
 
-        /* ============================================
-           INIT
-           ============================================ */
-        async function init() {
-            initSlider();
-            await fetchAdminNumbers();
-            await fetchCoverLetterPrice();
-            await fetchPaymentMethods();
-            await fetchProducts();
-            bot.setData(products);
-            await fetchAd();
+        function initSlider() {
+            const track = document.getElementById('sliderTrack');
+            const dots = document.getElementById('sliderDots');
+            sliderData.forEach((s, i) => {
+                const div = document.createElement('div');
+                div.className = `slide ${i===0?'active':''}`;
+                div.innerHTML = `<a href="${s.link}"><img src="${s.image}" loading="lazy"></a>`;
+                track.appendChild(div);
+                const dot = document.createElement('div');
+                dot.className = `dot ${i===0?'active':''}`;
+                dot.onclick = () => goToSlide(i);
+                dots.appendChild(dot);
+            });
+            startSlide();
+            document.getElementById('heroSlider').addEventListener('mouseenter', stopSlide);
+            document.getElementById('heroSlider').addEventListener('mouseleave', startSlide);
+        }
+        function goToSlide(n) {
+            const slides = document.querySelectorAll('.slide');
+            const dots = document.querySelectorAll('.dot');
+            slides.forEach(s => s.classList.remove('active'));
+            dots.forEach(d => d.classList.remove('active'));
+            slides[n].classList.add('active');
+            dots[n].classList.add('active');
+            slideIndex = n;
+        }
+        function nextSlide() { goToSlide((slideIndex + 1) % sliderData.length); }
+        function prevSlide() { goToSlide((slideIndex - 1 + sliderData.length) % sliderData.length); }
+        function startSlide() { slideInterval = setInterval(nextSlide, 5000); }
+        function stopSlide() { clearInterval(slideInterval); }
+        window.nextSlide = nextSlide;
+        window.prevSlide = prevSlide;
+
+        // --- FILTER --- ---
+        window.setCategory = function(cat, el) {
+            currentCategory = cat;
+            document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+            el.classList.add('active');
+            filterLogic();
+        }
+        function filterLogic() {
+            const q = document.getElementById('searchInput').value.toLowerCase();
+            filteredProducts = products.filter(p => {
+                const title = (getField(p, 'title') || '').toLowerCase();
+                const category = (getField(p, 'category') || '').toLowerCase();
+                const matchCat = currentCategory === 'all' || category.includes(currentCategory.toLowerCase());
+                const matchText = title.includes(q) || category.includes(q);
+                return matchCat && matchText;
+            });
             renderProducts();
         }
+
+        /* ----------------------------------------------------
+           MODAL LOGIC (PRODUCT AND PAYMENT)
+           ---------------------------------------------------- */
+        let currentProduct = null;
+        let carouselIndex = 0;
+        let carouselImages = [];
+
+        const trackEl = document.getElementById('carouselTrack');
+        trackEl.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].screenX; }, {passive: true});
+        trackEl.addEventListener('touchend', e => { 
+            touchEndX = e.changedTouches[0].screenX;
+            if (touchEndX < touchStartX - 50) moveCarousel(1);
+            if (touchEndX > touchStartX + 50) moveCarousel(-1);
+        }, {passive: true});
+
+        window.moveCarousel = function(direction) {
+            const count = carouselImages.length;
+            if(count <= 1) return;
+            carouselIndex = (carouselIndex + direction + count) % count;
+            updateCarouselUI();
+        }
+
+        function updateCarouselUI() {
+            const track = document.getElementById('carouselTrack');
+            const dotsContainer = document.getElementById('carouselDots');
+            track.style.transform = `translateX(-${carouselIndex * 100}%)`;
+            dotsContainer.innerHTML = '';
+            carouselImages.forEach((_, idx) => {
+                const dot = document.createElement('div');
+                dot.className = `c-dot ${idx === carouselIndex ? 'active' : ''}`;
+                dot.onclick = () => { carouselIndex = idx; updateCarouselUI(); };
+                dotsContainer.appendChild(dot);
+            });
+        }
+
+        const toggleSwitch = document.getElementById('coverLetterToggle');
+        toggleSwitch.addEventListener('change', updateModalPriceDisplay);
+
+        function updateCoverLetterUI() {
+            if(!currentProduct) return;
+            
+            const addonSection = document.getElementById('addonSection');
+            const addonPriceText = document.getElementById('coverLetterPriceText');
+            
+            const allowAddon = getField(currentProduct, 'allow_addon');
+            
+            if (allowAddon === false || allowAddon === 'false' || getField(currentProduct, 'cover_letter_price') === null) {
+                addonSection.style.display = 'none';
+                toggleSwitch.checked = false; 
+            } else {
+                addonSection.style.display = 'block';
+                const customPrice = getField(currentProduct, 'cover_letter_price');
+                const finalPrice = (customPrice && !isNaN(customPrice)) ? Number(customPrice) : coverLetterPrice;
+                
+                addonPriceText.innerText = `+ ${formatRupiah(finalPrice)}`;
+                if (currentProduct) updateModalPriceDisplay();
+            }
+        }
+
+        function updateModalPriceDisplay() {
+            if (!currentProduct) return;
+            const basePrice = getField(currentProduct, 'price');
+            const originalPrice = getField(currentProduct, 'original_price');
+            
+            const customAddonPrice = getField(currentProduct, 'cover_letter_price');
+            const finalAddonPrice = (customAddonPrice && !isNaN(customAddonPrice)) ? Number(customAddonPrice) : coverLetterPrice;
+
+            const isAddOn = toggleSwitch.checked;
+            const finalPrice = isAddOn ? (Number(basePrice) + finalAddonPrice) : Number(basePrice);
+            const priceWrap = document.getElementById('m-price-wrap');
+
+            if (originalPrice && Number(originalPrice) > Number(basePrice)) {
+                priceWrap.innerHTML = `<div class="modal-price-original">${formatRupiah(originalPrice)}</div><div class="modal-price-final">${formatRupiah(finalPrice)}</div>`;
+            } else {
+                priceWrap.innerHTML = `<div class="modal-price-final">${formatRupiah(finalPrice)}</div>`;
+            }
+        }
+
+        const productView = document.getElementById('productView');
+        const paymentView = document.getElementById('paymentView');
+        const btnGotoPayment = document.getElementById('btn-goto-payment');
+
+        btnGotoPayment.onclick = function() {
+            const basePrice = Number(getField(currentProduct, 'price'));
+            const isAddOn = toggleSwitch.checked;
+            
+            const customAddonPrice = getField(currentProduct, 'cover_letter_price');
+            const finalAddonPrice = (customAddonPrice && !isNaN(customAddonPrice)) ? Number(customAddonPrice) : coverLetterPrice;
+
+            const uniqueCode = Math.floor(Math.random() * 499) + 1;
+            const finalPrice = isAddOn ? (basePrice + finalAddonPrice) : basePrice;
+            const totalWithUnique = finalPrice + uniqueCode;
+            currentUniqueTotal = totalWithUnique; 
+            
+            document.getElementById('p-product-name').innerText = getField(currentProduct, 'title');
+            document.getElementById('p-unit-price').innerText = formatRupiah(basePrice);
+            
+            const addonRow = document.getElementById('row-addon');
+            if(isAddOn) {
+                addonRow.style.display = 'flex';
+                document.getElementById('p-addon-price').innerText = formatRupiah(finalAddonPrice);
+            } else {
+                addonRow.style.display = 'none';
+            }
+            
+            const totalEl = document.getElementById('p-total-price');
+            totalEl.innerText = formatRupiah(totalWithUnique);
+            totalEl.style.color = 'var(--danger)'; 
+
+            productView.style.display = 'none';
+            paymentView.classList.add('active');
+            showToast(`Kode unik Rp ${uniqueCode} ditambahkan untuk verifikasi.`, 'success');
+            lockWhatsAppButton();
+        };
+
+        window.backToProduct = function() {
+            clearPaymentTimer();
+            paymentView.classList.remove('active');
+            productView.style.display = 'flex'; 
+        };
+
+        window.openModal = function(p) {
+            currentProduct = p;
+            carouselIndex = 0;
+            toggleSwitch.checked = false;
+
+            document.getElementById('m-cat').innerText = getField(p, 'category') || 'CATEGORY';
+            document.getElementById('m-title').innerText = getField(p, 'title') || 'Product Title';
+            document.getElementById('m-desc').innerText = getField(p, 'description') || "Deskripsi tidak tersedia.";
+            document.getElementById('m-sold').innerText = getField(p, 'sold_count') || 0;
+
+            const mainImage = getField(p, 'image');
+            const extraImages = getField(p, 'images');
+            if (Array.isArray(extraImages) && extraImages.length > 0) {
+                carouselImages = [mainImage, ...extraImages].filter(img => img);
+            } else {
+                carouselImages = [mainImage];
+            }
+            const track = document.getElementById('carouselTrack');
+            track.innerHTML = '';
+            carouselImages.forEach(imgSrc => {
+                const slide = document.createElement('div');
+                slide.className = 'carousel-slide';
+                slide.innerHTML = `<img src="${imgSrc || 'https://picsum.photos/seed/modal/800/600'}" alt="Slide">`;
+                track.appendChild(slide);
+            });
+            updateCarouselUI();
+            
+            const navs = document.querySelectorAll('.carousel-nav');
+            if(carouselImages.length > 1) navs.forEach(n => n.style.display = 'flex');
+            else navs.forEach(n => n.style.display = 'none');
+
+            paymentView.classList.remove('active');
+            productView.style.display = 'flex';
+
+            updateCoverLetterUI();
+
+            clearPaymentTimer();
+            const btn = document.getElementById('btn-confirm-whatsapp');
+            btn.classList.remove('locked');
+            btn.innerHTML = `<i class="fab fa-whatsapp" style="font-size:1.2rem;"></i> Lanjutkan ke WhatsApp`;
+
+            document.getElementById('productModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        window.closeModal = function() {
+            clearPaymentTimer();
+            document.getElementById('productModal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+            currentProduct = null;
+        }
+
+        document.getElementById('productModal').addEventListener('click', (e) => {
+            if(e.target.id === 'productModal') closeModal();
+        });
+
+        document.getElementById('btn-confirm-whatsapp').onclick = function() {
+            if(!currentProduct) return;
+
+            const templateName = getField(currentProduct, 'title');
+            const formattedTotal = formatRupiah(currentUniqueTotal);
+            
+            const orderTime = new Date().toLocaleString('id-ID', {
+                weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
+                hour: '2-digit', minute: '2-digit'
+            });
+
+            let message = `Halo Min, saya ingin membeli CV berikut:
+
+*Jenis CV:* ${templateName}
+*Total Pembayaran (Unik):* ${formattedTotal}
+*Waktu Pesanan:* ${orderTime}`;
+
+            const isAddOn = toggleSwitch.checked;
+            if(isAddOn) {
+                const customPrice = getField(currentProduct, 'cover_letter_price');
+                const finalPrice = (customPrice && !isNaN(customPrice)) ? Number(customPrice) : coverLetterPrice;
+                message += `\n\n*Addon:* Surat Lamaran Kerja (+${formatRupiah(finalPrice)})`;
+            }
+
+            message += `\n\nSaya sudah transfer sesuai nominal unik. Mohon segera diproses ya Min.`;
+
+            const adminNumber = getRotatedAdminNumber();
+            const waLink = `https://wa.me/${adminNumber}?text=${encodeURIComponent(message)}`;
+            
+            showToast('Mengalihkan ke WhatsApp...', 'success');
+            setTimeout(() => {
+                window.open(waLink, '_blank');
+            }, 1000);
+        }
+
+        function getRotatedAdminNumber() {
+            let currentIndex = parseInt(localStorage.getItem('wa_admin_index') || '0');
+            const selectedNumber = adminNumbersList[currentIndex];
+            let nextIndex = (currentIndex + 1) % adminNumbersList.length;
+            localStorage.setItem('wa_admin_index', nextIndex.toString());
+            return selectedNumber;
+        }
+
+        window.closeAd = function() { 
+            const popup = document.getElementById('adPopup');
+            popup.style.display = 'none'; 
+        }
+
+        async function init() {
+            initSlider();
+            await fetchAdminNumbers(); 
+            await fetchCoverLetterPrice();
+            await fetchPaymentMethods(); 
+            await fetchProducts(); 
+            await fetchAd(); 
+            renderProducts();
+        }
+
         init();
     </script>
     <script>
         document.addEventListener('contextmenu', e => e.preventDefault());
-        document.onkeydown = function(e) { if(e.keyCode==123||(e.ctrlKey&&e.shiftKey&&(e.keyCode==73||e.keyCode==74||e.keyCode==67))||(e.ctrlKey&&e.keyCode==85)) return false; };
-        document.addEventListener('keydown', function(e) { if((e.ctrlKey||e.metaKey)&&(e.key==='+'||e.key==='-'||e.key==='0')) e.preventDefault(); });
-        document.addEventListener('wheel', function(e) { if(e.ctrlKey) e.preventDefault(); }, { passive: false });
+        document.onkeydown = function(e) {
+            if(e.keyCode == 123 || 
+               (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74 || e.keyCode == 67)) || 
+               (e.ctrlKey && e.keyCode == 85)) return false;
+        };
+        document.addEventListener('keydown', function(e) {
+            if ((e.ctrlKey || e.metaKey) && (e.key === '+' || e.key === '-' || e.key === '0')) e.preventDefault();
+        });
+        document.addEventListener('wheel', function(e) {
+            if (e.ctrlKey) e.preventDefault();
+        }, { passive: false });
     </script>
 </body>
 </html>
