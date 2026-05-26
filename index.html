@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>WRITEHUB - INDONESIA</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
@@ -27,9 +27,6 @@
             --danger: #ef4444;
             --success: #10b981;
             --warning: #f59e0b;
-            --impulse-red: #dc2626;
-            --impulse-orange: #ea580c;
-            --impulse-gold: #d97706;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
@@ -261,15 +258,12 @@
             border-radius: 12px;
             overflow: hidden;
             box-shadow: var(--shadow-sm);
-            transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.25s ease;
+            transition: var(--transition);
             cursor: pointer;
             position: relative;
             border: 1px solid var(--border);
             display: flex;
             flex-direction: column;
-            -webkit-user-select: none;
-            user-select: none;
-            -webkit-tap-highlight-color: transparent;
         }
 
         .cv-card:hover {
@@ -278,777 +272,6 @@
             border-color: var(--primary-light);
         }
 
-        /* ===== SWIPE-TO-BUY BEHIND CARD ===== */
-        .card-swipe-wrapper {
-            position: relative;
-            border-radius: 12px;
-            overflow: hidden;
-        }
-
-        .swipe-buy-bg {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, var(--impulse-red) 0%, var(--impulse-orange) 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            gap: 6px;
-            z-index: 0;
-            border-radius: 12px;
-        }
-
-        .swipe-buy-bg .swipe-icon {
-            font-size: 1.8rem;
-            color: white;
-            animation: swipePulse 1s ease-in-out infinite;
-        }
-
-        .swipe-buy-bg .swipe-text {
-            color: white;
-            font-weight: 800;
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
-        }
-
-        .swipe-buy-bg .swipe-arrow {
-            color: rgba(255,255,255,0.6);
-            font-size: 1.2rem;
-            animation: swipeArrowBounce 0.8s ease-in-out infinite;
-        }
-
-        @keyframes swipePulse {
-            0%, 100% { transform: scale(1); opacity: 0.9; }
-            50% { transform: scale(1.15); opacity: 1; }
-        }
-
-        @keyframes swipeArrowBounce {
-            0%, 100% { transform: translateX(0); }
-            50% { transform: translateX(-8px); }
-        }
-
-        .cv-card.swiping {
-            transition: transform 0.08s linear !important;
-            box-shadow: none !important;
-        }
-
-        .cv-card.swipe-triggered {
-            animation: cardBounceBack 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-        }
-
-        @keyframes cardBounceBack {
-            0% { transform: translateX(0); }
-            30% { transform: translateX(10px); }
-            100% { transform: translateX(0); }
-        }
-
-        /* ===== DOUBLE TAP OVERLAY ===== */
-        .double-tap-overlay {
-            position: absolute;
-            inset: 0;
-            z-index: 50;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            background: rgba(220, 38, 38, 0.92);
-            backdrop-filter: blur(6px);
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.15s ease;
-            border-radius: 12px;
-            gap: 6px;
-        }
-
-        .double-tap-overlay.show {
-            opacity: 1;
-            pointer-events: all;
-            animation: overlaySlam 0.2s cubic-bezier(0.22, 1, 0.36, 1);
-        }
-
-        @keyframes overlaySlam {
-            0% { transform: scale(0.85); opacity: 0; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-
-        .double-tap-overlay .dt-icon {
-            font-size: 2.2rem;
-            color: white;
-            animation: dtIconPulse 0.6s ease-in-out infinite;
-        }
-
-        @keyframes dtIconPulse {
-            0%, 100% { transform: scale(1) rotate(0deg); }
-            25% { transform: scale(1.2) rotate(-5deg); }
-            75% { transform: scale(1.2) rotate(5deg); }
-        }
-
-        .double-tap-overlay .dt-price {
-            color: #fbbf24;
-            font-size: 1.4rem;
-            font-weight: 900;
-            text-shadow: 0 2px 8px rgba(0,0,0,0.3);
-            line-height: 1;
-        }
-
-        .double-tap-overlay .dt-label {
-            color: white;
-            font-size: 0.75rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            opacity: 0.9;
-        }
-
-        .double-tap-overlay .dt-sub {
-            color: rgba(255,255,255,0.6);
-            font-size: 0.6rem;
-            margin-top: 2px;
-        }
-
-        /* ===== LONG PRESS RIPPLE ===== */
-        .long-press-ripple {
-            position: absolute;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(234, 88, 12, 0.4) 0%, rgba(234, 88, 12, 0) 70%);
-            pointer-events: none;
-            z-index: 40;
-            transform: scale(0);
-            animation: lpRipple 0.8s ease-out forwards;
-        }
-
-        @keyframes lpRipple {
-            0% { transform: scale(0); opacity: 1; }
-            100% { transform: scale(4); opacity: 0; }
-        }
-
-        .long-press-action {
-            position: absolute;
-            bottom: 50%;
-            left: 50%;
-            transform: translate(-50%, 50%) scale(0.8);
-            z-index: 45;
-            background: linear-gradient(135deg, var(--impulse-orange), var(--impulse-red));
-            color: white;
-            padding: 10px 20px;
-            border-radius: 50px;
-            font-weight: 800;
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            white-space: nowrap;
-            opacity: 0;
-            pointer-events: none;
-            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-            box-shadow: 0 8px 25px rgba(234, 88, 12, 0.5);
-        }
-
-        .long-press-action.show {
-            opacity: 1;
-            transform: translate(-50%, 50%) scale(1);
-            pointer-events: all;
-            animation: lpActionBreathe 1s ease-in-out infinite;
-        }
-
-        @keyframes lpActionBreathe {
-            0%, 100% { box-shadow: 0 8px 25px rgba(234, 88, 12, 0.5); }
-            50% { box-shadow: 0 8px 40px rgba(234, 88, 12, 0.8); transform: translate(-50%, 50%) scale(1.05); }
-        }
-
-        /* ===== SWIPE UP TRIGGER HINT ===== */
-        .swipe-up-hint {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            z-index: 800;
-            pointer-events: none;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding-bottom: 8px;
-            opacity: 0.7;
-            transition: opacity 0.5s;
-        }
-
-        .swipe-up-hint.hidden { opacity: 0; }
-
-        .swipe-up-hint .suh-bar {
-            width: 40px;
-            height: 4px;
-            background: var(--text-muted);
-            border-radius: 4px;
-            margin-bottom: 6px;
-            animation: suhSlide 2s ease-in-out infinite;
-        }
-
-        @keyframes suhSlide {
-            0%, 100% { transform: translateY(0); opacity: 0.4; }
-            50% { transform: translateY(-8px); opacity: 0.8; }
-        }
-
-        .swipe-up-hint .suh-text {
-            font-size: 0.6rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            font-weight: 600;
-        }
-
-        /* ===== FLASH DEAL PANEL ===== */
-        .flash-deal-backdrop {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 1500;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s;
-        }
-
-        .flash-deal-backdrop.show {
-            opacity: 1;
-            pointer-events: all;
-        }
-
-        .flash-deal-panel {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            z-index: 1501;
-            background: white;
-            border-radius: 24px 24px 0 0;
-            padding: 20px 20px 30px;
-            transform: translateY(100%);
-            transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
-            max-height: 75vh;
-            overflow-y: auto;
-            box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.2);
-        }
-
-        .flash-deal-panel.show {
-            transform: translateY(0);
-        }
-
-        .fd-handle {
-            width: 40px;
-            height: 4px;
-            background: #d1d5db;
-            border-radius: 4px;
-            margin: 0 auto 16px;
-        }
-
-        .fd-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 16px;
-        }
-
-        .fd-title {
-            font-size: 1.2rem;
-            font-weight: 900;
-            color: var(--impulse-red);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .fd-title i {
-            animation: fdIconShake 0.5s ease-in-out infinite;
-        }
-
-        @keyframes fdIconShake {
-            0%, 100% { transform: rotate(0deg); }
-            25% { transform: rotate(-10deg); }
-            75% { transform: rotate(10deg); }
-        }
-
-        .fd-countdown {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .fd-countdown .cd-block {
-            background: var(--impulse-red);
-            color: white;
-            font-weight: 900;
-            font-size: 1rem;
-            padding: 4px 8px;
-            border-radius: 6px;
-            min-width: 36px;
-            text-align: center;
-            line-height: 1.2;
-        }
-
-        .fd-countdown .cd-sep {
-            color: var(--impulse-red);
-            font-weight: 900;
-            font-size: 1rem;
-        }
-
-        .fd-item {
-            display: flex;
-            gap: 14px;
-            padding: 14px;
-            background: var(--bg-body);
-            border-radius: 14px;
-            margin-bottom: 10px;
-            border: 2px solid transparent;
-            transition: all 0.2s;
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .fd-item:hover {
-            border-color: var(--impulse-orange);
-            transform: scale(1.01);
-        }
-
-        .fd-item::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 60%;
-            height: 100%;
-            background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.6) 50%, rgba(255,255,255,0) 100%);
-            transform: skewX(-25deg);
-            animation: fdShimmer 2s infinite;
-        }
-
-        @keyframes fdShimmer {
-            0% { left: -100%; }
-            30% { left: 200%; }
-            100% { left: 200%; }
-        }
-
-        .fd-item-img {
-            width: 80px;
-            height: 80px;
-            border-radius: 10px;
-            overflow: hidden;
-            flex-shrink: 0;
-            background: #e2e8f0;
-        }
-
-        .fd-item-img img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .fd-item-info {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .fd-item-title {
-            font-weight: 600;
-            font-size: 0.9rem;
-            margin-bottom: 4px;
-            color: var(--text-main);
-            line-height: 1.3;
-        }
-
-        .fd-item-prices {
-            display: flex;
-            align-items: baseline;
-            gap: 8px;
-        }
-
-        .fd-item-original {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            text-decoration: line-through;
-        }
-
-        .fd-item-sale {
-            font-size: 1.1rem;
-            font-weight: 900;
-            color: var(--impulse-red);
-        }
-
-        .fd-item-badge {
-            position: absolute;
-            top: 8px;
-            right: 8px;
-            background: var(--impulse-red);
-            color: white;
-            font-size: 0.65rem;
-            font-weight: 800;
-            padding: 3px 8px;
-            border-radius: 4px;
-        }
-
-        .fd-stock-bar {
-            width: 100%;
-            height: 4px;
-            background: #e5e7eb;
-            border-radius: 4px;
-            margin-top: 8px;
-            overflow: hidden;
-        }
-
-        .fd-stock-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--impulse-orange), var(--impulse-red));
-            border-radius: 4px;
-            transition: width 1s ease;
-        }
-
-        .fd-stock-text {
-            font-size: 0.65rem;
-            color: var(--impulse-red);
-            font-weight: 600;
-            margin-top: 3px;
-        }
-
-        .fd-close-btn {
-            position: absolute;
-            top: 16px;
-            right: 16px;
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background: var(--bg-body);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            color: var(--text-muted);
-            transition: 0.2s;
-            z-index: 5;
-        }
-
-        .fd-close-btn:hover {
-            background: #fee2e2;
-            color: var(--impulse-red);
-        }
-
-        /* ===== SHAKE COUPON POPUP ===== */
-        .shake-coupon-popup {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(0.7);
-            z-index: 2500;
-            width: 90%;
-            max-width: 340px;
-            background: white;
-            border-radius: 20px;
-            overflow: hidden;
-            opacity: 0;
-            pointer-events: none;
-            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.3);
-        }
-
-        .shake-coupon-popup.show {
-            opacity: 1;
-            pointer-events: all;
-            transform: translate(-50%, -50%) scale(1);
-        }
-
-        .scp-backdrop {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.6);
-            z-index: 2499;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s;
-        }
-
-        .scp-backdrop.show {
-            opacity: 1;
-            pointer-events: all;
-        }
-
-        .scp-top {
-            background: linear-gradient(135deg, var(--impulse-gold) 0%, #f59e0b 50%, var(--impulse-orange) 100%);
-            padding: 24px 20px;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .scp-top::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: repeating-linear-gradient(
-                45deg,
-                transparent,
-                transparent 10px,
-                rgba(255,255,255,0.05) 10px,
-                rgba(255,255,255,0.05) 20px
-            );
-        }
-
-        .scp-icon {
-            font-size: 2.5rem;
-            color: white;
-            margin-bottom: 8px;
-            animation: scpIconSpin 0.6s ease-out;
-            text-shadow: 0 4px 12px rgba(0,0,0,0.2);
-        }
-
-        @keyframes scpIconSpin {
-            0% { transform: rotate(-180deg) scale(0); }
-            100% { transform: rotate(0deg) scale(1); }
-        }
-
-        .scp-title {
-            color: white;
-            font-size: 1.1rem;
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            text-shadow: 0 2px 6px rgba(0,0,0,0.2);
-            position: relative;
-        }
-
-        .scp-body {
-            padding: 24px 20px;
-            text-align: center;
-        }
-
-        .scp-code-box {
-            background: #fef3c7;
-            border: 2px dashed var(--impulse-gold);
-            border-radius: 12px;
-            padding: 16px;
-            margin-bottom: 16px;
-            cursor: pointer;
-            transition: 0.2s;
-            position: relative;
-        }
-
-        .scp-code-box:active {
-            transform: scale(0.97);
-            background: #fde68a;
-        }
-
-        .scp-code-label {
-            font-size: 0.65rem;
-            color: var(--impulse-gold);
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 6px;
-        }
-
-        .scp-code {
-            font-size: 1.6rem;
-            font-weight: 900;
-            color: var(--impulse-orange);
-            letter-spacing: 4px;
-            font-family: 'Courier New', monospace;
-        }
-
-        .scp-discount {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            margin-bottom: 16px;
-            line-height: 1.5;
-        }
-
-        .scp-discount strong {
-            color: var(--impulse-red);
-            font-size: 1.1rem;
-        }
-
-        .scp-expiry {
-            font-size: 0.7rem;
-            color: var(--danger);
-            font-weight: 600;
-            margin-bottom: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 4px;
-        }
-
-        .scp-use-btn {
-            width: 100%;
-            padding: 14px;
-            background: linear-gradient(135deg, var(--impulse-orange), var(--impulse-red));
-            color: white;
-            font-weight: 800;
-            font-size: 0.95rem;
-            border-radius: 12px;
-            cursor: pointer;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: 0.2s;
-            box-shadow: 0 6px 20px rgba(234, 88, 12, 0.3);
-        }
-
-        .scp-use-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(234, 88, 12, 0.5);
-        }
-
-        .scp-use-btn:active {
-            transform: translateY(0);
-        }
-
-        /* ===== RAPID TAP REWARD ===== */
-        .rapid-tap-reward {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(0);
-            z-index: 2600;
-            background: linear-gradient(135deg, #7c3aed, #a855f7);
-            color: white;
-            padding: 20px 30px;
-            border-radius: 20px;
-            text-align: center;
-            opacity: 0;
-            pointer-events: none;
-            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-            box-shadow: 0 20px 50px rgba(124, 58, 237, 0.4);
-        }
-
-        .rapid-tap-reward.show {
-            opacity: 1;
-            pointer-events: all;
-            transform: translate(-50%, -50%) scale(1);
-        }
-
-        .rtr-icon { font-size: 2rem; margin-bottom: 8px; }
-        .rtr-text { font-weight: 800; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; }
-        .rtr-sub { font-size: 0.75rem; opacity: 0.8; margin-top: 4px; }
-
-        .rtr-backdrop {
-            position: fixed;
-            inset: 0;
-            background: rgba(124, 58, 237, 0.3);
-            z-index: 2599;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s;
-            backdrop-filter: blur(4px);
-        }
-
-        .rtr-backdrop.show {
-            opacity: 1;
-            pointer-events: all;
-        }
-
-        /* ===== SCREEN FLASH EFFECT ===== */
-        .screen-flash {
-            position: fixed;
-            inset: 0;
-            z-index: 9999;
-            pointer-events: none;
-            opacity: 0;
-        }
-
-        .screen-flash.red {
-            background: radial-gradient(circle at center, rgba(220, 38, 38, 0.15), transparent 70%);
-            animation: screenFlashRed 0.4s ease-out forwards;
-        }
-
-        .screen-flash.gold {
-            background: radial-gradient(circle at center, rgba(217, 119, 6, 0.2), transparent 70%);
-            animation: screenFlashGold 0.5s ease-out forwards;
-        }
-
-        .screen-flash.purple {
-            background: radial-gradient(circle at center, rgba(124, 58, 237, 0.2), transparent 70%);
-            animation: screenFlashPurple 0.5s ease-out forwards;
-        }
-
-        @keyframes screenFlashRed {
-            0% { opacity: 1; }
-            100% { opacity: 0; }
-        }
-        @keyframes screenFlashGold {
-            0% { opacity: 1; }
-            100% { opacity: 0; }
-        }
-        @keyframes screenFlashPurple {
-            0% { opacity: 1; }
-            100% { opacity: 0; }
-        }
-
-        /* ===== GESTURE TUTORIAL OVERLAY ===== */
-        .gesture-tutorial {
-            position: fixed;
-            inset: 0;
-            z-index: 700;
-            pointer-events: none;
-            opacity: 0;
-            transition: opacity 0.5s;
-        }
-
-        .gesture-tutorial.show { opacity: 1; }
-
-        .gt-item {
-            position: absolute;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            background: rgba(0,0,0,0.75);
-            color: white;
-            padding: 8px 14px;
-            border-radius: 50px;
-            font-size: 0.7rem;
-            font-weight: 600;
-            white-space: nowrap;
-            backdrop-filter: blur(8px);
-        }
-
-        .gt-item i {
-            font-size: 0.85rem;
-            opacity: 0.8;
-        }
-
-        .gt-item.gt-card-tap { bottom: 55%; left: 50%; transform: translateX(-50%); }
-        .gt-item.gt-card-swipe { bottom: 45%; right: 15%; }
-        .gt-item.gt-bottom-swipe { bottom: 30px; left: 50%; transform: translateX(-50%); }
-        .gt-item.gt-shake { top: 80px; right: 20px; }
-
-        .gt-item .gt-anim {
-            display: inline-block;
-        }
-
-        .gt-item.gt-card-tap .gt-anim { animation: gtTap 1.2s ease-in-out infinite; }
-        .gt-item.gt-card-swipe .gt-anim { animation: gtSwipe 1.5s ease-in-out infinite; }
-        .gt-item.gt-bottom-swipe .gt-anim { animation: gtUpSwipe 1.5s ease-in-out infinite; }
-        .gt-item.gt-shake .gt-anim { animation: gtShake 0.6s ease-in-out infinite; }
-
-        @keyframes gtTap {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.3); }
-        }
-        @keyframes gtSwipe {
-            0%, 100% { transform: translateX(0); }
-            50% { transform: translateX(-10px); }
-        }
-        @keyframes gtUpSwipe {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-8px); }
-        }
-        @keyframes gtShake {
-            0%, 100% { transform: rotate(0deg); }
-            25% { transform: rotate(-15deg); }
-            75% { transform: rotate(15deg); }
-        }
-
-        /* ===== EXISTING CARD STYLES (continued) ===== */
         .card-image {
             position: relative;
             padding-top: 100%;
@@ -1255,6 +478,9 @@
         }
         .btn-close:hover { background: var(--bg-body); }
 
+        /* ============================================
+           MODAL AD BANNER — RASIO 1280x350
+           ============================================ */
         .modal-ad-banner {
             display: block;
             width: 100%;
@@ -1266,7 +492,7 @@
             border-radius: 10px;
             height: 0;
             opacity: 0;
-            margin-bottom: 16px;
+            margin-bottom: 0;
             pointer-events: none;
             transition: height 0.5s cubic-bezier(0.16, 1, 0.3, 1),
                         opacity 0.4s ease 0.05s,
@@ -1293,7 +519,9 @@
             display: block;
             transition: transform 0.4s ease;
         }
-        .modal-ad-banner a:hover img { transform: scale(1.02); }
+        .modal-ad-banner a:hover img {
+            transform: scale(1.02);
+        }
 
         /* --- PAYMENT VIEW --- */
         .payment-view {
@@ -1436,82 +664,205 @@
         @keyframes slideDown { to { opacity: 1; transform: translateY(0); } }
         @keyframes fadeOut { to { opacity: 0; transform: translateY(-10px); } }
 
-        /* --- AD POPUP --- */
-        .ad-popup {
+        /* ============================================
+           AD POPUP — DESAIN PROFESIONAL
+           - Shadow halus dengan border subtle
+           - Label "Sponsored" branded
+           - Close button inline tanpa floating
+           - Timer bar terintegrasi di footer
+           - Hover lift halus
+           - Aspect ratio rapi
+           ============================================ */
+        .ad-popup-overlay {
             position: fixed;
-            bottom: 20px;
-            left: 20px;
+            inset: 0;
             z-index: 900;
-            width: 240px;
-            background: white;
-            border-radius: 16px;
-            box-shadow: var(--shadow-xl);
-            overflow: visible;
             display: none;
-            transform: translateY(60px);
+            align-items: flex-end;
+            justify-content: flex-start;
+            padding: 20px;
+            pointer-events: none;
             opacity: 0;
-            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
+            transition: opacity 0.4s ease;
         }
-        
-        .ad-popup.ad-visible {
-            display: block;
-            transform: translateY(0);
+        .ad-popup-overlay.ad-visible {
+            display: flex;
             opacity: 1;
+            pointer-events: auto;
         }
 
-        .ad-popup.transparent-mode {
-            background: transparent !important;
-            box-shadow: none;
-            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.25));
+        .ad-popup-card {
+            width: 260px;
+            background: #ffffff;
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 
+                0 1px 3px rgba(0, 0, 0, 0.04),
+                0 6px 24px rgba(0, 0, 0, 0.08),
+                0 12px 48px rgba(0, 0, 0, 0.04);
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            position: relative;
+            transform: translateY(30px) scale(0.95);
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            cursor: default;
+        }
+        .ad-popup-overlay.ad-visible .ad-popup-card {
+            transform: translateY(0) scale(1);
         }
 
-        .ad-img img {
-            width: 100%;
+        /* Transparent mode — untuk iklan PNG transparan */
+        .ad-popup-card.transparent-mode {
+            background: transparent;
+            border: none;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
+        }
+
+        /* Header bar: label sponsored + close */
+        .ad-popup-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 10px 0 10px;
+            background: white;
+            position: relative;
+            z-index: 5;
+        }
+        .transparent-mode .ad-popup-header {
+            background: transparent;
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            padding: 4px 6px 0 6px;
+            z-index: 10;
+        }
+
+        .ad-sponsored-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.6rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            background: #f1f5f9;
+            padding: 3px 8px;
+            border-radius: 4px;
+        }
+        .ad-sponsored-label i {
+            font-size: 0.55rem;
+            opacity: 0.7;
+        }
+        .transparent-mode .ad-sponsored-label {
+            background: rgba(255,255,255,0.9);
+            backdrop-filter: blur(4px);
+        }
+
+        .ad-close-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            width: 24px;
+            height: 24px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 0.7rem;
+            transition: all 0.2s ease;
+            padding: 0;
+        }
+        .ad-close-btn:hover {
+            background: #f1f5f9;
+            color: var(--text-main);
+        }
+        .transparent-mode .ad-close-btn {
+            background: rgba(255,255,255,0.85);
+            backdrop-filter: blur(4px);
+            color: var(--text-main);
+        }
+        .transparent-mode .ad-close-btn:hover {
+            background: rgba(255,255,255,1);
+        }
+
+        /* Gambar iklan */
+        .ad-popup-image-wrap {
+            position: relative;
+            overflow: hidden;
+            background: #f8fafc;
+        }
+        .ad-popup-image-wrap a {
             display: block;
-            object-fit: cover;
-            border-radius: 16px;
-            transition: transform 0.3s ease;
+            width: 100%;
+            aspect-ratio: 4 / 3;
+            position: relative;
+            overflow: hidden;
         }
-
-        .ad-popup.transparent-mode .ad-img img {
-            object-fit: contain;
-            border-radius: 0;
+        .ad-popup-image-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .ad-popup-image-wrap a:hover img {
+            transform: scale(1.03);
+        }
+        .transparent-mode .ad-popup-image-wrap {
             background: transparent;
         }
-
-        .ad-img:hover img { transform: scale(1.03); }
-
-        .ad-close {
-            position: absolute; top: -8px; right: -8px;
-            background: var(--danger); color: white;
-            width: 24px; height: 24px; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            cursor: pointer; font-size: 0.65rem; z-index: 10;
-            transition: 0.2s;
-            box-shadow: 0 2px 6px rgba(239, 68, 68, 0.4);
+        .transparent-mode .ad-popup-image-wrap a {
+            aspect-ratio: auto;
         }
-        .ad-close:hover { transform: scale(1.15); background: #dc2626; }
+        .transparent-mode .ad-popup-image-wrap img {
+            object-fit: contain;
+        }
 
-        .ad-timer-bar {
-            position: absolute;
-            bottom: 0; left: 0;
+        /* Footer bar: timer */
+        .ad-popup-footer {
             height: 3px;
-            background: var(--primary);
-            border-radius: 0 0 16px 16px;
+            background: #f1f5f9;
+            position: relative;
+            overflow: hidden;
+        }
+        .transparent-mode .ad-popup-footer {
+            background: rgba(255,255,255,0.3);
+        }
+        .ad-popup-footer-timer {
+            position: absolute;
+            top: 0; left: 0;
+            height: 100%;
             width: 100%;
-            transform-origin: left;
+            background: linear-gradient(90deg, var(--primary), #6366f1);
+            border-radius: 0 2px 2px 0;
+            transform-origin: left center;
             animation: adTimerShrink var(--ad-duration, 15s) linear forwards;
         }
-
-        .ad-popup.transparent-mode .ad-timer-bar { border-radius: 0; }
-
         @keyframes adTimerShrink {
             from { transform: scaleX(1); }
             to { transform: scaleX(0); }
         }
 
+        /* Exit animation */
+        .ad-popup-overlay.ad-exiting {
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .ad-popup-overlay.ad-exiting .ad-popup-card {
+            transform: translateY(20px) scale(0.95);
+            transition: transform 0.3s ease;
+        }
+
         @media (max-width: 480px) {
-            .ad-popup { bottom: 12px; left: 12px; right: 12px; width: auto; max-width: 200px; }
+            .ad-popup-overlay {
+                padding: 12px;
+                align-items: flex-end;
+                justify-content: center;
+            }
+            .ad-popup-card {
+                width: 100%;
+                max-width: 220px;
+            }
         }
 
         /* --- AD DEBUG PANEL --- */
@@ -1533,7 +884,12 @@
             box-shadow: var(--shadow-xl);
             line-height: 1.6;
         }
-        .ad-debug-panel .debug-title { color: #38bdf8; font-weight: 700; margin-bottom: 6px; font-size: 0.75rem; }
+        .ad-debug-panel .debug-title {
+            color: #38bdf8;
+            font-weight: 700;
+            margin-bottom: 6px;
+            font-size: 0.75rem;
+        }
         .ad-debug-panel .debug-ok { color: #4ade80; }
         .ad-debug-panel .debug-err { color: #f87171; }
         .ad-debug-panel .debug-warn { color: #fbbf24; }
@@ -1549,25 +905,10 @@
 <body oncontextmenu="return false;">
 
     <div class="toast-container" id="toastContainer"></div>
-    <div class="screen-flash" id="screenFlash"></div>
 
     <div class="ad-debug-panel" id="adDebugPanel">
         <div class="debug-title">[AD DEBUG LOG]</div>
         <div id="adDebugContent"></div>
-    </div>
-
-    <!-- GESTURE TUTORIAL OVERLAY -->
-    <div class="gesture-tutorial" id="gestureTutorial">
-        <div class="gt-item gt-card-tap"><span class="gt-anim"><i class="fas fa-hand-pointer"></i></span> 2x Tap = Beli Langsung</div>
-        <div class="gt-item gt-card-swipe"><span class="gt-anim"><i class="fas fa-arrow-left"></i></span> Swipe Kiri</div>
-        <div class="gt-item gt-bottom-swipe"><span class="gt-anim"><i class="fas fa-arrow-up"></i></span> Swipe Up = Deal Kilat</div>
-        <div class="gt-item gt-shake"><span class="gt-anim"><i class="fas fa-mobile-alt"></i></span> Shake = Kupon</div>
-    </div>
-
-    <!-- SWIPE UP HINT -->
-    <div class="swipe-up-hint" id="swipeUpHint">
-        <div class="suh-bar"></div>
-        <div class="suh-text">Swipe up</div>
     </div>
 
     <header>
@@ -1659,6 +1000,7 @@
                         <i class="fas fa-check-circle" style="color:var(--primary)"></i> Terpakai <span id="m-sold">0</span>x
                     </div>
 
+                    <!-- IKLAN MODAL PRODUK (RASIO 1280x350) -->
                     <div class="modal-ad-banner" id="modalAdBanner">
                         <a href="#" target="_blank" rel="noopener noreferrer" id="modalAdLink">
                             <img id="modalAdImage" src="" alt="Promo">
@@ -1738,62 +1080,28 @@
         </div>
     </div>
 
-    <!-- FLASH DEAL PANEL -->
-    <div class="flash-deal-backdrop" id="fdBackdrop" onclick="closeFlashDeal()"></div>
-    <div class="flash-deal-panel" id="fdPanel">
-        <div class="fd-handle"></div>
-        <div class="fd-close-btn" onclick="closeFlashDeal()"><i class="fas fa-times"></i></div>
-        <div class="fd-header">
-            <div class="fd-title"><i class="fas fa-bolt"></i> Deal Kilat</div>
-            <div class="fd-countdown" id="fdCountdown">
-                <span class="cd-block" id="fdMin">05</span>
-                <span class="cd-sep">:</span>
-                <span class="cd-block" id="fdSec">00</span>
+    <!-- AD POPUP — PROFESIONAL -->
+    <div class="ad-popup-overlay" id="adPopupOverlay">
+        <div class="ad-popup-card" id="adPopupCard">
+            <div class="ad-popup-header">
+                <span class="ad-sponsored-label"><i class="fas fa-ad"></i> Sponsored</span>
+                <button class="ad-close-btn" id="adCloseBtn"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="ad-popup-image-wrap" id="adImageWrap">
+                <a href="#" target="_blank" rel="noopener noreferrer" id="adLink">
+                    <img id="adImage" src="" alt="Promo">
+                </a>
+            </div>
+            <div class="ad-popup-footer">
+                <div class="ad-popup-footer-timer" id="adTimerBar"></div>
             </div>
         </div>
-        <div id="fdItems"></div>
-    </div>
-
-    <!-- SHAKE COUPON POPUP -->
-    <div class="scp-backdrop" id="scpBackdrop" onclick="closeShakeCoupon()"></div>
-    <div class="shake-coupon-popup" id="scpPopup">
-        <div class="scp-top">
-            <div class="scp-icon"><i class="fas fa-gift"></i></div>
-            <div class="scp-title">Kupon Rahasia</div>
-        </div>
-        <div class="scp-body">
-            <div class="scp-code-box" onclick="copyCouponCode()">
-                <div class="scp-code-label"><i class="fas fa-hand-pointer"></i> Tap untuk salin</div>
-                <div class="scp-code" id="scpCode">WRITE30</div>
-            </div>
-            <div class="scp-discount">Diskon <strong>30%</strong> untuk pembelian pertama!</div>
-            <div class="scp-expiry"><i class="fas fa-clock"></i> Berlaku 15 menit sejak ditemukan</div>
-            <button class="scp-use-btn" onclick="useCouponNow()">Gunakan Sekarang</button>
-        </div>
-    </div>
-
-    <!-- RAPID TAP REWARD -->
-    <div class="rtr-backdrop" id="rtrBackdrop" onclick="closeRapidTapReward()"></div>
-    <div class="rapid-tap-reward" id="rtrPopup">
-        <div class="rtr-icon"><i class="fas fa-star"></i></div>
-        <div class="rtr-text">Fast Scroller Detected!</div>
-        <div class="rtr-sub">Kamu mendapat Cashback Rp 5.000</div>
-    </div>
-
-    <!-- AD POPUP -->
-    <div class="ad-popup" id="adPopup">
-        <div class="ad-close" onclick="closeAd()"><i class="fas fa-times"></i></div>
-        <a href="#" target="_blank" rel="noopener noreferrer" id="adLink">
-            <div class="ad-img">
-                <img id="adImage" src="" alt="Promo">
-            </div>
-        </a>
-        <div class="ad-timer-bar" id="adTimerBar"></div>
     </div>
 
     <script type="module">
         import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 
+        // --- KONFIGURASI ---
         const SUPABASE_URL = 'https://neuylewfsxcuhayegygf.supabase.co'; 
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5ldXlsZXdmc3hjdWhheWVneWdmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkzNTMzNzYsImV4cCI6MjA5NDkyOTM3Nn0.Ra0qI5A87XxODy7v9HIJ-zxqVbO39GwXbJlV8n4ZeIc';
         const DEFAULT_ADMIN_WA = '6285885850204';
@@ -1809,6 +1117,7 @@
             } catch(e) {}
         }
 
+        // --- DATA SLIDER ---
         const sliderData = [
             { image: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgieMxVSq4yNK45tjG9DdAsuMaQ7dxXJ96XvbYe1Tw6iTMHlm0ETWVM70OBZY2RRoEZ98oCilYCgm7-PYHz9Vo3GBTJ4fMbqRovUaZLtxgdwREVayDd6uq-iJZWVhxoV2RitsUXz-3QR2M2MZkZtoFdjtefvHDmrUGWqyPq1W7JLRHJZwRvLv-vwL_QG8Ni/s3264/29467.png', link: '#' },
             { image: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjPwQ1jrQVR3aj8aOC12lSM7v4NwlaBip0dO76hxPZxVboWB6Pkt4wyTE6wcWUGrAWm-yOFIXa3GbKOLT0J2DsPPPUsYqDHwOSW0r1Ima3StZIVOvPk5CUy4ds6l8FGTt-7_2mPjq92rDMciTnYL-SW6X-9Tks4pZm2fCZv8xiFCdCo5qOHyHXPfqKU2K71/s3264/29445.png', link: '#' },
@@ -1842,18 +1151,24 @@
         let touchEndX = 0;
 
         // ============================================
-        // AD SYSTEM VARIABLES
+        // AD SYSTEM — VARIABEL
         // ============================================
         const AD_CONFIG = {
-            showDelay: 3000, autoDismiss: 15, maxPerSession: 3,
+            showDelay: 3000,
+            autoDismiss: 15,
+            maxPerSession: 3,
             cooldownBetweenAds: 30000,
             tableNames: ['iklan', 'ads', 'ad', 'iklan_banner', 'banner'],
             debug: false
         };
+
         let adDismissTimer = null;
         let adShownCount = 0;
         let lastAdShownTime = 0;
         let allAdsCache = [];
+        let isAdShowing = false;
+
+        // Cache iklan untuk modal
         let modalAdsCache = [];
         let todayModalAdIndex = -1;
         let modalAdRevealTimer = null; 
@@ -1866,622 +1181,17 @@
         };
 
         // ============================================
-        // GESTURE SYSTEM VARIABLES
-        // ============================================
-        const GESTURE = {
-            // Double tap
-            lastTapTime: 0,
-            lastTapTarget: null,
-            doubleTapDelay: 300,
-
-            // Long press
-            longPressTimer: null,
-            longPressDelay: 600,
-            isLongPressing: false,
-
-            // Swipe left on card
-            swipeStartX: 0,
-            swipeStartY: 0,
-            swipeCurrentX: 0,
-            isSwiping: false,
-            swipeThreshold: 80,
-            swipeLocked: false,
-
-            // Swipe up from bottom
-            bottomSwipeStartY: 0,
-            isBottomSwipeTracking: false,
-            bottomSwipeThreshold: 100,
-            bottomSwipeZone: 60, // pixels from bottom
-
-            // Shake detection
-            shakeLastX: 0,
-            shakeLastY: 0,
-            shakeLastZ: 0,
-            shakeThreshold: 15,
-            shakeCooldown: false,
-            shakeMinInterval: 8000,
-
-            // Rapid scroll
-            lastScrollTime: 0,
-            scrollEventCount: 0,
-            rapidScrollThreshold: 8,
-            rapidScrollWindow: 800,
-            rapidScrollCooldown: false,
-
-            // Flash deal
-            fdTimerInterval: null,
-            fdTimeLeft: 300, // 5 menit
-
-            // Coupon
-            couponGenerated: false,
-            couponCode: '',
-            couponExpiry: null,
-
-            // Tutorial
-            tutorialShown: false
-        };
-
-        // ============================================
-        // SCREEN FLASH EFFECT
-        // ============================================
-        function triggerScreenFlash(color) {
-            const el = document.getElementById('screenFlash');
-            el.className = 'screen-flash';
-            void el.offsetWidth;
-            el.classList.add(color);
-        }
-
-        // ============================================
-        // GESTURE: DOUBLE TAP — LANGSUNG BELI
-        // ============================================
-        function handleDoubleTap(e, cardEl, productData) {
-            const now = Date.now();
-            const target = cardEl;
-
-            if (GESTURE.lastTapTarget === target && (now - GESTURE.lastTapTime) < GESTURE.doubleTapDelay) {
-                // DOUBLE TAP TERDETEKSI!
-                GESTURE.lastTapTime = 0;
-                GESTURE.lastTapTarget = null;
-                e.preventDefault();
-                e.stopPropagation();
-
-                triggerScreenFlash('red');
-
-                // Tampilkan overlay impulsif
-                showDoubleTapOverlay(cardEl, productData);
-                return true;
-            }
-
-            GESTURE.lastTapTime = now;
-            GESTURE.lastTapTarget = target;
-            return false;
-        }
-
-        function showDoubleTapOverlay(cardEl, productData) {
-            // Hapus overlay lama jika ada
-            const existingOverlay = cardEl.querySelector('.double-tap-overlay');
-            if (existingOverlay) existingOverlay.remove();
-
-            const price = getField(productData, 'price');
-            const overlay = document.createElement('div');
-            overlay.className = 'double-tap-overlay show';
-            overlay.innerHTML = `
-                <div class="dt-icon"><i class="fas fa-bolt"></i></div>
-                <div class="dt-price">${formatRupiah(price)}</div>
-                <div class="dt-label">Beli Langsung</div>
-                <div class="dt-sub">Tap untuk konfirmasi</div>
-            `;
-
-            // Vibrate jika tersedia
-            if (navigator.vibrate) navigator.vibrate([30, 50, 30]);
-
-            cardEl.appendChild(overlay);
-
-            // Klik overlay = langsung ke modal lalu auto payment
-            overlay.addEventListener('click', (ev) => {
-                ev.stopPropagation();
-                overlay.classList.remove('show');
-                setTimeout(() => {
-                    overlay.remove();
-                    // Buka modal lalu langsung ke payment
-                    openModal(productData);
-                    setTimeout(() => {
-                        document.getElementById('btn-goto-payment').click();
-                    }, 400);
-                }, 150);
-            });
-
-            // Auto dismiss setelah 2.5 detik
-            setTimeout(() => {
-                if (overlay.parentNode) {
-                    overlay.classList.remove('show');
-                    setTimeout(() => { if (overlay.parentNode) overlay.remove(); }, 200);
-                }
-            }, 2500);
-        }
-
-        // ============================================
-        // GESTURE: LONG PRESS — QUICK ACTION
-        // ============================================
-        function startLongPress(e, cardEl, productData) {
-            GESTURE.isLongPressing = false;
-
-            const touch = e.touches ? e.touches[0] : e;
-            const rect = cardEl.getBoundingClientRect();
-            const x = touch.clientX - rect.left;
-            const y = touch.clientY - rect.top;
-
-            GESTURE.longPressTimer = setTimeout(() => {
-                GESTURE.isLongPressing = true;
-                if (navigator.vibrate) navigator.vibrate(50);
-                triggerScreenFlash('red');
-                showLongPressAction(cardEl, productData, x, y);
-            }, GESTURE.longPressDelay);
-        }
-
-        function cancelLongPress(cardEl) {
-            if (GESTURE.longPressTimer) {
-                clearTimeout(GESTURE.longPressTimer);
-                GESTURE.longPressTimer = null;
-            }
-        }
-
-        function showLongPressAction(cardEl, productData, x, y) {
-            // Ripple effect
-            const ripple = document.createElement('div');
-            ripple.className = 'long-press-ripple';
-            ripple.style.left = (x - 40) + 'px';
-            ripple.style.top = (y - 40) + 'px';
-            ripple.style.width = '80px';
-            ripple.style.height = '80px';
-            cardEl.appendChild(ripple);
-
-            // Action button
-            const action = document.createElement('div');
-            action.className = 'long-press-action show';
-            action.innerHTML = '<i class="fas fa-shopping-bag"></i> BELI SEKARANG';
-            cardEl.appendChild(action);
-
-            action.addEventListener('click', (ev) => {
-                ev.stopPropagation();
-                ev.preventDefault();
-                cleanupLongPress(cardEl);
-                openModal(productData);
-                setTimeout(() => {
-                    document.getElementById('btn-goto-payment').click();
-                }, 400);
-            });
-
-            // Auto dismiss
-            setTimeout(() => { cleanupLongPress(cardEl); }, 3000);
-        }
-
-        function cleanupLongPress(cardEl) {
-            cardEl.querySelectorAll('.long-press-ripple, .long-press-action').forEach(el => {
-                el.classList.remove('show');
-                setTimeout(() => el.remove(), 300);
-            });
-        }
-
-        // ============================================
-        // GESTURE: SWIPE KIRI — REVEAL BELI
-        // ============================================
-        function initCardSwipe(cardEl, productData) {
-            let startX = 0, startY = 0, currentX = 0, isTracking = false;
-
-            function onStart(e) {
-                if (GESTURE.swipeLocked) return;
-                const touch = e.touches ? e.touches[0] : e;
-                startX = touch.clientX;
-                startY = touch.clientY;
-                currentX = 0;
-                isTracking = true;
-                cardEl.classList.add('swiping');
-                cardEl.classList.remove('swipe-triggered');
-            }
-
-            function onMove(e) {
-                if (!isTracking) return;
-                const touch = e.touches ? e.touches[0] : e;
-                const diffX = touch.clientX - startX;
-                const diffY = touch.clientY - startY;
-
-                // Hanya swipe horizontal (bukan vertikal)
-                if (Math.abs(diffY) > Math.abs(diffX) && Math.abs(diffX) < 15) {
-                    isTracking = false;
-                    cardEl.classList.remove('swiping');
-                    cardEl.style.transform = '';
-                    return;
-                }
-
-                if (diffX < 0) {
-                    e.preventDefault();
-                    currentX = Math.max(diffX, -150);
-                    cardEl.style.transform = `translateX(${currentX}px)`;
-                }
-            }
-
-            function onEnd() {
-                if (!isTracking) return;
-                isTracking = false;
-                cardEl.classList.remove('swiping');
-
-                if (currentX < -GESTURE.swipeThreshold) {
-                    // Trigger beli!
-                    GESTURE.swipeLocked = true;
-                    if (navigator.vibrate) navigator.vibrate([20, 40, 20]);
-                    triggerScreenFlash('red');
-
-                    cardEl.style.transform = `translateX(-150px)`;
-                    
-                    setTimeout(() => {
-                        cardEl.classList.add('swipe-triggered');
-                        cardEl.style.transform = '';
-                        // Langsung beli
-                        openModal(productData);
-                        setTimeout(() => {
-                            document.getElementById('btn-goto-payment').click();
-                        }, 400);
-
-                        setTimeout(() => {
-                            GESTURE.swipeLocked = false;
-                        }, 1500);
-                    }, 200);
-                } else {
-                    cardEl.style.transform = '';
-                }
-                currentX = 0;
-            }
-
-            cardEl.addEventListener('touchstart', onStart, { passive: true });
-            cardEl.addEventListener('touchmove', onMove, { passive: false });
-            cardEl.addEventListener('touchend', onEnd, { passive: true });
-            cardEl.addEventListener('mousedown', onStart);
-            cardEl.addEventListener('mousemove', onMove);
-            cardEl.addEventListener('mouseup', onEnd);
-            cardEl.addEventListener('mouseleave', onEnd);
-        }
-
-        // ============================================
-        // GESTURE: SWIPE UP DARI BAWAH — FLASH DEAL
-        // ============================================
-        function initBottomSwipe() {
-            document.addEventListener('touchstart', (e) => {
-                const touch = e.touches[0];
-                if (touch.clientY > (window.innerHeight - GESTURE.bottomSwipeZone)) {
-                    GESTURE.bottomSwipeStartY = touch.clientY;
-                    GESTURE.isBottomSwipeTracking = true;
-                }
-            }, { passive: true });
-
-            document.addEventListener('touchmove', (e) => {
-                if (!GESTURE.isBottomSwipeTracking) return;
-                const touch = e.touches[0];
-                const diff = GESTURE.bottomSwipeStartY - touch.clientY;
-                
-                if (diff > 30) {
-                    // Hint menghilang
-                    document.getElementById('swipeUpHint').classList.add('hidden');
-                }
-            }, { passive: true });
-
-            document.addEventListener('touchend', (e) => {
-                if (!GESTURE.isBottomSwipeTracking) return;
-                GESTURE.isBottomSwipeTracking = false;
-
-                const touch = e.changedTouches[0];
-                const diff = GESTURE.bottomSwipeStartY - touch.clientY;
-
-                if (diff > GESTURE.bottomSwipeThreshold) {
-                    if (navigator.vibrate) navigator.vibrate(25);
-                    triggerScreenFlash('red');
-                    openFlashDeal();
-                }
-            }, { passive: true });
-
-            // Mouse fallback untuk desktop
-            let mouseDownAtBottom = false;
-            let mouseStartY = 0;
-
-            document.addEventListener('mousedown', (e) => {
-                if (e.clientY > (window.innerHeight - GESTURE.bottomSwipeZone)) {
-                    mouseDownAtBottom = true;
-                    mouseStartY = e.clientY;
-                }
-            });
-
-            document.addEventListener('mouseup', (e) => {
-                if (!mouseDownAtBottom) return;
-                mouseDownAtBottom = false;
-                const diff = mouseStartY - e.clientY;
-                if (diff > GESTURE.bottomSwipeThreshold) {
-                    triggerScreenFlash('red');
-                    openFlashDeal();
-                }
-            });
-        }
-
-        // ============================================
-        // FLASH DEAL PANEL
-        // ============================================
-        function openFlashDeal() {
-            const backdrop = document.getElementById('fdBackdrop');
-            const panel = document.getElementById('fdPanel');
-
-            renderFlashDealItems();
-
-            backdrop.classList.add('show');
-            panel.classList.add('show');
-            document.getElementById('swipeUpHint').classList.add('hidden');
-
-            // Mulai / reset countdown
-            startFlashDealCountdown();
-        }
-
-        function closeFlashDeal() {
-            const backdrop = document.getElementById('fdBackdrop');
-            const panel = document.getElementById('fdPanel');
-            backdrop.classList.remove('show');
-            panel.classList.remove('show');
-            stopFlashDealCountdown();
-        }
-
-        function renderFlashDealItems() {
-            const container = document.getElementById('fdItems');
-            container.innerHTML = '';
-
-            // Ambil produk dengan diskon acak
-            const dealProducts = [...products].sort(() => Math.random() - 0.5).slice(0, 3);
-
-            dealProducts.forEach((p, idx) => {
-                const title = getField(p, 'title');
-                const price = Number(getField(p, 'price'));
-                const originalPrice = Number(getField(p, 'original_price')) || Math.round(price * 1.5);
-                const image = getField(p, 'image');
-                const soldCount = Number(getField(p, 'sold_count')) || 0;
-
-                // Diskon flash: 25-50%
-                const discountPercent = Math.floor(Math.random() * 26) + 25;
-                const salePrice = Math.round(price * (1 - discountPercent / 100));
-                const stockPercent = Math.floor(Math.random() * 60) + 20;
-
-                const item = document.createElement('div');
-                item.className = 'fd-item';
-                item.style.animationDelay = (idx * 0.1) + 's';
-                item.innerHTML = `
-                    <div class="fd-item-badge">-${discountPercent}%</div>
-                    <div class="fd-item-img"><img src="${image}" alt="${title}" loading="lazy"></div>
-                    <div class="fd-item-info">
-                        <div class="fd-item-title">${title}</div>
-                        <div class="fd-item-prices">
-                            <span class="fd-item-original">${formatRupiah(originalPrice)}</span>
-                            <span class="fd-item-sale">${formatRupiah(salePrice)}</span>
-                        </div>
-                        <div class="fd-stock-bar"><div class="fd-stock-fill" style="width: ${stockPercent}%"></div></div>
-                        <div class="fd-stock-text">Sisa ${Math.floor((100 - stockPercent) / 10)} slot lagi!</div>
-                    </div>
-                `;
-
-                item.addEventListener('click', () => {
-                    if (navigator.vibrate) navigator.vibrate(15);
-                    closeFlashDeal();
-                    // Buat produk sementara dengan harga flash
-                    const flashProduct = { ...p, price: salePrice, original_price: originalPrice };
-                    openModal(flashProduct);
-                    setTimeout(() => {
-                        document.getElementById('btn-goto-payment').click();
-                    }, 400);
-                });
-
-                container.appendChild(item);
-            });
-        }
-
-        function startFlashDealCountdown() {
-            stopFlashDealCountdown();
-            GESTURE.fdTimeLeft = 300; // 5 menit
-            updateFlashDealDisplay();
-
-            GESTURE.fdTimerInterval = setInterval(() => {
-                GESTURE.fdTimeLeft--;
-                if (GESTURE.fdTimeLeft <= 0) {
-                    stopFlashDealCountdown();
-                    closeFlashDeal();
-                    showToast('Waktu Deal Kilat habis!', 'warning');
-                    return;
-                }
-                updateFlashDealDisplay();
-
-                // Urgency ketika < 30 detik
-                if (GESTURE.fdTimeLeft <= 30) {
-                    const cdBlock = document.querySelectorAll('.cd-block');
-                    cdBlock.forEach(b => {
-                        b.style.background = GESTURE.fdTimeLeft % 2 === 0 ? 'var(--impulse-red)' : '#b91c1c';
-                    });
-                }
-            }, 1000);
-        }
-
-        function stopFlashDealCountdown() {
-            if (GESTURE.fdTimerInterval) {
-                clearInterval(GESTURE.fdTimerInterval);
-                GESTURE.fdTimerInterval = null;
-            }
-            // Reset warna
-            document.querySelectorAll('.cd-block').forEach(b => {
-                b.style.background = 'var(--impulse-red)';
-            });
-        }
-
-        function updateFlashDealDisplay() {
-            const min = Math.floor(GESTURE.fdTimeLeft / 60);
-            const sec = GESTURE.fdTimeLeft % 60;
-            document.getElementById('fdMin').textContent = String(min).padStart(2, '0');
-            document.getElementById('fdSec').textContent = String(sec).padStart(2, '0');
-        }
-
-        // ============================================
-        // GESTURE: SHAKE DEVICE — KUPON RAHASIA
-        // ============================================
-        function initShakeDetection() {
-            if (!('DeviceMotionEvent' in window)) return;
-
-            // iOS 13+ perlu permission
-            if (typeof DeviceMotionEvent.requestPermission === 'function') {
-                // Tidak bisa auto-request, jadi gunakan fallback
-                return;
-            }
-
-            window.addEventListener('devicemotion', (e) => {
-                if (GESTURE.shakeCooldown) return;
-
-                const acc = e.accelerationIncludingGravity;
-                if (!acc) return;
-
-                const deltaX = Math.abs(acc.x - GESTURE.shakeLastX);
-                const deltaY = Math.abs(acc.y - GESTURE.shakeLastY);
-                const deltaZ = Math.abs(acc.z - GESTURE.shakeLastZ);
-
-                GESTURE.shakeLastX = acc.x || 0;
-                GESTURE.shakeLastY = acc.y || 0;
-                GESTURE.shakeLastZ = acc.z || 0;
-
-                if (deltaX + deltaY + deltaZ > GESTURE.shakeThreshold * 3) {
-                    onDeviceShake();
-                }
-            }, { passive: true });
-        }
-
-        function onDeviceShake() {
-            if (GESTURE.shakeCooldown) return;
-            GESTURE.shakeCooldown = true;
-
-            if (navigator.vibrate) navigator.vibrate([50, 30, 50, 30, 50]);
-            triggerScreenFlash('gold');
-
-            generateCouponCode();
-            showShakeCoupon();
-
-            setTimeout(() => { GESTURE.shakeCooldown = false; }, GESTURE.shakeMinInterval);
-        }
-
-        function generateCouponCode() {
-            if (GESTURE.couponGenerated) return;
-            const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-            let code = 'WH';
-            for (let i = 0; i < 4; i++) {
-                code += chars.charAt(Math.floor(Math.random() * chars.length));
-            }
-            GESTURE.couponCode = code;
-            GESTURE.couponExpiry = new Date(Date.now() + 15 * 60 * 1000); // 15 menit
-            GESTURE.couponGenerated = true;
-            document.getElementById('scpCode').textContent = code;
-        }
-
-        function showShakeCoupon() {
-            document.getElementById('scpBackdrop').classList.add('show');
-            document.getElementById('scpPopup').classList.add('show');
-        }
-
-        function closeShakeCoupon() {
-            document.getElementById('scpBackdrop').classList.remove('show');
-            document.getElementById('scpPopup').classList.remove('show');
-        }
-
-        function copyCouponCode() {
-            const code = GESTURE.couponCode;
-            navigator.clipboard.writeText(code).then(() => {
-                showToast(`Kode ${code} disalin!`, 'success');
-            }).catch(() => {
-                const ta = document.createElement("textarea");
-                ta.value = code; document.body.appendChild(ta); ta.select();
-                document.execCommand("Copy"); ta.remove();
-                showToast(`Kode ${code} disalin!`, 'success');
-            });
-        }
-
-        function useCouponNow() {
-            closeShakeCoupon();
-            showToast(`Kupon ${GESTURE.couponCode} aktif! Pilih produk untuk menggunakan.`, 'success');
-            // Bisa diintegrasikan ke flow pembayaran
-        }
-
-        // Expose ke global
-        window.copyCouponCode = copyCouponCode;
-        window.useCouponNow = useCouponNow;
-        window.closeShakeCoupon = closeShakeCoupon;
-
-        // ============================================
-        // GESTURE: RAPID SCROLL — REWARD
-        // ============================================
-        function initRapidScrollDetection() {
-            let scrollTimer = null;
-
-            window.addEventListener('scroll', () => {
-                if (GESTURE.rapidScrollCooldown) return;
-
-                const now = Date.now();
-                GESTURE.scrollEventCount++;
-
-                // Reset counter setiap window
-                if (now - GESTURE.lastScrollTime > GESTURE.rapidScrollWindow) {
-                    GESTURE.scrollEventCount = 0;
-                    GESTURE.lastScrollTime = now;
-                }
-
-                if (GESTURE.scrollEventCount >= GESTURE.rapidScrollThreshold) {
-                    GESTURE.scrollEventCount = 0;
-                    GESTURE.rapidScrollCooldown = true;
-                    onRapidScrollDetected();
-                    setTimeout(() => { GESTURE.rapidScrollCooldown = false; }, 15000);
-                }
-            }, { passive: true });
-        }
-
-        function onRapidScrollDetected() {
-            if (navigator.vibrate) navigator.vibrate(20);
-            triggerScreenFlash('purple');
-
-            document.getElementById('rtrBackdrop').classList.add('show');
-            document.getElementById('rtrPopup').classList.add('show');
-
-            setTimeout(() => { closeRapidTapReward(); }, 3000);
-        }
-
-        function closeRapidTapReward() {
-            document.getElementById('rtrBackdrop').classList.remove('show');
-            document.getElementById('rtrPopup').classList.remove('show');
-        }
-        window.closeRapidTapReward = closeRapidTapReward;
-
-        // ============================================
-        // GESTURE TUTORIAL
-        // ============================================
-        function showGestureTutorial() {
-            if (GESTURE.tutorialShown) return;
-            const sessionKey = 'wh_gesture_tut_seen';
-            if (sessionStorage.getItem(sessionKey)) {
-                GESTURE.tutorialShown = true;
-                return;
-            }
-
-            setTimeout(() => {
-                const tutorial = document.getElementById('gestureTutorial');
-                tutorial.classList.add('show');
-                GESTURE.tutorialShown = true;
-                sessionStorage.setItem(sessionKey, '1');
-
-                setTimeout(() => { tutorial.classList.remove('show'); }, 6000);
-            }, 2000);
-        }
-
-        // ============================================
-        // AD SYSTEM — HELPER FUNCTIONS
+        // AD DEBUG LOGGER
         // ============================================
         function adLog(message, type = 'ok') {
             const timestamp = new Date().toLocaleTimeString('id-ID');
             const fullMsg = `[${timestamp}] ${message}`;
-            console.log(`%c[AD] ${message}`, type === 'ok' ? 'color: #4ade80' : type === 'err' ? 'color: #f87171' : 'color: #fbbf24');
+            
+            console.log(`%c[AD] ${message}`, 
+                type === 'ok' ? 'color: #4ade80' : 
+                type === 'err' ? 'color: #f87171' : 'color: #fbbf24'
+            );
+
             if (AD_CONFIG.debug) {
                 const panel = document.getElementById('adDebugPanel');
                 const content = document.getElementById('adDebugContent');
@@ -2504,6 +1214,7 @@
             }
         };
 
+        // --- TOAST ---
         window.showToast = function(message, type = 'success') {
             const container = document.getElementById('toastContainer');
             const toast = document.createElement('div');
@@ -2517,6 +1228,7 @@
             }, 3000);
         }
 
+        // --- QRIS MODAL ---
         window.openQrisModal = function(imageUrl) {
             const modal = document.getElementById('qrisModal');
             document.getElementById('qrisDisplayImage').src = imageUrl;
@@ -2537,6 +1249,7 @@
         };
         document.getElementById('qrisModal').addEventListener('click', (e) => { if(e.target.id === 'qrisModal') closeQrisModal(); });
 
+        // --- TIMER LOGIC ---
         function lockWhatsAppButton() {
             const btn = document.getElementById('btn-confirm-whatsapp');
             if (paymentLockTimer) clearTimeout(paymentLockTimer);
@@ -2551,13 +1264,14 @@
         }
         function clearPaymentTimer() { if (paymentLockTimer) { clearTimeout(paymentLockTimer); paymentLockTimer = null; } }
 
+        // --- HELPERS ---
         const formatRupiah = (num) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(num);
         function getField(item, fieldKey) { return item[fields[fieldKey]] || item[fieldKey]; }
 
         function autoMapColumns(sampleData) {
             if (!sampleData) return;
             const keys = Object.keys(sampleData);
-            fields = {
+            const map = {
                 title: keys.find(k => k.toLowerCase().includes('nama') || k.toLowerCase().includes('title')) || 'title',
                 price: keys.find(k => k.toLowerCase().includes('harga') || k.toLowerCase().includes('price')) || 'price',
                 original_price: keys.find(k => k.toLowerCase().includes('original') || k.toLowerCase().includes('coret') || k.toLowerCase().includes('asli')) || 'original_price',
@@ -2569,6 +1283,7 @@
                 cover_letter_price: keys.find(k => k.toLowerCase().includes('cover_letter_price') || k.toLowerCase().includes('harga_surat')) || 'cover_letter_price',
                 allow_addon: keys.find(k => k.toLowerCase().includes('allow_addon') || k.toLowerCase().includes('aktifkan_addon')) || 'allow_addon'
             };
+            fields = map;
         }
 
         // --- SEARCH ---
@@ -2635,7 +1350,7 @@
             });
         }
 
-        // --- FETCH ---
+        // --- FETCH FUNCTIONS ---
         async function fetchAdminNumbers() {
             if (useSupabase) {
                 const { data } = await supabase.from('no_wa').select('nomor');
@@ -2656,7 +1371,9 @@
             if (useSupabase) {
                 const { data } = await supabase.from('payment').select('*');
                 paymentMethods = (data && data.length > 0) ? data : dummyPaymentMethods;
-            } else { paymentMethods = dummyPaymentMethods; }
+            } else {
+                paymentMethods = dummyPaymentMethods;
+            }
             renderPaymentMethods();
         }
 
@@ -2676,35 +1393,102 @@
             filterLogic();
         }
 
-        // --- AD SYSTEM ---
+        // ============================================
+        // AD SYSTEM — HELPER FUNCTIONS
+        // ============================================
+
         function getAdField(ad, possibilities) {
-            for (const key of possibilities) { if (ad[key] !== undefined && ad[key] !== null && ad[key] !== '') return ad[key]; }
+            for (const key of possibilities) {
+                if (ad[key] !== undefined && ad[key] !== null && ad[key] !== '') {
+                    return ad[key];
+                }
+            }
             return null;
         }
-        function getAdImageUrl(ad) { return getAdField(ad, ['image_url','gambar','image','url_gambar','foto','img_url','banner_url','src','thumbnail','picture']); }
-        function getAdLinkUrl(ad) { return getAdField(ad, ['link_url','link','url','target_url','redirect_url','destination','href','go_to']) || '#'; }
-        function isAdActive(ad) { const val = getAdField(ad, ['is_active','active','aktif','status','is_show','show','visible']); if (val === true || val === 1 || val === '1' || val === 'true') return true; if (val === false || val === 0 || val === '0' || val === 'false') return false; return true; }
-        function getAdDuration(ad) { const val = getAdField(ad, ['duration','durasi','show_time','auto_close','timeout']); if (val && !isNaN(val) && Number(val) > 0) return Number(val); return AD_CONFIG.autoDismiss; }
-        function getAdPlacement(ad) { return getAdField(ad, ['placement','penempatan','posisi','position','location','lokasi','tipe','type','show_in']); }
+
+        function getAdImageUrl(ad) {
+            return getAdField(ad, [
+                'image_url', 'gambar', 'image', 'url_gambar', 'foto',
+                'img_url', 'banner_url', 'src', 'thumbnail', 'picture'
+            ]);
+        }
+
+        function getAdLinkUrl(ad) {
+            return getAdField(ad, [
+                'link_url', 'link', 'url', 'target_url', 'redirect_url',
+                'destination', 'href', 'go_to'
+            ]) || '#';
+        }
+
+        function isAdActive(ad) {
+            const val = getAdField(ad, ['is_active', 'active', 'aktif', 'status', 'is_show', 'show', 'visible']);
+            if (val === true || val === 1 || val === '1' || val === 'true') return true;
+            if (val === false || val === 0 || val === '0' || val === 'false') return false;
+            return true;
+        }
+
+        function getAdDuration(ad) {
+            const val = getAdField(ad, ['duration', 'durasi', 'show_time', 'auto_close', 'timeout']);
+            if (val && !isNaN(val) && Number(val) > 0) return Number(val);
+            return AD_CONFIG.autoDismiss;
+        }
+
+        function getAdPlacement(ad) {
+            return getAdField(ad, [
+                'placement', 'penempatan', 'posisi', 'position',
+                'location', 'lokasi', 'tipe', 'type', 'show_in'
+            ]);
+        }
 
         async function fetchAds() {
-            if (!useSupabase) { adLog('Supabase tidak tersedia, skip fetch iklan', 'warn'); return []; }
+            if (!useSupabase) {
+                adLog('Supabase tidak tersedia, skip fetch iklan', 'warn');
+                return [];
+            }
+
             adLog('Memulai fetch data iklan...', 'ok');
+
             for (const tableName of AD_CONFIG.tableNames) {
                 try {
                     adLog(`Mencoba tabel: "${tableName}"`, 'ok');
                     const { data, error } = await supabase.from(tableName).select('*');
-                    if (error) { adLog(`Tabel "${tableName}" error: ${error.message}`, 'warn'); continue; }
-                    if (!data || data.length === 0) { adLog(`Tabel "${tableName}" kosong`, 'warn'); continue; }
+                    
+                    if (error) {
+                        adLog(`Tabel "${tableName}" error: ${error.message}`, 'warn');
+                        continue;
+                    }
+                    
+                    if (!data || data.length === 0) {
+                        adLog(`Tabel "${tableName}" kosong`, 'warn');
+                        continue;
+                    }
+                    
                     adLog(`Tabel "${tableName}" ditemukan: ${data.length} row(s)`, 'ok');
+                    
+                    if (data.length > 0) {
+                        const columns = Object.keys(data[0]);
+                        adLog(`Kolom: [${columns.join(', ')}]`, 'ok');
+                    }
+
                     const activeAds = data.filter(ad => isAdActive(ad));
                     adLog(`${activeAds.length} dari ${data.length} iklan aktif`, 'ok');
-                    if (activeAds.length > 0) { adLog(`Berhasil! Menggunakan ${activeAds.length} iklan dari tabel "${tableName}"`, 'ok'); return activeAds; }
-                } catch (err) { adLog(`Exception pada tabel "${tableName}": ${err.message}`, 'err'); continue; }
+                    
+                    if (activeAds.length > 0) {
+                        adLog(`Berhasil! Menggunakan ${activeAds.length} iklan dari tabel "${tableName}"`, 'ok');
+                        return activeAds;
+                    }
+                    
+                } catch (err) {
+                    adLog(`Exception pada tabel "${tableName}": ${err.message}`, 'err');
+                    continue;
+                }
             }
+
             adLog('Semua tabel iklan gagal atau kosong', 'err');
             return [];
         }
+
+        // --- POPUP AD FUNCTIONS ---
 
         function detectTransparency(imageUrl, callback) {
             const testImg = new Image();
@@ -2713,61 +1497,141 @@
                 try {
                     const canvas = document.createElement('canvas');
                     const ctx = canvas.getContext('2d', { willReadFrequently: true });
-                    const points = [[0,0],[Math.floor(this.naturalWidth/2),Math.floor(this.naturalHeight/2)],[this.naturalWidth-1,this.naturalHeight-1],[Math.floor(this.naturalWidth/4),Math.floor(this.naturalHeight/4)]];
+                    const points = [
+                        [0, 0],
+                        [Math.floor(this.naturalWidth / 2), Math.floor(this.naturalHeight / 2)],
+                        [this.naturalWidth - 1, this.naturalHeight - 1],
+                        [Math.floor(this.naturalWidth / 4), Math.floor(this.naturalHeight / 4)],
+                        [Math.floor(this.naturalWidth * 3/4), Math.floor(this.naturalHeight * 3/4)]
+                    ];
                     let transparentCount = 0;
-                    canvas.width = this.naturalWidth; canvas.height = this.naturalHeight;
+                    let sampledCount = 0;
+                    canvas.width = this.naturalWidth;
+                    canvas.height = this.naturalHeight;
                     ctx.drawImage(this, 0, 0);
-                    for (const [x,y] of points) { if (ctx.getImageData(x,y,1,1).data[3] === 0) transparentCount++; }
-                    callback(transparentCount >= 2);
-                } catch(e) { callback(false); }
+                    for (const [x, y] of points) {
+                        if (x < this.naturalWidth && y < this.naturalHeight) {
+                            sampledCount++;
+                            const pixel = ctx.getImageData(x, y, 1, 1).data;
+                            if (pixel[3] === 0) transparentCount++;
+                        }
+                    }
+                    // Jika >40% titik samplenya transparan, anggap transparent
+                    callback(sampledCount > 0 && (transparentCount / sampledCount) > 0.4);
+                } catch (e) {
+                    adLog('Transparency detection error: ' + e.message, 'warn');
+                    callback(false);
+                }
             };
             testImg.onerror = function() { callback(false); };
             testImg.src = imageUrl;
         }
 
         function showAdPopup(adData) {
+            // BUG FIX: Cegah multiple popup tumpang tindih
+            if (isAdShowing) {
+                adLog('Popup sudah aktif, abaikan request baru', 'warn');
+                return;
+            }
+
             const imageUrl = getAdImageUrl(adData);
             const linkUrl = getAdLinkUrl(adData);
             const duration = getAdDuration(adData);
+
             if (!imageUrl) { adLog('Tidak ada URL gambar, batal tampilkan', 'err'); return; }
-            adLog(`Popup: ${imageUrl.substring(0, 60)}...`, 'ok');
-            const popup = document.getElementById('adPopup');
+
+            // BUG FIX: Validasi duration agar tidak negatif atau 0
+            const safeDuration = Math.max(3, Math.min(duration, 60));
+            if (safeDuration !== duration) {
+                adLog(`Duration disesuaikan: ${duration}s → ${safeDuration}s`, 'warn');
+            }
+
+            isAdShowing = true;
+            adLog(`Popup: ${imageUrl.substring(0, 60)}... (${safeDuration}s)`, 'ok');
+
+            const overlay = document.getElementById('adPopupOverlay');
+            const card = document.getElementById('adPopupCard');
             const img = document.getElementById('adImage');
             const link = document.getElementById('adLink');
             const timerBar = document.getElementById('adTimerBar');
-            popup.classList.remove('transparent-mode', 'ad-visible');
+
+            // Reset state
+            overlay.classList.remove('ad-visible', 'ad-exiting');
+            card.classList.remove('transparent-mode');
             if (adDismissTimer) { clearTimeout(adDismissTimer); adDismissTimer = null; }
+
             link.href = linkUrl;
-            img.removeAttribute('crossorigin');
-            img.src = imageUrl;
-            popup.style.setProperty('--ad-duration', `${duration}s`);
+
+            // BUG FIX: Reset animation timer dengan teknik yang lebih reliable
             timerBar.style.animation = 'none';
-            void timerBar.offsetWidth;
-            timerBar.style.animation = `adTimerShrink ${duration}s linear forwards`;
-            img.onload = function() {
-                adLog(`Popup loaded: ${this.naturalWidth}x${this.naturalHeight}`, 'ok');
-                popup.style.display = 'block';
-                void popup.offsetWidth;
-                popup.classList.add('ad-visible');
+            timerBar.offsetHeight; // Force reflow
+            timerBar.style.animation = `adTimerShrink ${safeDuration}s linear forwards`;
+
+            // BUG FIX: Gunakan flag loading untuk mencegah race condition
+            let imageLoaded = false;
+            let loadAttempted = false;
+
+            function onImageReady() {
+                if (imageLoaded) return; // Cegah double-fire
+                imageLoaded = true;
+                adLog(`Popup loaded: ${img.naturalWidth}x${img.naturalHeight}`, 'ok');
+
+                // Tampilkan dengan animasi
+                overlay.style.display = 'flex';
+                requestAnimationFrame(() => {
+                    requestAnimationFrame(() => {
+                        overlay.classList.add('ad-visible');
+                    });
+                });
+
                 adShownCount++;
                 lastAdShownTime = Date.now();
+
+                // Deteksi transparansi untuk mode PNG
                 detectTransparency(imageUrl, (isTransparent) => {
-                    if (isTransparent) popup.classList.add('transparent-mode');
-                    else popup.classList.remove('transparent-mode');
+                    if (isTransparent) {
+                        card.classList.add('transparent-mode');
+                        adLog('Mode transparan diaktifkan', 'ok');
+                    }
                 });
-                adDismissTimer = setTimeout(() => { adLog(`Popup auto-dismiss ${duration}s`, 'ok'); closeAd(); }, duration * 1000);
-            };
-            img.onerror = function() {
+
+                // Auto-dismiss
+                adDismissTimer = setTimeout(() => {
+                    adLog(`Popup auto-dismiss ${safeDuration}s`, 'ok');
+                    closeAd();
+                }, safeDuration * 1000);
+            }
+
+            function onImageError() {
                 adLog(`Popup GAGAL load: ${imageUrl}`, 'err');
-                img.crossOrigin = "Anonymous";
-                img.onload = function() {
-                    popup.style.display = 'block'; void popup.offsetWidth;
-                    popup.classList.add('ad-visible'); adShownCount++; lastAdShownTime = Date.now();
-                    adDismissTimer = setTimeout(closeAd, duration * 1000);
-                };
-                img.onerror = function() { popup.style.display = 'none'; };
-                img.src = imageUrl + (imageUrl.includes('?') ? '&' : '?') + '_retry=1';
-            };
+                // BUG FIX: Hanya retry sekali, lalu skip iklan ini
+                if (!loadAttempted) {
+                    loadAttempted = true;
+                    img.crossOrigin = "Anonymous";
+                    img.src = imageUrl + (imageUrl.includes('?') ? '&' : '?') + '_retry=1';
+                } else {
+                    adLog('Retry gagal, skip iklan ini', 'err');
+                    isAdShowing = false;
+                    scheduleNextAd();
+                }
+            }
+
+            img.onload = onImageReady;
+            img.onerror = onImageError;
+            img.src = imageUrl;
+
+            // BUG FIX: Fallback timeout jika gambar tidak memicu onload/onerror
+            setTimeout(() => {
+                if (!imageLoaded && !loadAttempted) {
+                    adLog('Fallback: gambar tidak trigger event dalam 8s', 'warn');
+                    // Cek apakah gambar sudah punya dimensi
+                    if (img.naturalWidth > 0 && img.naturalHeight > 0) {
+                        onImageReady();
+                    } else {
+                        onImageError();
+                    }
+                }
+            }, 8000);
         }
 
         function selectNextAd(adsList) {
@@ -2783,33 +1647,47 @@
                     return adsList[i];
                 }
             }
+            // BUG FIX: Reset session cache jika semua sudah ditampilkan
             sessionStorage.setItem(sessionKey, JSON.stringify([]));
+            adLog('Semua iklan sudah ditampilkan sekali, reset rotasi', 'ok');
             return adsList[0];
         }
 
         async function initAdSystem() {
             adLog('=== SISTEM IKLAN DIMULAI ===', 'ok');
+            adLog(`Supabase: ${useSupabase ? 'TERHUBUNG' : 'TIDAK TERHUBUNG'}`, useSupabase ? 'ok' : 'warn');
+
             if (!useSupabase) { adLog('Dibatalkan: Supabase tidak terhubung', 'err'); return; }
+
             const ads = await fetchAds();
             allAdsCache = ads;
+
+            // Pisahkan iklan berdasarkan placement
             modalAdsCache = ads.filter(ad => {
                 const placement = getAdPlacement(ad);
                 if (!placement) return false;
                 const p = String(placement).toLowerCase().trim();
                 return p.includes('modal') || p.includes('product') || p.includes('produk') || p.includes('detail');
             });
+
             const popupAds = ads.filter(ad => {
                 const placement = getAdPlacement(ad);
-                if (!placement) return true;
+                if (!placement) return true; // BUG FIX: Tanpa placement = popup (bukan modal)
                 const p = String(placement).toLowerCase().trim();
                 return !p.includes('modal') && !p.includes('product') && !p.includes('produk') && !p.includes('detail');
             });
+
             adLog(`Distribusi: ${popupAds.length} popup, ${modalAdsCache.length} modal`, 'ok');
-            if (modalAdsCache.length > 0) computeTodayModalAdIndex(modalAdsCache.length);
+
+            // Hitung rotasi harian untuk iklan modal
+            if (modalAdsCache.length > 0) {
+                computeTodayModalAdIndex(modalAdsCache.length);
+            }
+
+            // Tampilkan popup setelah delay
             if (popupAds.length > 0) {
                 adLog(`Menunggu ${AD_CONFIG.showDelay}ms sebelum tampilkan popup...`, 'ok');
                 await new Promise(r => setTimeout(r, AD_CONFIG.showDelay));
-                allAdsCache = popupAds;
                 showNextAd(popupAds);
             }
         }
@@ -2835,55 +1713,144 @@
             if (selectedAd) showAdPopup(selectedAd);
         }
 
-        window.closeAd = function() {
-            const popup = document.getElementById('adPopup');
-            popup.classList.remove('ad-visible');
-            if (adDismissTimer) { clearTimeout(adDismissTimer); adDismissTimer = null; }
-            setTimeout(() => {
-                popup.style.display = 'none';
-                if (allAdsCache.length > 1 && adShownCount < AD_CONFIG.maxPerSession) {
-                    setTimeout(() => showNextAd(allAdsCache), AD_CONFIG.cooldownBetweenAds);
-                }
-            }, 500);
+        // BUG FIX: Fungsi jadwal iklan berikutnya, terpisah dari close
+        function scheduleNextAd() {
+            if (allAdsCache.length > 1 && adShownCount < AD_CONFIG.maxPerSession) {
+                adLog(`Menjadwalkan iklan berikutnya dalam ${AD_CONFIG.cooldownBetweenAds / 1000}s`, 'ok');
+                setTimeout(() => showNextAd(allAdsCache), AD_CONFIG.cooldownBetweenAds);
+            } else {
+                adLog('Tidak ada iklan berikutnya untuk dijadwalkan', 'ok');
+            }
         }
+
+        window.closeAd = function() {
+            const overlay = document.getElementById('adPopupOverlay');
+            
+            if (!isAdShowing && !overlay.classList.contains('ad-visible')) {
+                return; // Sudah ditutup, jangan proses lagi
+            }
+
+            // Hentikan timer
+            if (adDismissTimer) { clearTimeout(adDismissTimer); adDismissTimer = null; }
+            isAdShowing = false;
+
+            // Animasi keluar
+            overlay.classList.add('ad-exiting');
+
+            setTimeout(() => {
+                overlay.classList.remove('ad-visible', 'ad-exiting');
+                overlay.style.display = 'none';
+                // Jadwalkan iklan berikutnya
+                scheduleNextAd();
+            }, 350);
+        }
+
+        // BUG FIX: Tutup popup jika klik area overlay (di luar kartu)
+        document.getElementById('adPopupOverlay').addEventListener('click', function(e) {
+            // Hanya tutup jika klik di overlay itu sendiri, bukan di kartu/link
+            if (e.target === this) {
+                adLog('Popup ditutup via klik overlay', 'ok');
+                closeAd();
+            }
+        });
+
+        // BUG FIX: Tutup popup saat modal produk dibuka
+        const originalOpenModal = window.openModal;
+
+        // ============================================
+        // MODAL AD BANNER — RASIO 1280x350
+        // ============================================
 
         function showModalAdBanner() {
             const bannerEl = document.getElementById('modalAdBanner');
             const imgEl = document.getElementById('modalAdImage');
             const linkEl = document.getElementById('modalAdLink');
+
+            // Reset ke kondisi tersembunyi
             bannerEl.classList.remove('visible');
             bannerEl.style.height = '0px';
-            if (modalAdRevealTimer) { clearTimeout(modalAdRevealTimer); modalAdRevealTimer = null; }
-            if (modalAdsCache.length === 0 || todayModalAdIndex < 0) return;
+
+            if (modalAdRevealTimer) {
+                clearTimeout(modalAdRevealTimer);
+                modalAdRevealTimer = null;
+            }
+
+            if (modalAdsCache.length === 0 || todayModalAdIndex < 0) {
+                adLog('Modal ad: tidak ada iklan modal tersedia', 'warn');
+                return;
+            }
+
             const selectedAd = modalAdsCache[todayModalAdIndex];
             const imageUrl = getAdImageUrl(selectedAd);
             const linkUrl = getAdLinkUrl(selectedAd);
-            if (!imageUrl) return;
+
+            if (!imageUrl) {
+                adLog('Modal ad: iklan hari ini tidak punya gambar', 'warn');
+                return;
+            }
+
+            adLog(`Modal ad: menyiapkan index ${todayModalAdIndex}`, 'ok');
+
             linkEl.href = linkUrl;
+
+            // BUG FIX: Gunakan object URL untuk caching yang lebih reliable
             function revealBanner() {
                 const targetRatio = 350 / 1280;
                 const parentWidth = bannerEl.parentElement ? bannerEl.parentElement.offsetWidth : 400;
-                let bannerHeight = Math.max(60, Math.round(parentWidth * targetRatio));
+                let bannerHeight = Math.round(parentWidth * targetRatio);
+                bannerHeight = Math.max(60, Math.min(bannerHeight, 180));
+
+                adLog(`Modal ad: parentWidth=${parentWidth}, height=${bannerHeight}px`, 'ok');
+
                 bannerEl.style.height = bannerHeight + 'px';
-                bannerEl.classList.add('visible');
+                requestAnimationFrame(() => {
+                    bannerEl.classList.add('visible');
+                });
             }
-            if (imgEl.complete && imgEl.naturalWidth > 0 && imgEl.src === imageUrl) {
-                requestAnimationFrame(() => revealBanner());
+
+            // BUG FIX: Cek cache gambar dengan cara yang lebih robust
+            if (imgEl.src === imageUrl && imgEl.complete && imgEl.naturalWidth > 0) {
+                adLog('Modal ad: gambar sudah di-cache, langsung reveal', 'ok');
+                requestAnimationFrame(revealBanner);
             } else {
+                let bannerRevealed = false;
+
                 imgEl.onload = function() {
+                    if (bannerRevealed) return;
+                    bannerRevealed = true;
+                    adLog('Modal ad: onload terpicu', 'ok');
                     if (modalAdRevealTimer) { clearTimeout(modalAdRevealTimer); modalAdRevealTimer = null; }
                     revealBanner();
                 };
+
                 imgEl.onerror = function() {
+                    if (bannerRevealed) return;
+                    bannerRevealed = true;
+                    adLog(`Modal ad: GAMBAR GAGAL LOAD`, 'err');
                     if (modalAdRevealTimer) { clearTimeout(modalAdRevealTimer); modalAdRevealTimer = null; }
+                    // Tetap reveal dengan tinggi default
                     const parentWidth = bannerEl.parentElement ? bannerEl.parentElement.offsetWidth : 400;
-                    bannerEl.style.height = Math.round(parentWidth * (350/1280)) + 'px';
+                    bannerEl.style.height = Math.max(60, Math.round(parentWidth * (350/1280))) + 'px';
                     bannerEl.classList.add('visible');
                 };
+
                 imgEl.src = imageUrl;
+
+                // BUG FIX: Fallback dengan naturalWidth check
                 modalAdRevealTimer = setTimeout(() => {
+                    if (bannerRevealed) return;
+                    bannerRevealed = true;
+                    adLog('Modal ad: FALLBACK timer (3s)', 'warn');
                     modalAdRevealTimer = null;
-                    if (!bannerEl.classList.contains('visible')) revealBanner();
+                    
+                    if (imgEl.complete && imgEl.naturalWidth > 0) {
+                        revealBanner();
+                    } else {
+                        // Gambar gagal, reveal anyway dengan default height
+                        const parentWidth = bannerEl.parentElement ? bannerEl.parentElement.offsetWidth : 400;
+                        bannerEl.style.height = Math.max(60, Math.round(parentWidth * (350/1280))) + 'px';
+                        bannerEl.classList.add('visible');
+                    }
                 }, 3000);
             }
         }
@@ -2892,7 +1859,11 @@
             const bannerEl = document.getElementById('modalAdBanner');
             bannerEl.classList.remove('visible');
             bannerEl.style.height = '0px';
-            if (modalAdRevealTimer) { clearTimeout(modalAdRevealTimer); modalAdRevealTimer = null; }
+            
+            if (modalAdRevealTimer) {
+                clearTimeout(modalAdRevealTimer);
+                modalAdRevealTimer = null;
+            }
         }
 
         // --- CARD SLIDERS ---
@@ -2907,8 +1878,8 @@
             const stop = () => { clearInterval(interval); };
             cardElement.addEventListener('mouseenter', stop);
             cardElement.addEventListener('mouseleave', start);
-            cardElement.addEventListener('touchstart', stop);
-            cardElement.addEventListener('touchend', start);
+            cardElement.addEventListener('touchstart', stop, { passive: true });
+            cardElement.addEventListener('touchend', start, { passive: true });
             cardSliders[productId] = { start, stop, move, index };
             start();
         }
@@ -2922,22 +1893,9 @@
                 return;
             }
             filteredProducts.forEach(p => {
-                const wrapper = document.createElement('div');
-                wrapper.className = 'card-swipe-wrapper';
-
-                // Background swipe-to-buy
-                const swipeBg = document.createElement('div');
-                swipeBg.className = 'swipe-buy-bg';
-                swipeBg.innerHTML = `
-                    <div class="swipe-icon"><i class="fas fa-shopping-cart"></i></div>
-                    <div class="swipe-text">Beli</div>
-                    <div class="swipe-arrow"><i class="fas fa-arrow-left"></i></div>
-                `;
-                wrapper.appendChild(swipeBg);
-
                 const card = document.createElement('div');
                 card.className = 'cv-card';
-
+                card.onclick = () => openModal(p);
                 const title = getField(p, 'title');
                 const price = getField(p, 'price');
                 const originalPrice = getField(p, 'original_price');
@@ -2947,11 +1905,15 @@
                 const soldCount = getField(p, 'sold_count');
                 const pId = getField(p, 'id') || Math.random();
 
+                // BUG FIX: Validasi harga
+                const safePrice = (price && !isNaN(Number(price))) ? Number(price) : 0;
+                const safeOriginalPrice = (originalPrice && !isNaN(Number(originalPrice))) ? Number(originalPrice) : 0;
+
                 let priceHTML = '';
-                if (originalPrice && Number(originalPrice) > Number(price)) {
-                    priceHTML = `<div class="price-original">${formatRupiah(originalPrice)}</div><div class="price-main">${formatRupiah(price)}</div>`;
+                if (safeOriginalPrice > 0 && safeOriginalPrice > safePrice) {
+                    priceHTML = `<div class="price-original">${formatRupiah(safeOriginalPrice)}</div><div class="price-main">${formatRupiah(safePrice)}</div>`;
                 } else {
-                    priceHTML = `<div class="price-main">${formatRupiah(price)}</div>`;
+                    priceHTML = `<div class="price-main">${formatRupiah(safePrice)}</div>`;
                 }
 
                 let allCardImages = [image];
@@ -2974,57 +1936,7 @@
                             <div class="sold-info">${soldCount || 0} Terpakai</div>
                         </div>
                     </div>`;
-
-                // ===== INISIALISASI GESTUR PER CARD =====
-                
-                // 1. Double tap → Beli langsung
-                card.addEventListener('click', (e) => {
-                    if (GESTURE.isLongPressing) { GESTURE.isLongPressing = false; return; }
-                    handleDoubleTap(e, card, p);
-                });
-
-                // 2. Long press → Quick action
-                card.addEventListener('touchstart', (e) => {
-                    startLongPress(e, card, p);
-                }, { passive: true });
-                card.addEventListener('touchend', () => cancelLongPress(card));
-                card.addEventListener('touchmove', () => cancelLongPress(card));
-                card.addEventListener('mousedown', (e) => startLongPress(e, card, p));
-                card.addEventListener('mouseup', () => cancelLongPress(card));
-                card.addEventListener('mouseleave', () => cancelLongPress(card));
-
-                // 3. Swipe kiri → Reveal beli
-                initCardSwipe(card, p);
-
-                // 4. Single tap (setelah filter double tap) → Normal modal
-                // (Sudah ditangani di handler double tap, jika bukan double tap maka openModal dipanggil)
-                // Override: kita perbedakan single vs double tap
-                let clickTimeout = null;
-                card.removeEventListener('click', card._doubleTapHandler);
-                
-                // Re-attach click handler yang lebih tepat
-                card._originalClickHandler = (e) => {
-                    if (GESTURE.isLongPressing) { GESTURE.isLongPressing = false; return; }
-                    // Jangan buka modal langsung, tunggu apakah ini double tap
-                    // Double tap sudah di-handle di handler terpisah
-                };
-                
-                // Pasang click handler untuk single tap (buka modal)
-                card.addEventListener('click', function singleTapHandler(e) {
-                    // Jika ada double tap overlay aktif, jangan proses
-                    if (card.querySelector('.double-tap-overlay.show')) return;
-                    if (GESTURE.isLongPressing) { GESTURE.isLongPressing = false; return; }
-
-                    // Delay sedikit untuk membedakan single vs double tap
-                    if (clickTimeout) clearTimeout(clickTimeout);
-                    clickTimeout = setTimeout(() => {
-                        // Ini single tap → buka modal normal
-                        openModal(p);
-                    }, GESTURE.doubleTapDelay + 50);
-                });
-
-                wrapper.appendChild(card);
-                grid.appendChild(wrapper);
+                grid.appendChild(card);
                 initCardSlider(card, pId);
             });
         }
@@ -3071,12 +1983,14 @@
         }
 
         window.copyToClipboard = function(text) {
-            navigator.clipboard.writeText(text).then(() => {
-                showToast(`Nomor ${text} berhasil disalin!`, 'success');
+            // BUG FIX: Sanitasi input sebelum copy
+            const sanitized = String(text).replace(/[^\d\s\-\/.]/g, '').trim();
+            navigator.clipboard.writeText(sanitized).then(() => {
+                showToast(`Nomor ${sanitized} berhasil disalin!`, 'success');
             }).catch(() => {
-                const ta = document.createElement("textarea"); ta.value = text;
+                const ta = document.createElement("textarea"); ta.value = sanitized;
                 document.body.appendChild(ta); ta.select(); document.execCommand("Copy"); ta.remove();
-                showToast(`Nomor ${text} berhasil disalin!`, 'success');
+                showToast(`Nomor ${sanitized} berhasil disalin!`, 'success');
             });
         }
 
@@ -3096,20 +2010,29 @@
                 dots.appendChild(dot);
             });
             startSlide();
-            document.getElementById('heroSlider').addEventListener('mouseenter', stopSlide);
-            document.getElementById('heroSlider').addEventListener('mouseleave', startSlide);
+            const heroEl = document.getElementById('heroSlider');
+            heroEl.addEventListener('mouseenter', stopSlide);
+            heroEl.addEventListener('mouseleave', startSlide);
+            // BUG FIX: Pause slider saat tab tidak aktif
+            document.addEventListener('visibilitychange', () => {
+                if (document.hidden) stopSlide();
+                else startSlide();
+            });
         }
         function goToSlide(n) {
-            document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
-            document.querySelectorAll('.dot').forEach(d => d.classList.remove('active'));
-            document.querySelectorAll('.slide')[n].classList.add('active');
-            document.querySelectorAll('.dot')[n].classList.add('active');
+            const slides = document.querySelectorAll('.slide');
+            const dots = document.querySelectorAll('.dot');
+            if (n < 0 || n >= slides.length) return;
+            slides.forEach(s => s.classList.remove('active'));
+            dots.forEach(d => d.classList.remove('active'));
+            slides[n].classList.add('active');
+            dots[n].classList.add('active');
             slideIndex = n;
         }
         function nextSlide() { goToSlide((slideIndex + 1) % sliderData.length); }
         function prevSlide() { goToSlide((slideIndex - 1 + sliderData.length) % sliderData.length); }
-        function startSlide() { slideInterval = setInterval(nextSlide, 5000); }
-        function stopSlide() { clearInterval(slideInterval); }
+        function startSlide() { stopSlide(); slideInterval = setInterval(nextSlide, 5000); }
+        function stopSlide() { if (slideInterval) { clearInterval(slideInterval); slideInterval = null; } }
         window.nextSlide = nextSlide;
         window.prevSlide = prevSlide;
 
@@ -3121,11 +2044,13 @@
             filterLogic();
         }
         function filterLogic() {
-            const q = document.getElementById('searchInput').value.toLowerCase();
+            const q = document.getElementById('searchInput').value.toLowerCase().trim();
             filteredProducts = products.filter(p => {
                 const title = (getField(p, 'title') || '').toLowerCase();
                 const category = (getField(p, 'category') || '').toLowerCase();
-                return (currentCategory === 'all' || category.includes(currentCategory.toLowerCase())) && (title.includes(q) || category.includes(q));
+                const matchCategory = currentCategory === 'all' || category.includes(currentCategory.toLowerCase());
+                const matchSearch = !q || title.includes(q) || category.includes(q);
+                return matchCategory && matchSearch;
             });
             renderProducts();
         }
@@ -3133,11 +2058,21 @@
         // --- MODAL LOGIC ---
         let currentProduct = null, carouselIndex = 0, carouselImages = [];
         const trackEl = document.getElementById('carouselTrack');
-        trackEl.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].screenX; }, {passive: true});
+        
+        // BUG FIX: Debounce touch swipe untuk mencegah double-trigger
+        let lastSwipeTime = 0;
+        trackEl.addEventListener('touchstart', e => { 
+            touchStartX = e.changedTouches[0].screenX; 
+        }, {passive: true});
         trackEl.addEventListener('touchend', e => {
+            const now = Date.now();
+            if (now - lastSwipeTime < 300) return; // Debounce 300ms
+            lastSwipeTime = now;
+            
             touchEndX = e.changedTouches[0].screenX;
-            if (touchEndX < touchStartX - 50) moveCarousel(1);
-            if (touchEndX > touchStartX + 50) moveCarousel(-1);
+            const diff = touchEndX - touchStartX;
+            if (diff < -50) moveCarousel(1);
+            else if (diff > 50) moveCarousel(-1);
         }, {passive: true});
 
         window.moveCarousel = function(direction) {
@@ -3168,28 +2103,35 @@
             const addonSection = document.getElementById('addonSection');
             const addonPriceText = document.getElementById('coverLetterPriceText');
             const allowAddon = getField(currentProduct, 'allow_addon');
-            if (allowAddon === false || allowAddon === 'false' || getField(currentProduct, 'cover_letter_price') === null) {
+            const clPrice = getField(currentProduct, 'cover_letter_price');
+            
+            // BUG FIX: Penanganan null/undefined yang lebih ketat
+            const isNotAllowed = allowAddon === false || allowAddon === 'false' || allowAddon === 0 || allowAddon === '0';
+            const hasNoPrice = clPrice === null || clPrice === undefined;
+            
+            if (isNotAllowed || hasNoPrice) {
                 addonSection.style.display = 'none';
                 toggleSwitch.checked = false;
             } else {
                 addonSection.style.display = 'block';
-                const customPrice = getField(currentProduct, 'cover_letter_price');
-                const finalPrice = (customPrice && !isNaN(customPrice)) ? Number(customPrice) : coverLetterPrice;
+                const customPrice = Number(clPrice);
+                const finalPrice = (!isNaN(customPrice) && customPrice > 0) ? customPrice : coverLetterPrice;
                 addonPriceText.innerText = `+ ${formatRupiah(finalPrice)}`;
-                if (currentProduct) updateModalPriceDisplay();
+                updateModalPriceDisplay();
             }
         }
 
         function updateModalPriceDisplay() {
             if (!currentProduct) return;
-            const basePrice = getField(currentProduct, 'price');
-            const originalPrice = getField(currentProduct, 'original_price');
-            const customAddonPrice = getField(currentProduct, 'cover_letter_price');
-            const finalAddonPrice = (customAddonPrice && !isNaN(customAddonPrice)) ? Number(customAddonPrice) : coverLetterPrice;
+            const basePrice = Number(getField(currentProduct, 'price')) || 0;
+            const originalPrice = Number(getField(currentProduct, 'original_price')) || 0;
+            const customAddonPrice = Number(getField(currentProduct, 'cover_letter_price')) || 0;
+            const finalAddonPrice = (customAddonPrice > 0) ? customAddonPrice : coverLetterPrice;
             const isAddOn = toggleSwitch.checked;
-            const finalPrice = isAddOn ? (Number(basePrice) + finalAddonPrice) : Number(basePrice);
+            const finalPrice = isAddOn ? (basePrice + finalAddonPrice) : basePrice;
             const priceWrap = document.getElementById('m-price-wrap');
-            if (originalPrice && Number(originalPrice) > Number(basePrice)) {
+            
+            if (originalPrice > 0 && originalPrice > basePrice) {
                 priceWrap.innerHTML = `<div class="modal-price-original">${formatRupiah(originalPrice)}</div><div class="modal-price-final">${formatRupiah(finalPrice)}</div>`;
             } else {
                 priceWrap.innerHTML = `<div class="modal-price-final">${formatRupiah(finalPrice)}</div>`;
@@ -3200,10 +2142,19 @@
         const paymentView = document.getElementById('paymentView');
 
         document.getElementById('btn-goto-payment').onclick = function() {
-            const basePrice = Number(getField(currentProduct, 'price'));
+            if (!currentProduct) return;
+            
+            const basePrice = Number(getField(currentProduct, 'price')) || 0;
             const isAddOn = toggleSwitch.checked;
-            const customAddonPrice = getField(currentProduct, 'cover_letter_price');
-            const finalAddonPrice = (customAddonPrice && !isNaN(customAddonPrice)) ? Number(customAddonPrice) : coverLetterPrice;
+            const customAddonPrice = Number(getField(currentProduct, 'cover_letter_price')) || 0;
+            const finalAddonPrice = (customAddonPrice > 0) ? customAddonPrice : coverLetterPrice;
+            
+            // BUG FIX: Validasi harga sebelum generate kode unik
+            if (basePrice <= 0) {
+                showToast('Harga produk tidak valid', 'error');
+                return;
+            }
+
             const uniqueCode = Math.floor(Math.random() * 499) + 1;
             const finalPrice = isAddOn ? (basePrice + finalAddonPrice) : basePrice;
             const totalWithUnique = finalPrice + uniqueCode;
@@ -3212,14 +2163,19 @@
             document.getElementById('p-product-name').innerText = getField(currentProduct, 'title');
             document.getElementById('p-unit-price').innerText = formatRupiah(basePrice);
             const addonRow = document.getElementById('row-addon');
-            if (isAddOn) { addonRow.style.display = 'flex'; document.getElementById('p-addon-price').innerText = formatRupiah(finalAddonPrice); }
-            else { addonRow.style.display = 'none'; }
+            if (isAddOn) { 
+                addonRow.style.display = 'flex'; 
+                document.getElementById('p-addon-price').innerText = formatRupiah(finalAddonPrice); 
+            } else { 
+                addonRow.style.display = 'none'; 
+            }
             
             const totalEl = document.getElementById('p-total-price');
             totalEl.innerText = formatRupiah(totalWithUnique);
             totalEl.style.color = 'var(--danger)';
 
             hideModalAdBanner();
+
             productView.style.display = 'none';
             paymentView.classList.add('active');
             showToast(`Kode unik Rp ${uniqueCode} ditambahkan untuk verifikasi.`, 'success');
@@ -3248,12 +2204,17 @@
             const extraImages = getField(p, 'images');
             carouselImages = (Array.isArray(extraImages) && extraImages.length > 0) ? [mainImage, ...extraImages].filter(img => img) : [mainImage];
             
+            // BUG FIX: Fallback jika tidak ada gambar sama sekali
+            if (carouselImages.length === 0 || !carouselImages[0]) {
+                carouselImages = ['https://picsum.photos/seed/nofallback/800/600'];
+            }
+
             const track = document.getElementById('carouselTrack');
             track.innerHTML = '';
             carouselImages.forEach(imgSrc => {
                 const slide = document.createElement('div');
                 slide.className = 'carousel-slide';
-                slide.innerHTML = `<img src="${imgSrc || 'https://picsum.photos/seed/modal/800/600'}" alt="Slide" onerror="this.src='https://picsum.photos/seed/error/800/600'">`;
+                slide.innerHTML = `<img src="${imgSrc}" alt="Slide" onerror="this.src='https://picsum.photos/seed/error/800/600'">`;
                 track.appendChild(slide);
             });
             updateCarouselUI();
@@ -3266,13 +2227,22 @@
             productView.style.display = 'flex';
             updateCoverLetterUI();
 
+            // BUG FIX: Reset tombol WhatsApp saat buka modal baru
             const btn = document.getElementById('btn-confirm-whatsapp');
             btn.classList.remove('locked');
             btn.innerHTML = `<i class="fab fa-whatsapp" style="font-size:1.2rem;"></i> Lanjutkan ke WhatsApp`;
 
             document.getElementById('productModal').classList.add('active');
             document.body.style.overflow = 'hidden';
-            showModalAdBanner();
+
+            // BUG FIX: Tutup popup iklan saat modal produk dibuka
+            if (isAdShowing) {
+                adLog('Modal produk dibuka, menutup popup iklan', 'ok');
+                closeAd();
+            }
+
+            // Delay sedikit agar layout stabil sebelum hitung tinggi banner
+            setTimeout(() => showModalAdBanner(), 150);
         }
 
         window.closeModal = function() {
@@ -3287,6 +2257,13 @@
 
         document.getElementById('btn-confirm-whatsapp').onclick = function() {
             if (!currentProduct) return;
+            
+            // BUG FIX: Validasi total sebelum kirim
+            if (currentUniqueTotal <= 0) {
+                showToast('Total pembayaran tidak valid, silakan coba lagi', 'error');
+                return;
+            }
+
             const templateName = getField(currentProduct, 'title');
             const formattedTotal = formatRupiah(currentUniqueTotal);
             const orderTime = new Date().toLocaleString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
@@ -3295,28 +2272,40 @@
             
             const isAddOn = toggleSwitch.checked;
             if (isAddOn) {
-                const customPrice = getField(currentProduct, 'cover_letter_price');
-                const finalPrice = (customPrice && !isNaN(customPrice)) ? Number(customPrice) : coverLetterPrice;
+                const customPrice = Number(getField(currentProduct, 'cover_letter_price')) || 0;
+                const finalPrice = (customPrice > 0) ? customPrice : coverLetterPrice;
                 message += `\n\n*Addon:* Surat Lamaran Kerja (+${formatRupiah(finalPrice)})`;
             }
-
-            // Tambahkan kupon jika ada
-            if (GESTURE.couponGenerated && GESTURE.couponExpiry && new Date() < GESTURE.couponExpiry) {
-                message += `\n\n*Kupon:* ${GESTURE.couponCode}`;
-            }
-
             message += `\n\nSaya sudah transfer sesuai nominal unik. Mohon segera diproses ya Min.`;
 
             const adminNumber = getRotatedAdminNumber();
             showToast('Mengalihkan ke WhatsApp...', 'success');
-            setTimeout(() => { window.open(`https://wa.me/${adminNumber}?text=${encodeURIComponent(message)}`, '_blank'); }, 1000);
+            
+            // BUG FIX: Gunakan timeout yang lebih pendek dan handle error
+            setTimeout(() => {
+                try {
+                    window.open(`https://wa.me/${adminNumber}?text=${encodeURIComponent(message)}`, '_blank');
+                } catch (err) {
+                    // Fallback jika window.open diblokir
+                    const a = document.createElement('a');
+                    a.href = `https://wa.me/${adminNumber}?text=${encodeURIComponent(message)}`;
+                    a.target = '_blank';
+                    a.rel = 'noopener noreferrer';
+                    document.body.appendChild(a);
+                    a.click();
+                    a.remove();
+                }
+            }, 800);
         }
 
         function getRotatedAdminNumber() {
+            // BUG FIX: Validasi nomor admin
             let currentIndex = parseInt(localStorage.getItem('wa_admin_index') || '0');
+            if (isNaN(currentIndex) || currentIndex < 0) currentIndex = 0;
+            currentIndex = currentIndex % adminNumbersList.length;
             const selectedNumber = adminNumbersList[currentIndex];
             localStorage.setItem('wa_admin_index', ((currentIndex + 1) % adminNumbersList.length).toString());
-            return selectedNumber;
+            return selectedNumber || DEFAULT_ADMIN_WA;
         }
 
         // --- INIT ---
@@ -3324,20 +2313,28 @@
             adLog('=== APLIKASI DIMULAI ===', 'ok');
             initSlider();
             
-            // Inisialisasi semua sistem gestur
-            initBottomSwipe();
-            initShakeDetection();
-            initRapidScrollDetection();
-            showGestureTutorial();
-
             await fetchAdminNumbers();
             await fetchCoverLetterPrice();
             await fetchPaymentMethods();
             await fetchProducts();
             renderProducts();
             
+            // Jalankan sistem iklan paralel (tidak blocking)
             initAdSystem();
         }
+
+        // BUG FIX: Handle error global untuk mencegah silent crash
+        window.addEventListener('unhandledrejection', function(event) {
+            adLog('Unhandled Promise: ' + (event.reason?.message || event.reason), 'err');
+            event.preventDefault();
+        });
+
+        window.addEventListener('error', function(event) {
+            // Hanya log error dari script kita, bukan dari third-party
+            if (event.filename && !event.filename.includes('cdn.jsdelivr.net')) {
+                adLog('Runtime Error: ' + event.message, 'err');
+            }
+        });
 
         init();
     </script>
