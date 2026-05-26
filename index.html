@@ -27,9 +27,9 @@
             --danger: #ef4444;
             --success: #10b981;
             --warning: #f59e0b;
-            --gradient-fire: linear-gradient(135deg, #ff6b35 0%, #f7931e 50%, #ffcc02 100%);
-            --gradient-cta: linear-gradient(135deg, #2563eb 0%, #1d4ed8 50%, #1e40af 100%);
-            --gradient-urgent: linear-gradient(135deg, #dc2626 0%, #ef4444 50%, #f87171 100%);
+            --impulse-red: #dc2626;
+            --impulse-orange: #ea580c;
+            --impulse-gold: #d97706;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
@@ -109,7 +109,6 @@
             z-index: 2;
         }
 
-        /* --- SEARCH SUGGESTIONS --- */
         .search-suggestions {
             position: absolute;
             top: 110%;
@@ -262,12 +261,15 @@
             border-radius: 12px;
             overflow: hidden;
             box-shadow: var(--shadow-sm);
-            transition: var(--transition);
+            transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.25s ease;
             cursor: pointer;
             position: relative;
             border: 1px solid var(--border);
             display: flex;
             flex-direction: column;
+            -webkit-user-select: none;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
         }
 
         .cv-card:hover {
@@ -276,6 +278,777 @@
             border-color: var(--primary-light);
         }
 
+        /* ===== SWIPE-TO-BUY BEHIND CARD ===== */
+        .card-swipe-wrapper {
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .swipe-buy-bg {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, var(--impulse-red) 0%, var(--impulse-orange) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 6px;
+            z-index: 0;
+            border-radius: 12px;
+        }
+
+        .swipe-buy-bg .swipe-icon {
+            font-size: 1.8rem;
+            color: white;
+            animation: swipePulse 1s ease-in-out infinite;
+        }
+
+        .swipe-buy-bg .swipe-text {
+            color: white;
+            font-weight: 800;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .swipe-buy-bg .swipe-arrow {
+            color: rgba(255,255,255,0.6);
+            font-size: 1.2rem;
+            animation: swipeArrowBounce 0.8s ease-in-out infinite;
+        }
+
+        @keyframes swipePulse {
+            0%, 100% { transform: scale(1); opacity: 0.9; }
+            50% { transform: scale(1.15); opacity: 1; }
+        }
+
+        @keyframes swipeArrowBounce {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(-8px); }
+        }
+
+        .cv-card.swiping {
+            transition: transform 0.08s linear !important;
+            box-shadow: none !important;
+        }
+
+        .cv-card.swipe-triggered {
+            animation: cardBounceBack 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+
+        @keyframes cardBounceBack {
+            0% { transform: translateX(0); }
+            30% { transform: translateX(10px); }
+            100% { transform: translateX(0); }
+        }
+
+        /* ===== DOUBLE TAP OVERLAY ===== */
+        .double-tap-overlay {
+            position: absolute;
+            inset: 0;
+            z-index: 50;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: rgba(220, 38, 38, 0.92);
+            backdrop-filter: blur(6px);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.15s ease;
+            border-radius: 12px;
+            gap: 6px;
+        }
+
+        .double-tap-overlay.show {
+            opacity: 1;
+            pointer-events: all;
+            animation: overlaySlam 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        @keyframes overlaySlam {
+            0% { transform: scale(0.85); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .double-tap-overlay .dt-icon {
+            font-size: 2.2rem;
+            color: white;
+            animation: dtIconPulse 0.6s ease-in-out infinite;
+        }
+
+        @keyframes dtIconPulse {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            25% { transform: scale(1.2) rotate(-5deg); }
+            75% { transform: scale(1.2) rotate(5deg); }
+        }
+
+        .double-tap-overlay .dt-price {
+            color: #fbbf24;
+            font-size: 1.4rem;
+            font-weight: 900;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            line-height: 1;
+        }
+
+        .double-tap-overlay .dt-label {
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            opacity: 0.9;
+        }
+
+        .double-tap-overlay .dt-sub {
+            color: rgba(255,255,255,0.6);
+            font-size: 0.6rem;
+            margin-top: 2px;
+        }
+
+        /* ===== LONG PRESS RIPPLE ===== */
+        .long-press-ripple {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(234, 88, 12, 0.4) 0%, rgba(234, 88, 12, 0) 70%);
+            pointer-events: none;
+            z-index: 40;
+            transform: scale(0);
+            animation: lpRipple 0.8s ease-out forwards;
+        }
+
+        @keyframes lpRipple {
+            0% { transform: scale(0); opacity: 1; }
+            100% { transform: scale(4); opacity: 0; }
+        }
+
+        .long-press-action {
+            position: absolute;
+            bottom: 50%;
+            left: 50%;
+            transform: translate(-50%, 50%) scale(0.8);
+            z-index: 45;
+            background: linear-gradient(135deg, var(--impulse-orange), var(--impulse-red));
+            color: white;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: 800;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 8px 25px rgba(234, 88, 12, 0.5);
+        }
+
+        .long-press-action.show {
+            opacity: 1;
+            transform: translate(-50%, 50%) scale(1);
+            pointer-events: all;
+            animation: lpActionBreathe 1s ease-in-out infinite;
+        }
+
+        @keyframes lpActionBreathe {
+            0%, 100% { box-shadow: 0 8px 25px rgba(234, 88, 12, 0.5); }
+            50% { box-shadow: 0 8px 40px rgba(234, 88, 12, 0.8); transform: translate(-50%, 50%) scale(1.05); }
+        }
+
+        /* ===== SWIPE UP TRIGGER HINT ===== */
+        .swipe-up-hint {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 800;
+            pointer-events: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-bottom: 8px;
+            opacity: 0.7;
+            transition: opacity 0.5s;
+        }
+
+        .swipe-up-hint.hidden { opacity: 0; }
+
+        .swipe-up-hint .suh-bar {
+            width: 40px;
+            height: 4px;
+            background: var(--text-muted);
+            border-radius: 4px;
+            margin-bottom: 6px;
+            animation: suhSlide 2s ease-in-out infinite;
+        }
+
+        @keyframes suhSlide {
+            0%, 100% { transform: translateY(0); opacity: 0.4; }
+            50% { transform: translateY(-8px); opacity: 0.8; }
+        }
+
+        .swipe-up-hint .suh-text {
+            font-size: 0.6rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 600;
+        }
+
+        /* ===== FLASH DEAL PANEL ===== */
+        .flash-deal-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1500;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+
+        .flash-deal-backdrop.show {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .flash-deal-panel {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 1501;
+            background: white;
+            border-radius: 24px 24px 0 0;
+            padding: 20px 20px 30px;
+            transform: translateY(100%);
+            transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+            max-height: 75vh;
+            overflow-y: auto;
+            box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .flash-deal-panel.show {
+            transform: translateY(0);
+        }
+
+        .fd-handle {
+            width: 40px;
+            height: 4px;
+            background: #d1d5db;
+            border-radius: 4px;
+            margin: 0 auto 16px;
+        }
+
+        .fd-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .fd-title {
+            font-size: 1.2rem;
+            font-weight: 900;
+            color: var(--impulse-red);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .fd-title i {
+            animation: fdIconShake 0.5s ease-in-out infinite;
+        }
+
+        @keyframes fdIconShake {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(-10deg); }
+            75% { transform: rotate(10deg); }
+        }
+
+        .fd-countdown {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .fd-countdown .cd-block {
+            background: var(--impulse-red);
+            color: white;
+            font-weight: 900;
+            font-size: 1rem;
+            padding: 4px 8px;
+            border-radius: 6px;
+            min-width: 36px;
+            text-align: center;
+            line-height: 1.2;
+        }
+
+        .fd-countdown .cd-sep {
+            color: var(--impulse-red);
+            font-weight: 900;
+            font-size: 1rem;
+        }
+
+        .fd-item {
+            display: flex;
+            gap: 14px;
+            padding: 14px;
+            background: var(--bg-body);
+            border-radius: 14px;
+            margin-bottom: 10px;
+            border: 2px solid transparent;
+            transition: all 0.2s;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .fd-item:hover {
+            border-color: var(--impulse-orange);
+            transform: scale(1.01);
+        }
+
+        .fd-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 60%;
+            height: 100%;
+            background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.6) 50%, rgba(255,255,255,0) 100%);
+            transform: skewX(-25deg);
+            animation: fdShimmer 2s infinite;
+        }
+
+        @keyframes fdShimmer {
+            0% { left: -100%; }
+            30% { left: 200%; }
+            100% { left: 200%; }
+        }
+
+        .fd-item-img {
+            width: 80px;
+            height: 80px;
+            border-radius: 10px;
+            overflow: hidden;
+            flex-shrink: 0;
+            background: #e2e8f0;
+        }
+
+        .fd-item-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .fd-item-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .fd-item-title {
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 4px;
+            color: var(--text-main);
+            line-height: 1.3;
+        }
+
+        .fd-item-prices {
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+        }
+
+        .fd-item-original {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-decoration: line-through;
+        }
+
+        .fd-item-sale {
+            font-size: 1.1rem;
+            font-weight: 900;
+            color: var(--impulse-red);
+        }
+
+        .fd-item-badge {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: var(--impulse-red);
+            color: white;
+            font-size: 0.65rem;
+            font-weight: 800;
+            padding: 3px 8px;
+            border-radius: 4px;
+        }
+
+        .fd-stock-bar {
+            width: 100%;
+            height: 4px;
+            background: #e5e7eb;
+            border-radius: 4px;
+            margin-top: 8px;
+            overflow: hidden;
+        }
+
+        .fd-stock-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--impulse-orange), var(--impulse-red));
+            border-radius: 4px;
+            transition: width 1s ease;
+        }
+
+        .fd-stock-text {
+            font-size: 0.65rem;
+            color: var(--impulse-red);
+            font-weight: 600;
+            margin-top: 3px;
+        }
+
+        .fd-close-btn {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--bg-body);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: var(--text-muted);
+            transition: 0.2s;
+            z-index: 5;
+        }
+
+        .fd-close-btn:hover {
+            background: #fee2e2;
+            color: var(--impulse-red);
+        }
+
+        /* ===== SHAKE COUPON POPUP ===== */
+        .shake-coupon-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.7);
+            z-index: 2500;
+            width: 90%;
+            max-width: 340px;
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .shake-coupon-popup.show {
+            opacity: 1;
+            pointer-events: all;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .scp-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 2499;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+
+        .scp-backdrop.show {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .scp-top {
+            background: linear-gradient(135deg, var(--impulse-gold) 0%, #f59e0b 50%, var(--impulse-orange) 100%);
+            padding: 24px 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .scp-top::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 10px,
+                rgba(255,255,255,0.05) 10px,
+                rgba(255,255,255,0.05) 20px
+            );
+        }
+
+        .scp-icon {
+            font-size: 2.5rem;
+            color: white;
+            margin-bottom: 8px;
+            animation: scpIconSpin 0.6s ease-out;
+            text-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        @keyframes scpIconSpin {
+            0% { transform: rotate(-180deg) scale(0); }
+            100% { transform: rotate(0deg) scale(1); }
+        }
+
+        .scp-title {
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 2px 6px rgba(0,0,0,0.2);
+            position: relative;
+        }
+
+        .scp-body {
+            padding: 24px 20px;
+            text-align: center;
+        }
+
+        .scp-code-box {
+            background: #fef3c7;
+            border: 2px dashed var(--impulse-gold);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+            cursor: pointer;
+            transition: 0.2s;
+            position: relative;
+        }
+
+        .scp-code-box:active {
+            transform: scale(0.97);
+            background: #fde68a;
+        }
+
+        .scp-code-label {
+            font-size: 0.65rem;
+            color: var(--impulse-gold);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 6px;
+        }
+
+        .scp-code {
+            font-size: 1.6rem;
+            font-weight: 900;
+            color: var(--impulse-orange);
+            letter-spacing: 4px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .scp-discount {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+            line-height: 1.5;
+        }
+
+        .scp-discount strong {
+            color: var(--impulse-red);
+            font-size: 1.1rem;
+        }
+
+        .scp-expiry {
+            font-size: 0.7rem;
+            color: var(--danger);
+            font-weight: 600;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+        }
+
+        .scp-use-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, var(--impulse-orange), var(--impulse-red));
+            color: white;
+            font-weight: 800;
+            font-size: 0.95rem;
+            border-radius: 12px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: 0.2s;
+            box-shadow: 0 6px 20px rgba(234, 88, 12, 0.3);
+        }
+
+        .scp-use-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(234, 88, 12, 0.5);
+        }
+
+        .scp-use-btn:active {
+            transform: translateY(0);
+        }
+
+        /* ===== RAPID TAP REWARD ===== */
+        .rapid-tap-reward {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            z-index: 2600;
+            background: linear-gradient(135deg, #7c3aed, #a855f7);
+            color: white;
+            padding: 20px 30px;
+            border-radius: 20px;
+            text-align: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 20px 50px rgba(124, 58, 237, 0.4);
+        }
+
+        .rapid-tap-reward.show {
+            opacity: 1;
+            pointer-events: all;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .rtr-icon { font-size: 2rem; margin-bottom: 8px; }
+        .rtr-text { font-weight: 800; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; }
+        .rtr-sub { font-size: 0.75rem; opacity: 0.8; margin-top: 4px; }
+
+        .rtr-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(124, 58, 237, 0.3);
+            z-index: 2599;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+            backdrop-filter: blur(4px);
+        }
+
+        .rtr-backdrop.show {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        /* ===== SCREEN FLASH EFFECT ===== */
+        .screen-flash {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            pointer-events: none;
+            opacity: 0;
+        }
+
+        .screen-flash.red {
+            background: radial-gradient(circle at center, rgba(220, 38, 38, 0.15), transparent 70%);
+            animation: screenFlashRed 0.4s ease-out forwards;
+        }
+
+        .screen-flash.gold {
+            background: radial-gradient(circle at center, rgba(217, 119, 6, 0.2), transparent 70%);
+            animation: screenFlashGold 0.5s ease-out forwards;
+        }
+
+        .screen-flash.purple {
+            background: radial-gradient(circle at center, rgba(124, 58, 237, 0.2), transparent 70%);
+            animation: screenFlashPurple 0.5s ease-out forwards;
+        }
+
+        @keyframes screenFlashRed {
+            0% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+        @keyframes screenFlashGold {
+            0% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+        @keyframes screenFlashPurple {
+            0% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
+        /* ===== GESTURE TUTORIAL OVERLAY ===== */
+        .gesture-tutorial {
+            position: fixed;
+            inset: 0;
+            z-index: 700;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+
+        .gesture-tutorial.show { opacity: 1; }
+
+        .gt-item {
+            position: absolute;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(0,0,0,0.75);
+            color: white;
+            padding: 8px 14px;
+            border-radius: 50px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            white-space: nowrap;
+            backdrop-filter: blur(8px);
+        }
+
+        .gt-item i {
+            font-size: 0.85rem;
+            opacity: 0.8;
+        }
+
+        .gt-item.gt-card-tap { bottom: 55%; left: 50%; transform: translateX(-50%); }
+        .gt-item.gt-card-swipe { bottom: 45%; right: 15%; }
+        .gt-item.gt-bottom-swipe { bottom: 30px; left: 50%; transform: translateX(-50%); }
+        .gt-item.gt-shake { top: 80px; right: 20px; }
+
+        .gt-item .gt-anim {
+            display: inline-block;
+        }
+
+        .gt-item.gt-card-tap .gt-anim { animation: gtTap 1.2s ease-in-out infinite; }
+        .gt-item.gt-card-swipe .gt-anim { animation: gtSwipe 1.5s ease-in-out infinite; }
+        .gt-item.gt-bottom-swipe .gt-anim { animation: gtUpSwipe 1.5s ease-in-out infinite; }
+        .gt-item.gt-shake .gt-anim { animation: gtShake 0.6s ease-in-out infinite; }
+
+        @keyframes gtTap {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+        }
+        @keyframes gtSwipe {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(-10px); }
+        }
+        @keyframes gtUpSwipe {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+        @keyframes gtShake {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(-15deg); }
+            75% { transform: rotate(15deg); }
+        }
+
+        /* ===== EXISTING CARD STYLES (continued) ===== */
         .card-image {
             position: relative;
             padding-top: 100%;
@@ -465,136 +1238,14 @@
         input:checked + .slider-toggle { background-color: var(--primary); }
         input:checked + .slider-toggle:before { transform: translateX(20px); }
 
-        /* ============================================
-           CTA BUTTON — GESTUR IMPULSIF
-           ============================================ */
-        .btn-buy-wrapper {
-            position: relative;
-            width: 100%;
-            flex-shrink: 0;
-        }
-
-        /* Glow berdenyut di belakang tombol */
-        .btn-buy-glow {
-            position: absolute;
-            inset: -4px;
-            border-radius: 16px;
-            background: var(--gradient-cta);
-            opacity: 0;
-            z-index: 0;
-            filter: blur(12px);
-            animation: buyGlowPulse 2s ease-in-out infinite;
-        }
-        @keyframes buyGlowPulse {
-            0%, 100% { opacity: 0.3; transform: scale(0.98); }
-            50% { opacity: 0.6; transform: scale(1.02); }
-        }
-
         .btn-buy {
-            position: relative;
-            z-index: 1;
-            background: var(--gradient-cta);
-            color: white;
-            padding: 16px;
-            border-radius: 12px;
-            font-weight: 700;
-            font-size: 1.05rem;
-            text-align: center;
-            transition: all 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            width: 100%;
-            cursor: pointer;
-            flex-shrink: 0;
-            letter-spacing: 0.3px;
-            text-shadow: 0 1px 2px rgba(0,0,0,0.15);
-            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.35), inset 0 1px 0 rgba(255,255,255,0.15);
-            overflow: hidden;
+            background: var(--primary); color: white; padding: 16px;
+            border-radius: 12px; font-weight: 600; font-size: 1rem; text-align: center;
+            transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%;
+            cursor: pointer; flex-shrink: 0;
         }
+        .btn-buy:hover { background: var(--primary-dark); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3); }
 
-        /* Shimmer sweep di atas tombol */
-        .btn-buy::before {
-            content: '';
-            position: absolute;
-            top: 0; left: -100%;
-            width: 60%;
-            height: 100%;
-            background: linear-gradient(to right, transparent, rgba(255,255,255,0.2), transparent);
-            transform: skewX(-25deg);
-            animation: btnShimmer 2.5s ease-in-out infinite;
-            z-index: 1;
-            pointer-events: none;
-        }
-        @keyframes btnShimmer {
-            0%, 100% { left: -100%; }
-            50% { left: 150%; }
-        }
-
-        /* Panah bergerak ke kanan */
-        .btn-buy .arrow-icon {
-            transition: transform 0.2s ease;
-            display: inline-flex;
-        }
-        .btn-buy:hover .arrow-icon {
-            transform: translateX(4px);
-        }
-
-        .btn-buy:hover {
-            transform: translateY(-2px) scale(1.02);
-            box-shadow: 0 8px 25px rgba(37, 99, 235, 0.45), inset 0 1px 0 rgba(255,255,255,0.2);
-            filter: brightness(1.08);
-        }
-
-        .btn-buy:active {
-            transform: translateY(1px) scale(0.98);
-            box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
-            transition-duration: 0.06s;
-        }
-
-        /* Micro-bounce saat muncul */
-        .btn-buy-wrapper.animate-in {
-            animation: btnBounceIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-        }
-        @keyframes btnBounceIn {
-            0% { transform: translateY(20px); opacity: 0; }
-            60% { transform: translateY(-6px); opacity: 1; }
-            80% { transform: translateY(2px); }
-            100% { transform: translateY(0); }
-        }
-
-        /* Teks "Terakhir dilihat 2 menit lalu" di bawah tombol */
-        .urgency-text {
-            text-align: center;
-            font-size: 0.72rem;
-            color: var(--danger);
-            font-weight: 600;
-            margin-top: 8px;
-            opacity: 0;
-            transform: translateY(-5px);
-            animation: urgencyFadeIn 0.4s ease 0.6s forwards;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 5px;
-        }
-        .urgency-dot {
-            width: 6px;
-            height: 6px;
-            background: var(--danger);
-            border-radius: 50%;
-            animation: urgencyDotPulse 1.2s ease-in-out infinite;
-        }
-        @keyframes urgencyDotPulse {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.3; transform: scale(0.7); }
-        }
-        @keyframes urgencyFadeIn {
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* --- MODAL CLOSE --- */
         .btn-close {
             position: absolute; top: 20px; right: 20px;
             background: white; width: 36px; height: 36px; border-radius: 50%;
@@ -604,9 +1255,6 @@
         }
         .btn-close:hover { background: var(--bg-body); }
 
-        /* ============================================
-           MODAL AD BANNER — UKURAN 1280x350
-           ============================================ */
         .modal-ad-banner {
             display: block;
             width: 100%;
@@ -645,9 +1293,7 @@
             display: block;
             transition: transform 0.4s ease;
         }
-        .modal-ad-banner a:hover img {
-            transform: scale(1.02);
-        }
+        .modal-ad-banner a:hover img { transform: scale(1.02); }
 
         /* --- PAYMENT VIEW --- */
         .payment-view {
@@ -709,156 +1355,20 @@
         }
         .btn-copy:hover { background: var(--primary-light); border-color: var(--primary); }
 
-        /* ============================================
-           WHATSAPP BUTTON — GESTUR IMPULSIF
-           ============================================ */
-        .wa-btn-wrapper {
-            position: relative;
-            width: 100%;
-        }
-
-        .wa-btn-glow {
-            position: absolute;
-            inset: -5px;
-            border-radius: 16px;
-            background: #25D366;
-            opacity: 0;
-            z-index: 0;
-            filter: blur(14px);
-            animation: waGlowPulse 1.8s ease-in-out infinite;
-        }
-        @keyframes waGlowPulse {
-            0%, 100% { opacity: 0.25; transform: scale(0.97); }
-            50% { opacity: 0.55; transform: scale(1.03); }
-        }
-
         .btn-confirm-wa {
-            position: relative;
-            z-index: 1;
-            background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
-            color: white;
-            padding: 16px;
-            border-radius: 12px;
-            font-weight: 700;
-            font-size: 1.05rem;
-            text-align: center;
-            width: 100%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            transition: all 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            letter-spacing: 0.3px;
-            text-shadow: 0 1px 2px rgba(0,0,0,0.15);
-            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.35), inset 0 1px 0 rgba(255,255,255,0.15);
-            overflow: hidden;
+            background: #25D366; color: white; padding: 16px;
+            border-radius: 12px; font-weight: 600; font-size: 1rem; text-align: center;
+            width: 100%; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px;
+            transition: 0.3s;
         }
-
-        .btn-confirm-wa::before {
-            content: '';
-            position: absolute;
-            top: 0; left: -100%;
-            width: 60%;
-            height: 100%;
-            background: linear-gradient(to right, transparent, rgba(255,255,255,0.25), transparent);
-            transform: skewX(-25deg);
-            animation: btnShimmer 2s ease-in-out infinite 0.5s;
-            z-index: 1;
-            pointer-events: none;
-        }
-
-        .btn-confirm-wa .wa-arrow {
-            transition: transform 0.2s ease;
-            display: inline-flex;
-        }
-        .btn-confirm-wa:hover .wa-arrow {
-            transform: translateX(4px);
-        }
-
-        .btn-confirm-wa:hover {
-            transform: translateY(-2px) scale(1.02);
-            box-shadow: 0 8px 25px rgba(37, 211, 102, 0.45), inset 0 1px 0 rgba(255,255,255,0.2);
-            filter: brightness(1.08);
-        }
-
-        .btn-confirm-wa:active {
-            transform: translateY(1px) scale(0.98);
-            box-shadow: 0 2px 8px rgba(37, 211, 102, 0.3);
-            transition-duration: 0.06s;
-        }
+        .btn-confirm-wa:hover { background: #1ebc57; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3); }
         
         .btn-confirm-wa.locked {
-            background-color: #9ca3af;
-            cursor: not-allowed;
-            opacity: 0.7;
-            pointer-events: none;
-            box-shadow: none;
-            transform: none;
-            filter: none;
+            background-color: #9ca3af; cursor: not-allowed; opacity: 0.7;
+            pointer-events: none; box-shadow: none; transform: none;
         }
-        .btn-confirm-wa.locked::before { display: none; }
-
-        /* Urgency di bawah tombol WA */
-        .wa-urgency {
-            text-align: center;
-            font-size: 0.72rem;
-            color: #128C7E;
-            font-weight: 600;
-            margin-top: 8px;
-            opacity: 0;
-            transform: translateY(-5px);
-            animation: urgencyFadeIn 0.4s ease 0.8s forwards;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 5px;
-        }
-        .wa-urgency-dot {
-            width: 6px;
-            height: 6px;
-            background: #25D366;
-            border-radius: 50%;
-            animation: urgencyDotPulse 1s ease-in-out infinite;
-        }
-
+        
         .mt-auto { margin-top: auto; }
-
-        /* ============================================
-           COUNTDOWN TIMER DI PAYMENT
-           ============================================ */
-        .payment-countdown {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            margin-bottom: 20px;
-            padding: 12px 16px;
-            background: linear-gradient(135deg, #fef2f2, #fff1f2);
-            border: 1px solid #fecaca;
-            border-radius: 10px;
-        }
-        .countdown-icon {
-            color: var(--danger);
-            font-size: 1.1rem;
-            animation: countdownPulse 1s ease-in-out infinite;
-        }
-        @keyframes countdownPulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.15); }
-        }
-        .countdown-text {
-            font-size: 0.85rem;
-            color: #991b1b;
-            font-weight: 600;
-        }
-        .countdown-digits {
-            font-family: 'Inter', monospace;
-            font-weight: 800;
-            font-size: 1.1rem;
-            color: var(--danger);
-            letter-spacing: 1px;
-        }
 
         /* --- QRIS MODAL --- */
         .qris-modal-overlay {
@@ -926,9 +1436,7 @@
         @keyframes slideDown { to { opacity: 1; transform: translateY(0); } }
         @keyframes fadeOut { to { opacity: 0; transform: translateY(-10px); } }
 
-        /* ============================================
-           AD POPUP — FLOATING IKLAN HALAMAN UTAMA
-           ============================================ */
+        /* --- AD POPUP --- */
         .ad-popup {
             position: fixed;
             bottom: 20px;
@@ -971,9 +1479,7 @@
             background: transparent;
         }
 
-        .ad-img:hover img {
-            transform: scale(1.03);
-        }
+        .ad-img:hover img { transform: scale(1.03); }
 
         .ad-close {
             position: absolute; top: -8px; right: -8px;
@@ -997,9 +1503,7 @@
             animation: adTimerShrink var(--ad-duration, 15s) linear forwards;
         }
 
-        .ad-popup.transparent-mode .ad-timer-bar {
-            border-radius: 0;
-        }
+        .ad-popup.transparent-mode .ad-timer-bar { border-radius: 0; }
 
         @keyframes adTimerShrink {
             from { transform: scaleX(1); }
@@ -1007,13 +1511,7 @@
         }
 
         @media (max-width: 480px) {
-            .ad-popup {
-                bottom: 12px;
-                left: 12px;
-                right: 12px;
-                width: auto;
-                max-width: 200px;
-            }
+            .ad-popup { bottom: 12px; left: 12px; right: 12px; width: auto; max-width: 200px; }
         }
 
         /* --- AD DEBUG PANEL --- */
@@ -1035,12 +1533,7 @@
             box-shadow: var(--shadow-xl);
             line-height: 1.6;
         }
-        .ad-debug-panel .debug-title {
-            color: #38bdf8;
-            font-weight: 700;
-            margin-bottom: 6px;
-            font-size: 0.75rem;
-        }
+        .ad-debug-panel .debug-title { color: #38bdf8; font-weight: 700; margin-bottom: 6px; font-size: 0.75rem; }
         .ad-debug-panel .debug-ok { color: #4ade80; }
         .ad-debug-panel .debug-err { color: #f87171; }
         .ad-debug-panel .debug-warn { color: #fbbf24; }
@@ -1051,212 +1544,30 @@
         .modal-info::-webkit-scrollbar-thumb, .payment-view::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
 
         @keyframes pulse { 0% { opacity: 0.6; } 50% { opacity: 1; } 100% { opacity: 0.6; } }
-
-        /* ============================================
-           FLOATING STICKY CTA — DI BAWAH LAYAR
-           ============================================ */
-        .sticky-cta {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            z-index: 1500;
-            background: rgba(255,255,255,0.97);
-            backdrop-filter: blur(12px);
-            border-top: 1px solid var(--border);
-            padding: 10px 16px;
-            display: none;
-            align-items: center;
-            gap: 12px;
-            transform: translateY(100%);
-            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
-        }
-        .sticky-cta.visible {
-            display: flex;
-            transform: translateY(0);
-            animation: stickySlideUp 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-        }
-        @keyframes stickySlideUp {
-            from { transform: translateY(100%); }
-            to { transform: translateY(0); }
-        }
-        .sticky-cta-info {
-            flex: 1;
-            min-width: 0;
-        }
-        .sticky-cta-title {
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: var(--text-main);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        .sticky-cta-price {
-            font-size: 0.75rem;
-            color: var(--primary);
-            font-weight: 700;
-        }
-        .sticky-cta-btn {
-            background: var(--gradient-cta);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 10px;
-            font-weight: 700;
-            font-size: 0.85rem;
-            cursor: pointer;
-            white-space: nowrap;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            transition: all 0.15s ease;
-            box-shadow: 0 3px 10px rgba(37, 99, 235, 0.3);
-            flex-shrink: 0;
-        }
-        .sticky-cta-btn:hover {
-            transform: scale(1.03);
-            box-shadow: 0 5px 15px rgba(37, 99, 235, 0.4);
-        }
-        .sticky-cta-btn:active {
-            transform: scale(0.97);
-            transition-duration: 0.06s;
-        }
-        .sticky-cta-btn .sticky-arrow {
-            transition: transform 0.15s ease;
-        }
-        .sticky-cta-btn:hover .sticky-arrow {
-            transform: translateX(3px);
-        }
-
-        /* ============================================
-           SOLD COUNTER ANIMATION DI MODAL
-           ============================================ */
-        .sold-live {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            flex-shrink: 0;
-            margin-bottom: 4px;
-        }
-        .sold-live-dot {
-            width: 7px;
-            height: 7px;
-            background: var(--success);
-            border-radius: 50%;
-            position: relative;
-        }
-        .sold-live-dot::after {
-            content: '';
-            position: absolute;
-            inset: -3px;
-            border-radius: 50%;
-            border: 2px solid var(--success);
-            animation: liveRing 1.5s ease-out infinite;
-        }
-        @keyframes liveRing {
-            0% { transform: scale(0.8); opacity: 1; }
-            100% { transform: scale(1.8); opacity: 0; }
-        }
-
-        /* ============================================
-           FLASH SALE BADGE DI CARD
-           ============================================ */
-        .flash-badge {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: var(--gradient-urgent);
-            color: white;
-            font-size: 0.6rem;
-            font-weight: 800;
-            padding: 3px 8px;
-            border-radius: 4px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            z-index: 10;
-            animation: flashPulse 1.5s ease-in-out infinite;
-            box-shadow: 0 2px 8px rgba(239, 68, 68, 0.4);
-        }
-        @keyframes flashPulse {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.8; transform: scale(1.05); }
-        }
-
-        /* ============================================
-           RIPPLE EFFECT SAAT KLIK TOMBOL
-           ============================================ */
-        .ripple-container {
-            position: absolute;
-            inset: 0;
-            overflow: hidden;
-            border-radius: inherit;
-            z-index: 0;
-            pointer-events: none;
-        }
-        .ripple {
-            position: absolute;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.35);
-            transform: scale(0);
-            animation: rippleExpand 0.5s ease-out forwards;
-            pointer-events: none;
-        }
-        @keyframes rippleExpand {
-            to { transform: scale(4); opacity: 0; }
-        }
-
-        /* Social proof mini banner di modal */
-        .social-proof-bar {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 8px 12px;
-            background: linear-gradient(135deg, #f0fdf4, #ecfdf5);
-            border: 1px solid #bbf7d0;
-            border-radius: 8px;
-            margin-bottom: 12px;
-            flex-shrink: 0;
-            overflow: hidden;
-        }
-        .social-proof-avatars {
-            display: flex;
-            flex-shrink: 0;
-        }
-        .social-proof-avatars span {
-            width: 22px;
-            height: 22px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.55rem;
-            font-weight: 700;
-            color: white;
-            border: 2px solid white;
-            margin-left: -6px;
-        }
-        .social-proof-avatars span:first-child { margin-left: 0; }
-        .social-proof-text {
-            font-size: 0.72rem;
-            color: #166534;
-            font-weight: 500;
-            line-height: 1.3;
-        }
-        .social-proof-text strong {
-            font-weight: 700;
-        }
     </style>
 </head>
 <body oncontextmenu="return false;">
 
     <div class="toast-container" id="toastContainer"></div>
+    <div class="screen-flash" id="screenFlash"></div>
 
     <div class="ad-debug-panel" id="adDebugPanel">
         <div class="debug-title">[AD DEBUG LOG]</div>
         <div id="adDebugContent"></div>
+    </div>
+
+    <!-- GESTURE TUTORIAL OVERLAY -->
+    <div class="gesture-tutorial" id="gestureTutorial">
+        <div class="gt-item gt-card-tap"><span class="gt-anim"><i class="fas fa-hand-pointer"></i></span> 2x Tap = Beli Langsung</div>
+        <div class="gt-item gt-card-swipe"><span class="gt-anim"><i class="fas fa-arrow-left"></i></span> Swipe Kiri</div>
+        <div class="gt-item gt-bottom-swipe"><span class="gt-anim"><i class="fas fa-arrow-up"></i></span> Swipe Up = Deal Kilat</div>
+        <div class="gt-item gt-shake"><span class="gt-anim"><i class="fas fa-mobile-alt"></i></span> Shake = Kupon</div>
+    </div>
+
+    <!-- SWIPE UP HINT -->
+    <div class="swipe-up-hint" id="swipeUpHint">
+        <div class="suh-bar"></div>
+        <div class="suh-text">Swipe up</div>
     </div>
 
     <header>
@@ -1310,17 +1621,6 @@
         </div>
     </footer>
 
-    <!-- STICKY CTA BAR -->
-    <div class="sticky-cta" id="stickyCta">
-        <div class="sticky-cta-info">
-            <div class="sticky-cta-title" id="stickyTitle">Product</div>
-            <div class="sticky-cta-price" id="stickyPrice">Rp 0</div>
-        </div>
-        <button class="sticky-cta-btn" id="stickyCtaBtn">
-            <i class="fas fa-bolt"></i> Pakai Sekarang <i class="fas fa-arrow-right sticky-arrow"></i>
-        </button>
-    </div>
-
     <!-- MODAL DETAIL PRODUK -->
     <div class="modal-overlay" id="productModal">
         <div class="modal-content">
@@ -1339,19 +1639,6 @@
                     <h2 id="m-title" class="modal-title">Product Title</h2>
                     <div class="modal-price-wrap" id="m-price-wrap"></div>
 
-                    <!-- Social Proof Bar -->
-                    <div class="social-proof-bar" id="socialProofBar">
-                        <div class="social-proof-avatars">
-                            <span style="background:#2563eb;">A</span>
-                            <span style="background:#7c3aed;">R</span>
-                            <span style="background:#db2777;">D</span>
-                            <span style="background:#ea580c;">+5</span>
-                        </div>
-                        <div class="social-proof-text">
-                            <strong>8 orang</strong> melihat template ini dalam 1 jam terakhir
-                        </div>
-                    </div>
-
                     <div class="addon-section" id="addonSection">
                         <div class="addon-header">
                             <div class="addon-title">
@@ -1368,32 +1655,19 @@
 
                     <p id="m-desc" class="modal-desc">Description here...</p>
                     
-                    <div class="sold-live">
-                        <span class="sold-live-dot"></span>
-                        <span>Terpakai <strong id="m-sold">0</strong>x</span>
+                    <div style="margin-bottom: 20px; font-size: 0.9rem; color: var(--text-muted); flex-shrink: 0;">
+                        <i class="fas fa-check-circle" style="color:var(--primary)"></i> Terpakai <span id="m-sold">0</span>x
                     </div>
 
-                    <!-- IKLAN MODAL PRODUK (RASIO 1280x350) -->
                     <div class="modal-ad-banner" id="modalAdBanner">
                         <a href="#" target="_blank" rel="noopener noreferrer" id="modalAdLink">
                             <img id="modalAdImage" src="" alt="Promo">
                         </a>
                     </div>
 
-                    <!-- CTA BUTTON DENGAN GESTUR IMPULSIF -->
-                    <div class="btn-buy-wrapper" id="btnBuyWrapper">
-                        <div class="btn-buy-glow"></div>
-                        <button id="btn-goto-payment" class="btn-buy">
-                            <span class="ripple-container" id="buyRipple"></span>
-                            <i class="fas fa-bolt"></i> 
-                            <span>Pakai Sekarang</span>
-                            <span class="arrow-icon"><i class="fas fa-arrow-right"></i></span>
-                        </button>
-                    </div>
-                    <div class="urgency-text" id="urgencyText">
-                        <span class="urgency-dot"></span>
-                        <span id="urgencyMessage">Terakhir dilihat 2 menit lalu</span>
-                    </div>
+                    <button id="btn-goto-payment" class="btn-buy">
+                        <i class="fas fa-shopping-cart"></i> Pakai Sekarang
+                    </button>
                 </div>
             </div>
 
@@ -1401,13 +1675,6 @@
                 <div class="payment-header">
                     <button class="btn-back" onclick="backToProduct()"><i class="fas fa-arrow-left"></i></button>
                     <h3 style="margin:0; font-size:1.1rem; font-weight:700;">Detail Pembayaran</h3>
-                </div>
-
-                <!-- COUNTDOWN TIMER -->
-                <div class="payment-countdown" id="paymentCountdown">
-                    <i class="fas fa-clock countdown-icon"></i>
-                    <span class="countdown-text">Selesaikan pembayaran dalam</span>
-                    <span class="countdown-digits" id="countdownDigits">02:00</span>
                 </div>
 
                 <div class="unique-amount-alert">
@@ -1442,20 +1709,9 @@
                 </div>
 
                 <div class="mt-auto">
-                    <!-- WHATSAPP BUTTON DENGAN GESTUR IMPULSIF -->
-                    <div class="wa-btn-wrapper">
-                        <div class="wa-btn-glow"></div>
-                        <button id="btn-confirm-whatsapp" class="btn-confirm-wa">
-                            <span class="ripple-container" id="waRipple"></span>
-                            <i class="fab fa-whatsapp" style="font-size:1.2rem;"></i>
-                            <span>Kirim ke WhatsApp</span>
-                            <span class="wa-arrow"><i class="fas fa-arrow-right"></i></span>
-                        </button>
-                    </div>
-                    <div class="wa-urgency" id="waUrgency">
-                        <span class="wa-urgency-dot"></span>
-                        <span id="waUrgencyMessage">Admin sedang online sekarang</span>
-                    </div>
+                    <button id="btn-confirm-whatsapp" class="btn-confirm-wa">
+                        <i class="fab fa-whatsapp" style="font-size:1.2rem;"></i> Lanjutkan ke WhatsApp
+                    </button>
                 </div>
             </div>
         </div>
@@ -1482,7 +1738,49 @@
         </div>
     </div>
 
-    <!-- AD POPUP — FLOATING -->
+    <!-- FLASH DEAL PANEL -->
+    <div class="flash-deal-backdrop" id="fdBackdrop" onclick="closeFlashDeal()"></div>
+    <div class="flash-deal-panel" id="fdPanel">
+        <div class="fd-handle"></div>
+        <div class="fd-close-btn" onclick="closeFlashDeal()"><i class="fas fa-times"></i></div>
+        <div class="fd-header">
+            <div class="fd-title"><i class="fas fa-bolt"></i> Deal Kilat</div>
+            <div class="fd-countdown" id="fdCountdown">
+                <span class="cd-block" id="fdMin">05</span>
+                <span class="cd-sep">:</span>
+                <span class="cd-block" id="fdSec">00</span>
+            </div>
+        </div>
+        <div id="fdItems"></div>
+    </div>
+
+    <!-- SHAKE COUPON POPUP -->
+    <div class="scp-backdrop" id="scpBackdrop" onclick="closeShakeCoupon()"></div>
+    <div class="shake-coupon-popup" id="scpPopup">
+        <div class="scp-top">
+            <div class="scp-icon"><i class="fas fa-gift"></i></div>
+            <div class="scp-title">Kupon Rahasia</div>
+        </div>
+        <div class="scp-body">
+            <div class="scp-code-box" onclick="copyCouponCode()">
+                <div class="scp-code-label"><i class="fas fa-hand-pointer"></i> Tap untuk salin</div>
+                <div class="scp-code" id="scpCode">WRITE30</div>
+            </div>
+            <div class="scp-discount">Diskon <strong>30%</strong> untuk pembelian pertama!</div>
+            <div class="scp-expiry"><i class="fas fa-clock"></i> Berlaku 15 menit sejak ditemukan</div>
+            <button class="scp-use-btn" onclick="useCouponNow()">Gunakan Sekarang</button>
+        </div>
+    </div>
+
+    <!-- RAPID TAP REWARD -->
+    <div class="rtr-backdrop" id="rtrBackdrop" onclick="closeRapidTapReward()"></div>
+    <div class="rapid-tap-reward" id="rtrPopup">
+        <div class="rtr-icon"><i class="fas fa-star"></i></div>
+        <div class="rtr-text">Fast Scroller Detected!</div>
+        <div class="rtr-sub">Kamu mendapat Cashback Rp 5.000</div>
+    </div>
+
+    <!-- AD POPUP -->
     <div class="ad-popup" id="adPopup">
         <div class="ad-close" onclick="closeAd()"><i class="fas fa-times"></i></div>
         <a href="#" target="_blank" rel="noopener noreferrer" id="adLink">
@@ -1496,7 +1794,6 @@
     <script type="module">
         import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 
-        // --- KONFIGURASI ---
         const SUPABASE_URL = 'https://neuylewfsxcuhayegygf.supabase.co'; 
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5ldXlsZXdmc3hjdWhheWVneWdmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkzNTMzNzYsImV4cCI6MjA5NDkyOTM3Nn0.Ra0qI5A87XxODy7v9HIJ-zxqVbO39GwXbJlV8n4ZeIc';
         const DEFAULT_ADMIN_WA = '6285885850204';
@@ -1512,7 +1809,6 @@
             } catch(e) {}
         }
 
-        // --- DATA SLIDER ---
         const sliderData = [
             { image: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgieMxVSq4yNK45tjG9DdAsuMaQ7dxXJ96XvbYe1Tw6iTMHlm0ETWVM70OBZY2RRoEZ98oCilYCgm7-PYHz9Vo3GBTJ4fMbqRovUaZLtxgdwREVayDd6uq-iJZWVhxoV2RitsUXz-3QR2M2MZkZtoFdjtefvHDmrUGWqyPq1W7JLRHJZwRvLv-vwL_QG8Ni/s3264/29467.png', link: '#' },
             { image: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjPwQ1jrQVR3aj8aOC12lSM7v4NwlaBip0dO76hxPZxVboWB6Pkt4wyTE6wcWUGrAWm-yOFIXa3GbKOLT0J2DsPPPUsYqDHwOSW0r1Ima3StZIVOvPk5CUy4ds6l8FGTt-7_2mPjq92rDMciTnYL-SW6X-9Tks4pZm2fCZv8xiFCdCo5qOHyHXPfqKU2K71/s3264/29445.png', link: '#' },
@@ -1533,25 +1829,6 @@
             { id: 4, type: 'qris', bank_name: "QRIS", account_number: "N/A", owner_name: "WriteHub", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Logo_QRIS.svg/1200px-Logo_QRIS.svg.png" }
         ];
 
-        // Urgency messages untuk rotasi acak
-        const urgencyMessages = [
-            "Terakhir dilihat 2 menit lalu",
-            "3 orang sedang melihat ini",
-            "Stok terbatas hari ini",
-            "Harga naik besok",
-            "5 orang menambahkan ke keranjang",
-            "Populer minggu ini",
-            "Terakhir dibeli 5 menit lalu"
-        ];
-
-        const waUrgencyMessages = [
-            "Admin sedang online sekarang",
-            "Respon cepat < 1 menit",
-            "2 orang sedang chat admin",
-            "Admin aktif saat ini",
-            "Order diproses langsung"
-        ];
-
         let products = [];
         let filteredProducts = [];
         let currentCategory = 'all';
@@ -1560,24 +1837,19 @@
         let adminNumbersList = [];
         let currentUniqueTotal = 0;
         let paymentLockTimer = null;
-        let countdownTimer = null;
-        let countdownSeconds = 120;
         const LOCK_DURATION_MS = 120000;
         let touchStartX = 0;
         let touchEndX = 0;
 
         // ============================================
-        // AD SYSTEM — VARIABEL
+        // AD SYSTEM VARIABLES
         // ============================================
         const AD_CONFIG = {
-            showDelay: 3000,
-            autoDismiss: 15,
-            maxPerSession: 3,
+            showDelay: 3000, autoDismiss: 15, maxPerSession: 3,
             cooldownBetweenAds: 30000,
             tableNames: ['iklan', 'ads', 'ad', 'iklan_banner', 'banner'],
             debug: false
         };
-
         let adDismissTimer = null;
         let adShownCount = 0;
         let lastAdShownTime = 0;
@@ -1594,120 +1866,622 @@
         };
 
         // ============================================
-        // RIPPLE EFFECT
+        // GESTURE SYSTEM VARIABLES
         // ============================================
-        function createRipple(event, containerId) {
-            const container = document.getElementById(containerId);
-            if (!container) return;
-            const rect = container.getBoundingClientRect();
-            const ripple = document.createElement('span');
-            ripple.className = 'ripple';
-            const size = Math.max(rect.width, rect.height);
-            ripple.style.width = ripple.style.height = size + 'px';
-            ripple.style.left = (event.clientX - rect.left - size / 2) + 'px';
-            ripple.style.top = (event.clientY - rect.top - size / 2) + 'px';
-            container.appendChild(ripple);
-            setTimeout(() => ripple.remove(), 600);
+        const GESTURE = {
+            // Double tap
+            lastTapTime: 0,
+            lastTapTarget: null,
+            doubleTapDelay: 300,
+
+            // Long press
+            longPressTimer: null,
+            longPressDelay: 600,
+            isLongPressing: false,
+
+            // Swipe left on card
+            swipeStartX: 0,
+            swipeStartY: 0,
+            swipeCurrentX: 0,
+            isSwiping: false,
+            swipeThreshold: 80,
+            swipeLocked: false,
+
+            // Swipe up from bottom
+            bottomSwipeStartY: 0,
+            isBottomSwipeTracking: false,
+            bottomSwipeThreshold: 100,
+            bottomSwipeZone: 60, // pixels from bottom
+
+            // Shake detection
+            shakeLastX: 0,
+            shakeLastY: 0,
+            shakeLastZ: 0,
+            shakeThreshold: 15,
+            shakeCooldown: false,
+            shakeMinInterval: 8000,
+
+            // Rapid scroll
+            lastScrollTime: 0,
+            scrollEventCount: 0,
+            rapidScrollThreshold: 8,
+            rapidScrollWindow: 800,
+            rapidScrollCooldown: false,
+
+            // Flash deal
+            fdTimerInterval: null,
+            fdTimeLeft: 300, // 5 menit
+
+            // Coupon
+            couponGenerated: false,
+            couponCode: '',
+            couponExpiry: null,
+
+            // Tutorial
+            tutorialShown: false
+        };
+
+        // ============================================
+        // SCREEN FLASH EFFECT
+        // ============================================
+        function triggerScreenFlash(color) {
+            const el = document.getElementById('screenFlash');
+            el.className = 'screen-flash';
+            void el.offsetWidth;
+            el.classList.add(color);
         }
 
         // ============================================
-        // COUNTDOWN TIMER
+        // GESTURE: DOUBLE TAP — LANGSUNG BELI
         // ============================================
-        function startCountdown() {
-            if (countdownTimer) clearInterval(countdownTimer);
-            countdownSeconds = 120;
-            updateCountdownDisplay();
-            countdownTimer = setInterval(() => {
-                countdownSeconds--;
-                if (countdownSeconds <= 0) {
-                    clearInterval(countdownTimer);
-                    countdownSeconds = 0;
-                    document.getElementById('countdownDigits').style.color = '#991b1b';
+        function handleDoubleTap(e, cardEl, productData) {
+            const now = Date.now();
+            const target = cardEl;
+
+            if (GESTURE.lastTapTarget === target && (now - GESTURE.lastTapTime) < GESTURE.doubleTapDelay) {
+                // DOUBLE TAP TERDETEKSI!
+                GESTURE.lastTapTime = 0;
+                GESTURE.lastTapTarget = null;
+                e.preventDefault();
+                e.stopPropagation();
+
+                triggerScreenFlash('red');
+
+                // Tampilkan overlay impulsif
+                showDoubleTapOverlay(cardEl, productData);
+                return true;
+            }
+
+            GESTURE.lastTapTime = now;
+            GESTURE.lastTapTarget = target;
+            return false;
+        }
+
+        function showDoubleTapOverlay(cardEl, productData) {
+            // Hapus overlay lama jika ada
+            const existingOverlay = cardEl.querySelector('.double-tap-overlay');
+            if (existingOverlay) existingOverlay.remove();
+
+            const price = getField(productData, 'price');
+            const overlay = document.createElement('div');
+            overlay.className = 'double-tap-overlay show';
+            overlay.innerHTML = `
+                <div class="dt-icon"><i class="fas fa-bolt"></i></div>
+                <div class="dt-price">${formatRupiah(price)}</div>
+                <div class="dt-label">Beli Langsung</div>
+                <div class="dt-sub">Tap untuk konfirmasi</div>
+            `;
+
+            // Vibrate jika tersedia
+            if (navigator.vibrate) navigator.vibrate([30, 50, 30]);
+
+            cardEl.appendChild(overlay);
+
+            // Klik overlay = langsung ke modal lalu auto payment
+            overlay.addEventListener('click', (ev) => {
+                ev.stopPropagation();
+                overlay.classList.remove('show');
+                setTimeout(() => {
+                    overlay.remove();
+                    // Buka modal lalu langsung ke payment
+                    openModal(productData);
+                    setTimeout(() => {
+                        document.getElementById('btn-goto-payment').click();
+                    }, 400);
+                }, 150);
+            });
+
+            // Auto dismiss setelah 2.5 detik
+            setTimeout(() => {
+                if (overlay.parentNode) {
+                    overlay.classList.remove('show');
+                    setTimeout(() => { if (overlay.parentNode) overlay.remove(); }, 200);
                 }
-                updateCountdownDisplay();
-            }, 1000);
+            }, 2500);
         }
 
-        function updateCountdownDisplay() {
-            const el = document.getElementById('countdownDigits');
-            const min = Math.floor(countdownSeconds / 60);
-            const sec = countdownSeconds % 60;
-            el.textContent = `${String(min).padStart(2, '0')}:${String(sec).padStart(2, '0')}`;
-            // Warn when < 30 seconds
-            if (countdownSeconds <= 30 && countdownSeconds > 0) {
-                el.style.color = '#dc2626';
-                el.style.animation = 'countdownPulse 0.5s ease-in-out infinite';
-            } else if (countdownSeconds > 30) {
-                el.style.color = 'var(--danger)';
-                el.style.animation = 'none';
+        // ============================================
+        // GESTURE: LONG PRESS — QUICK ACTION
+        // ============================================
+        function startLongPress(e, cardEl, productData) {
+            GESTURE.isLongPressing = false;
+
+            const touch = e.touches ? e.touches[0] : e;
+            const rect = cardEl.getBoundingClientRect();
+            const x = touch.clientX - rect.left;
+            const y = touch.clientY - rect.top;
+
+            GESTURE.longPressTimer = setTimeout(() => {
+                GESTURE.isLongPressing = true;
+                if (navigator.vibrate) navigator.vibrate(50);
+                triggerScreenFlash('red');
+                showLongPressAction(cardEl, productData, x, y);
+            }, GESTURE.longPressDelay);
+        }
+
+        function cancelLongPress(cardEl) {
+            if (GESTURE.longPressTimer) {
+                clearTimeout(GESTURE.longPressTimer);
+                GESTURE.longPressTimer = null;
             }
         }
 
-        function stopCountdown() {
-            if (countdownTimer) { clearInterval(countdownTimer); countdownTimer = null; }
+        function showLongPressAction(cardEl, productData, x, y) {
+            // Ripple effect
+            const ripple = document.createElement('div');
+            ripple.className = 'long-press-ripple';
+            ripple.style.left = (x - 40) + 'px';
+            ripple.style.top = (y - 40) + 'px';
+            ripple.style.width = '80px';
+            ripple.style.height = '80px';
+            cardEl.appendChild(ripple);
+
+            // Action button
+            const action = document.createElement('div');
+            action.className = 'long-press-action show';
+            action.innerHTML = '<i class="fas fa-shopping-bag"></i> BELI SEKARANG';
+            cardEl.appendChild(action);
+
+            action.addEventListener('click', (ev) => {
+                ev.stopPropagation();
+                ev.preventDefault();
+                cleanupLongPress(cardEl);
+                openModal(productData);
+                setTimeout(() => {
+                    document.getElementById('btn-goto-payment').click();
+                }, 400);
+            });
+
+            // Auto dismiss
+            setTimeout(() => { cleanupLongPress(cardEl); }, 3000);
+        }
+
+        function cleanupLongPress(cardEl) {
+            cardEl.querySelectorAll('.long-press-ripple, .long-press-action').forEach(el => {
+                el.classList.remove('show');
+                setTimeout(() => el.remove(), 300);
+            });
         }
 
         // ============================================
-        // URGENCY MESSAGE ROTATOR
+        // GESTURE: SWIPE KIRI — REVEAL BELI
         // ============================================
-        function setRandomUrgency() {
-            const msg = urgencyMessages[Math.floor(Math.random() * urgencyMessages.length)];
-            const el = document.getElementById('urgencyMessage');
-            if (el) el.textContent = msg;
-        }
+        function initCardSwipe(cardEl, productData) {
+            let startX = 0, startY = 0, currentX = 0, isTracking = false;
 
-        function setRandomWaUrgency() {
-            const msg = waUrgencyMessages[Math.floor(Math.random() * waUrgencyMessages.length)];
-            const el = document.getElementById('waUrgencyMessage');
-            if (el) el.textContent = msg;
+            function onStart(e) {
+                if (GESTURE.swipeLocked) return;
+                const touch = e.touches ? e.touches[0] : e;
+                startX = touch.clientX;
+                startY = touch.clientY;
+                currentX = 0;
+                isTracking = true;
+                cardEl.classList.add('swiping');
+                cardEl.classList.remove('swipe-triggered');
+            }
+
+            function onMove(e) {
+                if (!isTracking) return;
+                const touch = e.touches ? e.touches[0] : e;
+                const diffX = touch.clientX - startX;
+                const diffY = touch.clientY - startY;
+
+                // Hanya swipe horizontal (bukan vertikal)
+                if (Math.abs(diffY) > Math.abs(diffX) && Math.abs(diffX) < 15) {
+                    isTracking = false;
+                    cardEl.classList.remove('swiping');
+                    cardEl.style.transform = '';
+                    return;
+                }
+
+                if (diffX < 0) {
+                    e.preventDefault();
+                    currentX = Math.max(diffX, -150);
+                    cardEl.style.transform = `translateX(${currentX}px)`;
+                }
+            }
+
+            function onEnd() {
+                if (!isTracking) return;
+                isTracking = false;
+                cardEl.classList.remove('swiping');
+
+                if (currentX < -GESTURE.swipeThreshold) {
+                    // Trigger beli!
+                    GESTURE.swipeLocked = true;
+                    if (navigator.vibrate) navigator.vibrate([20, 40, 20]);
+                    triggerScreenFlash('red');
+
+                    cardEl.style.transform = `translateX(-150px)`;
+                    
+                    setTimeout(() => {
+                        cardEl.classList.add('swipe-triggered');
+                        cardEl.style.transform = '';
+                        // Langsung beli
+                        openModal(productData);
+                        setTimeout(() => {
+                            document.getElementById('btn-goto-payment').click();
+                        }, 400);
+
+                        setTimeout(() => {
+                            GESTURE.swipeLocked = false;
+                        }, 1500);
+                    }, 200);
+                } else {
+                    cardEl.style.transform = '';
+                }
+                currentX = 0;
+            }
+
+            cardEl.addEventListener('touchstart', onStart, { passive: true });
+            cardEl.addEventListener('touchmove', onMove, { passive: false });
+            cardEl.addEventListener('touchend', onEnd, { passive: true });
+            cardEl.addEventListener('mousedown', onStart);
+            cardEl.addEventListener('mousemove', onMove);
+            cardEl.addEventListener('mouseup', onEnd);
+            cardEl.addEventListener('mouseleave', onEnd);
         }
 
         // ============================================
-        // STICKY CTA
+        // GESTURE: SWIPE UP DARI BAWAH — FLASH DEAL
         // ============================================
-        let stickyCtaShown = false;
+        function initBottomSwipe() {
+            document.addEventListener('touchstart', (e) => {
+                const touch = e.touches[0];
+                if (touch.clientY > (window.innerHeight - GESTURE.bottomSwipeZone)) {
+                    GESTURE.bottomSwipeStartY = touch.clientY;
+                    GESTURE.isBottomSwipeTracking = true;
+                }
+            }, { passive: true });
 
-        function showStickyCta() {
-            if (!currentProduct || stickyCtaShown) return;
-            stickyCtaShown = true;
-            const cta = document.getElementById('stickyCta');
-            document.getElementById('stickyTitle').textContent = getField(currentProduct, 'title') || 'Product';
-            const basePrice = Number(getField(currentProduct, 'price'));
-            document.getElementById('stickyPrice').textContent = formatRupiah(basePrice);
-            cta.classList.add('visible');
+            document.addEventListener('touchmove', (e) => {
+                if (!GESTURE.isBottomSwipeTracking) return;
+                const touch = e.touches[0];
+                const diff = GESTURE.bottomSwipeStartY - touch.clientY;
+                
+                if (diff > 30) {
+                    // Hint menghilang
+                    document.getElementById('swipeUpHint').classList.add('hidden');
+                }
+            }, { passive: true });
+
+            document.addEventListener('touchend', (e) => {
+                if (!GESTURE.isBottomSwipeTracking) return;
+                GESTURE.isBottomSwipeTracking = false;
+
+                const touch = e.changedTouches[0];
+                const diff = GESTURE.bottomSwipeStartY - touch.clientY;
+
+                if (diff > GESTURE.bottomSwipeThreshold) {
+                    if (navigator.vibrate) navigator.vibrate(25);
+                    triggerScreenFlash('red');
+                    openFlashDeal();
+                }
+            }, { passive: true });
+
+            // Mouse fallback untuk desktop
+            let mouseDownAtBottom = false;
+            let mouseStartY = 0;
+
+            document.addEventListener('mousedown', (e) => {
+                if (e.clientY > (window.innerHeight - GESTURE.bottomSwipeZone)) {
+                    mouseDownAtBottom = true;
+                    mouseStartY = e.clientY;
+                }
+            });
+
+            document.addEventListener('mouseup', (e) => {
+                if (!mouseDownAtBottom) return;
+                mouseDownAtBottom = false;
+                const diff = mouseStartY - e.clientY;
+                if (diff > GESTURE.bottomSwipeThreshold) {
+                    triggerScreenFlash('red');
+                    openFlashDeal();
+                }
+            });
         }
 
-        function hideStickyCta() {
-            stickyCtaShown = false;
-            const cta = document.getElementById('stickyCta');
-            cta.classList.remove('visible');
+        // ============================================
+        // FLASH DEAL PANEL
+        // ============================================
+        function openFlashDeal() {
+            const backdrop = document.getElementById('fdBackdrop');
+            const panel = document.getElementById('fdPanel');
+
+            renderFlashDealItems();
+
+            backdrop.classList.add('show');
+            panel.classList.add('show');
+            document.getElementById('swipeUpHint').classList.add('hidden');
+
+            // Mulai / reset countdown
+            startFlashDealCountdown();
         }
 
-        // Track scroll untuk show sticky CTA
-        let scrollHandlerAdded = false;
-        function addScrollListener() {
-            if (scrollHandlerAdded) return;
-            scrollHandlerAdded = true;
-            let scrollAccum = 0;
-            window.addEventListener('scroll', () => {
-                if (!currentProduct) return;
-                scrollAccum += window.scrollY;
-                if (window.scrollY > 400 && !stickyCtaShown) {
-                    showStickyCta();
+        function closeFlashDeal() {
+            const backdrop = document.getElementById('fdBackdrop');
+            const panel = document.getElementById('fdPanel');
+            backdrop.classList.remove('show');
+            panel.classList.remove('show');
+            stopFlashDealCountdown();
+        }
+
+        function renderFlashDealItems() {
+            const container = document.getElementById('fdItems');
+            container.innerHTML = '';
+
+            // Ambil produk dengan diskon acak
+            const dealProducts = [...products].sort(() => Math.random() - 0.5).slice(0, 3);
+
+            dealProducts.forEach((p, idx) => {
+                const title = getField(p, 'title');
+                const price = Number(getField(p, 'price'));
+                const originalPrice = Number(getField(p, 'original_price')) || Math.round(price * 1.5);
+                const image = getField(p, 'image');
+                const soldCount = Number(getField(p, 'sold_count')) || 0;
+
+                // Diskon flash: 25-50%
+                const discountPercent = Math.floor(Math.random() * 26) + 25;
+                const salePrice = Math.round(price * (1 - discountPercent / 100));
+                const stockPercent = Math.floor(Math.random() * 60) + 20;
+
+                const item = document.createElement('div');
+                item.className = 'fd-item';
+                item.style.animationDelay = (idx * 0.1) + 's';
+                item.innerHTML = `
+                    <div class="fd-item-badge">-${discountPercent}%</div>
+                    <div class="fd-item-img"><img src="${image}" alt="${title}" loading="lazy"></div>
+                    <div class="fd-item-info">
+                        <div class="fd-item-title">${title}</div>
+                        <div class="fd-item-prices">
+                            <span class="fd-item-original">${formatRupiah(originalPrice)}</span>
+                            <span class="fd-item-sale">${formatRupiah(salePrice)}</span>
+                        </div>
+                        <div class="fd-stock-bar"><div class="fd-stock-fill" style="width: ${stockPercent}%"></div></div>
+                        <div class="fd-stock-text">Sisa ${Math.floor((100 - stockPercent) / 10)} slot lagi!</div>
+                    </div>
+                `;
+
+                item.addEventListener('click', () => {
+                    if (navigator.vibrate) navigator.vibrate(15);
+                    closeFlashDeal();
+                    // Buat produk sementara dengan harga flash
+                    const flashProduct = { ...p, price: salePrice, original_price: originalPrice };
+                    openModal(flashProduct);
+                    setTimeout(() => {
+                        document.getElementById('btn-goto-payment').click();
+                    }, 400);
+                });
+
+                container.appendChild(item);
+            });
+        }
+
+        function startFlashDealCountdown() {
+            stopFlashDealCountdown();
+            GESTURE.fdTimeLeft = 300; // 5 menit
+            updateFlashDealDisplay();
+
+            GESTURE.fdTimerInterval = setInterval(() => {
+                GESTURE.fdTimeLeft--;
+                if (GESTURE.fdTimeLeft <= 0) {
+                    stopFlashDealCountdown();
+                    closeFlashDeal();
+                    showToast('Waktu Deal Kilat habis!', 'warning');
+                    return;
+                }
+                updateFlashDealDisplay();
+
+                // Urgency ketika < 30 detik
+                if (GESTURE.fdTimeLeft <= 30) {
+                    const cdBlock = document.querySelectorAll('.cd-block');
+                    cdBlock.forEach(b => {
+                        b.style.background = GESTURE.fdTimeLeft % 2 === 0 ? 'var(--impulse-red)' : '#b91c1c';
+                    });
+                }
+            }, 1000);
+        }
+
+        function stopFlashDealCountdown() {
+            if (GESTURE.fdTimerInterval) {
+                clearInterval(GESTURE.fdTimerInterval);
+                GESTURE.fdTimerInterval = null;
+            }
+            // Reset warna
+            document.querySelectorAll('.cd-block').forEach(b => {
+                b.style.background = 'var(--impulse-red)';
+            });
+        }
+
+        function updateFlashDealDisplay() {
+            const min = Math.floor(GESTURE.fdTimeLeft / 60);
+            const sec = GESTURE.fdTimeLeft % 60;
+            document.getElementById('fdMin').textContent = String(min).padStart(2, '0');
+            document.getElementById('fdSec').textContent = String(sec).padStart(2, '0');
+        }
+
+        // ============================================
+        // GESTURE: SHAKE DEVICE — KUPON RAHASIA
+        // ============================================
+        function initShakeDetection() {
+            if (!('DeviceMotionEvent' in window)) return;
+
+            // iOS 13+ perlu permission
+            if (typeof DeviceMotionEvent.requestPermission === 'function') {
+                // Tidak bisa auto-request, jadi gunakan fallback
+                return;
+            }
+
+            window.addEventListener('devicemotion', (e) => {
+                if (GESTURE.shakeCooldown) return;
+
+                const acc = e.accelerationIncludingGravity;
+                if (!acc) return;
+
+                const deltaX = Math.abs(acc.x - GESTURE.shakeLastX);
+                const deltaY = Math.abs(acc.y - GESTURE.shakeLastY);
+                const deltaZ = Math.abs(acc.z - GESTURE.shakeLastZ);
+
+                GESTURE.shakeLastX = acc.x || 0;
+                GESTURE.shakeLastY = acc.y || 0;
+                GESTURE.shakeLastZ = acc.z || 0;
+
+                if (deltaX + deltaY + deltaZ > GESTURE.shakeThreshold * 3) {
+                    onDeviceShake();
                 }
             }, { passive: true });
         }
 
+        function onDeviceShake() {
+            if (GESTURE.shakeCooldown) return;
+            GESTURE.shakeCooldown = true;
+
+            if (navigator.vibrate) navigator.vibrate([50, 30, 50, 30, 50]);
+            triggerScreenFlash('gold');
+
+            generateCouponCode();
+            showShakeCoupon();
+
+            setTimeout(() => { GESTURE.shakeCooldown = false; }, GESTURE.shakeMinInterval);
+        }
+
+        function generateCouponCode() {
+            if (GESTURE.couponGenerated) return;
+            const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+            let code = 'WH';
+            for (let i = 0; i < 4; i++) {
+                code += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            GESTURE.couponCode = code;
+            GESTURE.couponExpiry = new Date(Date.now() + 15 * 60 * 1000); // 15 menit
+            GESTURE.couponGenerated = true;
+            document.getElementById('scpCode').textContent = code;
+        }
+
+        function showShakeCoupon() {
+            document.getElementById('scpBackdrop').classList.add('show');
+            document.getElementById('scpPopup').classList.add('show');
+        }
+
+        function closeShakeCoupon() {
+            document.getElementById('scpBackdrop').classList.remove('show');
+            document.getElementById('scpPopup').classList.remove('show');
+        }
+
+        function copyCouponCode() {
+            const code = GESTURE.couponCode;
+            navigator.clipboard.writeText(code).then(() => {
+                showToast(`Kode ${code} disalin!`, 'success');
+            }).catch(() => {
+                const ta = document.createElement("textarea");
+                ta.value = code; document.body.appendChild(ta); ta.select();
+                document.execCommand("Copy"); ta.remove();
+                showToast(`Kode ${code} disalin!`, 'success');
+            });
+        }
+
+        function useCouponNow() {
+            closeShakeCoupon();
+            showToast(`Kupon ${GESTURE.couponCode} aktif! Pilih produk untuk menggunakan.`, 'success');
+            // Bisa diintegrasikan ke flow pembayaran
+        }
+
+        // Expose ke global
+        window.copyCouponCode = copyCouponCode;
+        window.useCouponNow = useCouponNow;
+        window.closeShakeCoupon = closeShakeCoupon;
+
         // ============================================
-        // AD DEBUG LOGGER
+        // GESTURE: RAPID SCROLL — REWARD
+        // ============================================
+        function initRapidScrollDetection() {
+            let scrollTimer = null;
+
+            window.addEventListener('scroll', () => {
+                if (GESTURE.rapidScrollCooldown) return;
+
+                const now = Date.now();
+                GESTURE.scrollEventCount++;
+
+                // Reset counter setiap window
+                if (now - GESTURE.lastScrollTime > GESTURE.rapidScrollWindow) {
+                    GESTURE.scrollEventCount = 0;
+                    GESTURE.lastScrollTime = now;
+                }
+
+                if (GESTURE.scrollEventCount >= GESTURE.rapidScrollThreshold) {
+                    GESTURE.scrollEventCount = 0;
+                    GESTURE.rapidScrollCooldown = true;
+                    onRapidScrollDetected();
+                    setTimeout(() => { GESTURE.rapidScrollCooldown = false; }, 15000);
+                }
+            }, { passive: true });
+        }
+
+        function onRapidScrollDetected() {
+            if (navigator.vibrate) navigator.vibrate(20);
+            triggerScreenFlash('purple');
+
+            document.getElementById('rtrBackdrop').classList.add('show');
+            document.getElementById('rtrPopup').classList.add('show');
+
+            setTimeout(() => { closeRapidTapReward(); }, 3000);
+        }
+
+        function closeRapidTapReward() {
+            document.getElementById('rtrBackdrop').classList.remove('show');
+            document.getElementById('rtrPopup').classList.remove('show');
+        }
+        window.closeRapidTapReward = closeRapidTapReward;
+
+        // ============================================
+        // GESTURE TUTORIAL
+        // ============================================
+        function showGestureTutorial() {
+            if (GESTURE.tutorialShown) return;
+            const sessionKey = 'wh_gesture_tut_seen';
+            if (sessionStorage.getItem(sessionKey)) {
+                GESTURE.tutorialShown = true;
+                return;
+            }
+
+            setTimeout(() => {
+                const tutorial = document.getElementById('gestureTutorial');
+                tutorial.classList.add('show');
+                GESTURE.tutorialShown = true;
+                sessionStorage.setItem(sessionKey, '1');
+
+                setTimeout(() => { tutorial.classList.remove('show'); }, 6000);
+            }, 2000);
+        }
+
+        // ============================================
+        // AD SYSTEM — HELPER FUNCTIONS
         // ============================================
         function adLog(message, type = 'ok') {
             const timestamp = new Date().toLocaleTimeString('id-ID');
             const fullMsg = `[${timestamp}] ${message}`;
-            console.log(`%c[AD] ${message}`, 
-                type === 'ok' ? 'color: #4ade80' : 
-                type === 'err' ? 'color: #f87171' : 'color: #fbbf24'
-            );
+            console.log(`%c[AD] ${message}`, type === 'ok' ? 'color: #4ade80' : type === 'err' ? 'color: #f87171' : 'color: #fbbf24');
             if (AD_CONFIG.debug) {
                 const panel = document.getElementById('adDebugPanel');
                 const content = document.getElementById('adDebugContent');
@@ -1730,7 +2504,6 @@
             }
         };
 
-        // --- TOAST ---
         window.showToast = function(message, type = 'success') {
             const container = document.getElementById('toastContainer');
             const toast = document.createElement('div');
@@ -1744,7 +2517,6 @@
             }, 3000);
         }
 
-        // --- QRIS MODAL ---
         window.openQrisModal = function(imageUrl) {
             const modal = document.getElementById('qrisModal');
             document.getElementById('qrisDisplayImage').src = imageUrl;
@@ -1765,7 +2537,6 @@
         };
         document.getElementById('qrisModal').addEventListener('click', (e) => { if(e.target.id === 'qrisModal') closeQrisModal(); });
 
-        // --- TIMER LOGIC ---
         function lockWhatsAppButton() {
             const btn = document.getElementById('btn-confirm-whatsapp');
             if (paymentLockTimer) clearTimeout(paymentLockTimer);
@@ -1776,23 +2547,17 @@
         function unlockWhatsAppButton() {
             const btn = document.getElementById('btn-confirm-whatsapp');
             btn.classList.remove('locked');
-            btn.innerHTML = `<span class="ripple-container" id="waRipple"></span><i class="fab fa-whatsapp" style="font-size:1.2rem;"></i><span>Kirim ke WhatsApp</span><span class="wa-arrow"><i class="fas fa-arrow-right"></i></span>`;
-            // Re-attach ripple
-            btn.onclick = handleWaClick;
+            btn.innerHTML = `<i class="fab fa-whatsapp" style="font-size:1.2rem;"></i> Lanjutkan ke WhatsApp`;
         }
-        function clearPaymentTimer() { 
-            if (paymentLockTimer) { clearTimeout(paymentLockTimer); paymentLockTimer = null; }
-            stopCountdown();
-        }
+        function clearPaymentTimer() { if (paymentLockTimer) { clearTimeout(paymentLockTimer); paymentLockTimer = null; } }
 
-        // --- HELPERS ---
         const formatRupiah = (num) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(num);
         function getField(item, fieldKey) { return item[fields[fieldKey]] || item[fieldKey]; }
 
         function autoMapColumns(sampleData) {
             if (!sampleData) return;
             const keys = Object.keys(sampleData);
-            const map = {
+            fields = {
                 title: keys.find(k => k.toLowerCase().includes('nama') || k.toLowerCase().includes('title')) || 'title',
                 price: keys.find(k => k.toLowerCase().includes('harga') || k.toLowerCase().includes('price')) || 'price',
                 original_price: keys.find(k => k.toLowerCase().includes('original') || k.toLowerCase().includes('coret') || k.toLowerCase().includes('asli')) || 'original_price',
@@ -1804,7 +2569,6 @@
                 cover_letter_price: keys.find(k => k.toLowerCase().includes('cover_letter_price') || k.toLowerCase().includes('harga_surat')) || 'cover_letter_price',
                 allow_addon: keys.find(k => k.toLowerCase().includes('allow_addon') || k.toLowerCase().includes('aktifkan_addon')) || 'allow_addon'
             };
-            fields = map;
         }
 
         // --- SEARCH ---
@@ -1871,7 +2635,7 @@
             });
         }
 
-        // --- FETCH FUNCTIONS ---
+        // --- FETCH ---
         async function fetchAdminNumbers() {
             if (useSupabase) {
                 const { data } = await supabase.from('no_wa').select('nomor');
@@ -1892,9 +2656,7 @@
             if (useSupabase) {
                 const { data } = await supabase.from('payment').select('*');
                 paymentMethods = (data && data.length > 0) ? data : dummyPaymentMethods;
-            } else {
-                paymentMethods = dummyPaymentMethods;
-            }
+            } else { paymentMethods = dummyPaymentMethods; }
             renderPaymentMethods();
         }
 
@@ -1914,35 +2676,16 @@
             filterLogic();
         }
 
-        // ============================================
-        // AD SYSTEM
-        // ============================================
+        // --- AD SYSTEM ---
         function getAdField(ad, possibilities) {
-            for (const key of possibilities) {
-                if (ad[key] !== undefined && ad[key] !== null && ad[key] !== '') return ad[key];
-            }
+            for (const key of possibilities) { if (ad[key] !== undefined && ad[key] !== null && ad[key] !== '') return ad[key]; }
             return null;
         }
-        function getAdImageUrl(ad) {
-            return getAdField(ad, ['image_url', 'gambar', 'image', 'url_gambar', 'foto', 'img_url', 'banner_url', 'src', 'thumbnail', 'picture']);
-        }
-        function getAdLinkUrl(ad) {
-            return getAdField(ad, ['link_url', 'link', 'url', 'target_url', 'redirect_url', 'destination', 'href', 'go_to']) || '#';
-        }
-        function isAdActive(ad) {
-            const val = getAdField(ad, ['is_active', 'active', 'aktif', 'status', 'is_show', 'show', 'visible']);
-            if (val === true || val === 1 || val === '1' || val === 'true') return true;
-            if (val === false || val === 0 || val === '0' || val === 'false') return false;
-            return true;
-        }
-        function getAdDuration(ad) {
-            const val = getAdField(ad, ['duration', 'durasi', 'show_time', 'auto_close', 'timeout']);
-            if (val && !isNaN(val) && Number(val) > 0) return Number(val);
-            return AD_CONFIG.autoDismiss;
-        }
-        function getAdPlacement(ad) {
-            return getAdField(ad, ['placement', 'penempatan', 'posisi', 'position', 'location', 'lokasi', 'tipe', 'type', 'show_in']);
-        }
+        function getAdImageUrl(ad) { return getAdField(ad, ['image_url','gambar','image','url_gambar','foto','img_url','banner_url','src','thumbnail','picture']); }
+        function getAdLinkUrl(ad) { return getAdField(ad, ['link_url','link','url','target_url','redirect_url','destination','href','go_to']) || '#'; }
+        function isAdActive(ad) { const val = getAdField(ad, ['is_active','active','aktif','status','is_show','show','visible']); if (val === true || val === 1 || val === '1' || val === 'true') return true; if (val === false || val === 0 || val === '0' || val === 'false') return false; return true; }
+        function getAdDuration(ad) { const val = getAdField(ad, ['duration','durasi','show_time','auto_close','timeout']); if (val && !isNaN(val) && Number(val) > 0) return Number(val); return AD_CONFIG.autoDismiss; }
+        function getAdPlacement(ad) { return getAdField(ad, ['placement','penempatan','posisi','position','location','lokasi','tipe','type','show_in']); }
 
         async function fetchAds() {
             if (!useSupabase) { adLog('Supabase tidak tersedia, skip fetch iklan', 'warn'); return []; }
@@ -1954,7 +2697,6 @@
                     if (error) { adLog(`Tabel "${tableName}" error: ${error.message}`, 'warn'); continue; }
                     if (!data || data.length === 0) { adLog(`Tabel "${tableName}" kosong`, 'warn'); continue; }
                     adLog(`Tabel "${tableName}" ditemukan: ${data.length} row(s)`, 'ok');
-                    if (data.length > 0) { const columns = Object.keys(data[0]); adLog(`Kolom: [${columns.join(', ')}]`, 'ok'); }
                     const activeAds = data.filter(ad => isAdActive(ad));
                     adLog(`${activeAds.length} dari ${data.length} iklan aktif`, 'ok');
                     if (activeAds.length > 0) { adLog(`Berhasil! Menggunakan ${activeAds.length} iklan dari tabel "${tableName}"`, 'ok'); return activeAds; }
@@ -1975,9 +2717,9 @@
                     let transparentCount = 0;
                     canvas.width = this.naturalWidth; canvas.height = this.naturalHeight;
                     ctx.drawImage(this, 0, 0);
-                    for (const [x, y] of points) { const pixel = ctx.getImageData(x, y, 1, 1).data; if (pixel[3] === 0) transparentCount++; }
+                    for (const [x,y] of points) { if (ctx.getImageData(x,y,1,1).data[3] === 0) transparentCount++; }
                     callback(transparentCount >= 2);
-                } catch (e) { callback(false); }
+                } catch(e) { callback(false); }
             };
             testImg.onerror = function() { callback(false); };
             testImg.src = imageUrl;
@@ -2047,7 +2789,6 @@
 
         async function initAdSystem() {
             adLog('=== SISTEM IKLAN DIMULAI ===', 'ok');
-            adLog(`Supabase: ${useSupabase ? 'TERHUBUNG' : 'TIDAK TERHUBUNG'}`, useSupabase ? 'ok' : 'warn');
             if (!useSupabase) { adLog('Dibatalkan: Supabase tidak terhubung', 'err'); return; }
             const ads = await fetchAds();
             allAdsCache = ads;
@@ -2106,9 +2847,6 @@
             }, 500);
         }
 
-        // ============================================
-        // MODAL AD BANNER
-        // ============================================
         function showModalAdBanner() {
             const bannerEl = document.getElementById('modalAdBanner');
             const imgEl = document.getElementById('modalAdImage');
@@ -2123,7 +2861,7 @@
             if (!imageUrl) return;
             linkEl.href = linkUrl;
             function revealBanner() {
-                const targetRatio = 350 / 1280; 
+                const targetRatio = 350 / 1280;
                 const parentWidth = bannerEl.parentElement ? bannerEl.parentElement.offsetWidth : 400;
                 let bannerHeight = Math.max(60, Math.round(parentWidth * targetRatio));
                 bannerEl.style.height = bannerHeight + 'px';
@@ -2154,7 +2892,7 @@
             const bannerEl = document.getElementById('modalAdBanner');
             bannerEl.classList.remove('visible');
             bannerEl.style.height = '0px';
-            if (modalAdRevealTimer) { clearTimeout(modalAdvealTimer); modalAdRevealTimer = null; }
+            if (modalAdRevealTimer) { clearTimeout(modalAdRevealTimer); modalAdRevealTimer = null; }
         }
 
         // --- CARD SLIDERS ---
@@ -2184,9 +2922,22 @@
                 return;
             }
             filteredProducts.forEach(p => {
+                const wrapper = document.createElement('div');
+                wrapper.className = 'card-swipe-wrapper';
+
+                // Background swipe-to-buy
+                const swipeBg = document.createElement('div');
+                swipeBg.className = 'swipe-buy-bg';
+                swipeBg.innerHTML = `
+                    <div class="swipe-icon"><i class="fas fa-shopping-cart"></i></div>
+                    <div class="swipe-text">Beli</div>
+                    <div class="swipe-arrow"><i class="fas fa-arrow-left"></i></div>
+                `;
+                wrapper.appendChild(swipeBg);
+
                 const card = document.createElement('div');
                 card.className = 'cv-card';
-                card.onclick = () => openModal(p);
+
                 const title = getField(p, 'title');
                 const price = getField(p, 'price');
                 const originalPrice = getField(p, 'original_price');
@@ -2195,10 +2946,9 @@
                 const extraImages = getField(p, 'images');
                 const soldCount = getField(p, 'sold_count');
                 const pId = getField(p, 'id') || Math.random();
-                const hasDiscount = originalPrice && Number(originalPrice) > Number(price);
 
                 let priceHTML = '';
-                if (hasDiscount) {
+                if (originalPrice && Number(originalPrice) > Number(price)) {
                     priceHTML = `<div class="price-original">${formatRupiah(originalPrice)}</div><div class="price-main">${formatRupiah(price)}</div>`;
                 } else {
                     priceHTML = `<div class="price-main">${formatRupiah(price)}</div>`;
@@ -2212,12 +2962,9 @@
                     slidesHTML += `<div class="card-slide"><img src="${imgSrc || 'https://picsum.photos/seed/fallback/600/600'}" loading="lazy" alt="${title}" onerror="this.src='https://picsum.photos/seed/error/600/600'"></div>`;
                 });
 
-                let flashBadge = hasDiscount ? '<div class="flash-badge">SALE</div>' : '';
-
                 card.innerHTML = `
                     <div class="card-image">
                         <span class="badge">${category || 'Produk'}</span>
-                        ${flashBadge}
                         <div class="card-slider-container">${slidesHTML}</div>
                     </div>
                     <div class="card-content">
@@ -2227,7 +2974,57 @@
                             <div class="sold-info">${soldCount || 0} Terpakai</div>
                         </div>
                     </div>`;
-                grid.appendChild(card);
+
+                // ===== INISIALISASI GESTUR PER CARD =====
+                
+                // 1. Double tap → Beli langsung
+                card.addEventListener('click', (e) => {
+                    if (GESTURE.isLongPressing) { GESTURE.isLongPressing = false; return; }
+                    handleDoubleTap(e, card, p);
+                });
+
+                // 2. Long press → Quick action
+                card.addEventListener('touchstart', (e) => {
+                    startLongPress(e, card, p);
+                }, { passive: true });
+                card.addEventListener('touchend', () => cancelLongPress(card));
+                card.addEventListener('touchmove', () => cancelLongPress(card));
+                card.addEventListener('mousedown', (e) => startLongPress(e, card, p));
+                card.addEventListener('mouseup', () => cancelLongPress(card));
+                card.addEventListener('mouseleave', () => cancelLongPress(card));
+
+                // 3. Swipe kiri → Reveal beli
+                initCardSwipe(card, p);
+
+                // 4. Single tap (setelah filter double tap) → Normal modal
+                // (Sudah ditangani di handler double tap, jika bukan double tap maka openModal dipanggil)
+                // Override: kita perbedakan single vs double tap
+                let clickTimeout = null;
+                card.removeEventListener('click', card._doubleTapHandler);
+                
+                // Re-attach click handler yang lebih tepat
+                card._originalClickHandler = (e) => {
+                    if (GESTURE.isLongPressing) { GESTURE.isLongPressing = false; return; }
+                    // Jangan buka modal langsung, tunggu apakah ini double tap
+                    // Double tap sudah di-handle di handler terpisah
+                };
+                
+                // Pasang click handler untuk single tap (buka modal)
+                card.addEventListener('click', function singleTapHandler(e) {
+                    // Jika ada double tap overlay aktif, jangan proses
+                    if (card.querySelector('.double-tap-overlay.show')) return;
+                    if (GESTURE.isLongPressing) { GESTURE.isLongPressing = false; return; }
+
+                    // Delay sedikit untuk membedakan single vs double tap
+                    if (clickTimeout) clearTimeout(clickTimeout);
+                    clickTimeout = setTimeout(() => {
+                        // Ini single tap → buka modal normal
+                        openModal(p);
+                    }, GESTURE.doubleTapDelay + 50);
+                });
+
+                wrapper.appendChild(card);
+                grid.appendChild(wrapper);
                 initCardSlider(card, pId);
             });
         }
@@ -2397,19 +3194,12 @@
             } else {
                 priceWrap.innerHTML = `<div class="modal-price-final">${formatRupiah(finalPrice)}</div>`;
             }
-            // Update sticky CTA price too
-            if (stickyCtaShown) {
-                document.getElementById('stickyPrice').textContent = formatRupiah(finalPrice);
-            }
         }
 
         const productView = document.getElementById('productView');
         const paymentView = document.getElementById('paymentView');
 
-        // Handle "Pakai Sekarang" click
-        document.getElementById('btn-goto-payment').onclick = function(e) {
-            createRipple(e, 'buyRipple');
-            
+        document.getElementById('btn-goto-payment').onclick = function() {
             const basePrice = Number(getField(currentProduct, 'price'));
             const isAddOn = toggleSwitch.checked;
             const customAddonPrice = getField(currentProduct, 'cover_letter_price');
@@ -2430,51 +3220,17 @@
             totalEl.style.color = 'var(--danger)';
 
             hideModalAdBanner();
-            hideStickyCta();
-
             productView.style.display = 'none';
             paymentView.classList.add('active');
-            
             showToast(`Kode unik Rp ${uniqueCode} ditambahkan untuk verifikasi.`, 'success');
             lockWhatsAppButton();
-            startCountdown();
-            setRandomWaUrgency();
         };
-
-        // Handle WhatsApp click
-        function handleWaClick(e) {
-            const btn = document.getElementById('btn-confirm-whatsapp');
-            if (btn.classList.contains('locked')) return;
-            createRipple(e, 'waRipple');
-            
-            if (!currentProduct) return;
-            const templateName = getField(currentProduct, 'title');
-            const formattedTotal = formatRupiah(currentUniqueTotal);
-            const orderTime = new Date().toLocaleString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
-            
-            let message = `Halo Min, saya ingin membeli CV berikut:\n\n*Jenis CV:* ${templateName}\n*Total Pembayaran (Unik):* ${formattedTotal}\n*Waktu Pesanan:* ${orderTime}`;
-            
-            const isAddOn = toggleSwitch.checked;
-            if (isAddOn) {
-                const customPrice = getField(currentProduct, 'cover_letter_price');
-                const finalPrice = (customPrice && !isNaN(customPrice)) ? Number(customPrice) : coverLetterPrice;
-                message += `\n\n*Addon:* Surat Lamaran Kerja (+${formatRupiah(finalPrice)})`;
-            }
-            message += `\n\nSaya sudah transfer sesuai nominal unik. Mohon segera diproses ya Min.`;
-
-            const adminNumber = getRotatedAdminNumber();
-            showToast('Mengalihkan ke WhatsApp...', 'success');
-            stopCountdown();
-            setTimeout(() => { window.open(`https://wa.me/${adminNumber}?text=${encodeURIComponent(message)}`, '_blank'); }, 800);
-        }
 
         window.backToProduct = function() {
             clearPaymentTimer();
             paymentView.classList.remove('active');
             productView.style.display = 'flex';
             showModalAdBanner();
-            // Re-show sticky CTA
-            if (window.scrollY > 400) showStickyCta();
         };
 
         window.openModal = function(p) {
@@ -2482,7 +3238,6 @@
             currentProduct = p;
             carouselIndex = 0;
             toggleSwitch.checked = false;
-            stickyCtaShown = false;
 
             document.getElementById('m-cat').innerText = getField(p, 'category') || 'CATEGORY';
             document.getElementById('m-title').innerText = getField(p, 'title') || 'Product Title';
@@ -2511,40 +3266,13 @@
             productView.style.display = 'flex';
             updateCoverLetterUI();
 
-            // Reset WA button
-            const waBtn = document.getElementById('btn-confirm-whatsapp');
-            waBtn.classList.remove('locked');
-            waBtn.innerHTML = `<span class="ripple-container" id="waRipple"></span><i class="fab fa-whatsapp" style="font-size:1.2rem;"></i><span>Kirim ke WhatsApp</span><span class="wa-arrow"><i class="fas fa-arrow-right"></i></span>`;
-            waBtn.onclick = handleWaClick;
+            const btn = document.getElementById('btn-confirm-whatsapp');
+            btn.classList.remove('locked');
+            btn.innerHTML = `<i class="fab fa-whatsapp" style="font-size:1.2rem;"></i> Lanjutkan ke WhatsApp`;
 
             document.getElementById('productModal').classList.add('active');
             document.body.style.overflow = 'hidden';
-
-            // Trigger CTA animations
-            const wrapper = document.getElementById('btnBuyWrapper');
-            wrapper.classList.remove('animate-in');
-            void wrapper.offsetWidth;
-            wrapper.classList.add('animate-in');
-
-            // Random urgency
-            setRandomUrgency();
-
-            // Reset urgency text animation
-            const urgencyEl = document.getElementById('urgencyText');
-            urgencyEl.style.animation = 'none';
-            void urgencyEl.offsetWidth;
-            urgencyEl.style.animation = 'urgencyFadeIn 0.4s ease 0.6s forwards';
-            urgencyEl.style.opacity = '0';
-            urgencyEl.style.transform = 'translateY(-5px)';
-
-            // Reset WA urgency
-            const waUrgEl = document.getElementById('waUrgency');
-            waUrgEl.style.animation = 'none';
-            waUrgEl.style.opacity = '0';
-            waUrgEl.style.transform = 'translateY(-5px)';
-
             showModalAdBanner();
-            addScrollListener();
         }
 
         window.closeModal = function() {
@@ -2553,23 +3281,36 @@
             document.body.style.overflow = 'auto';
             currentProduct = null;
             hideModalAdBanner();
-            hideStickyCta();
         }
 
         document.getElementById('productModal').addEventListener('click', (e) => { if(e.target.id === 'productModal') closeModal(); });
 
-        // Sticky CTA button click
-        document.getElementById('stickyCtaBtn').onclick = function() {
-            if (currentProduct) {
-                // Scroll ke atas modal lalu trigger buy
-                const modalInfo = document.querySelector('.modal-info');
-                if (modalInfo) modalInfo.scrollTo({ top: modalInfo.scrollHeight, behavior: 'smooth' });
-                // Trigger the buy button
-                setTimeout(() => {
-                    document.getElementById('btn-goto-payment').click();
-                }, 300);
+        document.getElementById('btn-confirm-whatsapp').onclick = function() {
+            if (!currentProduct) return;
+            const templateName = getField(currentProduct, 'title');
+            const formattedTotal = formatRupiah(currentUniqueTotal);
+            const orderTime = new Date().toLocaleString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+            
+            let message = `Halo Min, saya ingin membeli CV berikut:\n\n*Jenis CV:* ${templateName}\n*Total Pembayaran (Unik):* ${formattedTotal}\n*Waktu Pesanan:* ${orderTime}`;
+            
+            const isAddOn = toggleSwitch.checked;
+            if (isAddOn) {
+                const customPrice = getField(currentProduct, 'cover_letter_price');
+                const finalPrice = (customPrice && !isNaN(customPrice)) ? Number(customPrice) : coverLetterPrice;
+                message += `\n\n*Addon:* Surat Lamaran Kerja (+${formatRupiah(finalPrice)})`;
             }
-        };
+
+            // Tambahkan kupon jika ada
+            if (GESTURE.couponGenerated && GESTURE.couponExpiry && new Date() < GESTURE.couponExpiry) {
+                message += `\n\n*Kupon:* ${GESTURE.couponCode}`;
+            }
+
+            message += `\n\nSaya sudah transfer sesuai nominal unik. Mohon segera diproses ya Min.`;
+
+            const adminNumber = getRotatedAdminNumber();
+            showToast('Mengalihkan ke WhatsApp...', 'success');
+            setTimeout(() => { window.open(`https://wa.me/${adminNumber}?text=${encodeURIComponent(message)}`, '_blank'); }, 1000);
+        }
 
         function getRotatedAdminNumber() {
             let currentIndex = parseInt(localStorage.getItem('wa_admin_index') || '0');
@@ -2582,11 +3323,19 @@
         async function init() {
             adLog('=== APLIKASI DIMULAI ===', 'ok');
             initSlider();
+            
+            // Inisialisasi semua sistem gestur
+            initBottomSwipe();
+            initShakeDetection();
+            initRapidScrollDetection();
+            showGestureTutorial();
+
             await fetchAdminNumbers();
             await fetchCoverLetterPrice();
             await fetchPaymentMethods();
             await fetchProducts();
             renderProducts();
+            
             initAdSystem();
         }
 
