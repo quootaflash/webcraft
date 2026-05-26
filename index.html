@@ -665,13 +665,11 @@
         @keyframes fadeOut { to { opacity: 0; transform: translateY(-10px); } }
 
         /* ============================================
-           AD POPUP — DESAIN PROFESIONAL
-           - Shadow halus dengan border subtle
-           - Label "Sponsored" branded
-           - Close button inline tanpa floating
-           - Timer bar terintegrasi di footer
-           - Hover lift halus
-           - Aspect ratio rapi
+           AD POPUP — FULL BLEED, NO FRAME
+           - Poster tampil utuh tanpa border/padding
+           - Close button float di atas pojok
+           - Timer bar di bawah gambar, tipis
+           - Shadow membentuk kontur poster
            ============================================ */
         .ad-popup-overlay {
             position: fixed;
@@ -693,15 +691,8 @@
 
         .ad-popup-card {
             width: 260px;
-            background: #ffffff;
-            border-radius: 14px;
-            overflow: hidden;
-            box-shadow: 
-                0 1px 3px rgba(0, 0, 0, 0.04),
-                0 6px 24px rgba(0, 0, 0, 0.08),
-                0 12px 48px rgba(0, 0, 0, 0.04);
-            border: 1px solid rgba(0, 0, 0, 0.06);
             position: relative;
+            overflow: visible;
             transform: translateY(30px) scale(0.95);
             transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
             cursor: default;
@@ -710,134 +701,100 @@
             transform: translateY(0) scale(1);
         }
 
-        /* Transparent mode — untuk iklan PNG transparan */
-        .ad-popup-card.transparent-mode {
-            background: transparent;
-            border: none;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
-        }
-
-        /* Header bar: label sponsored + close */
-        .ad-popup-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 8px 10px 0 10px;
-            background: white;
-            position: relative;
-            z-index: 5;
-        }
-        .transparent-mode .ad-popup-header {
-            background: transparent;
-            position: absolute;
-            top: 0; left: 0; right: 0;
-            padding: 4px 6px 0 6px;
-            z-index: 10;
-        }
-
-        .ad-sponsored-label {
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            font-size: 0.6rem;
-            font-weight: 600;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.8px;
-            background: #f1f5f9;
-            padding: 3px 8px;
-            border-radius: 4px;
-        }
-        .ad-sponsored-label i {
-            font-size: 0.55rem;
-            opacity: 0.7;
-        }
-        .transparent-mode .ad-sponsored-label {
-            background: rgba(255,255,255,0.9);
-            backdrop-filter: blur(4px);
-        }
-
-        .ad-close-btn {
-            background: none;
-            border: none;
-            color: var(--text-muted);
-            width: 24px;
-            height: 24px;
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            font-size: 0.7rem;
-            transition: all 0.2s ease;
-            padding: 0;
-        }
-        .ad-close-btn:hover {
-            background: #f1f5f9;
-            color: var(--text-main);
-        }
-        .transparent-mode .ad-close-btn {
-            background: rgba(255,255,255,0.85);
-            backdrop-filter: blur(4px);
-            color: var(--text-main);
-        }
-        .transparent-mode .ad-close-btn:hover {
-            background: rgba(255,255,255,1);
-        }
-
-        /* Gambar iklan */
+        /* Gambar poster — full bleed, tanpa wrapper frame */
         .ad-popup-image-wrap {
             position: relative;
+            display: block;
+            width: 100%;
+            border-radius: 14px;
             overflow: hidden;
-            background: #f8fafc;
+            box-shadow: 
+                0 2px 4px rgba(0, 0, 0, 0.06),
+                0 8px 24px rgba(0, 0, 0, 0.12),
+                0 16px 48px rgba(0, 0, 0, 0.06);
+            line-height: 0;
         }
         .ad-popup-image-wrap a {
             display: block;
             width: 100%;
-            aspect-ratio: 4 / 3;
-            position: relative;
-            overflow: hidden;
+            line-height: 0;
         }
         .ad-popup-image-wrap img {
             width: 100%;
-            height: 100%;
-            object-fit: cover;
+            height: auto;
             display: block;
+            border-radius: 14px;
             transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
         }
         .ad-popup-image-wrap a:hover img {
-            transform: scale(1.03);
-        }
-        .transparent-mode .ad-popup-image-wrap {
-            background: transparent;
-        }
-        .transparent-mode .ad-popup-image-wrap a {
-            aspect-ratio: auto;
-        }
-        .transparent-mode .ad-popup-image-wrap img {
-            object-fit: contain;
+            transform: scale(1.02);
         }
 
-        /* Footer bar: timer */
-        .ad-popup-footer {
-            height: 3px;
-            background: #f1f5f9;
-            position: relative;
-            overflow: hidden;
+        /* Transparent mode — hapus semua frame untuk PNG transparan */
+        .ad-popup-card.transparent-mode .ad-popup-image-wrap {
+            border-radius: 0;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            background: transparent;
         }
-        .transparent-mode .ad-popup-footer {
-            background: rgba(255,255,255,0.3);
+        .ad-popup-card.transparent-mode .ad-popup-image-wrap img {
+            border-radius: 0;
         }
-        .ad-popup-footer-timer {
+
+        /* Close button — float di pojok poster, di luar flow */
+        .ad-close-btn {
             position: absolute;
-            top: 0; left: 0;
+            top: -8px;
+            right: -8px;
+            background: white;
+            border: none;
+            color: var(--text-muted);
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 0.65rem;
+            transition: all 0.2s ease;
+            padding: 0;
+            z-index: 10;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+        .ad-close-btn:hover {
+            background: var(--danger);
+            color: white;
+            transform: scale(1.1);
+            box-shadow: 0 2px 10px rgba(239, 68, 68, 0.4);
+        }
+
+        /* Timer bar — tipis, di bawah poster */
+        .ad-popup-timer-track {
+            width: 100%;
+            height: 3px;
+            background: rgba(0, 0, 0, 0.06);
+            border-radius: 0 0 14px 14px;
+            overflow: hidden;
+            margin-top: -1px;
+        }
+        .ad-popup-timer-fill {
             height: 100%;
             width: 100%;
             background: linear-gradient(90deg, var(--primary), #6366f1);
-            border-radius: 0 2px 2px 0;
+            border-radius: 0 0 14px 14px;
             transform-origin: left center;
             animation: adTimerShrink var(--ad-duration, 15s) linear forwards;
         }
+        .ad-popup-card.transparent-mode .ad-popup-timer-track {
+            border-radius: 0;
+            margin-top: 0;
+            background: rgba(255, 255, 255, 0.25);
+        }
+        .ad-popup-card.transparent-mode .ad-popup-timer-fill {
+            border-radius: 0;
+            background: rgba(255, 255, 255, 0.7);
+        }
+
         @keyframes adTimerShrink {
             from { transform: scaleX(1); }
             to { transform: scaleX(0); }
@@ -1080,20 +1037,17 @@
         </div>
     </div>
 
-    <!-- AD POPUP — PROFESIONAL -->
+    <!-- AD POPUP — FULL BLEED -->
     <div class="ad-popup-overlay" id="adPopupOverlay">
         <div class="ad-popup-card" id="adPopupCard">
-            <div class="ad-popup-header">
-                <span class="ad-sponsored-label"><i class="fas fa-ad"></i> Sponsored</span>
-                <button class="ad-close-btn" id="adCloseBtn"><i class="fas fa-times"></i></button>
-            </div>
+            <button class="ad-close-btn" id="adCloseBtn"><i class="fas fa-times"></i></button>
             <div class="ad-popup-image-wrap" id="adImageWrap">
                 <a href="#" target="_blank" rel="noopener noreferrer" id="adLink">
                     <img id="adImage" src="" alt="Promo">
                 </a>
             </div>
-            <div class="ad-popup-footer">
-                <div class="ad-popup-footer-timer" id="adTimerBar"></div>
+            <div class="ad-popup-timer-track">
+                <div class="ad-popup-timer-fill" id="adTimerBar"></div>
             </div>
         </div>
     </div>
@@ -1168,7 +1122,6 @@
         let allAdsCache = [];
         let isAdShowing = false;
 
-        // Cache iklan untuk modal
         let modalAdsCache = [];
         let todayModalAdIndex = -1;
         let modalAdRevealTimer = null; 
@@ -1497,27 +1450,29 @@
                 try {
                     const canvas = document.createElement('canvas');
                     const ctx = canvas.getContext('2d', { willReadFrequently: true });
+                    const w = this.naturalWidth;
+                    const h = this.naturalHeight;
+                    // Sampel 8 titik untuk akurasi lebih tinggi
                     const points = [
-                        [0, 0],
-                        [Math.floor(this.naturalWidth / 2), Math.floor(this.naturalHeight / 2)],
-                        [this.naturalWidth - 1, this.naturalHeight - 1],
-                        [Math.floor(this.naturalWidth / 4), Math.floor(this.naturalHeight / 4)],
-                        [Math.floor(this.naturalWidth * 3/4), Math.floor(this.naturalHeight * 3/4)]
+                        [0, 0], [w, 0], [0, h], [w, h],
+                        [Math.floor(w/2), Math.floor(h/2)],
+                        [Math.floor(w/4), Math.floor(h/4)],
+                        [Math.floor(w*3/4), Math.floor(h/4)],
+                        [Math.floor(w/2), 0]
                     ];
                     let transparentCount = 0;
                     let sampledCount = 0;
-                    canvas.width = this.naturalWidth;
-                    canvas.height = this.naturalHeight;
+                    canvas.width = w;
+                    canvas.height = h;
                     ctx.drawImage(this, 0, 0);
                     for (const [x, y] of points) {
-                        if (x < this.naturalWidth && y < this.naturalHeight) {
+                        if (x < w && y < h) {
                             sampledCount++;
                             const pixel = ctx.getImageData(x, y, 1, 1).data;
                             if (pixel[3] === 0) transparentCount++;
                         }
                     }
-                    // Jika >40% titik samplenya transparan, anggap transparent
-                    callback(sampledCount > 0 && (transparentCount / sampledCount) > 0.4);
+                    callback(sampledCount > 0 && (transparentCount / sampledCount) > 0.35);
                 } catch (e) {
                     adLog('Transparency detection error: ' + e.message, 'warn');
                     callback(false);
@@ -1528,7 +1483,6 @@
         }
 
         function showAdPopup(adData) {
-            // BUG FIX: Cegah multiple popup tumpang tindih
             if (isAdShowing) {
                 adLog('Popup sudah aktif, abaikan request baru', 'warn');
                 return;
@@ -1540,7 +1494,6 @@
 
             if (!imageUrl) { adLog('Tidak ada URL gambar, batal tampilkan', 'err'); return; }
 
-            // BUG FIX: Validasi duration agar tidak negatif atau 0
             const safeDuration = Math.max(3, Math.min(duration, 60));
             if (safeDuration !== duration) {
                 adLog(`Duration disesuaikan: ${duration}s → ${safeDuration}s`, 'warn');
@@ -1562,21 +1515,19 @@
 
             link.href = linkUrl;
 
-            // BUG FIX: Reset animation timer dengan teknik yang lebih reliable
+            // Reset timer animation
             timerBar.style.animation = 'none';
-            timerBar.offsetHeight; // Force reflow
+            timerBar.offsetHeight;
             timerBar.style.animation = `adTimerShrink ${safeDuration}s linear forwards`;
 
-            // BUG FIX: Gunakan flag loading untuk mencegah race condition
             let imageLoaded = false;
             let loadAttempted = false;
 
             function onImageReady() {
-                if (imageLoaded) return; // Cegah double-fire
+                if (imageLoaded) return;
                 imageLoaded = true;
                 adLog(`Popup loaded: ${img.naturalWidth}x${img.naturalHeight}`, 'ok');
 
-                // Tampilkan dengan animasi
                 overlay.style.display = 'flex';
                 requestAnimationFrame(() => {
                     requestAnimationFrame(() => {
@@ -1587,7 +1538,6 @@
                 adShownCount++;
                 lastAdShownTime = Date.now();
 
-                // Deteksi transparansi untuk mode PNG
                 detectTransparency(imageUrl, (isTransparent) => {
                     if (isTransparent) {
                         card.classList.add('transparent-mode');
@@ -1595,7 +1545,6 @@
                     }
                 });
 
-                // Auto-dismiss
                 adDismissTimer = setTimeout(() => {
                     adLog(`Popup auto-dismiss ${safeDuration}s`, 'ok');
                     closeAd();
@@ -1604,7 +1553,6 @@
 
             function onImageError() {
                 adLog(`Popup GAGAL load: ${imageUrl}`, 'err');
-                // BUG FIX: Hanya retry sekali, lalu skip iklan ini
                 if (!loadAttempted) {
                     loadAttempted = true;
                     img.crossOrigin = "Anonymous";
@@ -1620,11 +1568,9 @@
             img.onerror = onImageError;
             img.src = imageUrl;
 
-            // BUG FIX: Fallback timeout jika gambar tidak memicu onload/onerror
             setTimeout(() => {
                 if (!imageLoaded && !loadAttempted) {
                     adLog('Fallback: gambar tidak trigger event dalam 8s', 'warn');
-                    // Cek apakah gambar sudah punya dimensi
                     if (img.naturalWidth > 0 && img.naturalHeight > 0) {
                         onImageReady();
                     } else {
@@ -1647,7 +1593,6 @@
                     return adsList[i];
                 }
             }
-            // BUG FIX: Reset session cache jika semua sudah ditampilkan
             sessionStorage.setItem(sessionKey, JSON.stringify([]));
             adLog('Semua iklan sudah ditampilkan sekali, reset rotasi', 'ok');
             return adsList[0];
@@ -1662,7 +1607,6 @@
             const ads = await fetchAds();
             allAdsCache = ads;
 
-            // Pisahkan iklan berdasarkan placement
             modalAdsCache = ads.filter(ad => {
                 const placement = getAdPlacement(ad);
                 if (!placement) return false;
@@ -1672,19 +1616,17 @@
 
             const popupAds = ads.filter(ad => {
                 const placement = getAdPlacement(ad);
-                if (!placement) return true; // BUG FIX: Tanpa placement = popup (bukan modal)
+                if (!placement) return true;
                 const p = String(placement).toLowerCase().trim();
                 return !p.includes('modal') && !p.includes('product') && !p.includes('produk') && !p.includes('detail');
             });
 
             adLog(`Distribusi: ${popupAds.length} popup, ${modalAdsCache.length} modal`, 'ok');
 
-            // Hitung rotasi harian untuk iklan modal
             if (modalAdsCache.length > 0) {
                 computeTodayModalAdIndex(modalAdsCache.length);
             }
 
-            // Tampilkan popup setelah delay
             if (popupAds.length > 0) {
                 adLog(`Menunggu ${AD_CONFIG.showDelay}ms sebelum tampilkan popup...`, 'ok');
                 await new Promise(r => setTimeout(r, AD_CONFIG.showDelay));
@@ -1713,13 +1655,10 @@
             if (selectedAd) showAdPopup(selectedAd);
         }
 
-        // BUG FIX: Fungsi jadwal iklan berikutnya, terpisah dari close
         function scheduleNextAd() {
             if (allAdsCache.length > 1 && adShownCount < AD_CONFIG.maxPerSession) {
                 adLog(`Menjadwalkan iklan berikutnya dalam ${AD_CONFIG.cooldownBetweenAds / 1000}s`, 'ok');
                 setTimeout(() => showNextAd(allAdsCache), AD_CONFIG.cooldownBetweenAds);
-            } else {
-                adLog('Tidak ada iklan berikutnya untuk dijadwalkan', 'ok');
             }
         }
 
@@ -1727,35 +1666,27 @@
             const overlay = document.getElementById('adPopupOverlay');
             
             if (!isAdShowing && !overlay.classList.contains('ad-visible')) {
-                return; // Sudah ditutup, jangan proses lagi
+                return;
             }
 
-            // Hentikan timer
             if (adDismissTimer) { clearTimeout(adDismissTimer); adDismissTimer = null; }
             isAdShowing = false;
 
-            // Animasi keluar
             overlay.classList.add('ad-exiting');
 
             setTimeout(() => {
                 overlay.classList.remove('ad-visible', 'ad-exiting');
                 overlay.style.display = 'none';
-                // Jadwalkan iklan berikutnya
                 scheduleNextAd();
             }, 350);
         }
 
-        // BUG FIX: Tutup popup jika klik area overlay (di luar kartu)
         document.getElementById('adPopupOverlay').addEventListener('click', function(e) {
-            // Hanya tutup jika klik di overlay itu sendiri, bukan di kartu/link
             if (e.target === this) {
                 adLog('Popup ditutup via klik overlay', 'ok');
                 closeAd();
             }
         });
-
-        // BUG FIX: Tutup popup saat modal produk dibuka
-        const originalOpenModal = window.openModal;
 
         // ============================================
         // MODAL AD BANNER — RASIO 1280x350
@@ -1766,7 +1697,6 @@
             const imgEl = document.getElementById('modalAdImage');
             const linkEl = document.getElementById('modalAdLink');
 
-            // Reset ke kondisi tersembunyi
             bannerEl.classList.remove('visible');
             bannerEl.style.height = '0px';
 
@@ -1776,7 +1706,6 @@
             }
 
             if (modalAdsCache.length === 0 || todayModalAdIndex < 0) {
-                adLog('Modal ad: tidak ada iklan modal tersedia', 'warn');
                 return;
             }
 
@@ -1784,16 +1713,11 @@
             const imageUrl = getAdImageUrl(selectedAd);
             const linkUrl = getAdLinkUrl(selectedAd);
 
-            if (!imageUrl) {
-                adLog('Modal ad: iklan hari ini tidak punya gambar', 'warn');
-                return;
-            }
+            if (!imageUrl) return;
 
             adLog(`Modal ad: menyiapkan index ${todayModalAdIndex}`, 'ok');
-
             linkEl.href = linkUrl;
 
-            // BUG FIX: Gunakan object URL untuk caching yang lebih reliable
             function revealBanner() {
                 const targetRatio = 350 / 1280;
                 const parentWidth = bannerEl.parentElement ? bannerEl.parentElement.offsetWidth : 400;
@@ -1808,9 +1732,7 @@
                 });
             }
 
-            // BUG FIX: Cek cache gambar dengan cara yang lebih robust
             if (imgEl.src === imageUrl && imgEl.complete && imgEl.naturalWidth > 0) {
-                adLog('Modal ad: gambar sudah di-cache, langsung reveal', 'ok');
                 requestAnimationFrame(revealBanner);
             } else {
                 let bannerRevealed = false;
@@ -1818,7 +1740,6 @@
                 imgEl.onload = function() {
                     if (bannerRevealed) return;
                     bannerRevealed = true;
-                    adLog('Modal ad: onload terpicu', 'ok');
                     if (modalAdRevealTimer) { clearTimeout(modalAdRevealTimer); modalAdRevealTimer = null; }
                     revealBanner();
                 };
@@ -1826,9 +1747,7 @@
                 imgEl.onerror = function() {
                     if (bannerRevealed) return;
                     bannerRevealed = true;
-                    adLog(`Modal ad: GAMBAR GAGAL LOAD`, 'err');
                     if (modalAdRevealTimer) { clearTimeout(modalAdRevealTimer); modalAdRevealTimer = null; }
-                    // Tetap reveal dengan tinggi default
                     const parentWidth = bannerEl.parentElement ? bannerEl.parentElement.offsetWidth : 400;
                     bannerEl.style.height = Math.max(60, Math.round(parentWidth * (350/1280))) + 'px';
                     bannerEl.classList.add('visible');
@@ -1836,17 +1755,14 @@
 
                 imgEl.src = imageUrl;
 
-                // BUG FIX: Fallback dengan naturalWidth check
                 modalAdRevealTimer = setTimeout(() => {
                     if (bannerRevealed) return;
                     bannerRevealed = true;
-                    adLog('Modal ad: FALLBACK timer (3s)', 'warn');
                     modalAdRevealTimer = null;
                     
                     if (imgEl.complete && imgEl.naturalWidth > 0) {
                         revealBanner();
                     } else {
-                        // Gambar gagal, reveal anyway dengan default height
                         const parentWidth = bannerEl.parentElement ? bannerEl.parentElement.offsetWidth : 400;
                         bannerEl.style.height = Math.max(60, Math.round(parentWidth * (350/1280))) + 'px';
                         bannerEl.classList.add('visible');
@@ -1905,7 +1821,6 @@
                 const soldCount = getField(p, 'sold_count');
                 const pId = getField(p, 'id') || Math.random();
 
-                // BUG FIX: Validasi harga
                 const safePrice = (price && !isNaN(Number(price))) ? Number(price) : 0;
                 const safeOriginalPrice = (originalPrice && !isNaN(Number(originalPrice))) ? Number(originalPrice) : 0;
 
@@ -1983,7 +1898,6 @@
         }
 
         window.copyToClipboard = function(text) {
-            // BUG FIX: Sanitasi input sebelum copy
             const sanitized = String(text).replace(/[^\d\s\-\/.]/g, '').trim();
             navigator.clipboard.writeText(sanitized).then(() => {
                 showToast(`Nomor ${sanitized} berhasil disalin!`, 'success');
@@ -2013,7 +1927,6 @@
             const heroEl = document.getElementById('heroSlider');
             heroEl.addEventListener('mouseenter', stopSlide);
             heroEl.addEventListener('mouseleave', startSlide);
-            // BUG FIX: Pause slider saat tab tidak aktif
             document.addEventListener('visibilitychange', () => {
                 if (document.hidden) stopSlide();
                 else startSlide();
@@ -2059,14 +1972,13 @@
         let currentProduct = null, carouselIndex = 0, carouselImages = [];
         const trackEl = document.getElementById('carouselTrack');
         
-        // BUG FIX: Debounce touch swipe untuk mencegah double-trigger
         let lastSwipeTime = 0;
         trackEl.addEventListener('touchstart', e => { 
             touchStartX = e.changedTouches[0].screenX; 
         }, {passive: true});
         trackEl.addEventListener('touchend', e => {
             const now = Date.now();
-            if (now - lastSwipeTime < 300) return; // Debounce 300ms
+            if (now - lastSwipeTime < 300) return;
             lastSwipeTime = now;
             
             touchEndX = e.changedTouches[0].screenX;
@@ -2105,7 +2017,6 @@
             const allowAddon = getField(currentProduct, 'allow_addon');
             const clPrice = getField(currentProduct, 'cover_letter_price');
             
-            // BUG FIX: Penanganan null/undefined yang lebih ketat
             const isNotAllowed = allowAddon === false || allowAddon === 'false' || allowAddon === 0 || allowAddon === '0';
             const hasNoPrice = clPrice === null || clPrice === undefined;
             
@@ -2149,7 +2060,6 @@
             const customAddonPrice = Number(getField(currentProduct, 'cover_letter_price')) || 0;
             const finalAddonPrice = (customAddonPrice > 0) ? customAddonPrice : coverLetterPrice;
             
-            // BUG FIX: Validasi harga sebelum generate kode unik
             if (basePrice <= 0) {
                 showToast('Harga produk tidak valid', 'error');
                 return;
@@ -2204,7 +2114,6 @@
             const extraImages = getField(p, 'images');
             carouselImages = (Array.isArray(extraImages) && extraImages.length > 0) ? [mainImage, ...extraImages].filter(img => img) : [mainImage];
             
-            // BUG FIX: Fallback jika tidak ada gambar sama sekali
             if (carouselImages.length === 0 || !carouselImages[0]) {
                 carouselImages = ['https://picsum.photos/seed/nofallback/800/600'];
             }
@@ -2227,7 +2136,6 @@
             productView.style.display = 'flex';
             updateCoverLetterUI();
 
-            // BUG FIX: Reset tombol WhatsApp saat buka modal baru
             const btn = document.getElementById('btn-confirm-whatsapp');
             btn.classList.remove('locked');
             btn.innerHTML = `<i class="fab fa-whatsapp" style="font-size:1.2rem;"></i> Lanjutkan ke WhatsApp`;
@@ -2235,13 +2143,11 @@
             document.getElementById('productModal').classList.add('active');
             document.body.style.overflow = 'hidden';
 
-            // BUG FIX: Tutup popup iklan saat modal produk dibuka
             if (isAdShowing) {
                 adLog('Modal produk dibuka, menutup popup iklan', 'ok');
                 closeAd();
             }
 
-            // Delay sedikit agar layout stabil sebelum hitung tinggi banner
             setTimeout(() => showModalAdBanner(), 150);
         }
 
@@ -2258,7 +2164,6 @@
         document.getElementById('btn-confirm-whatsapp').onclick = function() {
             if (!currentProduct) return;
             
-            // BUG FIX: Validasi total sebelum kirim
             if (currentUniqueTotal <= 0) {
                 showToast('Total pembayaran tidak valid, silakan coba lagi', 'error');
                 return;
@@ -2281,12 +2186,10 @@
             const adminNumber = getRotatedAdminNumber();
             showToast('Mengalihkan ke WhatsApp...', 'success');
             
-            // BUG FIX: Gunakan timeout yang lebih pendek dan handle error
             setTimeout(() => {
                 try {
                     window.open(`https://wa.me/${adminNumber}?text=${encodeURIComponent(message)}`, '_blank');
                 } catch (err) {
-                    // Fallback jika window.open diblokir
                     const a = document.createElement('a');
                     a.href = `https://wa.me/${adminNumber}?text=${encodeURIComponent(message)}`;
                     a.target = '_blank';
@@ -2299,7 +2202,6 @@
         }
 
         function getRotatedAdminNumber() {
-            // BUG FIX: Validasi nomor admin
             let currentIndex = parseInt(localStorage.getItem('wa_admin_index') || '0');
             if (isNaN(currentIndex) || currentIndex < 0) currentIndex = 0;
             currentIndex = currentIndex % adminNumbersList.length;
@@ -2319,18 +2221,15 @@
             await fetchProducts();
             renderProducts();
             
-            // Jalankan sistem iklan paralel (tidak blocking)
             initAdSystem();
         }
 
-        // BUG FIX: Handle error global untuk mencegah silent crash
         window.addEventListener('unhandledrejection', function(event) {
             adLog('Unhandled Promise: ' + (event.reason?.message || event.reason), 'err');
             event.preventDefault();
         });
 
         window.addEventListener('error', function(event) {
-            // Hanya log error dari script kita, bukan dari third-party
             if (event.filename && !event.filename.includes('cdn.jsdelivr.net')) {
                 adLog('Runtime Error: ' + event.message, 'err');
             }
