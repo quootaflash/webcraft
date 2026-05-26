@@ -35,7 +35,6 @@
         button,input { font-family:inherit; border:none; outline:none; }
         .container { max-width:1200px; margin:0 auto; padding:0 16px; }
 
-        /* HEADER */
         header { background:rgba(255,255,255,0.95); backdrop-filter:blur(12px); border-bottom:1px solid var(--border); position:sticky; top:0; z-index:100; padding:12px 0; }
         .nav-wrapper { display:flex; align-items:center; justify-content:space-between; gap:16px; }
         .logo { display:flex; align-items:center; gap:8px; font-weight:700; font-size:1.1rem; color:var(--text-main); white-space:nowrap; }
@@ -54,7 +53,6 @@
         .rank-badge { background:#f1f5f9; color:#64748b; font-size:0.7rem; font-weight:700; padding:2px 6px; border-radius:4px; min-width:20px; text-align:center; flex-shrink:0; margin-left:8px; border:1px solid #e2e8f0; }
         .no-suggestion { padding:12px 16px; font-size:0.85rem; color:var(--text-muted); text-align:center; }
 
-        /* HERO */
         .hero-section { margin-top:20px; position:relative; width:100%; aspect-ratio:1280/500; max-width:1280px; margin-left:auto; margin-right:auto; background:#e2e8f0; border-radius:var(--radius); overflow:hidden; box-shadow:var(--shadow-md); }
         .slider-container { width:100%; height:100%; position:relative; }
         .slide { position:absolute; inset:0; opacity:0; transition:opacity 0.8s ease-in-out; display:flex; align-items:center; justify-content:center; }
@@ -63,71 +61,20 @@
         .slider-btn { position:absolute; top:50%; transform:translateY(-50%); background:rgba(255,255,255,0.8); color:var(--text-main); width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; z-index:2; cursor:pointer; transition:0.2s; opacity:0; }
         .hero-section:hover .slider-btn { opacity:1; }
         .slider-btn:hover { background:white; transform:translateY(-50%) scale(1.1); }
-        .prev-btn { left:15px; } .next-btn { right:15px; }
+        .prev-btn{left:15px} .next-btn{right:15px}
         .slider-dots { position:absolute; bottom:15px; left:50%; transform:translateX(-50%); display:flex; gap:6px; z-index:2; }
         .dot { width:6px; height:6px; border-radius:50%; background:rgba(255,255,255,0.5); cursor:pointer; transition:0.3s; }
         .dot.active { background:white; width:20px; border-radius:10px; }
 
-        /* FILTER */
         .filter-bar { display:flex; gap:10px; margin:24px 0; overflow-x:auto; padding-bottom:4px; -ms-overflow-style:none; scrollbar-width:none; }
         .filter-bar::-webkit-scrollbar { display:none; }
         .filter-chip { padding:6px 14px; background:white; border:1px solid var(--border); border-radius:50px; font-size:0.85rem; color:var(--text-muted); white-space:nowrap; cursor:pointer; transition:var(--transition); }
         .filter-chip:hover,.filter-chip.active { background:var(--primary); color:white; border-color:var(--primary); box-shadow:0 4px 10px rgba(37,99,235,0.2); }
 
-        /* ============================================
-           AD PLACEMENT — SEMUA POSISI
-           ============================================ */
-
-        /* Header Banner: strip tipis di bawah nav */
-        .ad-header-banner {
-            width:100%; overflow:hidden; position:relative;
-            background:var(--bg-body); display:none;
-            border-bottom:1px solid var(--border);
-        }
-        .ad-header-banner.ad-loaded { display:block; animation:adSlideDown 0.4s ease; }
-        .ad-header-banner a { display:block; position:relative; }
-        .ad-header-banner img { width:100%; height:40px; object-fit:cover; display:block; }
-        .ad-header-banner.transparent-mode { background:transparent!important; border-color:transparent!important; }
-        .ad-header-banner.transparent-mode img { object-fit:contain; height:44px; background:transparent; }
-        @keyframes adSlideDown { from{opacity:0;transform:translateY(-100%)} to{opacity:1;transform:translateY(0)} }
-
-        /* In-feed: banner di antara grid produk */
-        .ad-infeed {
-            grid-column:1/-1; border-radius:12px; overflow:hidden;
-            position:relative; display:none; background:#f1f5f9;
-            border:1px solid var(--border); cursor:pointer;
-        }
-        .ad-infeed.ad-loaded { display:block; animation:adFadeUp 0.5s ease; }
-        .ad-infeed a { display:block; overflow:hidden; border-radius:12px; }
-        .ad-infeed img { width:100%; height:100px; object-fit:cover; display:block; transition:transform 0.3s; }
-        .ad-infeed a:hover img { transform:scale(1.02); }
-        .ad-infeed.transparent-mode { background:transparent!important; border-color:transparent!important; }
-        .ad-infeed.transparent-mode img { object-fit:contain; height:80px; background:transparent; }
-        @media(min-width:640px) { .ad-infeed img { height:130px; } .ad-infeed.transparent-mode img { height:100px; } }
-        @media(min-width:1024px) { .ad-infeed img { height:150px; } .ad-infeed.transparent-mode img { height:120px; } }
-        @keyframes adFadeUp { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
-
-        /* Product Grid */
         .product-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; margin-bottom:60px; }
-        @media(min-width:640px) { .product-grid { grid-template-columns:repeat(3,1fr); gap:16px; } }
-        @media(min-width:1024px) { .product-grid { grid-template-columns:repeat(4,1fr); gap:20px; } }
+        @media(min-width:640px) { .product-grid{grid-template-columns:repeat(3,1fr);gap:16px} }
+        @media(min-width:1024px) { .product-grid{grid-template-columns:repeat(4,1fr);gap:20px} }
 
-        /* Footer Banner: full-width di atas footer */
-        .ad-footer-banner {
-            width:100%; overflow:hidden; position:relative;
-            background:var(--bg-body); display:none;
-            border-radius:var(--radius); margin-top:0;
-            border:1px solid var(--border);
-        }
-        .ad-footer-banner.ad-loaded { display:block; animation:adFadeUp 0.5s ease; }
-        .ad-footer-banner a { display:block; overflow:hidden; border-radius:var(--radius); }
-        .ad-footer-banner img { width:100%; height:80px; object-fit:cover; display:block; transition:transform 0.3s; }
-        .ad-footer-banner a:hover img { transform:scale(1.02); }
-        .ad-footer-banner.transparent-mode { background:transparent!important; border-color:transparent!important; }
-        .ad-footer-banner.transparent-mode img { object-fit:contain; height:70px; background:transparent; }
-        @media(min-width:768px) { .ad-footer-banner img { height:110px; } .ad-footer-banner.transparent-mode img { height:90px; } }
-
-        /* CARD */
         .cv-card { background:var(--bg-card); border-radius:12px; overflow:hidden; box-shadow:var(--shadow-sm); transition:var(--transition); cursor:pointer; position:relative; border:1px solid var(--border); display:flex; flex-direction:column; }
         .cv-card:hover { transform:translateY(-4px); box-shadow:var(--shadow-lg); border-color:var(--primary-light); }
         .card-image { position:relative; padding-top:100%; background:#f1f5f9; overflow:hidden; }
@@ -152,7 +99,7 @@
         .modal-content { background:white; width:100%; max-width:900px; border-radius:20px; overflow:hidden; display:flex; flex-direction:column; box-shadow:var(--shadow-xl); transform:scale(0.95); transition:0.3s; position:relative; max-height:90vh; }
         .modal-overlay.active .modal-content { transform:scale(1); }
         .modal-body { display:flex; flex-direction:column; overflow:hidden; height:100%; }
-        @media(min-width:768px) { .modal-body{flex-direction:row;height:550px} .modal-img-wrapper{width:55%} .modal-info{width:45%} }
+        @media(min-width:768px) { .modal-body{flex-direction:row;height:580px} .modal-img-wrapper{width:55%} .modal-info{width:45%} }
         .modal-img-wrapper { position:relative; background:#f8fafc; overflow:hidden; height:300px; flex-shrink:0; }
         @media(min-width:768px) { .modal-img-wrapper{height:100%} }
         .carousel-track { display:flex; height:100%; transition:transform 0.3s ease-out; cursor:grab; }
@@ -187,46 +134,125 @@
         .btn-close { position:absolute; top:20px; right:20px; background:white; width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; z-index:20; box-shadow:var(--shadow-md); color:var(--text-main); transition:0.2s; }
         .btn-close:hover { background:var(--bg-body); }
 
-        /* PAYMENT */
-        .payment-view { display:none; padding:30px 24px; height:100%; overflow-y:auto; flex-direction:column; animation:fadeIn 0.3s ease; }
+        /* PAYMENT VIEW */
+        .payment-view { display:none; padding:24px 20px; height:100%; overflow-y:auto; flex-direction:column; animation:fadeIn 0.3s ease; }
+        @media(min-width:768px) { .payment-view{padding:30px 28px} }
         .payment-view.active { display:flex; }
         @keyframes fadeIn { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
-        .payment-header { display:flex; align-items:center; gap:10px; margin-bottom:24px; padding-bottom:16px; border-bottom:1px solid var(--border); }
+        .payment-header { display:flex; align-items:center; gap:10px; margin-bottom:20px; padding-bottom:14px; border-bottom:1px solid var(--border); }
+        @media(min-width:768px) { .payment-header{margin-bottom:24px;padding-bottom:16px} }
         .btn-back { background:none; font-size:1.2rem; cursor:pointer; color:var(--text-muted); padding:5px; }
         .btn-back:hover { color:var(--primary); }
-        .summary-card { background:var(--bg-body); border-radius:12px; padding:16px; margin-bottom:16px; }
-        .summary-row { display:flex; justify-content:space-between; margin-bottom:12px; font-size:0.9rem; color:var(--text-muted); }
-        .summary-row.total { margin-top:16px; padding-top:12px; border-top:1px dashed var(--border); font-weight:700; color:var(--text-main); font-size:1.1rem; margin-bottom:0; }
-        .unique-amount-alert { background:#fff7ed; border:1px solid #ffedd5; color:#c2410c; padding:12px; border-radius:8px; font-size:0.85rem; margin-bottom:20px; display:flex; gap:10px; align-items:start; }
-        .unique-amount-alert i { margin-top:3px; }
+        .summary-card { background:var(--bg-body); border-radius:12px; padding:14px; margin-bottom:14px; }
+        @media(min-width:768px) { .summary-card{padding:16px;margin-bottom:16px} }
+        .summary-row { display:flex; justify-content:space-between; margin-bottom:10px; font-size:0.85rem; color:var(--text-muted); }
+        @media(min-width:768px) { .summary-row{font-size:0.9rem;margin-bottom:12px} }
+        .summary-row.total { margin-top:14px; padding-top:12px; border-top:1px dashed var(--border); font-weight:700; color:var(--text-main); font-size:1.05rem; margin-bottom:0; }
+        @media(min-width:768px) { .summary-row.total{font-size:1.1rem;margin-top:16px} }
+        .unique-amount-alert { background:#fff7ed; border:1px solid #ffedd5; color:#c2410c; padding:10px; border-radius:8px; font-size:0.8rem; margin-bottom:14px; display:flex; gap:8px; align-items:start; }
+        @media(min-width:768px) { .unique-amount-alert{padding:12px;margin-bottom:18px;font-size:0.85rem;gap:10px} }
+        .unique-amount-alert i { margin-top:2px; flex-shrink:0; }
         .unique-amount-alert strong { color:#ea580c; }
-        .payment-methods { display:flex; flex-direction:column; gap:12px; margin-bottom:24px; }
-        .payment-option-card { border:1px solid var(--border); border-radius:12px; padding:16px; display:flex; justify-content:space-between; align-items:center; background:white; transition:0.2s; }
+
+        /* ============================================
+           CHECKOUT AD BANNER — RESPONSIF MOBILE
+           ============================================ */
+        .checkout-ad-banner {
+            width: 100%;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+            display: none;
+            background: #f1f5f9;
+            border: 1px solid var(--border);
+            margin-bottom: 16px;
+            flex-shrink: 0;
+        }
+        .checkout-ad-banner.ad-loaded {
+            display: block;
+            animation: checkoutAdReveal 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        .checkout-ad-banner a {
+            display: block;
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px;
+        }
+        .checkout-ad-banner img {
+            width: 100%;
+            height: 80px;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.4s ease;
+        }
+        .checkout-ad-banner a:active img {
+            transform: scale(0.98);
+        }
+        .checkout-ad-banner.transparent-mode {
+            background: transparent !important;
+            border-color: transparent !important;
+        }
+        .checkout-ad-banner.transparent-mode img {
+            object-fit: contain;
+            background: transparent;
+        }
+
+        /* Tablet */
+        @media (min-width: 480px) {
+            .checkout-ad-banner img { height: 96px; }
+        }
+
+        /* Desktop: modal split 55/45, payment panel ~405px */
+        @media (min-width: 768px) {
+            .checkout-ad-banner {
+                margin-bottom: 20px;
+                border-radius: 12px;
+            }
+            .checkout-ad-banner img {
+                height: 110px;
+            }
+            .checkout-ad-banner.transparent-mode img {
+                height: 100px;
+            }
+        }
+
+        /* Large desktop */
+        @media (min-width: 1024px) {
+            .checkout-ad-banner img {
+                height: 120px;
+            }
+        }
+
+        @keyframes checkoutAdReveal {
+            from { opacity: 0; transform: translateY(8px) scale(0.97); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .payment-methods { display:flex; flex-direction:column; gap:10px; margin-bottom:20px; }
+        @media(min-width:768px) { .payment-methods{gap:12px;margin-bottom:24px} }
+        .payment-option-card { border:1px solid var(--border); border-radius:12px; padding:14px; display:flex; justify-content:space-between; align-items:center; background:white; transition:0.2s; }
+        @media(min-width:768px) { .payment-option-card{padding:16px} }
         .payment-option-card:hover { border-color:var(--primary); box-shadow:var(--shadow-sm); }
-        .bank-info { display:flex; align-items:center; gap:12px; }
-        .bank-logo-img { width:60px; height:auto; max-height:30px; object-fit:contain; }
-        .qris-img { width:80px; height:80px; border-radius:8px; border:1px solid #eee; }
-        .qris-container { display:flex; align-items:center; gap:16px; }
-        .bank-details h4 { font-size:0.95rem; margin-bottom:2px; display:flex; align-items:center; gap:8px; color:#333; }
-        .bank-number { font-family:monospace; font-size:1.1rem; letter-spacing:1px; color:var(--text-main); font-weight:600; }
-        .bank-name { font-size:0.75rem; color:var(--text-muted); }
-        .btn-copy { background:var(--bg-body); border:1px solid var(--border); padding:8px 12px; border-radius:8px; cursor:pointer; font-size:0.8rem; color:var(--primary); display:flex; align-items:center; gap:6px; transition:0.2s; flex-shrink:0; }
+        .bank-info { display:flex; align-items:center; gap:10px; }
+        @media(min-width:768px) { .bank-info{gap:12px} }
+        .bank-logo-img { width:50px; height:auto; max-height:26px; object-fit:contain; }
+        @media(min-width:768px) { .bank-logo-img{width:60px;max-height:30px} }
+        .qris-img { width:70px; height:70px; border-radius:8px; border:1px solid #eee; }
+        @media(min-width:768px) { .qris-img{width:80px;height:80px} }
+        .qris-container { display:flex; align-items:center; gap:14px; }
+        .bank-details h4 { font-size:0.9rem; margin-bottom:2px; display:flex; align-items:center; gap:6px; color:#333; }
+        @media(min-width:768px) { .bank-details h4{font-size:0.95rem;gap:8px} }
+        .bank-number { font-family:monospace; font-size:1rem; letter-spacing:1px; color:var(--text-main); font-weight:600; }
+        @media(min-width:768px) { .bank-number{font-size:1.1rem} }
+        .bank-name { font-size:0.7rem; color:var(--text-muted); }
+        .btn-copy { background:var(--bg-body); border:1px solid var(--border); padding:7px 10px; border-radius:8px; cursor:pointer; font-size:0.75rem; color:var(--primary); display:flex; align-items:center; gap:5px; transition:0.2s; flex-shrink:0; }
+        @media(min-width:768px) { .btn-copy{padding:8px 12px;font-size:0.8rem;gap:6px} }
         .btn-copy:hover { background:var(--primary-light); border-color:var(--primary); }
-        .btn-confirm-wa { background:#25D366; color:white; padding:16px; border-radius:12px; font-weight:600; font-size:1rem; text-align:center; width:100%; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:10px; transition:0.3s; }
+        .btn-confirm-wa { background:#25D366; color:white; padding:14px; border-radius:12px; font-weight:600; font-size:0.95rem; text-align:center; width:100%; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:10px; transition:0.3s; }
+        @media(min-width:768px) { .btn-confirm-wa{padding:16px;font-size:1rem} }
         .btn-confirm-wa:hover { background:#1ebc57; transform:translateY(-2px); box-shadow:0 4px 12px rgba(37,211,102,0.3); }
         .btn-confirm-wa.locked { background:#9ca3af; cursor:not-allowed; opacity:0.7; pointer-events:none; box-shadow:none; transform:none; }
         .mt-auto { margin-top:auto; }
-
-        /* Checkout Ad Banner */
-        .checkout-ad-banner { width:100%; border-radius:10px; overflow:hidden; margin-bottom:20px; position:relative; display:none; background:#f1f5f9; border:1px solid var(--border); }
-        .checkout-ad-banner.ad-loaded { display:block; animation:checkoutAdIn 0.6s cubic-bezier(0.16,1,0.3,1) forwards; }
-        .checkout-ad-banner.transparent-mode { background:transparent!important; border-color:transparent!important; }
-        .checkout-ad-banner a { display:block; position:relative; overflow:hidden; border-radius:10px; }
-        .checkout-ad-banner img { width:100%; height:68px; object-fit:cover; display:block; transition:transform 0.4s; }
-        .checkout-ad-banner.transparent-mode img { object-fit:contain; height:60px; background:transparent; }
-        .checkout-ad-banner a:hover img { transform:scale(1.04); }
-        @media(min-width:768px) { .checkout-ad-banner img{height:82px} .checkout-ad-banner.transparent-mode img{height:72px} }
-        @keyframes checkoutAdIn { from{opacity:0;transform:translateY(6px) scale(0.98)} to{opacity:1;transform:translateY(0) scale(1)} }
 
         /* QRIS */
         .qris-modal-overlay { position:fixed; inset:0; background:rgba(15,23,42,0.8); backdrop-filter:blur(5px); z-index:3000; display:flex; align-items:center; justify-content:center; opacity:0; pointer-events:none; transition:0.3s; padding:16px; }
@@ -255,8 +281,8 @@
         @keyframes slideDown { to{opacity:1;transform:translateY(0)} }
         @keyframes fadeOut { to{opacity:0;transform:translateY(-10px)} }
 
-        /* POPUP IKLAN (kiri bawah) */
-        .ad-popup { position:fixed; bottom:20px; left:20px; z-index:900; width:210px; background:white; border-radius:14px; box-shadow:0 8px 30px rgba(0,0,0,0.12),0 2px 8px rgba(0,0,0,0.06); overflow:visible; display:none; transform:translateY(50px) scale(0.95); opacity:0; transition:transform 0.5s cubic-bezier(0.16,1,0.3,1),opacity 0.4s ease; }
+        /* POPUP IKLAN */
+        .ad-popup { position:fixed; bottom:20px; left:20px; z-index:900; width:200px; background:white; border-radius:14px; box-shadow:0 8px 30px rgba(0,0,0,0.12),0 2px 8px rgba(0,0,0,0.06); overflow:visible; display:none; transform:translateY(50px) scale(0.95); opacity:0; transition:transform 0.5s cubic-bezier(0.16,1,0.3,1),opacity 0.4s ease; }
         .ad-popup.ad-visible { display:block; transform:translateY(0) scale(1); opacity:1; }
         .ad-popup.transparent-mode { background:transparent!important; box-shadow:none; filter:drop-shadow(0 8px 24px rgba(0,0,0,0.18)); }
         .ad-img img { width:100%; display:block; object-fit:cover; border-radius:14px; transition:transform 0.3s; }
@@ -267,15 +293,15 @@
         .ad-timer-bar { position:absolute; bottom:0; left:0; height:2px; background:var(--primary); border-radius:0 0 14px 14px; width:100%; transform-origin:left; animation:adTimerShrink var(--ad-duration,15s) linear forwards; }
         .ad-popup.transparent-mode .ad-timer-bar { border-radius:0; }
         @keyframes adTimerShrink { from{transform:scaleX(1)} to{transform:scaleX(0)} }
-        @media(max-width:480px) { .ad-popup{bottom:12px;left:12px;width:170px} }
+        @media(max-width:480px) { .ad-popup{bottom:12px;left:12px;width:160px} }
 
         /* DEBUG */
-        .ad-debug-panel { position:fixed; bottom:10px; right:10px; z-index:9999; background:#1e293b; color:#e2e8f0; font-size:0.7rem; font-family:'Courier New',monospace; padding:10px 14px; border-radius:8px; max-width:360px; max-height:260px; overflow-y:auto; display:none; box-shadow:var(--shadow-xl); line-height:1.5; }
-        .ad-debug-panel .debug-title { color:#38bdf8; font-weight:700; margin-bottom:6px; font-size:0.75rem; }
+        .ad-debug-panel { position:fixed; bottom:10px; right:10px; z-index:9999; background:#1e293b; color:#e2e8f0; font-size:0.7rem; font-family:'Courier New',monospace; padding:10px 14px; border-radius:8px; max-width:340px; max-height:220px; overflow-y:auto; display:none; box-shadow:var(--shadow-xl); line-height:1.5; }
+        .ad-debug-panel .debug-title{color:#38bdf8;font-weight:700;margin-bottom:6px;font-size:0.75rem}
         .ad-debug-panel .debug-ok{color:#4ade80} .ad-debug-panel .debug-err{color:#f87171} .ad-debug-panel .debug-warn{color:#fbbf24}
 
         footer { border-top:1px solid var(--border); padding:30px 0; text-align:center; color:var(--text-muted); font-size:0.85rem; background:white; }
-        .modal-info::-webkit-scrollbar,.payment-view::-webkit-scrollbar { width:6px; }
+        .modal-info::-webkit-scrollbar,.payment-view::-webkit-scrollbar { width:5px; }
         .modal-info::-webkit-scrollbar-thumb,.payment-view::-webkit-scrollbar-thumb { background:#cbd5e1; border-radius:3px; }
         @keyframes pulse { 0%{opacity:0.6} 50%{opacity:1} 100%{opacity:0.6} }
     </style>
@@ -285,7 +311,6 @@
     <div class="toast-container" id="toastContainer"></div>
     <div class="ad-debug-panel" id="adDebugPanel"><div class="debug-title">[AD SYSTEM]</div><div id="adDebugContent"></div></div>
 
-    <!-- ===== PLACEMENT 1: HEADER BANNER ===== -->
     <header>
         <div class="container nav-wrapper">
             <a href="#" class="logo">
@@ -299,11 +324,6 @@
             </div>
         </div>
     </header>
-    <div class="ad-header-banner" id="adHeaderBanner">
-        <a href="#" target="_blank" rel="noopener noreferrer" id="adHeaderLink">
-            <img id="adHeaderImage" src="" alt="" onerror="this.closest('.ad-header-banner').style.display='none'">
-        </a>
-    </div>
 
     <main class="container">
         <section class="hero-section" id="heroSlider">
@@ -320,15 +340,6 @@
             <div class="cv-card" style="cursor:default"><div class="card-image" style="background:#e2e8f0;animation:pulse 1.5s infinite"></div><div class="card-content"><div style="height:14px;background:#e2e8f0;width:80%;margin-bottom:6px;border-radius:4px;animation:pulse 1.5s infinite"></div><div style="height:14px;background:#e2e8f0;width:60%;margin-bottom:12px;border-radius:4px;animation:pulse 1.5s infinite"></div><div style="height:16px;background:#e2e8f0;width:50%;border-radius:4px;animation:pulse 1.5s infinite"></div></div></div>
         </div>
     </main>
-
-    <!-- ===== PLACEMENT 5: FOOTER BANNER ===== -->
-    <div class="container" style="margin-top:0">
-        <div class="ad-footer-banner" id="adFooterBanner">
-            <a href="#" target="_blank" rel="noopener noreferrer" id="adFooterLink">
-                <img id="adFooterImage" src="" alt="" onerror="this.closest('.ad-footer-banner').style.display='none'">
-            </a>
-        </div>
-    </div>
 
     <footer>
         <div class="container"><p>&copy; 2026 WriteHub. All Rights Reserved.</p></div>
@@ -364,22 +375,24 @@
             <div class="payment-view" id="paymentView">
                 <div class="payment-header">
                     <button class="btn-back" onclick="backToProduct()"><i class="fas fa-arrow-left"></i></button>
-                    <h3 style="margin:0;font-size:1.1rem;font-weight:700">Detail Pembayaran</h3>
+                    <h3 style="margin:0;font-size:1.05rem;font-weight:700">Detail Pembayaran</h3>
                 </div>
-                <div class="unique-amount-alert"><i class="fas fa-exclamation-circle"></i><div><strong>PENTING:</strong> Mohon transfer sesuai <strong>Total Nominal Unik</strong> di bawah ini (termasuk 3 digit terakhir) untuk verifikasi otomatis.</div></div>
+                <div class="unique-amount-alert"><i class="fas fa-exclamation-circle"></i><div><strong>PENTING:</strong> Transfer sesuai <strong>Total Nominal Unik</strong> di bawah ini untuk verifikasi otomatis.</div></div>
                 <div class="summary-card">
                     <div class="summary-row"><span>Produk</span><span id="p-product-name" style="font-weight:600;color:var(--text-main)">Nama Produk</span></div>
                     <div class="summary-row"><span>Harga Satuan</span><span id="p-unit-price">Rp 0</span></div>
                     <div class="summary-row" id="row-addon" style="display:none"><span>Surat Lamaran</span><span id="p-addon-price">Rp 0</span></div>
                     <div class="summary-row total"><span>Total Bayar (Unik)</span><span id="p-total-price" style="color:var(--danger)">Rp 0</span></div>
                 </div>
-                <!-- ===== PLACEMENT 4: CHECKOUT BANNER ===== -->
+
+                <!-- CHECKOUT AD BANNER -->
                 <div class="checkout-ad-banner" id="checkoutAdBanner">
                     <a href="#" target="_blank" rel="noopener noreferrer" id="checkoutAdLink">
                         <img id="checkoutAdImage" src="" alt="" onerror="this.closest('.checkout-ad-banner').style.display='none'">
                     </a>
                 </div>
-                <h4 style="margin-bottom:12px;font-size:0.9rem;font-weight:600;color:var(--text-muted)">Metode Pembayaran</h4>
+
+                <h4 style="margin-bottom:10px;font-size:0.85rem;font-weight:600;color:var(--text-muted)">Metode Pembayaran</h4>
                 <div class="payment-methods" id="paymentMethodsList"><div style="text-align:center;color:var(--text-muted);padding:20px">Memuat metode pembayaran...</div></div>
                 <div class="mt-auto"><button id="btn-confirm-whatsapp" class="btn-confirm-wa"><i class="fab fa-whatsapp" style="font-size:1.2rem"></i> Lanjutkan ke WhatsApp</button></div>
             </div>
@@ -392,12 +405,12 @@
             <div class="qris-modal-title">Scan QRIS</div>
             <div class="qris-modal-image-wrapper"><img id="qrisDisplayImage" src="" alt="QRIS"></div>
             <div class="qris-modal-price-area" onclick="copyTotalPrice()"><div class="copy-hint"><i class="fas fa-hand-pointer"></i> Klik untuk Salin</div><div class="qris-modal-total" id="qrisDisplayTotal">Rp 0</div><i class="far fa-copy copy-icon-overlay"></i></div>
-            <div class="qris-modal-desc">Nominal unik ini ditambahkan untuk verifikasi otomatis. Gunakan aplikasi pembayaran (GoPay/OVO/Dana) untuk scan QR ini.</div>
+            <div class="qris-modal-desc">Gunakan aplikasi pembayaran (GoPay/OVO/Dana) untuk scan QR ini.</div>
             <div class="qris-actions"><button class="btn-close-qris" onclick="closeQrisModal()">Tutup</button></div>
         </div>
     </div>
 
-    <!-- ===== PLACEMENT 6: POPUP IKLAN (kiri bawah) ===== -->
+    <!-- POPUP IKLAN -->
     <div class="ad-popup" id="adPopup">
         <div class="ad-close" onclick="closeAd()"><i class="fas fa-times"></i></div>
         <a href="#" target="_blank" rel="noopener noreferrer" id="adLink">
@@ -427,11 +440,11 @@
 
         const dummyData = [
             { id:1, title:"Modern Creative Portfolio", category:"Creative", price:50000, original_price:75000, sold_count:120, description:"Template asimetris modern.\n\n- PDF & Word\n- Mudah diedit\n- Font gratis", image:"https://picsum.photos/seed/clean1/600/600", images:["https://picsum.photos/seed/clean1/600/600","https://picsum.photos/seed/clean1b/600/600","https://picsum.photos/seed/clean1c/600/600"], cover_letter_price:25000, allow_addon:true },
-            { id:2, title:"Executive Formal Blue", category:"Formal", price:75000, original_price:null, sold_count:85, description:"Struktur profesional manajerial.\n\nWarna biru navy elegan.", image:"https://picsum.photos/seed/clean2/600/600", images:["https://picsum.photos/seed/clean2/600/600","https://picsum.photos/seed/clean2b/600/600"], cover_letter_price:null, allow_addon:true },
+            { id:2, title:"Executive Formal Blue", category:"Formal", price:75000, original_price:null, sold_count:85, description:"Struktur profesional manajerial.", image:"https://picsum.photos/seed/clean2/600/600", images:["https://picsum.photos/seed/clean2/600/600","https://picsum.photos/seed/clean2b/600/600"], cover_letter_price:null, allow_addon:true },
             { id:3, title:"Developer Dark Mode", category:"Tech", price:90000, original_price:120000, sold_count:200, description:"Tema gelap untuk programmer.", image:"https://picsum.photos/seed/clean3/600/600", images:["https://picsum.photos/seed/clean3/600/600"], allow_addon:false },
             { id:4, title:"Clean Minimalist", category:"Simple", price:35000, original_price:null, sold_count:500, description:"Fokus konten tanpa gangguan.", image:"https://picsum.photos/seed/clean4/600/600", images:["https://picsum.photos/seed/clean4/600/600","https://picsum.photos/seed/clean4b/600/600","https://picsum.photos/seed/c4c/600/600"], cover_letter_price:10000, allow_addon:true },
             { id:5, title:"Elegant Rose Gold", category:"Creative", price:55000, original_price:80000, sold_count:95, description:"Sentuhan rose gold premium.", image:"https://picsum.photos/seed/clean5/600/600", images:["https://picsum.photos/seed/clean5/600/600","https://picsum.photos/seed/clean5b/600/600"], cover_letter_price:20000, allow_addon:true },
-            { id:6, title:"Corporate Gray", category:"Formal", price:65000, original_price:null, sold_count:150, description:" Profesional abu-abu korporat.", image:"https://picsum.photos/seed/clean6/600/600", images:["https://picsum.photos/seed/clean6/600/600"], allow_addon:true }
+            { id:6, title:"Corporate Gray", category:"Formal", price:65000, original_price:null, sold_count:150, description:"Profesional abu-abu korporat.", image:"https://picsum.photos/seed/clean6/600/600", images:["https://picsum.photos/seed/clean6/600/600"], allow_addon:true }
         ];
 
         const dummyPaymentMethods = [
@@ -447,7 +460,7 @@
         let touchStartX=0, touchEndX=0;
 
         // ============================================
-        // AD CONFIG — 6 PLACEMENT, 1 SUMBER DATA
+        // AD CONFIG — HANYA 2 SLOT: CHECKOUT + POPUP
         // ============================================
         const AD_CONFIG = {
             showDelay: 3000,
@@ -456,116 +469,65 @@
             cooldownBetweenAds: 30000,
             tableNames: ['iklan','ads','ad','iklan_banner','banner'],
             debug: false,
-            // Offset harian per slot agar tidak tumpang tindih
-            // Slot: header=0, infeed1=1, infeed2=2, checkout=3, footer=4, popup=5
-            slotOffsets: [0, 1, 2, 3, 4, 5]
+            // Checkout = offset 0, Popup = offset 1
+            slotOffsets: [0, 1]
         };
 
         let adDismissTimer=null, adShownCount=0, lastAdShownTime=0, allAdsCache=[];
 
         let fields = { title:'title', price:'price', original_price:'original_price', image:'image', images:'images', category:'category', description:'description', sold_count:'sold_count', cover_letter_price:'cover_letter_price', allow_addon:'allow_addon' };
 
-        // --- AD LOG ---
         function adLog(msg, type='ok') {
             const ts = new Date().toLocaleTimeString('id-ID');
             console.log(`%c[AD] ${msg}`, type==='ok'?'color:#4ade80':type==='err'?'color:#f87171':'color:#fbbf24');
-            if (AD_CONFIG.debug) {
-                const c = document.getElementById('adDebugContent');
-                if (c) { const d = document.createElement('div'); d.className = `debug-${type}`; d.textContent = `[${ts}] ${msg}`; c.appendChild(d); c.scrollTop = c.scrollHeight; }
-            }
+            if (AD_CONFIG.debug) { const c=document.getElementById('adDebugContent'); if(c){const d=document.createElement('div');d.className=`debug-${type}`;d.textContent=`[${ts}] ${msg}`;c.appendChild(d);c.scrollTop=c.scrollHeight;} }
         }
+        window.toggleAdDebug = function() { const p=document.getElementById('adDebugPanel');if(p){p.style.display=p.style.display==='none'?'block':'none';AD_CONFIG.debug=p.style.display==='block';adLog('Debug '+(AD_CONFIG.debug?'ON':'OFF'));} };
 
-        window.toggleAdDebug = function() {
-            const p = document.getElementById('adDebugPanel');
-            if (p) { p.style.display = p.style.display==='none'?'block':'none'; AD_CONFIG.debug = p.style.display==='block'; adLog('Debug '+(AD_CONFIG.debug?'ON':'OFF')); }
-        };
+        window.showToast = function(msg, type='success') { const c=document.getElementById('toastContainer'),t=document.createElement('div');t.className=`toast ${type}`;const ic=type==='success'?'fa-check-circle':type==='error'?'fa-exclamation-circle':'fa-exclamation-triangle';t.innerHTML=`<i class="fas ${ic}"></i><div>${msg}</div>`;c.appendChild(t);setTimeout(()=>{t.style.animation='fadeOut 0.3s ease-in forwards';setTimeout(()=>t.remove(),300);},3000); }
 
-        // --- TOAST ---
-        window.showToast = function(msg, type='success') {
-            const c = document.getElementById('toastContainer'), t = document.createElement('div');
-            t.className = `toast ${type}`;
-            const ic = type==='success'?'fa-check-circle':type==='error'?'fa-exclamation-circle':'fa-exclamation-triangle';
-            t.innerHTML = `<i class="fas ${ic}"></i><div>${msg}</div>`; c.appendChild(t);
-            setTimeout(() => { t.style.animation='fadeOut 0.3s ease-in forwards'; setTimeout(()=>t.remove(),300); }, 3000);
-        }
-
-        // --- QRIS ---
         window.openQrisModal = function(u) { document.getElementById('qrisDisplayImage').src=u; document.getElementById('qrisDisplayTotal').innerText="Rp "+new Intl.NumberFormat('id-ID').format(currentUniqueTotal); document.getElementById('qrisModal').classList.add('active'); };
         window.closeQrisModal = function() { document.getElementById('qrisModal').classList.remove('active'); };
         window.copyTotalPrice = function() { const t=document.getElementById('qrisDisplayTotal').innerText; navigator.clipboard.writeText(t).then(()=>showToast('Nominal disalin!','success')).catch(()=>{const a=document.createElement("textarea");a.value=t;document.body.appendChild(a);a.select();document.execCommand("Copy");a.remove();showToast('Nominal disalin!','success')}); };
         document.getElementById('qrisModal').addEventListener('click', e => { if(e.target.id==='qrisModal') closeQrisModal(); });
 
-        // --- PAYMENT TIMER ---
-        function lockWhatsAppButton() { const b=document.getElementById('btn-confirm-whatsapp'); if(paymentLockTimer) clearTimeout(paymentLockTimer); b.classList.add('locked'); b.innerHTML=`<i class="fas fa-clock"></i> Menunggu...`; paymentLockTimer=setTimeout(unlockWhatsAppButton,LOCK_DURATION_MS); }
-        function unlockWhatsAppButton() { const b=document.getElementById('btn-confirm-whatsapp'); b.classList.remove('locked'); b.innerHTML=`<i class="fab fa-whatsapp" style="font-size:1.2rem"></i> Lanjutkan ke WhatsApp`; }
+        function lockWhatsAppButton() { const b=document.getElementById('btn-confirm-whatsapp');if(paymentLockTimer)clearTimeout(paymentLockTimer);b.classList.add('locked');b.innerHTML=`<i class="fas fa-clock"></i> Menunggu...`;paymentLockTimer=setTimeout(unlockWhatsAppButton,LOCK_DURATION_MS); }
+        function unlockWhatsAppButton() { const b=document.getElementById('btn-confirm-whatsapp');b.classList.remove('locked');b.innerHTML=`<i class="fab fa-whatsapp" style="font-size:1.2rem"></i> Lanjutkan ke WhatsApp`; }
         function clearPaymentTimer() { if(paymentLockTimer){clearTimeout(paymentLockTimer);paymentLockTimer=null;} }
 
-        // --- HELPERS ---
         const formatRupiah = n => new Intl.NumberFormat('id-ID',{style:'currency',currency:'IDR',minimumFractionDigits:0}).format(n);
         function getField(item,k) { return item[fields[k]]||item[k]; }
 
-        function autoMapColumns(s) {
-            if(!s) return; const k=Object.keys(s);
-            fields = {
-                title:k.find(x=>x.toLowerCase().includes('nama')||x.toLowerCase().includes('title'))||'title',
-                price:k.find(x=>x.toLowerCase().includes('harga')||x.toLowerCase().includes('price'))||'price',
-                original_price:k.find(x=>x.toLowerCase().includes('original')||x.toLowerCase().includes('coret'))||'original_price',
-                image:k.find(x=>x.toLowerCase().includes('gambar')||x.toLowerCase().includes('image')||x.toLowerCase().includes('url'))||'image',
-                images:k.find(x=>x.toLowerCase().includes('images')||x.toLowerCase().includes('galeri'))||'images',
-                category:k.find(x=>x.toLowerCase().includes('kategori')||x.toLowerCase().includes('category'))||'category',
-                description:k.find(x=>x.toLowerCase().includes('deskripsi')||x.toLowerCase().includes('desc'))||'description',
-                sold_count:k.find(x=>x.toLowerCase().includes('terjual')||x.toLowerCase().includes('sold'))||'sold_count',
-                cover_letter_price:k.find(x=>x.toLowerCase().includes('cover_letter_price')||x.toLowerCase().includes('harga_surat'))||'cover_letter_price',
-                allow_addon:k.find(x=>x.toLowerCase().includes('allow_addon')||x.toLowerCase().includes('aktifkan_addon'))||'allow_addon'
-            };
-        }
+        function autoMapColumns(s) { if(!s)return;const k=Object.keys(s);fields={title:k.find(x=>x.toLowerCase().includes('nama')||x.toLowerCase().includes('title'))||'title',price:k.find(x=>x.toLowerCase().includes('harga')||x.toLowerCase().includes('price'))||'price',original_price:k.find(x=>x.toLowerCase().includes('original')||x.toLowerCase().includes('coret'))||'original_price',image:k.find(x=>x.toLowerCase().includes('gambar')||x.toLowerCase().includes('image')||x.toLowerCase().includes('url'))||'image',images:k.find(x=>x.toLowerCase().includes('images')||x.toLowerCase().includes('galeri'))||'images',category:k.find(x=>x.toLowerCase().includes('kategori')||x.toLowerCase().includes('category'))||'category',description:k.find(x=>x.toLowerCase().includes('deskripsi')||x.toLowerCase().includes('desc'))||'description',sold_count:k.find(x=>x.toLowerCase().includes('terjual')||x.toLowerCase().includes('sold'))||'sold_count',cover_letter_price:k.find(x=>x.toLowerCase().includes('cover_letter_price')||x.toLowerCase().includes('harga_surat'))||'cover_letter_price',allow_addon:k.find(x=>x.toLowerCase().includes('allow_addon')||x.toLowerCase().includes('aktifkan_addon'))||'allow_addon'}; }
 
-        // --- SEARCH ---
-        const searchInput = document.getElementById('searchInput'), suggestionsBox = document.getElementById('searchSuggestions');
-        function renderSuggestions(q) {
-            suggestionsBox.innerHTML=''; if(!q){suggestionsBox.classList.remove('active');return;}
-            const list=[],seen=new Set();
-            products.forEach(p=>{const t=(getField(p,'title')||'').toLowerCase(),c=(getField(p,'category')||'').toLowerCase(),s=Number(getField(p,'sold_count'))||0,d=getField(p,'title');if((t.includes(q)||c.includes(q))&&!seen.has(d)){seen.add(d);let score=t===q?1000:t.startsWith(q)?500:100;score+=s*0.1;list.push({text:d,sold:s,score});}});
-            list.sort((a,b)=>b.score-a.score);
-            if(!list.length) suggestionsBox.innerHTML='<div class="no-suggestion">Pencarian tidak ditemukan</div>';
-            else list.slice(0,5).forEach((item,i)=>{const d=document.createElement('div');d.className='suggestion-item';let r=i===0?'<span class="top-badge">TOP</span>':(i===1||i===2)?`<span class="rank-badge">${i+1}</span>`:'';d.innerHTML=`<div class="suggestion-content">${item.text}</div>${r}`;d.onclick=()=>{searchInput.value=item.text;suggestionsBox.classList.remove('active');filterLogic();};suggestionsBox.appendChild(d);});
-            suggestionsBox.classList.add('active');
-        }
+        const searchInput=document.getElementById('searchInput'),suggestionsBox=document.getElementById('searchSuggestions');
+        function renderSuggestions(q) { suggestionsBox.innerHTML='';if(!q){suggestionsBox.classList.remove('active');return;}const list=[],seen=new Set();products.forEach(p=>{const t=(getField(p,'title')||'').toLowerCase(),c=(getField(p,'category')||'').toLowerCase(),s=Number(getField(p,'sold_count'))||0,d=getField(p,'title');if((t.includes(q)||c.includes(q))&&!seen.has(d)){seen.add(d);let score=t===q?1000:t.startsWith(q)?500:100;score+=s*0.1;list.push({text:d,sold:s,score});}});list.sort((a,b)=>b.score-a.score);if(!list.length)suggestionsBox.innerHTML='<div class="no-suggestion">Pencarian tidak ditemukan</div>';else list.slice(0,5).forEach((item,i)=>{const d=document.createElement('div');d.className='suggestion-item';let r=i===0?'<span class="top-badge">TOP</span>':(i===1||i===2)?`<span class="rank-badge">${i+1}</span>`:'';d.innerHTML=`<div class="suggestion-content">${item.text}</div>${r}`;d.onclick=()=>{searchInput.value=item.text;suggestionsBox.classList.remove('active');filterLogic();};suggestionsBox.appendChild(d);});suggestionsBox.classList.add('active'); }
         searchInput.addEventListener('input',e=>{renderSuggestions(e.target.value.toLowerCase());filterLogic();});
         searchInput.addEventListener('keydown',e=>{if(e.key==='Enter'){suggestionsBox.classList.remove('active');searchInput.blur();}});
         document.addEventListener('click',e=>{if(!searchInput.contains(e.target)&&!suggestionsBox.contains(e.target))suggestionsBox.classList.remove('active');});
 
-        // --- CATEGORIES ---
         function renderCategories() { const c=document.getElementById('filterBar');c.innerHTML='';const a=document.createElement('div');a.className='filter-chip active';a.innerText='Semua';a.onclick=function(){setCategory('all',this);};c.appendChild(a);[...new Set(products.map(p=>getField(p,'category')))].filter(Boolean).sort().forEach(cat=>{const ch=document.createElement('div');ch.className='filter-chip';ch.innerText=cat;ch.onclick=function(){setCategory(cat,this);};c.appendChild(ch);}); }
 
-        // --- FETCH ---
         async function fetchAdminNumbers() { if(useSupabase){const{data}=await supabase.from('no_wa').select('nomor');if(data?.length)adminNumbersList=data.map(i=>i.nomor).filter(Boolean);}if(!adminNumbersList.length)adminNumbersList=[DEFAULT_ADMIN_WA]; }
         async function fetchCoverLetterPrice() { if(useSupabase){const{data}=await supabase.from('price_cover_letter').select('price,harga').single();if(data){const v=data.price||data.harga;if(v&&!isNaN(v))coverLetterPrice=Number(v);}}updateCoverLetterUI(); }
         async function fetchPaymentMethods() { if(useSupabase){const{data}=await supabase.from('payment').select('*');paymentMethods=(data?.length)?data:dummyPaymentMethods;}else paymentMethods=dummyPaymentMethods;renderPaymentMethods(); }
-
-        async function fetchProducts() {
-            if(useSupabase){const{data:sample}=await supabase.from('cvs').select('*').limit(1);if(sample?.length){autoMapColumns(sample[0]);const{data}=await supabase.from('cvs').select('*');products=data||dummyData;}else products=dummyData;}
-            else{await new Promise(r=>setTimeout(r,800));products=dummyData;}
-            renderCategories();filterLogic();
-        }
+        async function fetchProducts() { if(useSupabase){const{data:sample}=await supabase.from('cvs').select('*').limit(1);if(sample?.length){autoMapColumns(sample[0]);const{data}=await supabase.from('cvs').select('*');products=data||dummyData;}else products=dummyData;}else{await new Promise(r=>setTimeout(r,800));products=dummyData;}renderCategories();filterLogic(); }
 
         // ============================================
-        // AD SYSTEM — INTI
+        // AD SYSTEM — CHECKOUT + POPUP SAJA
         // ============================================
-
-        function getAdField(ad, keys) { for(const k of keys){if(ad[k]!==undefined&&ad[k]!==null&&ad[k]!=='')return ad[k];}return null; }
+        function getAdField(ad,keys) { for(const k of keys){if(ad[k]!==undefined&&ad[k]!==null&&ad[k]!=='')return ad[k];}return null; }
         function getAdImageUrl(ad) { return getAdField(ad,['image_url','gambar','image','url_gambar','foto','img_url','banner_url','src','thumbnail','picture']); }
         function getAdLinkUrl(ad) { return getAdField(ad,['link_url','link','url','target_url','redirect_url','destination','href','go_to'])||'#'; }
         function isAdActive(ad) { const v=getAdField(ad,['is_active','active','aktif','status','is_show','show','visible']);if(v===false||v===0||v==='0'||v==='false')return false;return true; }
         function getAdDuration(ad) { const v=getAdField(ad,['duration','durasi','show_time','auto_close','timeout']);return(v&&!isNaN(v)&&Number(v)>0)?Number(v):AD_CONFIG.autoDismiss; }
 
-        // Rotasi harian: dayOfYear + offset unik per slot
         function getDailyAdIndex(adsList, slotIndex) {
             if(!adsList?.length) return -1;
             const now=new Date(), start=new Date(now.getFullYear(),0,0);
             const dayOfYear=Math.floor((now-start)/86400000);
-            const offset = AD_CONFIG.slotOffsets[slotIndex] || 0;
-            return (dayOfYear + offset) % adsList.length;
+            const offset=AD_CONFIG.slotOffsets[slotIndex]||0;
+            return (dayOfYear+offset)%adsList.length;
         }
 
         async function fetchAds() {
@@ -575,10 +537,10 @@
                 try{const{data,error}=await supabase.from(tbl).select('*');
                 if(error){adLog(`"${tbl}": ${error.message}`,'warn');continue;}
                 if(!data?.length){adLog(`"${tbl}" kosong`,'warn');continue;}
-                adLog(`"${tbl}": ${data.length} row, kolom:[${Object.keys(data[0]).join(',')}]`,'ok');
+                adLog(`"${tbl}": ${data.length} row`,'ok');
                 const active=data.filter(ad=>isAdActive(ad));
                 adLog(`${active.length} aktif`,'ok');
-                if(active.length){adLog(`Sumber: "${tbl}" (${active.length} iklan)`,'ok');return active;}
+                if(active.length){adLog(`Sumber: "${tbl}"`,'ok');return active;}
                 }catch(e){adLog(`"${tbl}": ${e.message}`,'err');}
             }
             adLog('Tidak ada iklan','err');return[];
@@ -591,75 +553,34 @@
         }
 
         // ============================================
-        // PLACEMENT 1: HEADER BANNER (slot 0)
-        // ============================================
-        function loadHeaderBanner(ads) {
-            const el=document.getElementById('adHeaderBanner'), img=document.getElementById('adHeaderImage'), link=document.getElementById('adHeaderLink');
-            el.classList.remove('ad-loaded','transparent-mode'); el.style.display='none'; img.removeAttribute('src');
-            if(!ads?.length) return;
-            const idx=getDailyAdIndex(ads,0), ad=ads[idx], url=getAdImageUrl(ad);
-            if(!url) return;
-            adLog(`[Header] idx=${idx}`,'ok');
-            link.href=getAdLinkUrl(ad); img.removeAttribute('crossorigin'); img.src=url;
-            img.onload=function(){el.style.display='block';void el.offsetWidth;el.classList.add('ad-loaded');detectTransparency(url,t=>{el.classList.toggle('transparent-mode',t);});};
-            img.onerror=function(){img.crossOrigin="Anonymous";img.onload=function(){el.style.display='block';void el.offsetWidth;el.classList.add('ad-loaded');};img.onerror=()=>{el.style.display='none';};img.src=url+(url.includes('?')?'&':'?')+'_r=1';};
-        }
-
-        // ============================================
-        // PLACEMENT 2 & 3: IN-FEED BANNERS (slot 1, 2)
-        // ============================================
-        function createInfeedElement(slotIndex) {
-            const div=document.createElement('div');
-            div.className='ad-infeed'; div.id=`adInfeed${slotIndex}`;
-            div.innerHTML=`<a href="#" target="_blank" rel="noopener noreferrer" id="adInfeedLink${slotIndex}"><img id="adInfeedImg${slotIndex}" src="" alt="" onerror="this.closest('.ad-infeed').style.display='none'"></a>`;
-            return div;
-        }
-
-        function loadInfeedBanner(ads, slotIndex) {
-            const el=document.getElementById(`adInfeed${slotIndex}`), img=document.getElementById(`adInfeedImg${slotIndex}`), link=document.getElementById(`adInfeedLink${slotIndex}`);
-            if(!el) return;
-            el.classList.remove('ad-loaded','transparent-mode'); el.style.display='none'; img.removeAttribute('src');
-            if(!ads?.length) return;
-            const idx=getDailyAdIndex(ads,slotIndex), ad=ads[idx], url=getAdImageUrl(ad);
-            if(!url) return;
-            adLog(`[Infeed${slotIndex}] idx=${idx}`,'ok');
-            link.href=getAdLinkUrl(ad); img.removeAttribute('crossorigin'); img.src=url;
-            img.onload=function(){el.style.display='block';void el.offsetWidth;el.classList.add('ad-loaded');detectTransparency(url,t=>{el.classList.toggle('transparent-mode',t);});};
-            img.onerror=function(){img.crossOrigin="Anonymous";img.onload=function(){el.style.display='block';void el.offsetWidth;el.classList.add('ad-loaded');};img.onerror=()=>{el.style.display='none';};img.src=url+(url.includes('?')?'&':'?')+'_r=1';};
-        }
-
-        // ============================================
-        // PLACEMENT 4: CHECKOUT BANNER (slot 3)
+        // SLOT 1: CHECKOUT BANNER (offset 0)
         // ============================================
         function loadCheckoutBanner(ads) {
             const el=document.getElementById('checkoutAdBanner'), img=document.getElementById('checkoutAdImage'), link=document.getElementById('checkoutAdLink');
             el.classList.remove('ad-loaded','transparent-mode'); el.style.display='none'; img.removeAttribute('src');
             if(!ads?.length) return;
-            const idx=getDailyAdIndex(ads,3), ad=ads[idx], url=getAdImageUrl(ad);
+            const idx=getDailyAdIndex(ads,0), ad=ads[idx], url=getAdImageUrl(ad);
             if(!url) return;
             adLog(`[Checkout] idx=${idx}`,'ok');
-            link.href=getAdLinkUrl(ad); img.removeAttribute('crossorigin'); img.src=url;
-            img.onload=function(){el.style.display='block';void el.offsetWidth;el.classList.add('ad-loaded');detectTransparency(url,t=>{el.classList.toggle('transparent-mode',t);});};
-            img.onerror=function(){img.crossOrigin="Anonymous";img.onload=function(){el.style.display='block';void el.offsetWidth;el.classList.add('ad-loaded');};img.onerror=()=>{el.style.display='none';};img.src=url+(url.includes('?')?'&':'?')+'_r=1';};
+            link.href=getAdLinkUrl(ad);
+            img.removeAttribute('crossorigin');
+            img.src=url;
+            img.onload=function(){
+                el.style.display='block';
+                void el.offsetWidth;
+                el.classList.add('ad-loaded');
+                detectTransparency(url,t=>{el.classList.toggle('transparent-mode',t);});
+            };
+            img.onerror=function(){
+                img.crossOrigin="Anonymous";
+                img.onload=function(){el.style.display='block';void el.offsetWidth;el.classList.add('ad-loaded');};
+                img.onerror=()=>{el.style.display='none';};
+                img.src=url+(url.includes('?')?'&':'?')+'_r=1';
+            };
         }
 
         // ============================================
-        // PLACEMENT 5: FOOTER BANNER (slot 4)
-        // ============================================
-        function loadFooterBanner(ads) {
-            const el=document.getElementById('adFooterBanner'), img=document.getElementById('adFooterImage'), link=document.getElementById('adFooterLink');
-            el.classList.remove('ad-loaded','transparent-mode'); el.style.display='none'; img.removeAttribute('src');
-            if(!ads?.length) return;
-            const idx=getDailyAdIndex(ads,4), ad=ads[idx], url=getAdImageUrl(ad);
-            if(!url) return;
-            adLog(`[Footer] idx=${idx}`,'ok');
-            link.href=getAdLinkUrl(ad); img.removeAttribute('crossorigin'); img.src=url;
-            img.onload=function(){el.style.display='block';void el.offsetWidth;el.classList.add('ad-loaded');detectTransparency(url,t=>{el.classList.toggle('transparent-mode',t);});};
-            img.onerror=function(){img.crossOrigin="Anonymous";img.onload=function(){el.style.display='block';void el.offsetWidth;el.classList.add('ad-loaded');};img.onerror=()=>{el.style.display='none';};img.src=url+(url.includes('?')?'&':'?')+'_r=1';};
-        }
-
-        // ============================================
-        // PLACEMENT 6: POPUP IKLAN (slot 5)
+        // SLOT 2: POPUP IKLAN (offset 1)
         // ============================================
         function showPopupAd(adData) {
             const url=getAdImageUrl(adData), link=getAdLinkUrl(adData), dur=getAdDuration(adData);
@@ -689,13 +610,12 @@
         function selectPopupAd(adsList) {
             if(!adsList?.length) return null;
             if(adsList.length===1) return adsList[0];
-            const dailyBase=getDailyAdIndex(adsList,5);
+            const dailyBase=getDailyAdIndex(adsList,1);
             const sessionKey='wh_popup_offset';
             let offset=parseInt(sessionStorage.getItem(sessionKey)||'0');
             const idx=(dailyBase+offset)%adsList.length;
             offset=(offset+1)%adsList.length;
             sessionStorage.setItem(sessionKey,String(offset));
-            adLog(`Popup: dailyBase=${dailyBase}, offset=${offset-1}, idx=${idx}`,'ok');
             return adsList[idx];
         }
 
@@ -704,8 +624,7 @@
             if(adShownCount>=AD_CONFIG.maxPerSession){adLog(`Popup: batas ${AD_CONFIG.maxPerSession}/session`,'warn');return;}
             const now=Date.now();
             if(lastAdShownTime>0&&(now-lastAdShownTime)<AD_CONFIG.cooldownBetweenAds){
-                const wait=AD_CONFIG.cooldownBetweenAds-(now-lastAdShownTime);
-                setTimeout(()=>scheduleNextPopup(ads),wait);return;
+                setTimeout(()=>scheduleNextPopup(ads),AD_CONFIG.cooldownBetweenAds-(now-lastAdShownTime));return;
             }
             const ad=selectPopupAd(ads);if(ad) showPopupAd(ad);
         }
@@ -716,61 +635,26 @@
             setTimeout(()=>{popup.style.display='none';if(allAdsCache.length>1&&adShownCount<AD_CONFIG.maxPerSession)setTimeout(()=>scheduleNextPopup(allAdsCache),AD_CONFIG.cooldownBetweenAds);},500);
         };
 
-        // ============================================
-        // ORKESTRATOR: MUAT SEMUA PLACEMENT
-        // ============================================
         async function initAdSystem() {
-            adLog('=== AD SYSTEM START ===','ok');
-            adLog(`Supabase: ${useSupabase?'OK':'OFFLINE'}`,useSupabase?'ok':'warn');
+            adLog('=== AD START ===','ok');
             if(!useSupabase) return;
             const ads=await fetchAds(); allAdsCache=ads;
             if(!ads.length) return;
-
-            const todayStr=new Date().toLocaleDateString('id-ID',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
-            adLog(`Hari: ${todayStr}, Iklan: ${ads.length}`,'ok');
-
-            // Tampilkan mapping rotasi
-            const slots = ['Header','Infeed1','Infeed2','Checkout','Footer','Popup'];
-            slots.forEach((name,i) => {
-                const idx = getDailyAdIndex(ads, i);
-                adLog(`  ${name}: iklan #${idx}`, 'ok');
-            });
-
-            // Muat SEMUA static placement sekaligus
-            loadHeaderBanner(ads);
-            loadInfeedBanner(ads, 1);
-            loadInfeedBanner(ads, 2);
-            loadFooterBanner(ads);
-
-            // Popup: delay lalu mulai
+            adLog(`Hari: ${new Date().toLocaleDateString('id-ID',{weekday:'long'})}, Iklan: ${ads.length}`,'ok');
+            adLog(`  Checkout → iklan #${getDailyAdIndex(ads,0)}`,'ok');
+            adLog(`  Popup    → iklan #${getDailyAdIndex(ads,1)} (base)`,'ok');
             await new Promise(r=>setTimeout(r, AD_CONFIG.showDelay));
             scheduleNextPopup(ads);
         }
 
         // --- CARD SLIDERS ---
         const cardSliders={};
-        function initCardSlider(el,id){const c=el.querySelector('.card-slider-container'),imgs=c.querySelectorAll('.card-slide');if(imgs.length<=1)return;let idx=0,iv;const move=()=>{idx=(idx+1)%imgs.length;c.style.transform=`translateX(-${idx*100}%)`;};const start=()=>{clearInterval(iv);iv=setInterval(move,3000);};const stop=()=>{clearInterval(iv);};el.addEventListener('mouseenter',stop);el.addEventListener('mouseleave',start);el.addEventListener('touchstart',stop);el.addEventListener('touchend',start);cardSliders[id]={start,stop,move,index:idx};start();}
+        function initCardSlider(el,id){const c=el.querySelector('.card-slider-container'),imgs=c.querySelectorAll('.card-slide');if(imgs.length<=1)return;let idx=0,iv;const move=()=>{idx=(idx+1)%imgs.length;c.style.transform=`translateX(-${idx*100}%)`;};const start=()=>{clearInterval(iv);iv=setInterval(move,3000);};const stop=()=>{clearInterval(iv);};el.addEventListener('mouseenter',stop);el.addEventListener('mouseleave',start);el.addEventListener('touchstart',stop);el.addEventListener('touchend',start);start();}
 
-        // --- RENDER PRODUCTS (dengan infeed ad) ---
         function renderProducts() {
-            const g=document.getElementById('productGrid'); g.innerHTML='';
+            const g=document.getElementById('productGrid');g.innerHTML='';
             if(!filteredProducts.length){g.innerHTML='<p style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-muted)">CV tidak ditemukan</p>';return;}
-
-            // Tentukan posisi sisipan infeed: 1/3 dan 2/3 dari total item
-            const total=filteredProducts.length;
-            const pos1=Math.max(2, Math.floor(total*0.33));
-            const pos2=Math.max(pos1+2, Math.floor(total*0.66));
-
-            // Buat infeed elements
-            const infeed1=createInfeedElement(1);
-            const infeed2=createInfeedElement(2);
-
-            filteredProducts.forEach((p,i) => {
-                // Sisipkan infeed pertama
-                if(i===pos1) g.appendChild(infeed1);
-                // Sisipkan infeed kedua
-                if(i===pos2) g.appendChild(infeed2);
-
+            filteredProducts.forEach(p=>{
                 const card=document.createElement('div');card.className='cv-card';card.onclick=()=>openModal(p);
                 const t=getField(p,'title'),pr=getField(p,'price'),op=getField(p,'original_price'),cat=getField(p,'category'),img=getField(p,'image'),ex=getField(p,'images'),sold=getField(p,'sold_count'),pid=getField(p,'id')||Math.random();
                 let ph='';if(op&&Number(op)>Number(pr))ph=`<div class="price-original">${formatRupiah(op)}</div><div class="price-main">${formatRupiah(pr)}</div>`;else ph=`<div class="price-main">${formatRupiah(pr)}</div>`;
@@ -779,16 +663,8 @@
                 card.innerHTML=`<div class="card-image"><span class="badge">${cat||'Produk'}</span><div class="card-slider-container">${sh}</div></div><div class="card-content"><h3 class="card-title">${t||'Tanpa Judul'}</h3><div class="card-footer"><div class="price-container">${ph}</div><div class="sold-info">${sold||0} Terpakai</div></div></div>`;
                 g.appendChild(card);initCardSlider(card,pid);
             });
-
-            // Jika pos2 belum tercapai di loop, append di akhir
-            if(pos2 >= total) g.appendChild(infeed2);
-
-            // Muat gambar infeed setelah elemen ada di DOM
-            loadInfeedBanner(allAdsCache, 1);
-            loadInfeedBanner(allAdsCache, 2);
         }
 
-        // --- RENDER PAYMENT ---
         function renderPaymentMethods() {
             const c=document.getElementById('paymentMethodsList');c.innerHTML='';
             paymentMethods.forEach(m=>{const d=document.createElement('div');
@@ -796,9 +672,8 @@
             else{d.className='payment-option-card';const b=m.bank_name||m.nama_bank||'Bank',n=m.account_number||m.no_rekening||'---',o=m.owner_name||m.atas_nama||'---';const l=m.logo||`https://placehold.co/100x50/f8f9fa/333333?text=${encodeURIComponent(b)}&font=roboto`;d.innerHTML=`<div class="bank-info"><img src="${l}" class="bank-logo-img" alt="${b}"><div class="bank-details"><h4>${b}</h4><div class="bank-number">${n}</div><div class="bank-name">a.n ${o}</div></div></div><button class="btn-copy" onclick="copyToClipboard('${n}')"><i class="far fa-copy"></i> Salin</button>`;}
             c.appendChild(d);});
         }
-        window.copyToClipboard=function(t){navigator.clipboard.writeText(t).then(()=>showToast(`Nomor ${t} disalin!`,'success')).catch(()=>{const a=document.createElement("textarea");a.value=t;document.body.appendChild(a);a.select();document.execCommand("Copy");a.remove();showToast(`Nomor ${t} disalin!`,'success');});};
+        window.copyToClipboard=function(t){navigator.clipboard.writeText(t).then(()=>showToast(`Nomor ${t} disalin!`,'success')).catch(()=>{const a=document.createElement("textarea");a.value=t;document.body.appendChild(a);a.select();document.execCommand("Copy");a.remove();showToast(`Nomor ${t} disalin!`,'success'));};
 
-        // --- HERO SLIDER ---
         let slideIndex=0,slideInterval;
         function initSlider(){const t=document.getElementById('sliderTrack'),d=document.getElementById('sliderDots');sliderData.forEach((s,i)=>{const div=document.createElement('div');div.className=`slide ${i===0?'active':''}`;div.innerHTML=`<a href="${s.link}"><img src="${s.image}" loading="lazy"></a>`;t.appendChild(div);const dot=document.createElement('div');dot.className=`dot ${i===0?'active':''}`;dot.onclick=()=>goToSlide(i);d.appendChild(dot);});startSlide();document.getElementById('heroSlider').addEventListener('mouseenter',stopSlide);document.getElementById('heroSlider').addEventListener('mouseleave',startSlide);}
         function goToSlide(n){document.querySelectorAll('.slide').forEach(s=>s.classList.remove('active'));document.querySelectorAll('.dot').forEach(d=>d.classList.remove('active'));document.querySelectorAll('.slide')[n].classList.add('active');document.querySelectorAll('.dot')[n].classList.add('active');slideIndex=n;}
@@ -808,11 +683,9 @@
         function stopSlide(){clearInterval(slideInterval);}
         window.nextSlide=nextSlide;window.prevSlide=prevSlide;
 
-        // --- FILTER ---
         window.setCategory=function(c,el){currentCategory=c;document.querySelectorAll('.filter-chip').forEach(x=>x.classList.remove('active'));el.classList.add('active');filterLogic();};
         function filterLogic(){const q=document.getElementById('searchInput').value.toLowerCase();filteredProducts=products.filter(p=>{const t=(getField(p,'title')||'').toLowerCase(),c=(getField(p,'category')||'').toLowerCase();return(currentCategory==='all'||c.includes(currentCategory.toLowerCase()))&&(t.includes(q)||c.includes(q));});renderProducts();}
 
-        // --- MODAL ---
         let currentProduct=null,carouselIndex=0,carouselImages=[];
         const trackEl=document.getElementById('carouselTrack');
         trackEl.addEventListener('touchstart',e=>{touchStartX=e.changedTouches[0].screenX;},{passive:true});
@@ -875,7 +748,6 @@
 
         function getRotatedAdminNumber(){let i=parseInt(localStorage.getItem('wa_admin_index')||'0');const n=adminNumbersList[i];localStorage.setItem('wa_admin_index',((i+1)%adminNumbersList.length).toString());return n;}
 
-        // --- INIT ---
         async function init(){
             adLog('=== APP START ===','ok');
             initSlider();
