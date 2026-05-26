@@ -479,6 +479,54 @@
         }
         .btn-close:hover { background: var(--bg-body); }
 
+        /* ============================================
+           MODAL AD BANNER — POSTER PERSEGI PANJANG
+           Tanpa skip, rotasi harian otomatis
+           ============================================ */
+        .modal-ad-banner {
+            display: none;
+            width: 100%;
+            flex-shrink: 0;
+            overflow: hidden;
+            position: relative;
+            background: #f1f5f9;
+            border-top: 1px solid var(--border);
+        }
+        .modal-ad-banner.visible {
+            display: block;
+            animation: modalAdSlideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        @keyframes modalAdSlideIn {
+            from { opacity: 0; max-height: 0; }
+            to { opacity: 1; max-height: 160px; }
+        }
+        .modal-ad-banner a {
+            display: block;
+            width: 100%;
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+        .modal-ad-banner img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            display: block;
+            transition: transform 0.4s ease;
+        }
+        .modal-ad-banner a:hover img {
+            transform: scale(1.02);
+        }
+        /* Dim overlay halus untuk keterbacaan jika ada teks di poster */
+        .modal-ad-banner::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, rgba(0,0,0,0.03) 0%, transparent 30%, transparent 70%, rgba(0,0,0,0.03) 100%);
+            pointer-events: none;
+        }
+
         /* --- PAYMENT VIEW --- */
         .payment-view {
             display: none;
@@ -701,22 +749,6 @@
             to { transform: scaleX(0); }
         }
 
-        /* Ad indicator label */
-        .ad-label {
-            position: absolute;
-            bottom: 8px; left: 8px;
-            background: rgba(0,0,0,0.5);
-            color: white;
-            font-size: 0.55rem;
-            font-weight: 600;
-            padding: 2px 6px;
-            border-radius: 4px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            z-index: 5;
-            backdrop-filter: blur(4px);
-        }
-
         /* Mobile responsive ad */
         @media (max-width: 480px) {
             .ad-popup {
@@ -870,6 +902,13 @@
                 </div>
             </div>
 
+            <!-- IKLAN MODAL — Poster persegi panjang kecil, tanpa skip -->
+            <div class="modal-ad-banner" id="modalAdBanner">
+                <a href="#" target="_blank" rel="noopener noreferrer" id="modalAdLink">
+                    <img id="modalAdImage" src="" alt="Promo" loading="lazy">
+                </a>
+            </div>
+
             <div class="payment-view" id="paymentView">
                 <div class="payment-header">
                     <button class="btn-back" onclick="backToProduct()"><i class="fas fa-arrow-left"></i></button>
@@ -945,7 +984,6 @@
                 <img id="adImage" src="" alt="Promo">
             </div>
         </a>
-        <span class="ad-label">Sponsored</span>
         <div class="ad-timer-bar" id="adTimerBar"></div>
     </div>
 
@@ -1005,18 +1043,22 @@
         // AD SYSTEM — VARIABEL & KONFIGURASI
         // ============================================
         const AD_CONFIG = {
-            showDelay: 3000,          // Delay tampil setelah halaman load (ms)
-            autoDismiss: 15,          // Auto-dismiss dalam detik
-            maxPerSession: 3,         // Maks iklan per session
-            cooldownBetweenAds: 30000,// Cooldown antar iklan (ms)
-            tableNames: ['iklan', 'ads', 'ad', 'iklan_banner', 'banner'], // Coba beberapa nama tabel
-            debug: false              // Set true untuk debug panel
+            showDelay: 3000,
+            autoDismiss: 15,
+            maxPerSession: 3,
+            cooldownBetweenAds: 30000,
+            tableNames: ['iklan', 'ads', 'ad', 'iklan_banner', 'banner'],
+            debug: false
         };
 
         let adDismissTimer = null;
         let adShownCount = 0;
         let lastAdShownTime = 0;
         let allAdsCache = [];
+
+        // Cache iklan untuk modal (dipisah dari popup)
+        let modalAdsCache = [];
+        let todayModalAdIndex = -1;
 
         let fields = {
             title: 'title', price: 'price', original_price: 'original_price',
@@ -1051,7 +1093,6 @@
             }
         }
 
-        // Toggle debug panel dari console
         window.toggleAdDebug = function() {
             const panel = document.getElementById('adDebugPanel');
             if (panel) {
@@ -1241,13 +1282,9 @@
         }
 
         // ============================================
-        // AD SYSTEM — DIPERBAIKI TOTAL
+        // AD SYSTEM — POPUP IKLAN
         // ============================================
 
-        /**
-         * FIX #1: Auto-detect nama kolom iklan (mirip autoMapColumns untuk produk)
-         * Mendukung berbagai kemungkinan penamaan kolom di database
-         */
         function getAdField(ad, possibilities) {
             for (const key of possibilities) {
                 if (ad[key] !== undefined && ad[key] !== null && ad[key] !== '') {
@@ -1275,7 +1312,6 @@
             const val = getAdField(ad, ['is_active', 'active', 'aktif', 'status', 'is_show', 'show', 'visible']);
             if (val === true || val === 1 || val === '1' || val === 'true') return true;
             if (val === false || val === 0 || val === '0' || val === 'false') return false;
-            // Jika kolom status tidak ditemukan, anggap aktif
             return true;
         }
 
@@ -1286,11 +1322,16 @@
         }
 
         /**
-         * FIX #2: Fetch iklan dengan multiple fallback
-         * - Tidak pakai .single() yang bisa throw error
-         * - Coba beberapa nama tabel
-         * - Filter aktif secara manual
+         * Cek apakah iklan memiliki penempatan di modal produk
+         * Mendukung berbagai nama kolom untuk kolom "placement" / "penempatan"
          */
+        function getAdPlacement(ad) {
+            return getAdField(ad, [
+                'placement', 'penempatan', 'posisi', 'position',
+                'location', 'lokasi', 'tipe', 'type', 'show_in'
+            ]);
+        }
+
         async function fetchAds() {
             if (!useSupabase) {
                 adLog('Supabase tidak tersedia, skip fetch iklan', 'warn');
@@ -1303,13 +1344,11 @@
                 try {
                     adLog(`Mencoba tabel: "${tableName}"`, 'ok');
                     
-                    // FIX KUNCI: Pakai .select('*') tanpa .single()
-                    // .single() MELEMPAR ERROR jika 0 row atau >1 row
                     const { data, error } = await supabase.from(tableName).select('*');
                     
                     if (error) {
                         adLog(`Tabel "${tableName}" error: ${error.message}`, 'warn');
-                        continue; // Coba tabel berikutnya
+                        continue;
                     }
                     
                     if (!data || data.length === 0) {
@@ -1319,13 +1358,11 @@
                     
                     adLog(`Tabel "${tableName}" ditemukan: ${data.length} row(s)`, 'ok');
                     
-                    // Log struktur kolom untuk debugging
                     if (data.length > 0) {
                         const columns = Object.keys(data[0]);
                         adLog(`Kolom: [${columns.join(', ')}]`, 'ok');
                     }
 
-                    // Filter iklan aktif
                     const activeAds = data.filter(ad => isAdActive(ad));
                     adLog(`${activeAds.length} dari ${data.length} iklan aktif`, 'ok');
                     
@@ -1344,10 +1381,6 @@
             return [];
         }
 
-        /**
-         * FIX #3: Deteksi transparansi PNG tanpa memblokir loading gambar utama
-         * Gunakan Image() terpisah dengan crossOrigin, bukan img element utama
-         */
         function detectTransparency(imageUrl, callback) {
             const testImg = new Image();
             testImg.crossOrigin = "Anonymous";
@@ -1356,7 +1389,6 @@
                 try {
                     const canvas = document.createElement('canvas');
                     const ctx = canvas.getContext('2d', { willReadFrequently: true });
-                    // Sample beberapa titik, bukan hanya 1 pixel
                     const points = [
                         [0, 0],
                         [Math.floor(this.naturalWidth / 2), Math.floor(this.naturalHeight / 2)],
@@ -1374,13 +1406,13 @@
                         if (pixel[3] === 0) transparentCount++;
                     }
                     
-                    const isTransparent = transparentCount >= 2; // Mayoritas titik transparan
+                    const isTransparent = transparentCount >= 2;
                     adLog(`Deteksi transparansi: ${transparentCount}/4 titik transparan → ${isTransparent ? 'TRANSPARENT' : 'SOLID'}`, 'ok');
                     callback(isTransparent);
                     
                 } catch (e) {
                     adLog(`Canvas read gagal (CORS ketat): ${e.message}`, 'warn');
-                    callback(false); // Default ke solid mode
+                    callback(false);
                 }
             };
             
@@ -1392,13 +1424,6 @@
             testImg.src = imageUrl;
         }
 
-        /**
-         * FIX #4: Tampilkan popup iklan dengan approach yang benar
-         * - TANPA crossOrigin pada img utama (biar gambar pasti load)
-         * - Deteksi transparansi secara async/non-blocking
-         * - Timer bar untuk auto-dismiss
-         * - Session management
-         */
         function showAdPopup(adData) {
             const imageUrl = getAdImageUrl(adData);
             const linkUrl = getAdLinkUrl(adData);
@@ -1418,32 +1443,23 @@
             const link = document.getElementById('adLink');
             const timerBar = document.getElementById('adTimerBar');
 
-            // Reset state popup
             popup.classList.remove('transparent-mode', 'ad-visible');
             if (adDismissTimer) { clearTimeout(adDismissTimer); adDismissTimer = null; }
 
-            // Set link
             link.href = linkUrl;
 
-            // FIX KUNCI: JANGAN set crossOrigin pada img utama!
-            // Ini yang menyebabkan gambar tidak load di versi lama
             img.removeAttribute('crossorigin');
             img.src = imageUrl;
 
-            // Set durasi timer bar via CSS custom property
             popup.style.setProperty('--ad-duration', `${duration}s`);
             timerBar.style.animation = 'none';
-            // Force reflow untuk restart animasi
             void timerBar.offsetWidth;
             timerBar.style.animation = `adTimerShrink ${duration}s linear forwards`;
 
-            // Handler saat gambar UTAMA berhasil load
             img.onload = function() {
                 adLog(`Gambar utama loaded: ${this.naturalWidth}x${this.naturalHeight}`, 'ok');
                 
-                // Tampilkan popup SEGERA (tanpa menunggu deteksi transparansi)
                 popup.style.display = 'block';
-                // Trigger reflow agar transisi CSS berjalan
                 void popup.offsetWidth;
                 popup.classList.add('ad-visible');
                 
@@ -1451,7 +1467,6 @@
                 lastAdShownTime = Date.now();
                 adLog(`Popup ditampilkan (show #${adShownCount} session ini)`, 'ok');
 
-                // Deteksi transparansi secara ASYNC (non-blocking)
                 detectTransparency(imageUrl, (isTransparent) => {
                     if (isTransparent) {
                         popup.classList.add('transparent-mode');
@@ -1462,22 +1477,18 @@
                     }
                 });
 
-                // Auto-dismiss timer
                 adDismissTimer = setTimeout(() => {
                     adLog(`Auto-dismiss setelah ${duration} detik`, 'ok');
                     closeAd();
                 }, duration * 1000);
             };
 
-            // Handler jika gambar gagal load
             img.onerror = function() {
                 adLog(`Gambar utama GAGAL load: ${imageUrl}`, 'err');
                 
-                // RETRY: Coba dengan crossOrigin sebagai upaya terakhir
                 adLog('Mencoba retry dengan crossOrigin...', 'warn');
                 img.crossOrigin = "Anonymous";
                 
-                // Override onload untuk retry
                 const retryOnload = function() {
                     adLog('Retry BERHASIL dengan crossOrigin', 'ok');
                     popup.style.display = 'block';
@@ -1500,19 +1511,13 @@
             };
         }
 
-        /**
-         * FIX #5: Rotasi iklan berdasarkan session
-         * Setiap session browser menampilkan iklan berbeda secara berurutan
-         */
         function selectNextAd(adsList) {
             if (adsList.length === 0) return null;
             if (adsList.length === 1) return adsList[0];
 
-            // Gunakan sessionStorage untuk tracking
             const sessionKey = 'wh_ad_shown_ids';
             const shownIds = JSON.parse(sessionStorage.getItem(sessionKey) || '[]');
             
-            // Cari iklan yang belum ditampilkan di session ini
             for (let i = 0; i < adsList.length; i++) {
                 const adId = adsList[i].id || adsList[i].image_url || i;
                 if (!shownIds.includes(String(adId))) {
@@ -1523,16 +1528,11 @@
                 }
             }
             
-            // Semua sudah ditampilkan, reset dan mulai dari awal
             adLog('Semua iklan sudah ditampilkan, reset rotasi', 'warn');
             sessionStorage.setItem(sessionKey, JSON.stringify([]));
             return adsList[0];
         }
 
-        /**
-         * FIX #6: Orkestrator utama sistem iklan
-         * Mengatur timing, rate limiting, dan error recovery
-         */
         async function initAdSystem() {
             adLog('=== SISTEM IKLAN DIMULAI ===', 'ok');
             adLog(`Supabase: ${useSupabase ? 'TERHUBUNG' : 'TIDAK TERHUBUNG'}`, useSupabase ? 'ok' : 'warn');
@@ -1543,33 +1543,67 @@
                 return;
             }
 
-            // 1. Fetch semua iklan aktif
             const ads = await fetchAds();
             allAdsCache = ads;
 
-            if (ads.length === 0) {
-                adLog('Tidak ada iklan aktif yang ditemukan', 'err');
-                return;
+            // Pisahkan iklan untuk modal vs popup berdasarkan kolom placement
+            // Iklan dengan placement 'modal' / 'product_modal' / 'modal_produk' → modal
+            // Iklan tanpa placement atau placement 'popup' / 'floating' → popup
+            modalAdsCache = ads.filter(ad => {
+                const placement = getAdPlacement(ad);
+                if (!placement) return false; // Tanpa placement → popup saja
+                const p = String(placement).toLowerCase().trim();
+                return p.includes('modal') || p.includes('product') || p.includes('produk') || p.includes('detail');
+            });
+
+            const popupAds = ads.filter(ad => {
+                const placement = getAdPlacement(ad);
+                if (!placement) return true; // Tanpa placement → popup default
+                const p = String(placement).toLowerCase().trim();
+                return !p.includes('modal') && !p.includes('product') && !p.includes('produk') && !p.includes('detail');
+            });
+
+            adLog(`Distribusi: ${popupAds.length} popup, ${modalAdsCache.length} modal`, 'ok');
+
+            // Hitung index iklan modal hari ini (rotasi harian otomatis)
+            if (modalAdsCache.length > 0) {
+                computeTodayModalAdIndex(modalAdsCache.length);
             }
 
-            // 2. Tunggu delay sebelum menampilkan iklan pertama
-            adLog(`Menunggu ${AD_CONFIG.showDelay}ms sebelum tampilkan...`, 'ok');
-            await new Promise(r => setTimeout(r, AD_CONFIG.showDelay));
+            // Tampilkan popup iklan setelah delay
+            if (popupAds.length > 0) {
+                adLog(`Menunggu ${AD_CONFIG.showDelay}ms sebelum tampilkan popup...`, 'ok');
+                await new Promise(r => setTimeout(r, AD_CONFIG.showDelay));
+                // Override allAdsCache untuk rotasi popup saja
+                allAdsCache = popupAds;
+                showNextAd(popupAds);
+            }
+        }
 
-            // 3. Tampilkan iklan pertama
-            showNextAd(ads);
+        /**
+         * ROTASI HARIAN: Hitung index iklan modal berdasarkan hari sekarang
+         * Setiap hari berganti, iklan yang muncul di modal juga berganti secara otomatis
+         */
+        function computeTodayModalAdIndex(totalAds) {
+            if (totalAds === 0) {
+                todayModalAdIndex = -1;
+                return;
+            }
+            // Hitung hari ke berapa sejak epoch (01-01-1970)
+            const now = new Date();
+            const epochDays = Math.floor(now.getTime() / (1000 * 60 * 60 * 24));
+            todayModalAdIndex = epochDays % totalAds;
+            adLog(`Rotasi harian: hari ke-${epochDays} → index ${todayModalAdIndex} dari ${totalAds} iklan modal`, 'ok');
         }
 
         function showNextAd(ads) {
             if (!ads || ads.length === 0) return;
 
-            // Rate limiting: cek batas per session
             if (adShownCount >= AD_CONFIG.maxPerSession) {
                 adLog(`Batas ${AD_CONFIG.maxPerSession} iklan/session tercapai, berhenti`, 'warn');
                 return;
             }
 
-            // Rate limiting: cek cooldown
             const now = Date.now();
             if (lastAdShownTime > 0 && (now - lastAdShownTime) < AD_CONFIG.cooldownBetweenAds) {
                 const waitMs = AD_CONFIG.cooldownBetweenAds - (now - lastAdShownTime);
@@ -1578,7 +1612,6 @@
                 return;
             }
 
-            // Pilih iklan berikutnya (rotasi)
             const selectedAd = selectNextAd(ads);
             if (selectedAd) {
                 showAdPopup(selectedAd);
@@ -1595,14 +1628,93 @@
                 adDismissTimer = null;
             }
 
-            // Sembunyikan setelah animasi selesai
             setTimeout(() => {
                 popup.style.display = 'none';
                 
-                // Tampilkan iklan berikutnya jika masih ada kuota
                 if (allAdsCache.length > 1 && adShownCount < AD_CONFIG.maxPerSession) {
                     adLog('Menjadwalkan iklan berikutnya...', 'ok');
                     setTimeout(() => showNextAd(allAdsCache), AD_CONFIG.cooldownBetweenAds);
+                }
+            }, 500);
+        }
+
+        // ============================================
+        // MODAL AD BANNER — SISTEM IKLAN DI MODAL PRODUK
+        // ============================================
+
+        /**
+         * Tampilkan iklan banner di modal produk
+         * - Poster persegi panjang kecil
+         * - TANPA tombol close/skip (tidak bisa di-skip)
+         * - Rotasi otomatis setiap hari
+         * - Responsif di berbagai perangkat
+         */
+        function showModalAdBanner() {
+            const bannerEl = document.getElementById('modalAdBanner');
+            const imgEl = document.getElementById('modalAdImage');
+            const linkEl = document.getElementById('modalAdLink');
+
+            // Sembunyikan dulu
+            bannerEl.classList.remove('visible');
+
+            // Jika tidak ada iklan modal yang tersedia
+            if (modalAdsCache.length === 0 || todayModalAdIndex < 0) {
+                adLog('Tidak ada iklan modal untuk ditampilkan', 'warn');
+                return;
+            }
+
+            const selectedAd = modalAdsCache[todayModalAdIndex];
+            const imageUrl = getAdImageUrl(selectedAd);
+            const linkUrl = getAdLinkUrl(selectedAd);
+
+            if (!imageUrl) {
+                adLog('Iklan modal hari ini tidak punya gambar, skip', 'warn');
+                return;
+            }
+
+            adLog(`Modal ad: menampilkan iklan index ${todayModalAdIndex}`, 'ok');
+            adLog(`Modal ad URL: ${imageUrl.substring(0, 80)}...`, 'ok');
+
+            // Set link dan gambar
+            linkEl.href = linkUrl;
+            imgEl.src = imageUrl;
+
+            // Tampilkan banner saat gambar sudah siap
+            imgEl.onload = function() {
+                const natW = this.naturalWidth;
+                const natH = this.naturalHeight;
+                adLog(`Modal ad loaded: ${natW}x${natH}`, 'ok');
+
+                // Set tinggi banner secara responsif berdasarkan aspek rasio gambar
+                // Maksimal 140px, minimal 60px
+                const aspectRatio = natH / natW;
+                const containerWidth = bannerEl.offsetWidth || 400;
+                let bannerHeight = Math.round(containerWidth * aspectRatio);
+                bannerHeight = Math.max(60, Math.min(140, bannerHeight));
+                bannerEl.style.height = bannerHeight + 'px';
+
+                // Tampilkan dengan animasi slide-in
+                requestAnimationFrame(() => {
+                    bannerEl.classList.add('visible');
+                });
+            };
+
+            imgEl.onerror = function() {
+                adLog(`Modal ad GAGAL load: ${imageUrl}`, 'err');
+                bannerEl.style.display = 'none';
+            };
+        }
+
+        /**
+         * Sembunyikan banner iklan modal (dipanggil saat modal ditutup atau pindah ke payment view)
+         */
+        function hideModalAdBanner() {
+            const bannerEl = document.getElementById('modalAdBanner');
+            bannerEl.classList.remove('visible');
+            // Reset src agar tidak memakan bandwidth saat tidak terlihat
+            setTimeout(() => {
+                if (!bannerEl.classList.contains('visible')) {
+                    document.getElementById('modalAdImage').src = '';
                 }
             }, 500);
         }
@@ -1868,6 +1980,9 @@
             totalEl.innerText = formatRupiah(totalWithUnique);
             totalEl.style.color = 'var(--danger)';
 
+            // Sembunyikan iklan modal saat pindah ke payment view
+            hideModalAdBanner();
+
             productView.style.display = 'none';
             paymentView.classList.add('active');
             showToast(`Kode unik Rp ${uniqueCode} ditambahkan untuk verifikasi.`, 'success');
@@ -1878,6 +1993,9 @@
             clearPaymentTimer();
             paymentView.classList.remove('active');
             productView.style.display = 'flex';
+
+            // Tampilkan kembali iklan modal saat kembali ke product view
+            showModalAdBanner();
         };
 
         window.openModal = function(p) {
@@ -1919,6 +2037,9 @@
 
             document.getElementById('productModal').classList.add('active');
             document.body.style.overflow = 'hidden';
+
+            // Tampilkan iklan banner di modal produk
+            showModalAdBanner();
         }
 
         window.closeModal = function() {
@@ -1926,6 +2047,9 @@
             document.getElementById('productModal').classList.remove('active');
             document.body.style.overflow = 'auto';
             currentProduct = null;
+
+            // Sembunyikan iklan modal saat modal ditutup
+            hideModalAdBanner();
         }
 
         document.getElementById('productModal').addEventListener('click', (e) => { if(e.target.id === 'productModal') closeModal(); });
@@ -1968,7 +2092,7 @@
             await fetchProducts();
             renderProducts();
             
-            // Jalankan sistem iklan secara PARALEL (tidak menghalangi UI)
+            // Jalankan sistem iklan secara PARALEL
             initAdSystem();
         }
 
