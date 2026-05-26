@@ -73,7 +73,7 @@
             color: var(--text-main);
             white-space: nowrap;
         }
-        .logo img { height: 32px; width: auto; object-fit: contain; } /* Sedikit diperbesar untuk menampung logo DB */
+        .logo img { height: 32px; width: auto; object-fit: contain; } 
 
         .search-box {
             flex: 1;
@@ -481,7 +481,6 @@
 
         /* ============================================
            MODAL AD BANNER — UKURAN 1280x350
-           - Rasio aspek dikunci ke 1280 / 350
            ============================================ */
         .modal-ad-banner {
             display: block;
@@ -516,7 +515,7 @@
         .modal-ad-banner img {
             width: 100%;
             height: 100%;
-            object-fit: cover; /* Mengisi area rasio 1280x350 */
+            object-fit: cover; 
             object-position: center;
             display: block;
             transition: transform 0.4s ease;
@@ -805,7 +804,7 @@
     <header>
         <div class="container nav-wrapper">
             <a href="#" class="logo">
-                <!-- Logo src akan diupdate oleh JS dari DB -->
+                <!-- ID ini WAJIB ada untuk fungsi fetchSiteLogo -->
                 <img id="siteLogoImg" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjzgVAIKgZMS9W7eJKCaRyaFnoDviThQstfeD9l9mcwPxUDoovGo7xB3RQByxTXo15fGX0DIeTMxOWkVovnB4FC35iJN6ArGLOlBRI9U4d4gJ7VOTOp-Ki47RIaViiIs12QGjxRmGs2cQzCFniRpBE0GyNLW3s_03rvTcpPeHAruMaUdrIKNX8jaFZ1TcBw/s3264/28063.png" alt="Logo">
                 <span></span>
             </a>
@@ -1055,7 +1054,7 @@
         // Cache iklan untuk modal
         let modalAdsCache = [];
         let todayModalAdIndex = -1;
-        let modalAdRevealTimer = null; // Fallback timer
+        let modalAdRevealTimer = null; 
 
         let fields = {
             title: 'title', price: 'price', original_price: 'original_price',
@@ -1065,43 +1064,70 @@
         };
 
         // ============================================
-        // LOGO FETCH (LOGO_SITUS)
+        // LOGO FETCH (FIXED VERSION - ROBUST)
         // ============================================
         async function fetchSiteLogo() {
             if (!useSupabase) {
-                adLog('Supabase tidak tersedia, menggunakan logo default', 'warn');
+                console.log('Supabase tidak tersedia, menggunakan logo default');
                 return;
             }
 
             try {
-                // Mengambil data dari tabel 'logo_situs'
-                // Asumsi kolom url gambar bisa bernama: logo_url, url, image, atau src
+                // PERBAIKAN 1: Gunakan .limit(1) bukan .single()
+                // .single() akan error jika ada 0 atau lebih dari 1 baris data.
+                // .limit(1) aman digunakan berapapun jumlah datanya.
                 const { data, error } = await supabase
                     .from('logo_situs')
                     .select('*')
-                    .single();
+                    .limit(1);
 
                 if (error) {
-                    adLog(`Gagal mengambil logo: ${error.message}`, 'err');
+                    console.error("Gagal mengambil logo dari DB:", error.message);
                     return;
                 }
 
-                if (data) {
-                    // Cek berbagai kemungkinan nama kolom
-                    const logoUrl = data.logo_url || data.url || data.image || data.src || data.logo;
-                    
-                    if (logoUrl) {
-                        const logoImg = document.getElementById('siteLogoImg');
-                        if (logoImg) {
-                            logoImg.src = logoUrl;
-                            adLog('Logo situs berhasil diambil dari DB', 'ok');
-                        }
-                    } else {
-                        adLog('Data logo_situs ditemukan tapi kolom gambar kosong/tidak dikenali', 'warn');
-                    }
+                // PERBAIKAN 2: Handle data sebagai Array
+                // Karena kita pakai limit(1), hasilnya adalah Array.
+                // Kita ambil elemen pertama (index 0).
+                const logoData = data && data.length > 0 ? data[0] : null;
+
+                if (!logoData) {
+                    console.warn("Tabel logo_situs kosong atau tidak ada data.");
+                    return;
                 }
+
+                // PERBAIKAN 3: Deteksi nama kolom yang lebih luas
+                // Mendeteksi logo_url, url, image, src, logo, maupun 'gambar'
+                const logoUrl = logoData.logo_url || 
+                               logoData.url || 
+                               logoData.image || 
+                               logoData.src || 
+                               logoData.logo || 
+                               logoData.gambar; // Tambahan fallback
+
+                if (logoUrl) {
+                    const logoImg = document.getElementById('siteLogoImg');
+                    
+                    // Pastikan elemen HTML img benar-benar ada
+                    if (logoImg) {
+                        // Cache Busting (Memaksa browser refresh gambar)
+                        const separator = logoUrl.includes('?') ? '&' : '?';
+                        const uniqueUrl = `${logoUrl}${separator}_v=${Date.now()}`;
+                        
+                        // Set src baru
+                        logoImg.src = uniqueUrl;
+                        
+                        console.log("✅ Logo berhasil diterapkan:", uniqueUrl);
+                    } else {
+                        console.error("❌ Elemen HTML dengan id 'siteLogoImg' tidak ditemukan!");
+                    }
+                } else {
+                    console.warn("⚠️ Data baris ditemukan, tapi kolom gambar (logo_url/url/image/src/gambar) kosong.");
+                    console.log("Data mentah:", logoData);
+                }
+
             } catch (err) {
-                adLog(`Exception saat fetch logo: ${err.message}`, 'err');
+                console.error("Exception pada fetchSiteLogo:", err);
             }
         }
 
@@ -2063,7 +2089,7 @@
             adLog('=== APLIKASI DIMULAI ===', 'ok');
             initSlider();
             
-            // Fetch logo dari DB (Ditambahkan sesuai request)
+            // Fetch logo dari DB (FIXED)
             await fetchSiteLogo();
 
             await fetchAdminNumbers();
