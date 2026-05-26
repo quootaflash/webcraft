@@ -73,7 +73,7 @@
             color: var(--text-main);
             white-space: nowrap;
         }
-        .logo img { height: 28px; width: auto; }
+        .logo img { height: 32px; width: auto; object-fit: contain; } /* Sedikit diperbesar untuk menampung logo DB */
 
         .search-box {
             flex: 1;
@@ -480,11 +480,8 @@
         .btn-close:hover { background: var(--bg-body); }
 
         /* ============================================
-           MODAL AD BANNER — DIPERBAIKI TOTAL
-           - TIDAK pakai display:none (browser skip image load)
-           - Pakai height:0 + opacity:0 + overflow:hidden
-           - Diposisikan di DALAM .modal-info (area scroll)
-           - Transisi CSS halus
+           MODAL AD BANNER — UKURAN 1280x350
+           - Rasio aspek dikunci ke 1280 / 350
            ============================================ */
         .modal-ad-banner {
             display: block;
@@ -519,7 +516,7 @@
         .modal-ad-banner img {
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            object-fit: cover; /* Mengisi area rasio 1280x350 */
             object-position: center;
             display: block;
             transition: transform 0.4s ease;
@@ -808,7 +805,8 @@
     <header>
         <div class="container nav-wrapper">
             <a href="#" class="logo">
-                <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjzgVAIKgZMS9W7eJKCaRyaFnoDviThQstfeD9l9mcwPxUDoovGo7xB3RQByxTXo15fGX0DIeTMxOWkVovnB4FC35iJN6ArGLOlBRI9U4d4gJ7VOTOp-Ki47RIaViiIs12QGjxRmGs2cQzCFniRpBE0GyNLW3s_03rvTcpPeHAruMaUdrIKNX8jaFZ1TcBw/s3264/28063.png" alt="Logo">
+                <!-- Logo src akan diupdate oleh JS dari DB -->
+                <img id="siteLogoImg" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjzgVAIKgZMS9W7eJKCaRyaFnoDviThQstfeD9l9mcwPxUDoovGo7xB3RQByxTXo15fGX0DIeTMxOWkVovnB4FC35iJN6ArGLOlBRI9U4d4gJ7VOTOp-Ki47RIaViiIs12QGjxRmGs2cQzCFniRpBE0GyNLW3s_03rvTcpPeHAruMaUdrIKNX8jaFZ1TcBw/s3264/28063.png" alt="Logo">
                 <span></span>
             </a>
             
@@ -856,9 +854,7 @@
         </div>
     </footer>
 
-    <!-- ============================================
-         MODAL DETAIL PRODUK
-         ============================================ -->
+    <!-- MODAL DETAIL PRODUK -->
     <div class="modal-overlay" id="productModal">
         <div class="modal-content">
             <div class="btn-close" onclick="closeModal()"><i class="fas fa-times"></i></div>
@@ -896,14 +892,7 @@
                         <i class="fas fa-check-circle" style="color:var(--primary)"></i> Terpakai <span id="m-sold">0</span>x
                     </div>
 
-                    <!-- 
-                        IKLAN MODAL PRODUK
-                        Diposisikan di DALAM .modal-info agar:
-                        1. Selalu di area scrollable (tidak terpotong)
-                        2. Di desktop: mengikuti lebar panel kanan (45%)
-                        3. Di mobile: full width
-                        4. Tidak bisa di-skip oleh user
-                    -->
+                    <!-- IKLAN MODAL PRODUK (RASIO 1280x350) -->
                     <div class="modal-ad-banner" id="modalAdBanner">
                         <a href="#" target="_blank" rel="noopener noreferrer" id="modalAdLink">
                             <img id="modalAdImage" src="" alt="Promo">
@@ -1074,6 +1063,47 @@
             description: 'description', sold_count: 'sold_count',
             cover_letter_price: 'cover_letter_price', allow_addon: 'allow_addon'
         };
+
+        // ============================================
+        // LOGO FETCH (LOGO_SITUS)
+        // ============================================
+        async function fetchSiteLogo() {
+            if (!useSupabase) {
+                adLog('Supabase tidak tersedia, menggunakan logo default', 'warn');
+                return;
+            }
+
+            try {
+                // Mengambil data dari tabel 'logo_situs'
+                // Asumsi kolom url gambar bisa bernama: logo_url, url, image, atau src
+                const { data, error } = await supabase
+                    .from('logo_situs')
+                    .select('*')
+                    .single();
+
+                if (error) {
+                    adLog(`Gagal mengambil logo: ${error.message}`, 'err');
+                    return;
+                }
+
+                if (data) {
+                    // Cek berbagai kemungkinan nama kolom
+                    const logoUrl = data.logo_url || data.url || data.image || data.src || data.logo;
+                    
+                    if (logoUrl) {
+                        const logoImg = document.getElementById('siteLogoImg');
+                        if (logoImg) {
+                            logoImg.src = logoUrl;
+                            adLog('Logo situs berhasil diambil dari DB', 'ok');
+                        }
+                    } else {
+                        adLog('Data logo_situs ditemukan tapi kolom gambar kosong/tidak dikenali', 'warn');
+                    }
+                }
+            } catch (err) {
+                adLog(`Exception saat fetch logo: ${err.message}`, 'err');
+            }
+        }
 
         // ============================================
         // AD DEBUG LOGGER
@@ -1567,35 +1597,28 @@
         }
 
         // ============================================
-        // MODAL AD BANNER — DIPERBAIKI TOTAL
+        // MODAL AD BANNER — UKURAN 1280x350
         // ============================================
 
         /**
          * Tampilkan iklan banner di dalam modal produk
          * 
-         * PERBAIKAN UTAMA:
-         * 1. Banner SELALU display:block (tidak pernah display:none)
-         *    → Browser selalu memproses <img> di dalamnya
-         * 2. Cek img.complete untuk gambar yang sudah di-cache
-         * 3. Fallback timer 3 detik jika onload tidak pernah terpicu
-         * 4. Tinggi dihitung dari aspek rasio gambar
+         * PERUBAHAN: Ukuran dikunci ke rasio aspek 1280 / 350
          */
         function showModalAdBanner() {
             const bannerEl = document.getElementById('modalAdBanner');
             const imgEl = document.getElementById('modalAdImage');
             const linkEl = document.getElementById('modalAdLink');
 
-            // Reset ke kondisi tersembunyi (TIDAK pakai display:none!)
+            // Reset ke kondisi tersembunyi
             bannerEl.classList.remove('visible');
             bannerEl.style.height = '0px';
 
-            // Bersihkan fallback timer sebelumnya
             if (modalAdRevealTimer) {
                 clearTimeout(modalAdRevealTimer);
                 modalAdRevealTimer = null;
             }
 
-            // Jika tidak ada iklan modal yang tersedia
             if (modalAdsCache.length === 0 || todayModalAdIndex < 0) {
                 adLog('Modal ad: tidak ada iklan modal tersedia', 'warn');
                 return;
@@ -1613,40 +1636,33 @@
             adLog(`Modal ad: menyiapkan index ${todayModalAdIndex}`, 'ok');
             adLog(`Modal ad: URL = ${imageUrl.substring(0, 80)}...`, 'ok');
 
-            // Set link tujuan
             linkEl.href = linkUrl;
 
-            // Fungsi inti: hitung tinggi & tampilkan banner
             function revealBanner() {
-                // Gunakan naturalWidth/Height jika tersedia, fallback ke asumsi
-                const natW = imgEl.naturalWidth || 800;
-                const natH = imgEl.naturalHeight || 200;
-                
-                adLog(`Modal ad: gambar siap ${natW}x${natH}`, 'ok');
+                adLog(`Modal ad: gambar siap ${imgEl.naturalWidth}x${imgEl.naturalHeight}`, 'ok');
 
-                // Hitung tinggi berdasarkan aspek rasio gambar
-                const aspectRatio = natH / natW;
-                // Gunakan parentElement (.modal-info) sebagai acuan lebar
+                // PERUBAHAN LOGIKA UKURAN DI SINI
+                // Menghitung tinggi berdasarkan rasio aspek 1280:350
+                // Rasio = 350 / 1280 ≈ 0.2734
+                const targetRatio = 350 / 1280; 
+                
+                // Menggunakan lebar parent sebagai dasar (responsif)
                 const parentWidth = bannerEl.parentElement ? bannerEl.parentElement.offsetWidth : 400;
-                let bannerHeight = Math.round(parentWidth * aspectRatio);
+                let bannerHeight = Math.round(parentWidth * targetRatio);
                 
-                // Batasi tinggi: min 55px, max 130px
-                bannerHeight = Math.max(55, Math.min(130, bannerHeight));
+                // Batasi minimum tinggi agar tidak terlalu gepeng di HP kecil, misal min 60px
+                bannerHeight = Math.max(60, bannerHeight);
 
-                adLog(`Modal ad: parentWidth=${parentWidth}, height=${bannerHeight}px`, 'ok');
+                adLog(`Modal ad: parentWidth=${parentWidth}, height=${bannerHeight}px (Ratio 1280x350)`, 'ok');
 
-                // Set tinggi & tampilkan
                 bannerEl.style.height = bannerHeight + 'px';
                 bannerEl.classList.add('visible');
             }
 
-            // Cek apakah gambar SUDAH di-cache dan complete
             if (imgEl.complete && imgEl.naturalWidth > 0 && imgEl.src === imageUrl) {
-                // Gambar sudah siap di cache, langsung reveal tanpa tunggu onload
                 adLog('Modal ad: gambar sudah di-cache, langsung reveal', 'ok');
                 requestAnimationFrame(() => revealBanner());
             } else {
-                // Gambar belum dimuat, set src dan tunggu onload
                 imgEl.onload = function() {
                     adLog('Modal ad: onload terpicu', 'ok');
                     if (modalAdRevealTimer) { clearTimeout(modalAdRevealTimer); modalAdRevealTimer = null; }
@@ -1656,15 +1672,14 @@
                 imgEl.onerror = function() {
                     adLog(`Modal ad: GAMBAR GAGAL LOAD = ${imageUrl}`, 'err');
                     if (modalAdRevealTimer) { clearTimeout(modalAdRevealTimer); modalAdRevealTimer = null; }
-                    // Tetap tampilkan dengan tinggi default meski gambar gagal
-                    bannerEl.style.height = '80px';
+                    // Fallback tampilkan dengan tinggi default rasio
+                    const parentWidth = bannerEl.parentElement ? bannerEl.parentElement.offsetWidth : 400;
+                    bannerEl.style.height = Math.round(parentWidth * (350/1280)) + 'px';
                     bannerEl.classList.add('visible');
                 };
 
-                // Set src (ini memicu load)
                 imgEl.src = imageUrl;
 
-                // FALLBACK: Jika onload tidak terpicu dalam 3 detik, force reveal
                 modalAdRevealTimer = setTimeout(() => {
                     adLog('Modal ad: FALLBACK terpicu (onload tidak terpicu dalam 3s)', 'warn');
                     modalAdRevealTimer = null;
@@ -1675,10 +1690,6 @@
             }
         }
 
-        /**
-         * Sembunyikan banner iklan modal
-         * TIDAK mengosongkan src (biar gambar tetap di-cache browser)
-         */
         function hideModalAdBanner() {
             const bannerEl = document.getElementById('modalAdBanner');
             bannerEl.classList.remove('visible');
@@ -1951,7 +1962,6 @@
             totalEl.innerText = formatRupiah(totalWithUnique);
             totalEl.style.color = 'var(--danger)';
 
-            // Sembunyikan iklan modal saat pindah ke payment
             hideModalAdBanner();
 
             productView.style.display = 'none';
@@ -1964,8 +1974,6 @@
             clearPaymentTimer();
             paymentView.classList.remove('active');
             productView.style.display = 'flex';
-
-            // Tampilkan kembali iklan modal
             showModalAdBanner();
         };
 
@@ -2009,7 +2017,6 @@
             document.getElementById('productModal').classList.add('active');
             document.body.style.overflow = 'hidden';
 
-            // Tampilkan iklan banner di modal produk
             showModalAdBanner();
         }
 
@@ -2018,8 +2025,6 @@
             document.getElementById('productModal').classList.remove('active');
             document.body.style.overflow = 'auto';
             currentProduct = null;
-
-            // Sembunyikan iklan modal
             hideModalAdBanner();
         }
 
@@ -2057,6 +2062,10 @@
         async function init() {
             adLog('=== APLIKASI DIMULAI ===', 'ok');
             initSlider();
+            
+            // Fetch logo dari DB (Ditambahkan sesuai request)
+            await fetchSiteLogo();
+
             await fetchAdminNumbers();
             await fetchCoverLetterPrice();
             await fetchPaymentMethods();
