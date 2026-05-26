@@ -480,25 +480,33 @@
         .btn-close:hover { background: var(--bg-body); }
 
         /* ============================================
-           MODAL AD BANNER — POSTER PERSEGI PANJANG
-           Tanpa skip, rotasi harian otomatis
+           MODAL AD BANNER — DIPERBAIKI TOTAL
+           - TIDAK pakai display:none (browser skip image load)
+           - Pakai height:0 + opacity:0 + overflow:hidden
+           - Diposisikan di DALAM .modal-info (area scroll)
+           - Transisi CSS halus
            ============================================ */
         .modal-ad-banner {
-            display: none;
+            display: block;
             width: 100%;
             flex-shrink: 0;
             overflow: hidden;
             position: relative;
-            background: #f1f5f9;
-            border-top: 1px solid var(--border);
+            background: var(--bg-body);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            height: 0;
+            opacity: 0;
+            margin-bottom: 16px;
+            pointer-events: none;
+            transition: height 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+                        opacity 0.4s ease 0.05s,
+                        margin-bottom 0.5s ease;
         }
         .modal-ad-banner.visible {
-            display: block;
-            animation: modalAdSlideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-        @keyframes modalAdSlideIn {
-            from { opacity: 0; max-height: 0; }
-            to { opacity: 1; max-height: 160px; }
+            opacity: 1;
+            pointer-events: auto;
+            margin-bottom: 16px;
         }
         .modal-ad-banner a {
             display: block;
@@ -506,6 +514,7 @@
             height: 100%;
             position: relative;
             overflow: hidden;
+            border-radius: 10px;
         }
         .modal-ad-banner img {
             width: 100%;
@@ -517,14 +526,6 @@
         }
         .modal-ad-banner a:hover img {
             transform: scale(1.02);
-        }
-        /* Dim overlay halus untuk keterbacaan jika ada teks di poster */
-        .modal-ad-banner::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(90deg, rgba(0,0,0,0.03) 0%, transparent 30%, transparent 70%, rgba(0,0,0,0.03) 100%);
-            pointer-events: none;
         }
 
         /* --- PAYMENT VIEW --- */
@@ -669,7 +670,7 @@
         @keyframes fadeOut { to { opacity: 0; transform: translateY(-10px); } }
 
         /* ============================================
-           AD POPUP — DIPERBAIKI & DITINGKATKAN
+           AD POPUP — FLOATING IKLAN HALAMAN UTAMA
            ============================================ */
         .ad-popup {
             position: fixed;
@@ -728,7 +729,6 @@
         }
         .ad-close:hover { transform: scale(1.15); background: #dc2626; }
 
-        /* Progress bar auto-dismiss */
         .ad-timer-bar {
             position: absolute;
             bottom: 0; left: 0;
@@ -749,7 +749,6 @@
             to { transform: scaleX(0); }
         }
 
-        /* Mobile responsive ad */
         @media (max-width: 480px) {
             .ad-popup {
                 bottom: 12px;
@@ -760,7 +759,7 @@
             }
         }
 
-        /* --- AD DEBUG PANEL (tersembunyi, toggle via console) --- */
+        /* --- AD DEBUG PANEL --- */
         .ad-debug-panel {
             position: fixed;
             bottom: 10px;
@@ -801,7 +800,6 @@
 
     <div class="toast-container" id="toastContainer"></div>
 
-    <!-- Ad Debug Panel (hidden by default, type window.toggleAdDebug() in console) -->
     <div class="ad-debug-panel" id="adDebugPanel">
         <div class="debug-title">[AD DEBUG LOG]</div>
         <div id="adDebugContent"></div>
@@ -858,7 +856,9 @@
         </div>
     </footer>
 
-    <!-- MODAL DETAIL -->
+    <!-- ============================================
+         MODAL DETAIL PRODUK
+         ============================================ -->
     <div class="modal-overlay" id="productModal">
         <div class="modal-content">
             <div class="btn-close" onclick="closeModal()"><i class="fas fa-times"></i></div>
@@ -896,17 +896,24 @@
                         <i class="fas fa-check-circle" style="color:var(--primary)"></i> Terpakai <span id="m-sold">0</span>x
                     </div>
 
+                    <!-- 
+                        IKLAN MODAL PRODUK
+                        Diposisikan di DALAM .modal-info agar:
+                        1. Selalu di area scrollable (tidak terpotong)
+                        2. Di desktop: mengikuti lebar panel kanan (45%)
+                        3. Di mobile: full width
+                        4. Tidak bisa di-skip oleh user
+                    -->
+                    <div class="modal-ad-banner" id="modalAdBanner">
+                        <a href="#" target="_blank" rel="noopener noreferrer" id="modalAdLink">
+                            <img id="modalAdImage" src="" alt="Promo">
+                        </a>
+                    </div>
+
                     <button id="btn-goto-payment" class="btn-buy">
                         <i class="fas fa-shopping-cart"></i> Pakai Sekarang
                     </button>
                 </div>
-            </div>
-
-            <!-- IKLAN MODAL — Poster persegi panjang kecil, tanpa skip -->
-            <div class="modal-ad-banner" id="modalAdBanner">
-                <a href="#" target="_blank" rel="noopener noreferrer" id="modalAdLink">
-                    <img id="modalAdImage" src="" alt="Promo" loading="lazy">
-                </a>
             </div>
 
             <div class="payment-view" id="paymentView">
@@ -976,7 +983,7 @@
         </div>
     </div>
 
-    <!-- AD POPUP — DITINGKATKAN -->
+    <!-- AD POPUP — FLOATING -->
     <div class="ad-popup" id="adPopup">
         <div class="ad-close" onclick="closeAd()"><i class="fas fa-times"></i></div>
         <a href="#" target="_blank" rel="noopener noreferrer" id="adLink">
@@ -1040,7 +1047,7 @@
         let touchEndX = 0;
 
         // ============================================
-        // AD SYSTEM — VARIABEL & KONFIGURASI
+        // AD SYSTEM — VARIABEL
         // ============================================
         const AD_CONFIG = {
             showDelay: 3000,
@@ -1056,9 +1063,10 @@
         let lastAdShownTime = 0;
         let allAdsCache = [];
 
-        // Cache iklan untuk modal (dipisah dari popup)
+        // Cache iklan untuk modal
         let modalAdsCache = [];
         let todayModalAdIndex = -1;
+        let modalAdRevealTimer = null; // Fallback timer
 
         let fields = {
             title: 'title', price: 'price', original_price: 'original_price',
@@ -1072,8 +1080,7 @@
         // ============================================
         function adLog(message, type = 'ok') {
             const timestamp = new Date().toLocaleTimeString('id-ID');
-            const prefix = `[${timestamp}]`;
-            const fullMsg = `${prefix} ${message}`;
+            const fullMsg = `[${timestamp}] ${message}`;
             
             console.log(`%c[AD] ${message}`, 
                 type === 'ok' ? 'color: #4ade80' : 
@@ -1102,7 +1109,7 @@
             }
         };
 
-        // --- TOAST --- ---
+        // --- TOAST ---
         window.showToast = function(message, type = 'success') {
             const container = document.getElementById('toastContainer');
             const toast = document.createElement('div');
@@ -1116,7 +1123,7 @@
             }, 3000);
         }
 
-        // --- QRIS MODAL --- ---
+        // --- QRIS MODAL ---
         window.openQrisModal = function(imageUrl) {
             const modal = document.getElementById('qrisModal');
             document.getElementById('qrisDisplayImage').src = imageUrl;
@@ -1137,7 +1144,7 @@
         };
         document.getElementById('qrisModal').addEventListener('click', (e) => { if(e.target.id === 'qrisModal') closeQrisModal(); });
 
-        // --- TIMER LOGIC --- ---
+        // --- TIMER LOGIC ---
         function lockWhatsAppButton() {
             const btn = document.getElementById('btn-confirm-whatsapp');
             if (paymentLockTimer) clearTimeout(paymentLockTimer);
@@ -1152,7 +1159,7 @@
         }
         function clearPaymentTimer() { if (paymentLockTimer) { clearTimeout(paymentLockTimer); paymentLockTimer = null; } }
 
-        // --- HELPERS --- ---
+        // --- HELPERS ---
         const formatRupiah = (num) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(num);
         function getField(item, fieldKey) { return item[fields[fieldKey]] || item[fieldKey]; }
 
@@ -1174,7 +1181,7 @@
             fields = map;
         }
 
-        // --- SEARCH --- ---
+        // --- SEARCH ---
         const searchInput = document.getElementById('searchInput');
         const suggestionsBox = document.getElementById('searchSuggestions');
 
@@ -1220,7 +1227,7 @@
         searchInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') { suggestionsBox.classList.remove('active'); searchInput.blur(); } });
         document.addEventListener('click', (e) => { if (!searchInput.contains(e.target) && !suggestionsBox.contains(e.target)) suggestionsBox.classList.remove('active'); });
 
-        // --- CATEGORIES --- ---
+        // --- CATEGORIES ---
         function renderCategories() {
             const container = document.getElementById('filterBar');
             container.innerHTML = '';
@@ -1238,7 +1245,7 @@
             });
         }
 
-        // --- FETCH FUNCTIONS --- ---
+        // --- FETCH FUNCTIONS ---
         async function fetchAdminNumbers() {
             if (useSupabase) {
                 const { data } = await supabase.from('no_wa').select('nomor');
@@ -1282,7 +1289,7 @@
         }
 
         // ============================================
-        // AD SYSTEM — POPUP IKLAN
+        // AD SYSTEM — HELPER FUNCTIONS
         // ============================================
 
         function getAdField(ad, possibilities) {
@@ -1321,10 +1328,6 @@
             return AD_CONFIG.autoDismiss;
         }
 
-        /**
-         * Cek apakah iklan memiliki penempatan di modal produk
-         * Mendukung berbagai nama kolom untuk kolom "placement" / "penempatan"
-         */
         function getAdPlacement(ad) {
             return getAdField(ad, [
                 'placement', 'penempatan', 'posisi', 'position',
@@ -1343,7 +1346,6 @@
             for (const tableName of AD_CONFIG.tableNames) {
                 try {
                     adLog(`Mencoba tabel: "${tableName}"`, 'ok');
-                    
                     const { data, error } = await supabase.from(tableName).select('*');
                     
                     if (error) {
@@ -1381,10 +1383,11 @@
             return [];
         }
 
+        // --- POPUP AD FUNCTIONS ---
+
         function detectTransparency(imageUrl, callback) {
             const testImg = new Image();
             testImg.crossOrigin = "Anonymous";
-            
             testImg.onload = function() {
                 try {
                     const canvas = document.createElement('canvas');
@@ -1395,32 +1398,20 @@
                         [this.naturalWidth - 1, this.naturalHeight - 1],
                         [Math.floor(this.naturalWidth / 4), Math.floor(this.naturalHeight / 4)]
                     ];
-                    
                     let transparentCount = 0;
                     canvas.width = this.naturalWidth;
                     canvas.height = this.naturalHeight;
                     ctx.drawImage(this, 0, 0);
-                    
                     for (const [x, y] of points) {
                         const pixel = ctx.getImageData(x, y, 1, 1).data;
                         if (pixel[3] === 0) transparentCount++;
                     }
-                    
-                    const isTransparent = transparentCount >= 2;
-                    adLog(`Deteksi transparansi: ${transparentCount}/4 titik transparan → ${isTransparent ? 'TRANSPARENT' : 'SOLID'}`, 'ok');
-                    callback(isTransparent);
-                    
+                    callback(transparentCount >= 2);
                 } catch (e) {
-                    adLog(`Canvas read gagal (CORS ketat): ${e.message}`, 'warn');
                     callback(false);
                 }
             };
-            
-            testImg.onerror = function() {
-                adLog('Gambar test transparansi gagal load, default solid', 'warn');
-                callback(false);
-            };
-            
+            testImg.onerror = function() { callback(false); };
             testImg.src = imageUrl;
         }
 
@@ -1429,14 +1420,9 @@
             const linkUrl = getAdLinkUrl(adData);
             const duration = getAdDuration(adData);
 
-            if (!imageUrl) {
-                adLog('Tidak ada URL gambar, batal tampilkan', 'err');
-                return;
-            }
+            if (!imageUrl) { adLog('Tidak ada URL gambar, batal tampilkan', 'err'); return; }
 
-            adLog(`Menyiapkan popup: ${imageUrl.substring(0, 60)}...`, 'ok');
-            adLog(`Link: ${linkUrl}`, 'ok');
-            adLog(`Durasi: ${duration} detik`, 'ok');
+            adLog(`Popup: ${imageUrl.substring(0, 60)}...`, 'ok');
 
             const popup = document.getElementById('adPopup');
             const img = document.getElementById('adImage');
@@ -1447,7 +1433,6 @@
             if (adDismissTimer) { clearTimeout(adDismissTimer); adDismissTimer = null; }
 
             link.href = linkUrl;
-
             img.removeAttribute('crossorigin');
             img.src = imageUrl;
 
@@ -1457,56 +1442,33 @@
             timerBar.style.animation = `adTimerShrink ${duration}s linear forwards`;
 
             img.onload = function() {
-                adLog(`Gambar utama loaded: ${this.naturalWidth}x${this.naturalHeight}`, 'ok');
-                
+                adLog(`Popup loaded: ${this.naturalWidth}x${this.naturalHeight}`, 'ok');
                 popup.style.display = 'block';
                 void popup.offsetWidth;
                 popup.classList.add('ad-visible');
-                
                 adShownCount++;
                 lastAdShownTime = Date.now();
-                adLog(`Popup ditampilkan (show #${adShownCount} session ini)`, 'ok');
 
                 detectTransparency(imageUrl, (isTransparent) => {
-                    if (isTransparent) {
-                        popup.classList.add('transparent-mode');
-                        adLog('Mode: TRANSPARENT (background dihapus)', 'ok');
-                    } else {
-                        popup.classList.remove('transparent-mode');
-                        adLog('Mode: SOLID (poster biasa)', 'ok');
-                    }
+                    if (isTransparent) popup.classList.add('transparent-mode');
+                    else popup.classList.remove('transparent-mode');
                 });
 
-                adDismissTimer = setTimeout(() => {
-                    adLog(`Auto-dismiss setelah ${duration} detik`, 'ok');
-                    closeAd();
-                }, duration * 1000);
+                adDismissTimer = setTimeout(() => { adLog(`Popup auto-dismiss ${duration}s`, 'ok'); closeAd(); }, duration * 1000);
             };
 
             img.onerror = function() {
-                adLog(`Gambar utama GAGAL load: ${imageUrl}`, 'err');
-                
-                adLog('Mencoba retry dengan crossOrigin...', 'warn');
+                adLog(`Popup GAGAL load: ${imageUrl}`, 'err');
                 img.crossOrigin = "Anonymous";
-                
-                const retryOnload = function() {
-                    adLog('Retry BERHASIL dengan crossOrigin', 'ok');
+                img.onload = function() {
                     popup.style.display = 'block';
                     void popup.offsetWidth;
                     popup.classList.add('ad-visible');
                     adShownCount++;
                     lastAdShownTime = Date.now();
-                    
                     adDismissTimer = setTimeout(closeAd, duration * 1000);
                 };
-                
-                const retryOnerror = function() {
-                    adLog('Retry juga GAGAL. Popup dibatalkan.', 'err');
-                    popup.style.display = 'none';
-                };
-                
-                img.onload = retryOnload;
-                img.onerror = retryOnerror;
+                img.onerror = function() { popup.style.display = 'none'; };
                 img.src = imageUrl + (imageUrl.includes('?') ? '&' : '?') + '_retry=1';
             };
         }
@@ -1514,21 +1476,16 @@
         function selectNextAd(adsList) {
             if (adsList.length === 0) return null;
             if (adsList.length === 1) return adsList[0];
-
             const sessionKey = 'wh_ad_shown_ids';
             const shownIds = JSON.parse(sessionStorage.getItem(sessionKey) || '[]');
-            
             for (let i = 0; i < adsList.length; i++) {
                 const adId = adsList[i].id || adsList[i].image_url || i;
                 if (!shownIds.includes(String(adId))) {
                     shownIds.push(String(adId));
                     sessionStorage.setItem(sessionKey, JSON.stringify(shownIds));
-                    adLog(`Rotasi: memilih iklan index ${i} (id: ${adId})`, 'ok');
                     return adsList[i];
                 }
             }
-            
-            adLog('Semua iklan sudah ditampilkan, reset rotasi', 'warn');
             sessionStorage.setItem(sessionKey, JSON.stringify([]));
             return adsList[0];
         }
@@ -1536,130 +1493,111 @@
         async function initAdSystem() {
             adLog('=== SISTEM IKLAN DIMULAI ===', 'ok');
             adLog(`Supabase: ${useSupabase ? 'TERHUBUNG' : 'TIDAK TERHUBUNG'}`, useSupabase ? 'ok' : 'warn');
-            adLog(`Config: delay=${AD_CONFIG.showDelay}ms, duration=${AD_CONFIG.autoDismiss}s, max/session=${AD_CONFIG.maxPerSession}`, 'ok');
 
-            if (!useSupabase) {
-                adLog('Dibatalkan: Supabase tidak terhubung', 'err');
-                return;
-            }
+            if (!useSupabase) { adLog('Dibatalkan: Supabase tidak terhubung', 'err'); return; }
 
             const ads = await fetchAds();
             allAdsCache = ads;
 
-            // Pisahkan iklan untuk modal vs popup berdasarkan kolom placement
-            // Iklan dengan placement 'modal' / 'product_modal' / 'modal_produk' → modal
-            // Iklan tanpa placement atau placement 'popup' / 'floating' → popup
+            // Pisahkan iklan berdasarkan placement
             modalAdsCache = ads.filter(ad => {
                 const placement = getAdPlacement(ad);
-                if (!placement) return false; // Tanpa placement → popup saja
+                if (!placement) return false;
                 const p = String(placement).toLowerCase().trim();
                 return p.includes('modal') || p.includes('product') || p.includes('produk') || p.includes('detail');
             });
 
             const popupAds = ads.filter(ad => {
                 const placement = getAdPlacement(ad);
-                if (!placement) return true; // Tanpa placement → popup default
+                if (!placement) return true;
                 const p = String(placement).toLowerCase().trim();
                 return !p.includes('modal') && !p.includes('product') && !p.includes('produk') && !p.includes('detail');
             });
 
             adLog(`Distribusi: ${popupAds.length} popup, ${modalAdsCache.length} modal`, 'ok');
 
-            // Hitung index iklan modal hari ini (rotasi harian otomatis)
+            // Hitung rotasi harian untuk iklan modal
             if (modalAdsCache.length > 0) {
                 computeTodayModalAdIndex(modalAdsCache.length);
             }
 
-            // Tampilkan popup iklan setelah delay
+            // Tampilkan popup setelah delay
             if (popupAds.length > 0) {
                 adLog(`Menunggu ${AD_CONFIG.showDelay}ms sebelum tampilkan popup...`, 'ok');
                 await new Promise(r => setTimeout(r, AD_CONFIG.showDelay));
-                // Override allAdsCache untuk rotasi popup saja
                 allAdsCache = popupAds;
                 showNextAd(popupAds);
             }
         }
 
         /**
-         * ROTASI HARIAN: Hitung index iklan modal berdasarkan hari sekarang
-         * Setiap hari berganti, iklan yang muncul di modal juga berganti secara otomatis
+         * ROTASI HARIAN: Index iklan modal berdasarkan hari
          */
         function computeTodayModalAdIndex(totalAds) {
-            if (totalAds === 0) {
-                todayModalAdIndex = -1;
-                return;
-            }
-            // Hitung hari ke berapa sejak epoch (01-01-1970)
-            const now = new Date();
-            const epochDays = Math.floor(now.getTime() / (1000 * 60 * 60 * 24));
+            if (totalAds === 0) { todayModalAdIndex = -1; return; }
+            const epochDays = Math.floor(Date.now() / (1000 * 60 * 60 * 24));
             todayModalAdIndex = epochDays % totalAds;
-            adLog(`Rotasi harian: hari ke-${epochDays} → index ${todayModalAdIndex} dari ${totalAds} iklan modal`, 'ok');
+            adLog(`Rotasi harian modal: hari ke-${epochDays} → index ${todayModalAdIndex} dari ${totalAds}`, 'ok');
         }
 
         function showNextAd(ads) {
             if (!ads || ads.length === 0) return;
-
-            if (adShownCount >= AD_CONFIG.maxPerSession) {
-                adLog(`Batas ${AD_CONFIG.maxPerSession} iklan/session tercapai, berhenti`, 'warn');
-                return;
-            }
-
+            if (adShownCount >= AD_CONFIG.maxPerSession) { adLog(`Batas ${AD_CONFIG.maxPerSession}/session tercapai`, 'warn'); return; }
             const now = Date.now();
             if (lastAdShownTime > 0 && (now - lastAdShownTime) < AD_CONFIG.cooldownBetweenAds) {
                 const waitMs = AD_CONFIG.cooldownBetweenAds - (now - lastAdShownTime);
-                adLog(`Cooldown aktif, menunggu ${Math.ceil(waitMs / 1000)}s...`, 'warn');
+                adLog(`Cooldown, tunggu ${Math.ceil(waitMs / 1000)}s`, 'warn');
                 setTimeout(() => showNextAd(ads), waitMs);
                 return;
             }
-
             const selectedAd = selectNextAd(ads);
-            if (selectedAd) {
-                showAdPopup(selectedAd);
-            }
+            if (selectedAd) showAdPopup(selectedAd);
         }
 
-        // Close ad & schedule next jika ada
         window.closeAd = function() {
             const popup = document.getElementById('adPopup');
             popup.classList.remove('ad-visible');
-            
-            if (adDismissTimer) {
-                clearTimeout(adDismissTimer);
-                adDismissTimer = null;
-            }
-
+            if (adDismissTimer) { clearTimeout(adDismissTimer); adDismissTimer = null; }
             setTimeout(() => {
                 popup.style.display = 'none';
-                
                 if (allAdsCache.length > 1 && adShownCount < AD_CONFIG.maxPerSession) {
-                    adLog('Menjadwalkan iklan berikutnya...', 'ok');
                     setTimeout(() => showNextAd(allAdsCache), AD_CONFIG.cooldownBetweenAds);
                 }
             }, 500);
         }
 
         // ============================================
-        // MODAL AD BANNER — SISTEM IKLAN DI MODAL PRODUK
+        // MODAL AD BANNER — DIPERBAIKI TOTAL
         // ============================================
 
         /**
-         * Tampilkan iklan banner di modal produk
-         * - Poster persegi panjang kecil
-         * - TANPA tombol close/skip (tidak bisa di-skip)
-         * - Rotasi otomatis setiap hari
-         * - Responsif di berbagai perangkat
+         * Tampilkan iklan banner di dalam modal produk
+         * 
+         * PERBAIKAN UTAMA:
+         * 1. Banner SELALU display:block (tidak pernah display:none)
+         *    → Browser selalu memproses <img> di dalamnya
+         * 2. Cek img.complete untuk gambar yang sudah di-cache
+         * 3. Fallback timer 3 detik jika onload tidak pernah terpicu
+         * 4. Tinggi dihitung dari aspek rasio gambar
          */
         function showModalAdBanner() {
             const bannerEl = document.getElementById('modalAdBanner');
             const imgEl = document.getElementById('modalAdImage');
             const linkEl = document.getElementById('modalAdLink');
 
-            // Sembunyikan dulu
+            // Reset ke kondisi tersembunyi (TIDAK pakai display:none!)
             bannerEl.classList.remove('visible');
+            bannerEl.style.height = '0px';
+
+            // Bersihkan fallback timer sebelumnya
+            if (modalAdRevealTimer) {
+                clearTimeout(modalAdRevealTimer);
+                modalAdRevealTimer = null;
+            }
 
             // Jika tidak ada iklan modal yang tersedia
             if (modalAdsCache.length === 0 || todayModalAdIndex < 0) {
-                adLog('Tidak ada iklan modal untuk ditampilkan', 'warn');
+                adLog('Modal ad: tidak ada iklan modal tersedia', 'warn');
                 return;
             }
 
@@ -1668,58 +1606,91 @@
             const linkUrl = getAdLinkUrl(selectedAd);
 
             if (!imageUrl) {
-                adLog('Iklan modal hari ini tidak punya gambar, skip', 'warn');
+                adLog('Modal ad: iklan hari ini tidak punya gambar', 'warn');
                 return;
             }
 
-            adLog(`Modal ad: menampilkan iklan index ${todayModalAdIndex}`, 'ok');
-            adLog(`Modal ad URL: ${imageUrl.substring(0, 80)}...`, 'ok');
+            adLog(`Modal ad: menyiapkan index ${todayModalAdIndex}`, 'ok');
+            adLog(`Modal ad: URL = ${imageUrl.substring(0, 80)}...`, 'ok');
 
-            // Set link dan gambar
+            // Set link tujuan
             linkEl.href = linkUrl;
-            imgEl.src = imageUrl;
 
-            // Tampilkan banner saat gambar sudah siap
-            imgEl.onload = function() {
-                const natW = this.naturalWidth;
-                const natH = this.naturalHeight;
-                adLog(`Modal ad loaded: ${natW}x${natH}`, 'ok');
+            // Fungsi inti: hitung tinggi & tampilkan banner
+            function revealBanner() {
+                // Gunakan naturalWidth/Height jika tersedia, fallback ke asumsi
+                const natW = imgEl.naturalWidth || 800;
+                const natH = imgEl.naturalHeight || 200;
+                
+                adLog(`Modal ad: gambar siap ${natW}x${natH}`, 'ok');
 
-                // Set tinggi banner secara responsif berdasarkan aspek rasio gambar
-                // Maksimal 140px, minimal 60px
+                // Hitung tinggi berdasarkan aspek rasio gambar
                 const aspectRatio = natH / natW;
-                const containerWidth = bannerEl.offsetWidth || 400;
-                let bannerHeight = Math.round(containerWidth * aspectRatio);
-                bannerHeight = Math.max(60, Math.min(140, bannerHeight));
+                // Gunakan parentElement (.modal-info) sebagai acuan lebar
+                const parentWidth = bannerEl.parentElement ? bannerEl.parentElement.offsetWidth : 400;
+                let bannerHeight = Math.round(parentWidth * aspectRatio);
+                
+                // Batasi tinggi: min 55px, max 130px
+                bannerHeight = Math.max(55, Math.min(130, bannerHeight));
+
+                adLog(`Modal ad: parentWidth=${parentWidth}, height=${bannerHeight}px`, 'ok');
+
+                // Set tinggi & tampilkan
                 bannerEl.style.height = bannerHeight + 'px';
+                bannerEl.classList.add('visible');
+            }
 
-                // Tampilkan dengan animasi slide-in
-                requestAnimationFrame(() => {
+            // Cek apakah gambar SUDAH di-cache dan complete
+            if (imgEl.complete && imgEl.naturalWidth > 0 && imgEl.src === imageUrl) {
+                // Gambar sudah siap di cache, langsung reveal tanpa tunggu onload
+                adLog('Modal ad: gambar sudah di-cache, langsung reveal', 'ok');
+                requestAnimationFrame(() => revealBanner());
+            } else {
+                // Gambar belum dimuat, set src dan tunggu onload
+                imgEl.onload = function() {
+                    adLog('Modal ad: onload terpicu', 'ok');
+                    if (modalAdRevealTimer) { clearTimeout(modalAdRevealTimer); modalAdRevealTimer = null; }
+                    revealBanner();
+                };
+
+                imgEl.onerror = function() {
+                    adLog(`Modal ad: GAMBAR GAGAL LOAD = ${imageUrl}`, 'err');
+                    if (modalAdRevealTimer) { clearTimeout(modalAdRevealTimer); modalAdRevealTimer = null; }
+                    // Tetap tampilkan dengan tinggi default meski gambar gagal
+                    bannerEl.style.height = '80px';
                     bannerEl.classList.add('visible');
-                });
-            };
+                };
 
-            imgEl.onerror = function() {
-                adLog(`Modal ad GAGAL load: ${imageUrl}`, 'err');
-                bannerEl.style.display = 'none';
-            };
+                // Set src (ini memicu load)
+                imgEl.src = imageUrl;
+
+                // FALLBACK: Jika onload tidak terpicu dalam 3 detik, force reveal
+                modalAdRevealTimer = setTimeout(() => {
+                    adLog('Modal ad: FALLBACK terpicu (onload tidak terpicu dalam 3s)', 'warn');
+                    modalAdRevealTimer = null;
+                    if (!bannerEl.classList.contains('visible')) {
+                        revealBanner();
+                    }
+                }, 3000);
+            }
         }
 
         /**
-         * Sembunyikan banner iklan modal (dipanggil saat modal ditutup atau pindah ke payment view)
+         * Sembunyikan banner iklan modal
+         * TIDAK mengosongkan src (biar gambar tetap di-cache browser)
          */
         function hideModalAdBanner() {
             const bannerEl = document.getElementById('modalAdBanner');
             bannerEl.classList.remove('visible');
-            // Reset src agar tidak memakan bandwidth saat tidak terlihat
-            setTimeout(() => {
-                if (!bannerEl.classList.contains('visible')) {
-                    document.getElementById('modalAdImage').src = '';
-                }
-            }, 500);
+            bannerEl.style.height = '0px';
+            
+            if (modalAdRevealTimer) {
+                clearTimeout(modalAdRevealTimer);
+                modalAdRevealTimer = null;
+            }
         }
 
-        // --- CARD SLIDERS --- ---
+        // --- CARD SLIDERS ---
         const cardSliders = {};
         function initCardSlider(cardElement, productId) {
             const container = cardElement.querySelector('.card-slider-container');
@@ -1737,7 +1708,7 @@
             start();
         }
 
-        // --- RENDER PRODUCTS --- ---
+        // --- RENDER PRODUCTS ---
         function renderProducts() {
             const grid = document.getElementById('productGrid');
             grid.innerHTML = '';
@@ -1790,7 +1761,7 @@
             });
         }
 
-        // --- RENDER PAYMENT --- ---
+        // --- RENDER PAYMENT ---
         function renderPaymentMethods() {
             const container = document.getElementById('paymentMethodsList');
             container.innerHTML = '';
@@ -1841,7 +1812,7 @@
             });
         }
 
-        // --- HERO SLIDER --- ---
+        // --- HERO SLIDER ---
         let slideIndex = 0, slideInterval;
         function initSlider() {
             const track = document.getElementById('sliderTrack');
@@ -1874,7 +1845,7 @@
         window.nextSlide = nextSlide;
         window.prevSlide = prevSlide;
 
-        // --- FILTER --- ---
+        // --- FILTER ---
         window.setCategory = function(cat, el) {
             currentCategory = cat;
             document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
@@ -1891,7 +1862,7 @@
             renderProducts();
         }
 
-        // --- MODAL LOGIC --- ---
+        // --- MODAL LOGIC ---
         let currentProduct = null, carouselIndex = 0, carouselImages = [];
         const trackEl = document.getElementById('carouselTrack');
         trackEl.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].screenX; }, {passive: true});
@@ -1980,7 +1951,7 @@
             totalEl.innerText = formatRupiah(totalWithUnique);
             totalEl.style.color = 'var(--danger)';
 
-            // Sembunyikan iklan modal saat pindah ke payment view
+            // Sembunyikan iklan modal saat pindah ke payment
             hideModalAdBanner();
 
             productView.style.display = 'none';
@@ -1994,7 +1965,7 @@
             paymentView.classList.remove('active');
             productView.style.display = 'flex';
 
-            // Tampilkan kembali iklan modal saat kembali ke product view
+            // Tampilkan kembali iklan modal
             showModalAdBanner();
         };
 
@@ -2048,7 +2019,7 @@
             document.body.style.overflow = 'auto';
             currentProduct = null;
 
-            // Sembunyikan iklan modal saat modal ditutup
+            // Sembunyikan iklan modal
             hideModalAdBanner();
         }
 
@@ -2082,7 +2053,7 @@
             return selectedNumber;
         }
 
-        // --- INIT --- ---
+        // --- INIT ---
         async function init() {
             adLog('=== APLIKASI DIMULAI ===', 'ok');
             initSlider();
@@ -2092,7 +2063,7 @@
             await fetchProducts();
             renderProducts();
             
-            // Jalankan sistem iklan secara PARALEL
+            // Jalankan sistem iklan paralel
             initAdSystem();
         }
 
