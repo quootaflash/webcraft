@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>WRITEHUB - INDONESIA</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
@@ -27,6 +27,9 @@
             --danger: #ef4444;
             --success: #10b981;
             --warning: #f59e0b;
+            --gradient-fire: linear-gradient(135deg, #ff6b35 0%, #f7931e 50%, #ffcc02 100%);
+            --gradient-cta: linear-gradient(135deg, #2563eb 0%, #1d4ed8 50%, #1e40af 100%);
+            --gradient-urgent: linear-gradient(135deg, #dc2626 0%, #ef4444 50%, #f87171 100%);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
@@ -462,14 +465,136 @@
         input:checked + .slider-toggle { background-color: var(--primary); }
         input:checked + .slider-toggle:before { transform: translateX(20px); }
 
-        .btn-buy {
-            background: var(--primary); color: white; padding: 16px;
-            border-radius: 12px; font-weight: 600; font-size: 1rem; text-align: center;
-            transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%;
-            cursor: pointer; flex-shrink: 0;
+        /* ============================================
+           CTA BUTTON — GESTUR IMPULSIF
+           ============================================ */
+        .btn-buy-wrapper {
+            position: relative;
+            width: 100%;
+            flex-shrink: 0;
         }
-        .btn-buy:hover { background: var(--primary-dark); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3); }
 
+        /* Glow berdenyut di belakang tombol */
+        .btn-buy-glow {
+            position: absolute;
+            inset: -4px;
+            border-radius: 16px;
+            background: var(--gradient-cta);
+            opacity: 0;
+            z-index: 0;
+            filter: blur(12px);
+            animation: buyGlowPulse 2s ease-in-out infinite;
+        }
+        @keyframes buyGlowPulse {
+            0%, 100% { opacity: 0.3; transform: scale(0.98); }
+            50% { opacity: 0.6; transform: scale(1.02); }
+        }
+
+        .btn-buy {
+            position: relative;
+            z-index: 1;
+            background: var(--gradient-cta);
+            color: white;
+            padding: 16px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1.05rem;
+            text-align: center;
+            transition: all 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            cursor: pointer;
+            flex-shrink: 0;
+            letter-spacing: 0.3px;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.15);
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.35), inset 0 1px 0 rgba(255,255,255,0.15);
+            overflow: hidden;
+        }
+
+        /* Shimmer sweep di atas tombol */
+        .btn-buy::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 60%;
+            height: 100%;
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.2), transparent);
+            transform: skewX(-25deg);
+            animation: btnShimmer 2.5s ease-in-out infinite;
+            z-index: 1;
+            pointer-events: none;
+        }
+        @keyframes btnShimmer {
+            0%, 100% { left: -100%; }
+            50% { left: 150%; }
+        }
+
+        /* Panah bergerak ke kanan */
+        .btn-buy .arrow-icon {
+            transition: transform 0.2s ease;
+            display: inline-flex;
+        }
+        .btn-buy:hover .arrow-icon {
+            transform: translateX(4px);
+        }
+
+        .btn-buy:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 8px 25px rgba(37, 99, 235, 0.45), inset 0 1px 0 rgba(255,255,255,0.2);
+            filter: brightness(1.08);
+        }
+
+        .btn-buy:active {
+            transform: translateY(1px) scale(0.98);
+            box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
+            transition-duration: 0.06s;
+        }
+
+        /* Micro-bounce saat muncul */
+        .btn-buy-wrapper.animate-in {
+            animation: btnBounceIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+        @keyframes btnBounceIn {
+            0% { transform: translateY(20px); opacity: 0; }
+            60% { transform: translateY(-6px); opacity: 1; }
+            80% { transform: translateY(2px); }
+            100% { transform: translateY(0); }
+        }
+
+        /* Teks "Terakhir dilihat 2 menit lalu" di bawah tombol */
+        .urgency-text {
+            text-align: center;
+            font-size: 0.72rem;
+            color: var(--danger);
+            font-weight: 600;
+            margin-top: 8px;
+            opacity: 0;
+            transform: translateY(-5px);
+            animation: urgencyFadeIn 0.4s ease 0.6s forwards;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+        .urgency-dot {
+            width: 6px;
+            height: 6px;
+            background: var(--danger);
+            border-radius: 50%;
+            animation: urgencyDotPulse 1.2s ease-in-out infinite;
+        }
+        @keyframes urgencyDotPulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.3; transform: scale(0.7); }
+        }
+        @keyframes urgencyFadeIn {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- MODAL CLOSE --- */
         .btn-close {
             position: absolute; top: 20px; right: 20px;
             background: white; width: 36px; height: 36px; border-radius: 50%;
@@ -584,20 +709,156 @@
         }
         .btn-copy:hover { background: var(--primary-light); border-color: var(--primary); }
 
-        .btn-confirm-wa {
-            background: #25D366; color: white; padding: 16px;
-            border-radius: 12px; font-weight: 600; font-size: 1rem; text-align: center;
-            width: 100%; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px;
-            transition: 0.3s;
+        /* ============================================
+           WHATSAPP BUTTON — GESTUR IMPULSIF
+           ============================================ */
+        .wa-btn-wrapper {
+            position: relative;
+            width: 100%;
         }
-        .btn-confirm-wa:hover { background: #1ebc57; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3); }
+
+        .wa-btn-glow {
+            position: absolute;
+            inset: -5px;
+            border-radius: 16px;
+            background: #25D366;
+            opacity: 0;
+            z-index: 0;
+            filter: blur(14px);
+            animation: waGlowPulse 1.8s ease-in-out infinite;
+        }
+        @keyframes waGlowPulse {
+            0%, 100% { opacity: 0.25; transform: scale(0.97); }
+            50% { opacity: 0.55; transform: scale(1.03); }
+        }
+
+        .btn-confirm-wa {
+            position: relative;
+            z-index: 1;
+            background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+            color: white;
+            padding: 16px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1.05rem;
+            text-align: center;
+            width: 100%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: all 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            letter-spacing: 0.3px;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.15);
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.35), inset 0 1px 0 rgba(255,255,255,0.15);
+            overflow: hidden;
+        }
+
+        .btn-confirm-wa::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 60%;
+            height: 100%;
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.25), transparent);
+            transform: skewX(-25deg);
+            animation: btnShimmer 2s ease-in-out infinite 0.5s;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .btn-confirm-wa .wa-arrow {
+            transition: transform 0.2s ease;
+            display: inline-flex;
+        }
+        .btn-confirm-wa:hover .wa-arrow {
+            transform: translateX(4px);
+        }
+
+        .btn-confirm-wa:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 8px 25px rgba(37, 211, 102, 0.45), inset 0 1px 0 rgba(255,255,255,0.2);
+            filter: brightness(1.08);
+        }
+
+        .btn-confirm-wa:active {
+            transform: translateY(1px) scale(0.98);
+            box-shadow: 0 2px 8px rgba(37, 211, 102, 0.3);
+            transition-duration: 0.06s;
+        }
         
         .btn-confirm-wa.locked {
-            background-color: #9ca3af; cursor: not-allowed; opacity: 0.7;
-            pointer-events: none; box-shadow: none; transform: none;
+            background-color: #9ca3af;
+            cursor: not-allowed;
+            opacity: 0.7;
+            pointer-events: none;
+            box-shadow: none;
+            transform: none;
+            filter: none;
         }
-        
+        .btn-confirm-wa.locked::before { display: none; }
+
+        /* Urgency di bawah tombol WA */
+        .wa-urgency {
+            text-align: center;
+            font-size: 0.72rem;
+            color: #128C7E;
+            font-weight: 600;
+            margin-top: 8px;
+            opacity: 0;
+            transform: translateY(-5px);
+            animation: urgencyFadeIn 0.4s ease 0.8s forwards;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+        .wa-urgency-dot {
+            width: 6px;
+            height: 6px;
+            background: #25D366;
+            border-radius: 50%;
+            animation: urgencyDotPulse 1s ease-in-out infinite;
+        }
+
         .mt-auto { margin-top: auto; }
+
+        /* ============================================
+           COUNTDOWN TIMER DI PAYMENT
+           ============================================ */
+        .payment-countdown {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 20px;
+            padding: 12px 16px;
+            background: linear-gradient(135deg, #fef2f2, #fff1f2);
+            border: 1px solid #fecaca;
+            border-radius: 10px;
+        }
+        .countdown-icon {
+            color: var(--danger);
+            font-size: 1.1rem;
+            animation: countdownPulse 1s ease-in-out infinite;
+        }
+        @keyframes countdownPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+        }
+        .countdown-text {
+            font-size: 0.85rem;
+            color: #991b1b;
+            font-weight: 600;
+        }
+        .countdown-digits {
+            font-family: 'Inter', monospace;
+            font-weight: 800;
+            font-size: 1.1rem;
+            color: var(--danger);
+            letter-spacing: 1px;
+        }
 
         /* --- QRIS MODAL --- */
         .qris-modal-overlay {
@@ -790,6 +1051,203 @@
         .modal-info::-webkit-scrollbar-thumb, .payment-view::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
 
         @keyframes pulse { 0% { opacity: 0.6; } 50% { opacity: 1; } 100% { opacity: 0.6; } }
+
+        /* ============================================
+           FLOATING STICKY CTA — DI BAWAH LAYAR
+           ============================================ */
+        .sticky-cta {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 1500;
+            background: rgba(255,255,255,0.97);
+            backdrop-filter: blur(12px);
+            border-top: 1px solid var(--border);
+            padding: 10px 16px;
+            display: none;
+            align-items: center;
+            gap: 12px;
+            transform: translateY(100%);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
+        }
+        .sticky-cta.visible {
+            display: flex;
+            transform: translateY(0);
+            animation: stickySlideUp 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+        @keyframes stickySlideUp {
+            from { transform: translateY(100%); }
+            to { transform: translateY(0); }
+        }
+        .sticky-cta-info {
+            flex: 1;
+            min-width: 0;
+        }
+        .sticky-cta-title {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-main);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .sticky-cta-price {
+            font-size: 0.75rem;
+            color: var(--primary);
+            font-weight: 700;
+        }
+        .sticky-cta-btn {
+            background: var(--gradient-cta);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.15s ease;
+            box-shadow: 0 3px 10px rgba(37, 99, 235, 0.3);
+            flex-shrink: 0;
+        }
+        .sticky-cta-btn:hover {
+            transform: scale(1.03);
+            box-shadow: 0 5px 15px rgba(37, 99, 235, 0.4);
+        }
+        .sticky-cta-btn:active {
+            transform: scale(0.97);
+            transition-duration: 0.06s;
+        }
+        .sticky-cta-btn .sticky-arrow {
+            transition: transform 0.15s ease;
+        }
+        .sticky-cta-btn:hover .sticky-arrow {
+            transform: translateX(3px);
+        }
+
+        /* ============================================
+           SOLD COUNTER ANIMATION DI MODAL
+           ============================================ */
+        .sold-live {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            flex-shrink: 0;
+            margin-bottom: 4px;
+        }
+        .sold-live-dot {
+            width: 7px;
+            height: 7px;
+            background: var(--success);
+            border-radius: 50%;
+            position: relative;
+        }
+        .sold-live-dot::after {
+            content: '';
+            position: absolute;
+            inset: -3px;
+            border-radius: 50%;
+            border: 2px solid var(--success);
+            animation: liveRing 1.5s ease-out infinite;
+        }
+        @keyframes liveRing {
+            0% { transform: scale(0.8); opacity: 1; }
+            100% { transform: scale(1.8); opacity: 0; }
+        }
+
+        /* ============================================
+           FLASH SALE BADGE DI CARD
+           ============================================ */
+        .flash-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--gradient-urgent);
+            color: white;
+            font-size: 0.6rem;
+            font-weight: 800;
+            padding: 3px 8px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            z-index: 10;
+            animation: flashPulse 1.5s ease-in-out infinite;
+            box-shadow: 0 2px 8px rgba(239, 68, 68, 0.4);
+        }
+        @keyframes flashPulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.05); }
+        }
+
+        /* ============================================
+           RIPPLE EFFECT SAAT KLIK TOMBOL
+           ============================================ */
+        .ripple-container {
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+            border-radius: inherit;
+            z-index: 0;
+            pointer-events: none;
+        }
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.35);
+            transform: scale(0);
+            animation: rippleExpand 0.5s ease-out forwards;
+            pointer-events: none;
+        }
+        @keyframes rippleExpand {
+            to { transform: scale(4); opacity: 0; }
+        }
+
+        /* Social proof mini banner di modal */
+        .social-proof-bar {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            background: linear-gradient(135deg, #f0fdf4, #ecfdf5);
+            border: 1px solid #bbf7d0;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            flex-shrink: 0;
+            overflow: hidden;
+        }
+        .social-proof-avatars {
+            display: flex;
+            flex-shrink: 0;
+        }
+        .social-proof-avatars span {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.55rem;
+            font-weight: 700;
+            color: white;
+            border: 2px solid white;
+            margin-left: -6px;
+        }
+        .social-proof-avatars span:first-child { margin-left: 0; }
+        .social-proof-text {
+            font-size: 0.72rem;
+            color: #166534;
+            font-weight: 500;
+            line-height: 1.3;
+        }
+        .social-proof-text strong {
+            font-weight: 700;
+        }
     </style>
 </head>
 <body oncontextmenu="return false;">
@@ -804,7 +1262,6 @@
     <header>
         <div class="container nav-wrapper">
             <a href="#" class="logo">
-                <!-- LOGO HARDCODED (DEFAULT) -->
                 <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjzgVAIKgZMS9W7eJKCaRyaFnoDviThQstfeD9l9mcwPxUDoovGo7xB3RQByxTXo15fGX0DIeTMxOWkVovnB4FC35iJN6ArGLOlBRI9U4d4gJ7VOTOp-Ki47RIaViiIs12QGjxRmGs2cQzCFniRpBE0GyNLW3s_03rvTcpPeHAruMaUdrIKNX8jaFZ1TcBw/s3264/28063.png" alt="Logo">
                 <span></span>
             </a>
@@ -853,6 +1310,17 @@
         </div>
     </footer>
 
+    <!-- STICKY CTA BAR -->
+    <div class="sticky-cta" id="stickyCta">
+        <div class="sticky-cta-info">
+            <div class="sticky-cta-title" id="stickyTitle">Product</div>
+            <div class="sticky-cta-price" id="stickyPrice">Rp 0</div>
+        </div>
+        <button class="sticky-cta-btn" id="stickyCtaBtn">
+            <i class="fas fa-bolt"></i> Pakai Sekarang <i class="fas fa-arrow-right sticky-arrow"></i>
+        </button>
+    </div>
+
     <!-- MODAL DETAIL PRODUK -->
     <div class="modal-overlay" id="productModal">
         <div class="modal-content">
@@ -871,6 +1339,19 @@
                     <h2 id="m-title" class="modal-title">Product Title</h2>
                     <div class="modal-price-wrap" id="m-price-wrap"></div>
 
+                    <!-- Social Proof Bar -->
+                    <div class="social-proof-bar" id="socialProofBar">
+                        <div class="social-proof-avatars">
+                            <span style="background:#2563eb;">A</span>
+                            <span style="background:#7c3aed;">R</span>
+                            <span style="background:#db2777;">D</span>
+                            <span style="background:#ea580c;">+5</span>
+                        </div>
+                        <div class="social-proof-text">
+                            <strong>8 orang</strong> melihat template ini dalam 1 jam terakhir
+                        </div>
+                    </div>
+
                     <div class="addon-section" id="addonSection">
                         <div class="addon-header">
                             <div class="addon-title">
@@ -887,8 +1368,9 @@
 
                     <p id="m-desc" class="modal-desc">Description here...</p>
                     
-                    <div style="margin-bottom: 20px; font-size: 0.9rem; color: var(--text-muted); flex-shrink: 0;">
-                        <i class="fas fa-check-circle" style="color:var(--primary)"></i> Terpakai <span id="m-sold">0</span>x
+                    <div class="sold-live">
+                        <span class="sold-live-dot"></span>
+                        <span>Terpakai <strong id="m-sold">0</strong>x</span>
                     </div>
 
                     <!-- IKLAN MODAL PRODUK (RASIO 1280x350) -->
@@ -898,9 +1380,20 @@
                         </a>
                     </div>
 
-                    <button id="btn-goto-payment" class="btn-buy">
-                        <i class="fas fa-shopping-cart"></i> Pakai Sekarang
-                    </button>
+                    <!-- CTA BUTTON DENGAN GESTUR IMPULSIF -->
+                    <div class="btn-buy-wrapper" id="btnBuyWrapper">
+                        <div class="btn-buy-glow"></div>
+                        <button id="btn-goto-payment" class="btn-buy">
+                            <span class="ripple-container" id="buyRipple"></span>
+                            <i class="fas fa-bolt"></i> 
+                            <span>Pakai Sekarang</span>
+                            <span class="arrow-icon"><i class="fas fa-arrow-right"></i></span>
+                        </button>
+                    </div>
+                    <div class="urgency-text" id="urgencyText">
+                        <span class="urgency-dot"></span>
+                        <span id="urgencyMessage">Terakhir dilihat 2 menit lalu</span>
+                    </div>
                 </div>
             </div>
 
@@ -908,6 +1401,13 @@
                 <div class="payment-header">
                     <button class="btn-back" onclick="backToProduct()"><i class="fas fa-arrow-left"></i></button>
                     <h3 style="margin:0; font-size:1.1rem; font-weight:700;">Detail Pembayaran</h3>
+                </div>
+
+                <!-- COUNTDOWN TIMER -->
+                <div class="payment-countdown" id="paymentCountdown">
+                    <i class="fas fa-clock countdown-icon"></i>
+                    <span class="countdown-text">Selesaikan pembayaran dalam</span>
+                    <span class="countdown-digits" id="countdownDigits">02:00</span>
                 </div>
 
                 <div class="unique-amount-alert">
@@ -942,9 +1442,20 @@
                 </div>
 
                 <div class="mt-auto">
-                    <button id="btn-confirm-whatsapp" class="btn-confirm-wa">
-                        <i class="fab fa-whatsapp" style="font-size:1.2rem;"></i> Lanjutkan ke WhatsApp
-                    </button>
+                    <!-- WHATSAPP BUTTON DENGAN GESTUR IMPULSIF -->
+                    <div class="wa-btn-wrapper">
+                        <div class="wa-btn-glow"></div>
+                        <button id="btn-confirm-whatsapp" class="btn-confirm-wa">
+                            <span class="ripple-container" id="waRipple"></span>
+                            <i class="fab fa-whatsapp" style="font-size:1.2rem;"></i>
+                            <span>Kirim ke WhatsApp</span>
+                            <span class="wa-arrow"><i class="fas fa-arrow-right"></i></span>
+                        </button>
+                    </div>
+                    <div class="wa-urgency" id="waUrgency">
+                        <span class="wa-urgency-dot"></span>
+                        <span id="waUrgencyMessage">Admin sedang online sekarang</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1022,6 +1533,25 @@
             { id: 4, type: 'qris', bank_name: "QRIS", account_number: "N/A", owner_name: "WriteHub", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Logo_QRIS.svg/1200px-Logo_QRIS.svg.png" }
         ];
 
+        // Urgency messages untuk rotasi acak
+        const urgencyMessages = [
+            "Terakhir dilihat 2 menit lalu",
+            "3 orang sedang melihat ini",
+            "Stok terbatas hari ini",
+            "Harga naik besok",
+            "5 orang menambahkan ke keranjang",
+            "Populer minggu ini",
+            "Terakhir dibeli 5 menit lalu"
+        ];
+
+        const waUrgencyMessages = [
+            "Admin sedang online sekarang",
+            "Respon cepat < 1 menit",
+            "2 orang sedang chat admin",
+            "Admin aktif saat ini",
+            "Order diproses langsung"
+        ];
+
         let products = [];
         let filteredProducts = [];
         let currentCategory = 'all';
@@ -1030,6 +1560,8 @@
         let adminNumbersList = [];
         let currentUniqueTotal = 0;
         let paymentLockTimer = null;
+        let countdownTimer = null;
+        let countdownSeconds = 120;
         const LOCK_DURATION_MS = 120000;
         let touchStartX = 0;
         let touchEndX = 0;
@@ -1050,8 +1582,6 @@
         let adShownCount = 0;
         let lastAdShownTime = 0;
         let allAdsCache = [];
-
-        // Cache iklan untuk modal
         let modalAdsCache = [];
         let todayModalAdIndex = -1;
         let modalAdRevealTimer = null; 
@@ -1064,17 +1594,120 @@
         };
 
         // ============================================
+        // RIPPLE EFFECT
+        // ============================================
+        function createRipple(event, containerId) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            const rect = container.getBoundingClientRect();
+            const ripple = document.createElement('span');
+            ripple.className = 'ripple';
+            const size = Math.max(rect.width, rect.height);
+            ripple.style.width = ripple.style.height = size + 'px';
+            ripple.style.left = (event.clientX - rect.left - size / 2) + 'px';
+            ripple.style.top = (event.clientY - rect.top - size / 2) + 'px';
+            container.appendChild(ripple);
+            setTimeout(() => ripple.remove(), 600);
+        }
+
+        // ============================================
+        // COUNTDOWN TIMER
+        // ============================================
+        function startCountdown() {
+            if (countdownTimer) clearInterval(countdownTimer);
+            countdownSeconds = 120;
+            updateCountdownDisplay();
+            countdownTimer = setInterval(() => {
+                countdownSeconds--;
+                if (countdownSeconds <= 0) {
+                    clearInterval(countdownTimer);
+                    countdownSeconds = 0;
+                    document.getElementById('countdownDigits').style.color = '#991b1b';
+                }
+                updateCountdownDisplay();
+            }, 1000);
+        }
+
+        function updateCountdownDisplay() {
+            const el = document.getElementById('countdownDigits');
+            const min = Math.floor(countdownSeconds / 60);
+            const sec = countdownSeconds % 60;
+            el.textContent = `${String(min).padStart(2, '0')}:${String(sec).padStart(2, '0')}`;
+            // Warn when < 30 seconds
+            if (countdownSeconds <= 30 && countdownSeconds > 0) {
+                el.style.color = '#dc2626';
+                el.style.animation = 'countdownPulse 0.5s ease-in-out infinite';
+            } else if (countdownSeconds > 30) {
+                el.style.color = 'var(--danger)';
+                el.style.animation = 'none';
+            }
+        }
+
+        function stopCountdown() {
+            if (countdownTimer) { clearInterval(countdownTimer); countdownTimer = null; }
+        }
+
+        // ============================================
+        // URGENCY MESSAGE ROTATOR
+        // ============================================
+        function setRandomUrgency() {
+            const msg = urgencyMessages[Math.floor(Math.random() * urgencyMessages.length)];
+            const el = document.getElementById('urgencyMessage');
+            if (el) el.textContent = msg;
+        }
+
+        function setRandomWaUrgency() {
+            const msg = waUrgencyMessages[Math.floor(Math.random() * waUrgencyMessages.length)];
+            const el = document.getElementById('waUrgencyMessage');
+            if (el) el.textContent = msg;
+        }
+
+        // ============================================
+        // STICKY CTA
+        // ============================================
+        let stickyCtaShown = false;
+
+        function showStickyCta() {
+            if (!currentProduct || stickyCtaShown) return;
+            stickyCtaShown = true;
+            const cta = document.getElementById('stickyCta');
+            document.getElementById('stickyTitle').textContent = getField(currentProduct, 'title') || 'Product';
+            const basePrice = Number(getField(currentProduct, 'price'));
+            document.getElementById('stickyPrice').textContent = formatRupiah(basePrice);
+            cta.classList.add('visible');
+        }
+
+        function hideStickyCta() {
+            stickyCtaShown = false;
+            const cta = document.getElementById('stickyCta');
+            cta.classList.remove('visible');
+        }
+
+        // Track scroll untuk show sticky CTA
+        let scrollHandlerAdded = false;
+        function addScrollListener() {
+            if (scrollHandlerAdded) return;
+            scrollHandlerAdded = true;
+            let scrollAccum = 0;
+            window.addEventListener('scroll', () => {
+                if (!currentProduct) return;
+                scrollAccum += window.scrollY;
+                if (window.scrollY > 400 && !stickyCtaShown) {
+                    showStickyCta();
+                }
+            }, { passive: true });
+        }
+
+        // ============================================
         // AD DEBUG LOGGER
         // ============================================
         function adLog(message, type = 'ok') {
             const timestamp = new Date().toLocaleTimeString('id-ID');
             const fullMsg = `[${timestamp}] ${message}`;
-            
             console.log(`%c[AD] ${message}`, 
                 type === 'ok' ? 'color: #4ade80' : 
                 type === 'err' ? 'color: #f87171' : 'color: #fbbf24'
             );
-
             if (AD_CONFIG.debug) {
                 const panel = document.getElementById('adDebugPanel');
                 const content = document.getElementById('adDebugContent');
@@ -1143,9 +1776,14 @@
         function unlockWhatsAppButton() {
             const btn = document.getElementById('btn-confirm-whatsapp');
             btn.classList.remove('locked');
-            btn.innerHTML = `<i class="fab fa-whatsapp" style="font-size:1.2rem;"></i> Lanjutkan ke WhatsApp`;
+            btn.innerHTML = `<span class="ripple-container" id="waRipple"></span><i class="fab fa-whatsapp" style="font-size:1.2rem;"></i><span>Kirim ke WhatsApp</span><span class="wa-arrow"><i class="fas fa-arrow-right"></i></span>`;
+            // Re-attach ripple
+            btn.onclick = handleWaClick;
         }
-        function clearPaymentTimer() { if (paymentLockTimer) { clearTimeout(paymentLockTimer); paymentLockTimer = null; } }
+        function clearPaymentTimer() { 
+            if (paymentLockTimer) { clearTimeout(paymentLockTimer); paymentLockTimer = null; }
+            stopCountdown();
+        }
 
         // --- HELPERS ---
         const formatRupiah = (num) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(num);
@@ -1277,101 +1915,54 @@
         }
 
         // ============================================
-        // AD SYSTEM — HELPER FUNCTIONS
+        // AD SYSTEM
         // ============================================
-
         function getAdField(ad, possibilities) {
             for (const key of possibilities) {
-                if (ad[key] !== undefined && ad[key] !== null && ad[key] !== '') {
-                    return ad[key];
-                }
+                if (ad[key] !== undefined && ad[key] !== null && ad[key] !== '') return ad[key];
             }
             return null;
         }
-
         function getAdImageUrl(ad) {
-            return getAdField(ad, [
-                'image_url', 'gambar', 'image', 'url_gambar', 'foto',
-                'img_url', 'banner_url', 'src', 'thumbnail', 'picture'
-            ]);
+            return getAdField(ad, ['image_url', 'gambar', 'image', 'url_gambar', 'foto', 'img_url', 'banner_url', 'src', 'thumbnail', 'picture']);
         }
-
         function getAdLinkUrl(ad) {
-            return getAdField(ad, [
-                'link_url', 'link', 'url', 'target_url', 'redirect_url',
-                'destination', 'href', 'go_to'
-            ]) || '#';
+            return getAdField(ad, ['link_url', 'link', 'url', 'target_url', 'redirect_url', 'destination', 'href', 'go_to']) || '#';
         }
-
         function isAdActive(ad) {
             const val = getAdField(ad, ['is_active', 'active', 'aktif', 'status', 'is_show', 'show', 'visible']);
             if (val === true || val === 1 || val === '1' || val === 'true') return true;
             if (val === false || val === 0 || val === '0' || val === 'false') return false;
             return true;
         }
-
         function getAdDuration(ad) {
             const val = getAdField(ad, ['duration', 'durasi', 'show_time', 'auto_close', 'timeout']);
             if (val && !isNaN(val) && Number(val) > 0) return Number(val);
             return AD_CONFIG.autoDismiss;
         }
-
         function getAdPlacement(ad) {
-            return getAdField(ad, [
-                'placement', 'penempatan', 'posisi', 'position',
-                'location', 'lokasi', 'tipe', 'type', 'show_in'
-            ]);
+            return getAdField(ad, ['placement', 'penempatan', 'posisi', 'position', 'location', 'lokasi', 'tipe', 'type', 'show_in']);
         }
 
         async function fetchAds() {
-            if (!useSupabase) {
-                adLog('Supabase tidak tersedia, skip fetch iklan', 'warn');
-                return [];
-            }
-
+            if (!useSupabase) { adLog('Supabase tidak tersedia, skip fetch iklan', 'warn'); return []; }
             adLog('Memulai fetch data iklan...', 'ok');
-
             for (const tableName of AD_CONFIG.tableNames) {
                 try {
                     adLog(`Mencoba tabel: "${tableName}"`, 'ok');
                     const { data, error } = await supabase.from(tableName).select('*');
-                    
-                    if (error) {
-                        adLog(`Tabel "${tableName}" error: ${error.message}`, 'warn');
-                        continue;
-                    }
-                    
-                    if (!data || data.length === 0) {
-                        adLog(`Tabel "${tableName}" kosong`, 'warn');
-                        continue;
-                    }
-                    
+                    if (error) { adLog(`Tabel "${tableName}" error: ${error.message}`, 'warn'); continue; }
+                    if (!data || data.length === 0) { adLog(`Tabel "${tableName}" kosong`, 'warn'); continue; }
                     adLog(`Tabel "${tableName}" ditemukan: ${data.length} row(s)`, 'ok');
-                    
-                    if (data.length > 0) {
-                        const columns = Object.keys(data[0]);
-                        adLog(`Kolom: [${columns.join(', ')}]`, 'ok');
-                    }
-
+                    if (data.length > 0) { const columns = Object.keys(data[0]); adLog(`Kolom: [${columns.join(', ')}]`, 'ok'); }
                     const activeAds = data.filter(ad => isAdActive(ad));
                     adLog(`${activeAds.length} dari ${data.length} iklan aktif`, 'ok');
-                    
-                    if (activeAds.length > 0) {
-                        adLog(`Berhasil! Menggunakan ${activeAds.length} iklan dari tabel "${tableName}"`, 'ok');
-                        return activeAds;
-                    }
-                    
-                } catch (err) {
-                    adLog(`Exception pada tabel "${tableName}": ${err.message}`, 'err');
-                    continue;
-                }
+                    if (activeAds.length > 0) { adLog(`Berhasil! Menggunakan ${activeAds.length} iklan dari tabel "${tableName}"`, 'ok'); return activeAds; }
+                } catch (err) { adLog(`Exception pada tabel "${tableName}": ${err.message}`, 'err'); continue; }
             }
-
             adLog('Semua tabel iklan gagal atau kosong', 'err');
             return [];
         }
-
-        // --- POPUP AD FUNCTIONS ---
 
         function detectTransparency(imageUrl, callback) {
             const testImg = new Image();
@@ -1380,24 +1971,13 @@
                 try {
                     const canvas = document.createElement('canvas');
                     const ctx = canvas.getContext('2d', { willReadFrequently: true });
-                    const points = [
-                        [0, 0],
-                        [Math.floor(this.naturalWidth / 2), Math.floor(this.naturalHeight / 2)],
-                        [this.naturalWidth - 1, this.naturalHeight - 1],
-                        [Math.floor(this.naturalWidth / 4), Math.floor(this.naturalHeight / 4)]
-                    ];
+                    const points = [[0,0],[Math.floor(this.naturalWidth/2),Math.floor(this.naturalHeight/2)],[this.naturalWidth-1,this.naturalHeight-1],[Math.floor(this.naturalWidth/4),Math.floor(this.naturalHeight/4)]];
                     let transparentCount = 0;
-                    canvas.width = this.naturalWidth;
-                    canvas.height = this.naturalHeight;
+                    canvas.width = this.naturalWidth; canvas.height = this.naturalHeight;
                     ctx.drawImage(this, 0, 0);
-                    for (const [x, y] of points) {
-                        const pixel = ctx.getImageData(x, y, 1, 1).data;
-                        if (pixel[3] === 0) transparentCount++;
-                    }
+                    for (const [x, y] of points) { const pixel = ctx.getImageData(x, y, 1, 1).data; if (pixel[3] === 0) transparentCount++; }
                     callback(transparentCount >= 2);
-                } catch (e) {
-                    callback(false);
-                }
+                } catch (e) { callback(false); }
             };
             testImg.onerror = function() { callback(false); };
             testImg.src = imageUrl;
@@ -1407,28 +1987,21 @@
             const imageUrl = getAdImageUrl(adData);
             const linkUrl = getAdLinkUrl(adData);
             const duration = getAdDuration(adData);
-
             if (!imageUrl) { adLog('Tidak ada URL gambar, batal tampilkan', 'err'); return; }
-
             adLog(`Popup: ${imageUrl.substring(0, 60)}...`, 'ok');
-
             const popup = document.getElementById('adPopup');
             const img = document.getElementById('adImage');
             const link = document.getElementById('adLink');
             const timerBar = document.getElementById('adTimerBar');
-
             popup.classList.remove('transparent-mode', 'ad-visible');
             if (adDismissTimer) { clearTimeout(adDismissTimer); adDismissTimer = null; }
-
             link.href = linkUrl;
             img.removeAttribute('crossorigin');
             img.src = imageUrl;
-
             popup.style.setProperty('--ad-duration', `${duration}s`);
             timerBar.style.animation = 'none';
             void timerBar.offsetWidth;
             timerBar.style.animation = `adTimerShrink ${duration}s linear forwards`;
-
             img.onload = function() {
                 adLog(`Popup loaded: ${this.naturalWidth}x${this.naturalHeight}`, 'ok');
                 popup.style.display = 'block';
@@ -1436,24 +2009,18 @@
                 popup.classList.add('ad-visible');
                 adShownCount++;
                 lastAdShownTime = Date.now();
-
                 detectTransparency(imageUrl, (isTransparent) => {
                     if (isTransparent) popup.classList.add('transparent-mode');
                     else popup.classList.remove('transparent-mode');
                 });
-
                 adDismissTimer = setTimeout(() => { adLog(`Popup auto-dismiss ${duration}s`, 'ok'); closeAd(); }, duration * 1000);
             };
-
             img.onerror = function() {
                 adLog(`Popup GAGAL load: ${imageUrl}`, 'err');
                 img.crossOrigin = "Anonymous";
                 img.onload = function() {
-                    popup.style.display = 'block';
-                    void popup.offsetWidth;
-                    popup.classList.add('ad-visible');
-                    adShownCount++;
-                    lastAdShownTime = Date.now();
+                    popup.style.display = 'block'; void popup.offsetWidth;
+                    popup.classList.add('ad-visible'); adShownCount++; lastAdShownTime = Date.now();
                     adDismissTimer = setTimeout(closeAd, duration * 1000);
                 };
                 img.onerror = function() { popup.style.display = 'none'; };
@@ -1481,35 +2048,23 @@
         async function initAdSystem() {
             adLog('=== SISTEM IKLAN DIMULAI ===', 'ok');
             adLog(`Supabase: ${useSupabase ? 'TERHUBUNG' : 'TIDAK TERHUBUNG'}`, useSupabase ? 'ok' : 'warn');
-
             if (!useSupabase) { adLog('Dibatalkan: Supabase tidak terhubung', 'err'); return; }
-
             const ads = await fetchAds();
             allAdsCache = ads;
-
-            // Pisahkan iklan berdasarkan placement
             modalAdsCache = ads.filter(ad => {
                 const placement = getAdPlacement(ad);
                 if (!placement) return false;
                 const p = String(placement).toLowerCase().trim();
                 return p.includes('modal') || p.includes('product') || p.includes('produk') || p.includes('detail');
             });
-
             const popupAds = ads.filter(ad => {
                 const placement = getAdPlacement(ad);
                 if (!placement) return true;
                 const p = String(placement).toLowerCase().trim();
                 return !p.includes('modal') && !p.includes('product') && !p.includes('produk') && !p.includes('detail');
             });
-
             adLog(`Distribusi: ${popupAds.length} popup, ${modalAdsCache.length} modal`, 'ok');
-
-            // Hitung rotasi harian untuk iklan modal
-            if (modalAdsCache.length > 0) {
-                computeTodayModalAdIndex(modalAdsCache.length);
-            }
-
-            // Tampilkan popup setelah delay
+            if (modalAdsCache.length > 0) computeTodayModalAdIndex(modalAdsCache.length);
             if (popupAds.length > 0) {
                 adLog(`Menunggu ${AD_CONFIG.showDelay}ms sebelum tampilkan popup...`, 'ok');
                 await new Promise(r => setTimeout(r, AD_CONFIG.showDelay));
@@ -1518,9 +2073,6 @@
             }
         }
 
-        /**
-         * ROTASI HARIAN: Index iklan modal berdasarkan hari
-         */
         function computeTodayModalAdIndex(totalAds) {
             if (totalAds === 0) { todayModalAdIndex = -1; return; }
             const epochDays = Math.floor(Date.now() / (1000 * 60 * 60 * 24));
@@ -1555,95 +2107,45 @@
         }
 
         // ============================================
-        // MODAL AD BANNER — UKURAN 1280x350
+        // MODAL AD BANNER
         // ============================================
-
-        /**
-         * Tampilkan iklan banner di dalam modal produk
-         * 
-         * PERUBAHAN: Ukuran dikunci ke rasio aspek 1280 / 350
-         */
         function showModalAdBanner() {
             const bannerEl = document.getElementById('modalAdBanner');
             const imgEl = document.getElementById('modalAdImage');
             const linkEl = document.getElementById('modalAdLink');
-
-            // Reset ke kondisi tersembunyi
             bannerEl.classList.remove('visible');
             bannerEl.style.height = '0px';
-
-            if (modalAdRevealTimer) {
-                clearTimeout(modalAdRevealTimer);
-                modalAdRevealTimer = null;
-            }
-
-            if (modalAdsCache.length === 0 || todayModalAdIndex < 0) {
-                adLog('Modal ad: tidak ada iklan modal tersedia', 'warn');
-                return;
-            }
-
+            if (modalAdRevealTimer) { clearTimeout(modalAdRevealTimer); modalAdRevealTimer = null; }
+            if (modalAdsCache.length === 0 || todayModalAdIndex < 0) return;
             const selectedAd = modalAdsCache[todayModalAdIndex];
             const imageUrl = getAdImageUrl(selectedAd);
             const linkUrl = getAdLinkUrl(selectedAd);
-
-            if (!imageUrl) {
-                adLog('Modal ad: iklan hari ini tidak punya gambar', 'warn');
-                return;
-            }
-
-            adLog(`Modal ad: menyiapkan index ${todayModalAdIndex}`, 'ok');
-            adLog(`Modal ad: URL = ${imageUrl.substring(0, 80)}...`, 'ok');
-
+            if (!imageUrl) return;
             linkEl.href = linkUrl;
-
             function revealBanner() {
-                adLog(`Modal ad: gambar siap ${imgEl.naturalWidth}x${imgEl.naturalHeight}`, 'ok');
-
-                // PERUBAHAN LOGIKA UKURAN DI SINI
-                // Menghitung tinggi berdasarkan rasio aspek 1280:350
-                // Rasio = 350 / 1280 ≈ 0.2734
                 const targetRatio = 350 / 1280; 
-                
-                // Menggunakan lebar parent sebagai dasar (responsif)
                 const parentWidth = bannerEl.parentElement ? bannerEl.parentElement.offsetWidth : 400;
-                let bannerHeight = Math.round(parentWidth * targetRatio);
-                
-                // Batasi minimum tinggi agar tidak terlalu gepeng di HP kecil, misal min 60px
-                bannerHeight = Math.max(60, bannerHeight);
-
-                adLog(`Modal ad: parentWidth=${parentWidth}, height=${bannerHeight}px (Ratio 1280x350)`, 'ok');
-
+                let bannerHeight = Math.max(60, Math.round(parentWidth * targetRatio));
                 bannerEl.style.height = bannerHeight + 'px';
                 bannerEl.classList.add('visible');
             }
-
             if (imgEl.complete && imgEl.naturalWidth > 0 && imgEl.src === imageUrl) {
-                adLog('Modal ad: gambar sudah di-cache, langsung reveal', 'ok');
                 requestAnimationFrame(() => revealBanner());
             } else {
                 imgEl.onload = function() {
-                    adLog('Modal ad: onload terpicu', 'ok');
                     if (modalAdRevealTimer) { clearTimeout(modalAdRevealTimer); modalAdRevealTimer = null; }
                     revealBanner();
                 };
-
                 imgEl.onerror = function() {
-                    adLog(`Modal ad: GAMBAR GAGAL LOAD = ${imageUrl}`, 'err');
                     if (modalAdRevealTimer) { clearTimeout(modalAdRevealTimer); modalAdRevealTimer = null; }
-                    // Fallback tampilkan dengan tinggi default rasio
                     const parentWidth = bannerEl.parentElement ? bannerEl.parentElement.offsetWidth : 400;
                     bannerEl.style.height = Math.round(parentWidth * (350/1280)) + 'px';
                     bannerEl.classList.add('visible');
                 };
-
                 imgEl.src = imageUrl;
-
                 modalAdRevealTimer = setTimeout(() => {
-                    adLog('Modal ad: FALLBACK terpicu (onload tidak terpicu dalam 3s)', 'warn');
                     modalAdRevealTimer = null;
-                    if (!bannerEl.classList.contains('visible')) {
-                        revealBanner();
-                    }
+                    if (!bannerEl.classList.contains('visible')) revealBanner();
                 }, 3000);
             }
         }
@@ -1652,11 +2154,7 @@
             const bannerEl = document.getElementById('modalAdBanner');
             bannerEl.classList.remove('visible');
             bannerEl.style.height = '0px';
-            
-            if (modalAdRevealTimer) {
-                clearTimeout(modalAdRevealTimer);
-                modalAdRevealTimer = null;
-            }
+            if (modalAdRevealTimer) { clearTimeout(modalAdvealTimer); modalAdRevealTimer = null; }
         }
 
         // --- CARD SLIDERS ---
@@ -1697,9 +2195,10 @@
                 const extraImages = getField(p, 'images');
                 const soldCount = getField(p, 'sold_count');
                 const pId = getField(p, 'id') || Math.random();
+                const hasDiscount = originalPrice && Number(originalPrice) > Number(price);
 
                 let priceHTML = '';
-                if (originalPrice && Number(originalPrice) > Number(price)) {
+                if (hasDiscount) {
                     priceHTML = `<div class="price-original">${formatRupiah(originalPrice)}</div><div class="price-main">${formatRupiah(price)}</div>`;
                 } else {
                     priceHTML = `<div class="price-main">${formatRupiah(price)}</div>`;
@@ -1713,9 +2212,12 @@
                     slidesHTML += `<div class="card-slide"><img src="${imgSrc || 'https://picsum.photos/seed/fallback/600/600'}" loading="lazy" alt="${title}" onerror="this.src='https://picsum.photos/seed/error/600/600'"></div>`;
                 });
 
+                let flashBadge = hasDiscount ? '<div class="flash-badge">SALE</div>' : '';
+
                 card.innerHTML = `
                     <div class="card-image">
                         <span class="badge">${category || 'Produk'}</span>
+                        ${flashBadge}
                         <div class="card-slider-container">${slidesHTML}</div>
                     </div>
                     <div class="card-content">
@@ -1895,12 +2397,19 @@
             } else {
                 priceWrap.innerHTML = `<div class="modal-price-final">${formatRupiah(finalPrice)}</div>`;
             }
+            // Update sticky CTA price too
+            if (stickyCtaShown) {
+                document.getElementById('stickyPrice').textContent = formatRupiah(finalPrice);
+            }
         }
 
         const productView = document.getElementById('productView');
         const paymentView = document.getElementById('paymentView');
 
-        document.getElementById('btn-goto-payment').onclick = function() {
+        // Handle "Pakai Sekarang" click
+        document.getElementById('btn-goto-payment').onclick = function(e) {
+            createRipple(e, 'buyRipple');
+            
             const basePrice = Number(getField(currentProduct, 'price'));
             const isAddOn = toggleSwitch.checked;
             const customAddonPrice = getField(currentProduct, 'cover_letter_price');
@@ -1921,18 +2430,51 @@
             totalEl.style.color = 'var(--danger)';
 
             hideModalAdBanner();
+            hideStickyCta();
 
             productView.style.display = 'none';
             paymentView.classList.add('active');
+            
             showToast(`Kode unik Rp ${uniqueCode} ditambahkan untuk verifikasi.`, 'success');
             lockWhatsAppButton();
+            startCountdown();
+            setRandomWaUrgency();
         };
+
+        // Handle WhatsApp click
+        function handleWaClick(e) {
+            const btn = document.getElementById('btn-confirm-whatsapp');
+            if (btn.classList.contains('locked')) return;
+            createRipple(e, 'waRipple');
+            
+            if (!currentProduct) return;
+            const templateName = getField(currentProduct, 'title');
+            const formattedTotal = formatRupiah(currentUniqueTotal);
+            const orderTime = new Date().toLocaleString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+            
+            let message = `Halo Min, saya ingin membeli CV berikut:\n\n*Jenis CV:* ${templateName}\n*Total Pembayaran (Unik):* ${formattedTotal}\n*Waktu Pesanan:* ${orderTime}`;
+            
+            const isAddOn = toggleSwitch.checked;
+            if (isAddOn) {
+                const customPrice = getField(currentProduct, 'cover_letter_price');
+                const finalPrice = (customPrice && !isNaN(customPrice)) ? Number(customPrice) : coverLetterPrice;
+                message += `\n\n*Addon:* Surat Lamaran Kerja (+${formatRupiah(finalPrice)})`;
+            }
+            message += `\n\nSaya sudah transfer sesuai nominal unik. Mohon segera diproses ya Min.`;
+
+            const adminNumber = getRotatedAdminNumber();
+            showToast('Mengalihkan ke WhatsApp...', 'success');
+            stopCountdown();
+            setTimeout(() => { window.open(`https://wa.me/${adminNumber}?text=${encodeURIComponent(message)}`, '_blank'); }, 800);
+        }
 
         window.backToProduct = function() {
             clearPaymentTimer();
             paymentView.classList.remove('active');
             productView.style.display = 'flex';
             showModalAdBanner();
+            // Re-show sticky CTA
+            if (window.scrollY > 400) showStickyCta();
         };
 
         window.openModal = function(p) {
@@ -1940,6 +2482,7 @@
             currentProduct = p;
             carouselIndex = 0;
             toggleSwitch.checked = false;
+            stickyCtaShown = false;
 
             document.getElementById('m-cat').innerText = getField(p, 'category') || 'CATEGORY';
             document.getElementById('m-title').innerText = getField(p, 'title') || 'Product Title';
@@ -1968,14 +2511,40 @@
             productView.style.display = 'flex';
             updateCoverLetterUI();
 
-            const btn = document.getElementById('btn-confirm-whatsapp');
-            btn.classList.remove('locked');
-            btn.innerHTML = `<i class="fab fa-whatsapp" style="font-size:1.2rem;"></i> Lanjutkan ke WhatsApp`;
+            // Reset WA button
+            const waBtn = document.getElementById('btn-confirm-whatsapp');
+            waBtn.classList.remove('locked');
+            waBtn.innerHTML = `<span class="ripple-container" id="waRipple"></span><i class="fab fa-whatsapp" style="font-size:1.2rem;"></i><span>Kirim ke WhatsApp</span><span class="wa-arrow"><i class="fas fa-arrow-right"></i></span>`;
+            waBtn.onclick = handleWaClick;
 
             document.getElementById('productModal').classList.add('active');
             document.body.style.overflow = 'hidden';
 
+            // Trigger CTA animations
+            const wrapper = document.getElementById('btnBuyWrapper');
+            wrapper.classList.remove('animate-in');
+            void wrapper.offsetWidth;
+            wrapper.classList.add('animate-in');
+
+            // Random urgency
+            setRandomUrgency();
+
+            // Reset urgency text animation
+            const urgencyEl = document.getElementById('urgencyText');
+            urgencyEl.style.animation = 'none';
+            void urgencyEl.offsetWidth;
+            urgencyEl.style.animation = 'urgencyFadeIn 0.4s ease 0.6s forwards';
+            urgencyEl.style.opacity = '0';
+            urgencyEl.style.transform = 'translateY(-5px)';
+
+            // Reset WA urgency
+            const waUrgEl = document.getElementById('waUrgency');
+            waUrgEl.style.animation = 'none';
+            waUrgEl.style.opacity = '0';
+            waUrgEl.style.transform = 'translateY(-5px)';
+
             showModalAdBanner();
+            addScrollListener();
         }
 
         window.closeModal = function() {
@@ -1984,30 +2553,23 @@
             document.body.style.overflow = 'auto';
             currentProduct = null;
             hideModalAdBanner();
+            hideStickyCta();
         }
 
         document.getElementById('productModal').addEventListener('click', (e) => { if(e.target.id === 'productModal') closeModal(); });
 
-        document.getElementById('btn-confirm-whatsapp').onclick = function() {
-            if (!currentProduct) return;
-            const templateName = getField(currentProduct, 'title');
-            const formattedTotal = formatRupiah(currentUniqueTotal);
-            const orderTime = new Date().toLocaleString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
-            
-            let message = `Halo Min, saya ingin membeli CV berikut:\n\n*Jenis CV:* ${templateName}\n*Total Pembayaran (Unik):* ${formattedTotal}\n*Waktu Pesanan:* ${orderTime}`;
-            
-            const isAddOn = toggleSwitch.checked;
-            if (isAddOn) {
-                const customPrice = getField(currentProduct, 'cover_letter_price');
-                const finalPrice = (customPrice && !isNaN(customPrice)) ? Number(customPrice) : coverLetterPrice;
-                message += `\n\n*Addon:* Surat Lamaran Kerja (+${formatRupiah(finalPrice)})`;
+        // Sticky CTA button click
+        document.getElementById('stickyCtaBtn').onclick = function() {
+            if (currentProduct) {
+                // Scroll ke atas modal lalu trigger buy
+                const modalInfo = document.querySelector('.modal-info');
+                if (modalInfo) modalInfo.scrollTo({ top: modalInfo.scrollHeight, behavior: 'smooth' });
+                // Trigger the buy button
+                setTimeout(() => {
+                    document.getElementById('btn-goto-payment').click();
+                }, 300);
             }
-            message += `\n\nSaya sudah transfer sesuai nominal unik. Mohon segera diproses ya Min.`;
-
-            const adminNumber = getRotatedAdminNumber();
-            showToast('Mengalihkan ke WhatsApp...', 'success');
-            setTimeout(() => { window.open(`https://wa.me/${adminNumber}?text=${encodeURIComponent(message)}`, '_blank'); }, 1000);
-        }
+        };
 
         function getRotatedAdminNumber() {
             let currentIndex = parseInt(localStorage.getItem('wa_admin_index') || '0');
@@ -2020,17 +2582,11 @@
         async function init() {
             adLog('=== APLIKASI DIMULAI ===', 'ok');
             initSlider();
-            
-            // LOGO FETCH DIHAPUS - KEMBALI KE HARDCODED
-            // await fetchSiteLogo(); 
-
             await fetchAdminNumbers();
             await fetchCoverLetterPrice();
             await fetchPaymentMethods();
             await fetchProducts();
             renderProducts();
-            
-            // Jalankan sistem iklan paralel
             initAdSystem();
         }
 
