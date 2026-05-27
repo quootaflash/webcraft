@@ -279,19 +279,12 @@
             overflow: hidden;
         }
 
-        .badge {
-            position: absolute; top: 10px; left: 10px;
-            background: rgba(255, 255, 255, 0.95);
-            color: var(--text-main);
-            padding: 4px 10px; border-radius: 50px;
-            font-size: 0.65rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            z-index: 10;
-            overflow: hidden;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
+        /* 
+           BADGE KATEGORI DIHILANGKAN DARI CSS SEKALIGUS (TIDAK DIPAKAI LAGI)
+           Kode asli:
+           .badge { ... } 
+           Dihapus untuk memastikan tidak muncul walau ada di cache lama.
+        */
 
         .card-slider-container {
             position: absolute; inset: 0; width: 100%; height: 100%;
@@ -1341,7 +1334,7 @@
                 const title = getField(p, 'title');
                 const price = getField(p, 'price');
                 const originalPrice = getField(p, 'original_price');
-                const category = getField(p, 'category');
+                const category = getField(p, 'category'); // Ambil kategori tapi TIDAK ditampilkan di badge
                 const image = getField(p, 'image');
                 const extraImages = getField(p, 'images');
                 const soldCount = getField(p, 'sold_count');
@@ -1365,9 +1358,9 @@
                     slidesHTML += `<div class="card-slide"><img src="${imgSrc || 'https://picsum.photos/seed/fallback/600/600'}" loading="lazy" alt="${title}" onerror="this.src='https://picsum.photos/seed/error/600/600'"></div>`;
                 });
 
+                // PERUBAHAN UTAMA: Badge kategori (<span class="badge">...</span>) DIHAPUS dari HTML di sini.
                 card.innerHTML = `
                     <div class="card-image">
-                        <span class="badge">${category || 'Produk'}</span>
                         <div class="card-slider-container">${slidesHTML}</div>
                     </div>
                     <div class="card-content">
