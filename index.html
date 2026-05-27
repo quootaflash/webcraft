@@ -509,27 +509,24 @@
             transform: scale(1.03);
         }
 
-        /* SPONSOR BADGE — TRANSPARAN & MINIMALIS (BUKAN CAPSLOCK) */
         .ad-label {
             position: absolute;
             top: 10px;
             right: 10px;
             z-index: 10;
             pointer-events: none;
-            /* Lebih transparan lagi */
             background: rgba(255, 255, 255, 0.55); 
             backdrop-filter: blur(6px);
             -webkit-backdrop-filter: blur(6px);
-            color: #334155; /* Warna teks agak gelap agar kontras tapi lembut */
-            font-size: 0.7rem; /* Sedikit lebih besar agar terbaca */
-            font-weight: 600; /* Bold tapi tidak 800 */
-            letter-spacing: 0.02em; /* Normal spacing */
+            color: #334155; 
+            font-size: 0.7rem; 
+            font-weight: 600; 
+            letter-spacing: 0.02em; 
             padding: 4px 10px;
-            border-radius: 99px; /* Pill shape penuh */
+            border-radius: 99px; 
             border: 1px solid rgba(255, 255, 255, 0.4);
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
             overflow: hidden;
-            /* PENTING: TIDAK ADA TEXT-TRANSFORM, biarkan natural "Sponsor" */
             line-height: 1.2;
             display: inline-flex;
             align-items: center;
@@ -537,7 +534,6 @@
             transition: background 0.2s ease;
         }
         
-        /* Efek hover halus di badge */
         .modal-ad-banner a:hover + .ad-label, 
         .modal-ad-banner:hover .ad-label {
             background: rgba(255, 255, 255, 0.85);
@@ -815,7 +811,7 @@
                 </div>
 
                 <div class="summary-card">
-                    <!-- ADDED: Order ID Row -->
+                    <!-- ID PESANAN MUNCUL DI SINI -->
                     <div class="summary-row">
                         <span>ID Pesanan</span>
                         <span id="p-order-id" style="font-family: monospace; font-weight: 700; color: var(--primary);">-</span>
@@ -912,7 +908,7 @@
         let paymentMethods = [];
         let adminNumbersList = [];
         let currentUniqueTotal = 0;
-        let currentOrderId = ''; // NEW: Variable to store generated Order ID
+        let currentOrderId = ''; // VARIABLE UNTUK MENYIMPAN ID
         let paymentLockTimer = null;
         const LOCK_DURATION_MS = 120000;
         let touchStartX = 0;
@@ -988,10 +984,11 @@
         const formatRupiah = (num) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(num);
         function getField(item, fieldKey) { return item[fields[fieldKey]] || item[fieldKey]; }
 
-        // NEW: GENERATOR UNGUESSABLE ID
+        // FUNGSI GENERATE ID PESANAN
         function generateOrderID() {
-            const prefix = "WH"; // Bisa diganti brand lain
-            const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; // Menghindari I, 1, O, 0 agar tidak bingung
+            const prefix = "WH"; 
+            // Karakter unik tanpa angka 0 dan huruf O agar tidak membingungkan
+            const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; 
             let result = prefix + "-";
             for (let i = 0; i < 6; i++) {
                 result += chars.charAt(Math.floor(Math.random() * chars.length));
@@ -1225,11 +1222,9 @@
 
             let selectedAd = null;
             
-            // LOGIKA GOOGLE ADS SEDERHANA (CONTEXTUAL TARGETING)
             if (currentProduct) {
                 const productCategory = String(getField(currentProduct, 'category')).toLowerCase().trim();
                 
-                // 1. Exact Match (Prioritas Tertinggi)
                 const exactMatches = modalAdsCache.filter(ad => {
                     const adTargetCat = getAdTargetCategory(ad);
                     if (!adTargetCat) return false;
@@ -1240,7 +1235,6 @@
                     selectedAd = exactMatches[Math.floor(Math.random() * exactMatches.length)];
                     console.log(`[AD SYSTEM] Showing Exact Match Ad for [${productCategory}]`);
                 } else {
-                    // 2. Universal/Wildcard Match (Fallback)
                     const universalAds = modalAdsCache.filter(ad => {
                         const cat = getAdTargetCategory(ad);
                         if (!cat) return false;
@@ -1274,7 +1268,6 @@
                         });
                     }
 
-                    // Preload logic
                     if (imgEl.src === imageUrl && imgEl.complete && imgEl.naturalWidth > 0) {
                         requestAnimationFrame(revealBanner);
                     } else {
@@ -1602,7 +1595,7 @@
                 return;
             }
 
-            // UPDATED: Generate Order ID here
+            // 1. Generate ID Pesanan
             currentOrderId = generateOrderID();
             document.getElementById('p-order-id').innerText = currentOrderId;
 
@@ -1710,7 +1703,7 @@
             const formattedTotal = formatRupiah(currentUniqueTotal);
             const orderTime = new Date().toLocaleString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
             
-            // UPDATED: Include Order ID in message
+            // 2. Masukkan ID Pesanan ke Pesan WhatsApp
             let message = `Halo Min, saya ingin membeli CV berikut:\n\n*ID Pesanan:* ${currentOrderId}\n*Jenis CV:* ${templateName}\n*Total Pembayaran (Unik):* ${formattedTotal}\n*Waktu Pesanan:* ${orderTime}`;
             
             const isAddOn = toggleSwitch.checked;
@@ -1753,7 +1746,6 @@
             console.log('%c[WRITEHUB] Initializing...', 'color: blue; font-weight: bold;');
             initSlider();
             
-            // Iklan: Fetch hanya untuk modal, tidak ada init popup
             if (useSupabase) {
                 const ads = await fetchAds();
                 modalAdsCache = ads.filter(ad => {
