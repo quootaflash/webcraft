@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>WRITEHUB - INDONESIA</title>
+    <title>WRITEHUB - INDONESIA (AUTO AD GROUPING)</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -871,7 +871,7 @@
     <div class="toast-container" id="toastContainer"></div>
 
     <div class="ad-debug-panel" id="adDebugPanel">
-        <div class="debug-title">[AD DEBUG LOG]</div>
+        <div class="debug-title">[AD AUTO-GROUPING LOG]</div>
         <div id="adDebugContent"></div>
     </div>
 
@@ -1130,7 +1130,7 @@
         let allAdsCache = [];
         let isAdShowing = false;
 
-        let modalAdsCache = [];
+        let modalAdsCache = []; // Cache semua iklan modal (Pool)
         
         let fields = {
             title: 'title', price: 'price', original_price: 'original_price',
@@ -1398,18 +1398,6 @@
                 'location', 'lokasi', 'tipe', 'type', 'show_in'
             ]);
         }
-        
-        // Fungsi baru: Mendapatkan target kategori iklan
-        function getAdTargetCategory(ad) {
-            return getAdField(ad, [
-                'target_category', // Rekomendasi
-                'kategori', 
-                'category', 
-                'kategori_iklan', 
-                'product_category',
-                'show_on_category'
-            ]);
-        }
 
         async function fetchAds() {
             if (!useSupabase) {
@@ -1614,7 +1602,7 @@
         }
 
         async function initAdSystem() {
-            adLog('=== SISTEM IKLAN DIMULAI ===', 'ok');
+            adLog('=== SISTEM IKLAN AUTO-GROUPING DIMULAI ===', 'ok');
             adLog(`Supabase: ${useSupabase ? 'TERHUBUNG' : 'TIDAK TERHUBUNG'}`, useSupabase ? 'ok' : 'warn');
 
             if (!useSupabase) { adLog('Dibatalkan: Supabase tidak terhubung', 'err'); return; }
@@ -1622,6 +1610,8 @@
             const ads = await fetchAds();
             allAdsCache = ads;
 
+            // Filter iklan berdasarkan placement saja (modal vs popup)
+            // Kita TIDAK lagi memfilter berdasarkan kategori
             modalAdsCache = ads.filter(ad => {
                 const placement = getAdPlacement(ad);
                 if (!placement) return false;
@@ -1636,7 +1626,8 @@
                 return !p.includes('modal') && !p.includes('product') && !p.includes('produk') && !p.includes('detail');
             });
 
-            adLog(`Distribusi: ${popupAds.length} popup, ${modalAdsCache.length} modal`, 'ok');
+            adLog(`Pool Iklan Modal: ${modalAdsCache.length} iklan tersedia`, 'ok');
+            adLog(`Pool Iklan Popup: ${popupAds.length} iklan tersedia`, 'ok');
 
             if (popupAds.length > 0) {
                 adLog(`Menunggu ${AD_CONFIG.showDelay}ms sebelum tampilkan popup...`, 'ok');
@@ -1693,7 +1684,7 @@
         });
 
         // ============================================
-        // MODAL AD BANNER — LOGIKA KATEGORI BARU
+        // MODAL AD BANNER — LOGIKA AUTO GROUPING
         // ============================================
 
         function showModalAdBanner() {
@@ -1704,62 +1695,50 @@
             bannerEl.classList.remove('visible');
             bannerEl.style.height = '0px';
 
-            // 1. Cek apakah ada iklan modal sama sekali
+            // 1. Cek ketersediaan iklan modal di pool
             if (modalAdsCache.length === 0) {
+                adLog('Tidak ada iklan modal di pool.', 'warn');
                 return;
             }
 
-            // 2. Dapatkan kategori produk saat ini
+            // 2. Ambil kategori produk saat ini dari tabel 'cvs'
             let selectedAd = null;
             let matchType = 'none';
 
             if (currentProduct) {
                 const productCategory = String(getField(currentProduct, 'category')).toLowerCase().trim();
-                adLog(`Filter Iklan Modal: Produk kategori [${productCategory}]`, 'ok');
+                adLog(`Produk Kategori: [${productCategory}]`, 'ok');
 
-                if (productCategory) {
-                    // 3. Filter iklan yang cocok dengan kategori produk
-                    const categoryMatches = modalAdsCache.filter(ad => {
-                        const adTargetCat = getAdTargetCategory(ad);
-                        if (!adTargetCat) return false;
-                        return String(adTargetCat).toLowerCase().trim() === productCategory;
-                    });
-
-                    if (categoryMatches.length > 0) {
-                        // Jika ada iklan khusus kategori, pilih satu secara acak
-                        selectedAd = categoryMatches[Math.floor(Math.random() * categoryMatches.length)];
-                        matchType = 'category-specific';
-                        adLog(`Ditemukan ${categoryMatches.length} iklan kategori. Memilih salah satu.`, 'ok');
+                if (productCategory && productCategory !== 'all') {
+                    // 3. LOGIKA OTOMATIS (HASHING)
+                    // Kita ubah nama kategori (string) menjadi angka.
+                    // Angka tersebut menentukan iklan mana yang diambil dari array.
+                    // Ini membuat setiap kategori konsisten dengan iklan tertentu.
+                    
+                    let hash = 0;
+                    for (let i = 0; i < productCategory.length; i++) {
+                        hash = productCategory.charCodeAt(i) + ((hash << 5) - hash);
                     }
+                    
+                    // Gunakan nilai hash absolut untuk mengambil index array
+                    const adIndex = Math.abs(hash) % modalAdsCache.length;
+                    
+                    selectedAd = modalAdsCache[adIndex];
+                    matchType = 'auto-grouped';
+                    
+                    adLog(`Auto-Grouping: Kategori "${productCategory}" dipetakan ke Iklan Index ${adIndex}`, 'ok');
+                } else {
+                    // Jika kategori produk kosong/undefined, ambil random
+                    selectedAd = modalAdsCache[Math.floor(Math.random() * modalAdsCache.length)];
+                    matchType = 'random-fallback';
                 }
-            }
-
-            // 4. Fallback: Jika tidak ada iklan kategori spesifik, cari iklan 'General' atau 'Umum'
-            if (!selectedAd) {
-                adLog(`Tidak ada iklan kategori spesifik. Mencari iklan General...`, 'warn');
-                
-                const generalAds = modalAdsCache.filter(ad => {
-                    const adTargetCat = getAdTargetCategory(ad);
-                    if (!adTargetCat) return true; // Jika kolom kategori kosong, anggap general
-                    const cat = String(adTargetCat).toLowerCase();
-                    return cat.includes('general') || cat.includes('umum') || cat.includes('all') || cat === '*';
-                });
-
-                if (generalAds.length > 0) {
-                    selectedAd = generalAds[Math.floor(Math.random() * generalAds.length)];
-                    matchType = 'general-fallback';
-                    adLog(`Menggunakan iklan General (Umum).`, 'ok');
-                }
-            }
-
-            // 5. Fallback Absolut: Jika masih kosong, ambil iklan pertama yang ada
-            if (!selectedAd && modalAdsCache.length > 0) {
+            } else {
+                // Fallback jika currentProduct null
                 selectedAd = modalAdsCache[0];
-                matchType = 'absolute-fallback';
-                adLog(`Fallback absolut: Menggunakan iklan pertama di cache.`, 'warn');
+                matchType = 'default-fallback';
             }
 
-            // 6. Tampilkan Iklan
+            // 4. Tampilkan Iklan
             if (selectedAd) {
                 const imageUrl = getAdImageUrl(selectedAd);
                 const linkUrl = getAdLinkUrl(selectedAd);
@@ -1792,14 +1771,13 @@
                         const onImgError = () => {
                             if (bannerRevealed) return;
                             bannerRevealed = true;
-                            revealBanner(); // Tetap tampilkan meski gambar error (img alt akan muncul)
+                            revealBanner(); // Tetap tampilkan meski gambar error
                         };
 
                         imgEl.onload = onImgReady;
                         imgEl.onerror = onImgError;
                         imgEl.src = imageUrl;
                         
-                        // Timeout safety
                         setTimeout(() => {
                             if (!bannerRevealed) {
                                 bannerRevealed = true;
@@ -2187,7 +2165,7 @@
                 closeAd();
             }
 
-            // Tampilkan iklan banner di modal (Sekarang berdasarkan kategori)
+            // Tampilkan iklan banner di modal (Sekarang AUTO-GROUPED)
             setTimeout(() => showModalAdBanner(), 150);
         }
 
