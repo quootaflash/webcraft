@@ -522,6 +522,17 @@
         .modal-ad-banner a:hover img {
             transform: scale(1.02);
         }
+        .ad-label {
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            background: rgba(0,0,0,0.5);
+            color: white;
+            font-size: 0.6rem;
+            padding: 2px 6px;
+            border-radius: 4px;
+            pointer-events: none;
+        }
 
         /* --- PAYMENT VIEW --- */
         .payment-view {
@@ -666,10 +677,6 @@
 
         /* ============================================
            AD POPUP — FULL BLEED, NO FRAME
-           - Poster tampil utuh tanpa border/padding
-           - Close button float di atas pojok
-           - Timer bar di bawah gambar, tipis
-           - Shadow membentuk kontur poster
            ============================================ */
         .ad-popup-overlay {
             position: fixed;
@@ -959,6 +966,7 @@
 
                     <!-- IKLAN MODAL PRODUK (RASIO 1280x350) -->
                     <div class="modal-ad-banner" id="modalAdBanner">
+                        <span class="ad-label">IKLAN</span>
                         <a href="#" target="_blank" rel="noopener noreferrer" id="modalAdLink">
                             <img id="modalAdImage" src="" alt="Promo">
                         </a>
@@ -1123,9 +1131,7 @@
         let isAdShowing = false;
 
         let modalAdsCache = [];
-        let todayModalAdIndex = -1;
-        let modalAdRevealTimer = null; 
-
+        
         let fields = {
             title: 'title', price: 'price', original_price: 'original_price',
             image: 'image', images: 'images', category: 'category',
@@ -1392,6 +1398,18 @@
                 'location', 'lokasi', 'tipe', 'type', 'show_in'
             ]);
         }
+        
+        // Fungsi baru: Mendapatkan target kategori iklan
+        function getAdTargetCategory(ad) {
+            return getAdField(ad, [
+                'target_category', // Rekomendasi
+                'kategori', 
+                'category', 
+                'kategori_iklan', 
+                'product_category',
+                'show_on_category'
+            ]);
+        }
 
         async function fetchAds() {
             if (!useSupabase) {
@@ -1441,7 +1459,7 @@
             return [];
         }
 
-        // --- POPUP AD FUNCTIONS ---
+        // --- POPUP AD FUNCTIONS (Tetap sama) ---
 
         function detectTransparency(imageUrl, callback) {
             const testImg = new Image();
@@ -1452,7 +1470,6 @@
                     const ctx = canvas.getContext('2d', { willReadFrequently: true });
                     const w = this.naturalWidth;
                     const h = this.naturalHeight;
-                    // Sampel 8 titik untuk akurasi lebih tinggi
                     const points = [
                         [0, 0], [w, 0], [0, h], [w, h],
                         [Math.floor(w/2), Math.floor(h/2)],
@@ -1508,14 +1525,12 @@
             const link = document.getElementById('adLink');
             const timerBar = document.getElementById('adTimerBar');
 
-            // Reset state
             overlay.classList.remove('ad-visible', 'ad-exiting');
             card.classList.remove('transparent-mode');
             if (adDismissTimer) { clearTimeout(adDismissTimer); adDismissTimer = null; }
 
             link.href = linkUrl;
 
-            // Reset timer animation
             timerBar.style.animation = 'none';
             timerBar.offsetHeight;
             timerBar.style.animation = `adTimerShrink ${safeDuration}s linear forwards`;
@@ -1623,22 +1638,11 @@
 
             adLog(`Distribusi: ${popupAds.length} popup, ${modalAdsCache.length} modal`, 'ok');
 
-            if (modalAdsCache.length > 0) {
-                computeTodayModalAdIndex(modalAdsCache.length);
-            }
-
             if (popupAds.length > 0) {
                 adLog(`Menunggu ${AD_CONFIG.showDelay}ms sebelum tampilkan popup...`, 'ok');
                 await new Promise(r => setTimeout(r, AD_CONFIG.showDelay));
                 showNextAd(popupAds);
             }
-        }
-
-        function computeTodayModalAdIndex(totalAds) {
-            if (totalAds === 0) { todayModalAdIndex = -1; return; }
-            const epochDays = Math.floor(Date.now() / (1000 * 60 * 60 * 24));
-            todayModalAdIndex = epochDays % totalAds;
-            adLog(`Rotasi harian modal: hari ke-${epochDays} → index ${todayModalAdIndex} dari ${totalAds}`, 'ok');
         }
 
         function showNextAd(ads) {
@@ -1689,7 +1693,7 @@
         });
 
         // ============================================
-        // MODAL AD BANNER — RASIO 1280x350
+        // MODAL AD BANNER — LOGIKA KATEGORI BARU
         // ============================================
 
         function showModalAdBanner() {
@@ -1700,74 +1704,114 @@
             bannerEl.classList.remove('visible');
             bannerEl.style.height = '0px';
 
-            if (modalAdRevealTimer) {
-                clearTimeout(modalAdRevealTimer);
-                modalAdRevealTimer = null;
-            }
-
-            if (modalAdsCache.length === 0 || todayModalAdIndex < 0) {
+            // 1. Cek apakah ada iklan modal sama sekali
+            if (modalAdsCache.length === 0) {
                 return;
             }
 
-            const selectedAd = modalAdsCache[todayModalAdIndex];
-            const imageUrl = getAdImageUrl(selectedAd);
-            const linkUrl = getAdLinkUrl(selectedAd);
+            // 2. Dapatkan kategori produk saat ini
+            let selectedAd = null;
+            let matchType = 'none';
 
-            if (!imageUrl) return;
+            if (currentProduct) {
+                const productCategory = String(getField(currentProduct, 'category')).toLowerCase().trim();
+                adLog(`Filter Iklan Modal: Produk kategori [${productCategory}]`, 'ok');
 
-            adLog(`Modal ad: menyiapkan index ${todayModalAdIndex}`, 'ok');
-            linkEl.href = linkUrl;
+                if (productCategory) {
+                    // 3. Filter iklan yang cocok dengan kategori produk
+                    const categoryMatches = modalAdsCache.filter(ad => {
+                        const adTargetCat = getAdTargetCategory(ad);
+                        if (!adTargetCat) return false;
+                        return String(adTargetCat).toLowerCase().trim() === productCategory;
+                    });
 
-            function revealBanner() {
-                const targetRatio = 350 / 1280;
-                const parentWidth = bannerEl.parentElement ? bannerEl.parentElement.offsetWidth : 400;
-                let bannerHeight = Math.round(parentWidth * targetRatio);
-                bannerHeight = Math.max(60, Math.min(bannerHeight, 180));
-
-                adLog(`Modal ad: parentWidth=${parentWidth}, height=${bannerHeight}px`, 'ok');
-
-                bannerEl.style.height = bannerHeight + 'px';
-                requestAnimationFrame(() => {
-                    bannerEl.classList.add('visible');
-                });
+                    if (categoryMatches.length > 0) {
+                        // Jika ada iklan khusus kategori, pilih satu secara acak
+                        selectedAd = categoryMatches[Math.floor(Math.random() * categoryMatches.length)];
+                        matchType = 'category-specific';
+                        adLog(`Ditemukan ${categoryMatches.length} iklan kategori. Memilih salah satu.`, 'ok');
+                    }
+                }
             }
 
-            if (imgEl.src === imageUrl && imgEl.complete && imgEl.naturalWidth > 0) {
-                requestAnimationFrame(revealBanner);
-            } else {
-                let bannerRevealed = false;
+            // 4. Fallback: Jika tidak ada iklan kategori spesifik, cari iklan 'General' atau 'Umum'
+            if (!selectedAd) {
+                adLog(`Tidak ada iklan kategori spesifik. Mencari iklan General...`, 'warn');
+                
+                const generalAds = modalAdsCache.filter(ad => {
+                    const adTargetCat = getAdTargetCategory(ad);
+                    if (!adTargetCat) return true; // Jika kolom kategori kosong, anggap general
+                    const cat = String(adTargetCat).toLowerCase();
+                    return cat.includes('general') || cat.includes('umum') || cat.includes('all') || cat === '*';
+                });
 
-                imgEl.onload = function() {
-                    if (bannerRevealed) return;
-                    bannerRevealed = true;
-                    if (modalAdRevealTimer) { clearTimeout(modalAdRevealTimer); modalAdRevealTimer = null; }
-                    revealBanner();
-                };
+                if (generalAds.length > 0) {
+                    selectedAd = generalAds[Math.floor(Math.random() * generalAds.length)];
+                    matchType = 'general-fallback';
+                    adLog(`Menggunakan iklan General (Umum).`, 'ok');
+                }
+            }
 
-                imgEl.onerror = function() {
-                    if (bannerRevealed) return;
-                    bannerRevealed = true;
-                    if (modalAdRevealTimer) { clearTimeout(modalAdRevealTimer); modalAdRevealTimer = null; }
-                    const parentWidth = bannerEl.parentElement ? bannerEl.parentElement.offsetWidth : 400;
-                    bannerEl.style.height = Math.max(60, Math.round(parentWidth * (350/1280))) + 'px';
-                    bannerEl.classList.add('visible');
-                };
+            // 5. Fallback Absolut: Jika masih kosong, ambil iklan pertama yang ada
+            if (!selectedAd && modalAdsCache.length > 0) {
+                selectedAd = modalAdsCache[0];
+                matchType = 'absolute-fallback';
+                adLog(`Fallback absolut: Menggunakan iklan pertama di cache.`, 'warn');
+            }
 
-                imgEl.src = imageUrl;
+            // 6. Tampilkan Iklan
+            if (selectedAd) {
+                const imageUrl = getAdImageUrl(selectedAd);
+                const linkUrl = getAdLinkUrl(selectedAd);
 
-                modalAdRevealTimer = setTimeout(() => {
-                    if (bannerRevealed) return;
-                    bannerRevealed = true;
-                    modalAdRevealTimer = null;
-                    
-                    if (imgEl.complete && imgEl.naturalWidth > 0) {
-                        revealBanner();
-                    } else {
+                if (imageUrl) {
+                    adLog(`Menampilkan banner [${matchType}]`, 'ok');
+                    linkEl.href = linkUrl;
+
+                    function revealBanner() {
+                        const targetRatio = 350 / 1280;
                         const parentWidth = bannerEl.parentElement ? bannerEl.parentElement.offsetWidth : 400;
-                        bannerEl.style.height = Math.max(60, Math.round(parentWidth * (350/1280))) + 'px';
-                        bannerEl.classList.add('visible');
+                        let bannerHeight = Math.round(parentWidth * targetRatio);
+                        bannerHeight = Math.max(60, Math.min(bannerHeight, 180));
+
+                        bannerEl.style.height = bannerHeight + 'px';
+                        requestAnimationFrame(() => {
+                            bannerEl.classList.add('visible');
+                        });
                     }
-                }, 3000);
+
+                    if (imgEl.src === imageUrl && imgEl.complete && imgEl.naturalWidth > 0) {
+                        requestAnimationFrame(revealBanner);
+                    } else {
+                        let bannerRevealed = false;
+                        const onImgReady = () => {
+                            if (bannerRevealed) return;
+                            bannerRevealed = true;
+                            revealBanner();
+                        };
+                        const onImgError = () => {
+                            if (bannerRevealed) return;
+                            bannerRevealed = true;
+                            revealBanner(); // Tetap tampilkan meski gambar error (img alt akan muncul)
+                        };
+
+                        imgEl.onload = onImgReady;
+                        imgEl.onerror = onImgError;
+                        imgEl.src = imageUrl;
+                        
+                        // Timeout safety
+                        setTimeout(() => {
+                            if (!bannerRevealed) {
+                                bannerRevealed = true;
+                                revealBanner();
+                            }
+                        }, 3000);
+                    }
+                } else {
+                    adLog('Iklan dipilih tapi tidak memiliki URL gambar.', 'err');
+                }
+            } else {
+                adLog('Tidak ada iklan yang bisa ditampilkan.', 'warn');
             }
         }
 
@@ -1775,11 +1819,6 @@
             const bannerEl = document.getElementById('modalAdBanner');
             bannerEl.classList.remove('visible');
             bannerEl.style.height = '0px';
-            
-            if (modalAdRevealTimer) {
-                clearTimeout(modalAdRevealTimer);
-                modalAdRevealTimer = null;
-            }
         }
 
         // --- CARD SLIDERS ---
@@ -2148,6 +2187,7 @@
                 closeAd();
             }
 
+            // Tampilkan iklan banner di modal (Sekarang berdasarkan kategori)
             setTimeout(() => showModalAdBanner(), 150);
         }
 
