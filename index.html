@@ -292,21 +292,6 @@
             overflow: hidden;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
-        .badge::after {
-            content: '';
-            position: absolute;
-            top: 0; left: -100%;
-            width: 50%;
-            height: 100%;
-            background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.8) 50%, rgba(255,255,255,0) 100%);
-            transform: skewX(-25deg);
-            animation: shimmer 3s infinite;
-        }
-        @keyframes shimmer {
-            0% { left: -100%; }
-            20% { left: 200%; }
-            100% { left: 200%; }
-        }
 
         .card-slider-container {
             position: absolute; inset: 0; width: 100%; height: 100%;
@@ -479,8 +464,7 @@
         .btn-close:hover { background: var(--bg-body); }
 
         /* ============================================
-           MODAL AD BANNER — RASIO 1280x350
-           + SHIMMER SOFT PROFESSIONAL + "Rekomendasi" BADGE
+           MODAL AD BANNER — GOOGLE ADS STYLE SPONSOR
            ============================================ */
         .modal-ad-banner {
             display: block;
@@ -488,68 +472,21 @@
             flex-shrink: 0;
             overflow: hidden;
             position: relative;
-            background: var(--bg-body);
-            border: 1px solid var(--border);
-            border-radius: 10px;
+            background: transparent;
+            border-radius: 12px;
+            border: 1px solid rgba(0,0,0,0.05);
             height: 0;
             opacity: 0;
             margin-bottom: 0;
             pointer-events: none;
-            transition: height 0.5s cubic-bezier(0.16, 1, 0.3, 1),
-                        opacity 0.4s ease 0.05s,
-                        margin-bottom 0.5s ease;
+            transition: height 0.4s cubic-bezier(0.25, 1, 0.5, 1),
+                        opacity 0.3s ease 0.05s,
+                        margin-bottom 0.4s ease;
         }
         .modal-ad-banner.visible {
             opacity: 1;
             pointer-events: auto;
-            margin-bottom: 16px;
-        }
-
-        /* Shimmer overlay — soft gradient yang melintas perlahan */
-        .modal-ad-banner::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -150%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(
-                105deg,
-                transparent 20%,
-                rgba(255, 255, 255, 0.0) 30%,
-                rgba(255, 255, 255, 0.25) 38%,
-                rgba(255, 255, 255, 0.35) 44%,
-                rgba(255, 255, 255, 0.25) 50%,
-                rgba(255, 255, 255, 0.0) 60%,
-                transparent 80%
-            );
-            z-index: 3;
-            pointer-events: none;
-            border-radius: 10px;
-            animation: modalAdShimmer 4s ease-in-out infinite;
-            animation-delay: 0.8s;
-        }
-
-        @keyframes modalAdShimmer {
-            0% {
-                left: -150%;
-                opacity: 0;
-            }
-            10% {
-                opacity: 1;
-            }
-            45% {
-                left: 150%;
-                opacity: 1;
-            }
-            55% {
-                left: 150%;
-                opacity: 0;
-            }
-            100% {
-                left: 150%;
-                opacity: 0;
-            }
+            margin-bottom: 20px;
         }
 
         .modal-ad-banner a {
@@ -558,7 +495,7 @@
             height: 100%;
             position: relative;
             overflow: hidden;
-            border-radius: 10px;
+            border-radius: 12px;
         }
         .modal-ad-banner img {
             width: 100%;
@@ -566,77 +503,45 @@
             object-fit: cover; 
             object-position: center;
             display: block;
-            transition: transform 0.4s ease;
+            transition: transform 0.5s ease;
         }
         .modal-ad-banner a:hover img {
-            transform: scale(1.02);
+            transform: scale(1.03);
         }
 
-        /* "Ad" badge — modern, minimalis, bukan "IKLAN" tradisional */
+        /* SPONSOR BADGE — TRANSPARAN & MINIMALIS (BUKAN CAPSLOCK) */
         .ad-label {
             position: absolute;
-            top: 8px;
-            right: 8px;
-            z-index: 5;
+            top: 10px;
+            right: 10px;
+            z-index: 10;
             pointer-events: none;
-            background: rgba(255, 255, 255, 0.88);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            color: #64748b;
-            font-size: 0.6rem;
-            font-weight: 700;
-            letter-spacing: 0.08em;
-            padding: 3px 8px;
-            border-radius: 6px;
-            border: 1px solid rgba(0, 0, 0, 0.06);
-            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+            /* Lebih transparan lagi */
+            background: rgba(255, 255, 255, 0.55); 
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            color: #334155; /* Warna teks agak gelap agar kontras tapi lembut */
+            font-size: 0.7rem; /* Sedikit lebih besar agar terbaca */
+            font-weight: 600; /* Bold tapi tidak 800 */
+            letter-spacing: 0.02em; /* Normal spacing */
+            padding: 4px 10px;
+            border-radius: 99px; /* Pill shape penuh */
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
             overflow: hidden;
-            text-transform: uppercase;
-            line-height: 1;
+            /* PENTING: TIDAK ADA TEXT-TRANSFORM, biarkan natural "Sponsor" */
+            line-height: 1.2;
             display: inline-flex;
             align-items: center;
-            gap: 3px;
+            gap: 4px;
+            transition: background 0.2s ease;
         }
-
-        /* Micro shimmer di dalam badge "Ad" */
-        .ad-label::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 60%;
-            height: 100%;
-            background: linear-gradient(
-                to right,
-                rgba(255, 255, 255, 0) 0%,
-                rgba(255, 255, 255, 0.7) 40%,
-                rgba(255, 255, 255, 0) 100%
-            );
-            transform: skewX(-20deg);
-            animation: badgeMicroShimmer 3.5s ease-in-out infinite;
-            animation-delay: 1.2s;
-        }
-
-        @keyframes badgeMicroShimmer {
-            0% {
-                left: -100%;
-                opacity: 0;
-            }
-            15% {
-                opacity: 1;
-            }
-            35% {
-                left: 180%;
-                opacity: 1;
-            }
-            50% {
-                left: 180%;
-                opacity: 0;
-            }
-            100% {
-                left: 180%;
-                opacity: 0;
-            }
+        
+        /* Efek hover halus di badge */
+        .modal-ad-banner a:hover + .ad-label, 
+        .modal-ad-banner:hover .ad-label {
+            background: rgba(255, 255, 255, 0.85);
+            color: #000;
         }
 
         /* --- PAYMENT VIEW --- */
@@ -780,184 +685,6 @@
         @keyframes slideDown { to { opacity: 1; transform: translateY(0); } }
         @keyframes fadeOut { to { opacity: 0; transform: translateY(-10px); } }
 
-        /* ============================================
-           AD POPUP — FULL BLEED, NO FRAME
-           ============================================ */
-        .ad-popup-overlay {
-            position: fixed;
-            inset: 0;
-            z-index: 900;
-            display: none;
-            align-items: flex-end;
-            justify-content: flex-start;
-            padding: 20px;
-            pointer-events: none;
-            opacity: 0;
-            transition: opacity 0.4s ease;
-        }
-        .ad-popup-overlay.ad-visible {
-            display: flex;
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        .ad-popup-card {
-            width: 260px;
-            position: relative;
-            overflow: visible;
-            transform: translateY(30px) scale(0.95);
-            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-            cursor: default;
-        }
-        .ad-popup-overlay.ad-visible .ad-popup-card {
-            transform: translateY(0) scale(1);
-        }
-
-        .ad-popup-image-wrap {
-            position: relative;
-            display: block;
-            width: 100%;
-            border-radius: 14px;
-            overflow: hidden;
-            box-shadow: 
-                0 2px 4px rgba(0, 0, 0, 0.06),
-                0 8px 24px rgba(0, 0, 0, 0.12),
-                0 16px 48px rgba(0, 0, 0, 0.06);
-            line-height: 0;
-        }
-        .ad-popup-image-wrap a {
-            display: block;
-            width: 100%;
-            line-height: 0;
-        }
-        .ad-popup-image-wrap img {
-            width: 100%;
-            height: auto;
-            display: block;
-            border-radius: 14px;
-            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .ad-popup-image-wrap a:hover img {
-            transform: scale(1.02);
-        }
-
-        .ad-popup-card.transparent-mode .ad-popup-image-wrap {
-            border-radius: 0;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-            background: transparent;
-        }
-        .ad-popup-card.transparent-mode .ad-popup-image-wrap img {
-            border-radius: 0;
-        }
-
-        .ad-close-btn {
-            position: absolute;
-            top: -8px;
-            right: -8px;
-            background: white;
-            border: none;
-            color: var(--text-muted);
-            width: 26px;
-            height: 26px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            font-size: 0.65rem;
-            transition: all 0.2s ease;
-            padding: 0;
-            z-index: 10;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-        }
-        .ad-close-btn:hover {
-            background: var(--danger);
-            color: white;
-            transform: scale(1.1);
-            box-shadow: 0 2px 10px rgba(239, 68, 68, 0.4);
-        }
-
-        .ad-popup-timer-track {
-            width: 100%;
-            height: 3px;
-            background: rgba(0, 0, 0, 0.06);
-            border-radius: 0 0 14px 14px;
-            overflow: hidden;
-            margin-top: -1px;
-        }
-        .ad-popup-timer-fill {
-            height: 100%;
-            width: 100%;
-            background: linear-gradient(90deg, var(--primary), #6366f1);
-            border-radius: 0 0 14px 14px;
-            transform-origin: left center;
-            animation: adTimerShrink var(--ad-duration, 15s) linear forwards;
-        }
-        .ad-popup-card.transparent-mode .ad-popup-timer-track {
-            border-radius: 0;
-            margin-top: 0;
-            background: rgba(255, 255, 255, 0.25);
-        }
-        .ad-popup-card.transparent-mode .ad-popup-timer-fill {
-            border-radius: 0;
-            background: rgba(255, 255, 255, 0.7);
-        }
-
-        @keyframes adTimerShrink {
-            from { transform: scaleX(1); }
-            to { transform: scaleX(0); }
-        }
-
-        .ad-popup-overlay.ad-exiting {
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-        .ad-popup-overlay.ad-exiting .ad-popup-card {
-            transform: translateY(20px) scale(0.95);
-            transition: transform 0.3s ease;
-        }
-
-        @media (max-width: 480px) {
-            .ad-popup-overlay {
-                padding: 12px;
-                align-items: flex-end;
-                justify-content: center;
-            }
-            .ad-popup-card {
-                width: 100%;
-                max-width: 220px;
-            }
-        }
-
-        /* --- AD DEBUG PANEL --- */
-        .ad-debug-panel {
-            position: fixed;
-            bottom: 10px;
-            right: 10px;
-            z-index: 9999;
-            background: #1e293b;
-            color: #e2e8f0;
-            font-size: 0.7rem;
-            font-family: 'Courier New', monospace;
-            padding: 10px 14px;
-            border-radius: 8px;
-            max-width: 320px;
-            max-height: 200px;
-            overflow-y: auto;
-            display: none;
-            box-shadow: var(--shadow-xl);
-            line-height: 1.6;
-        }
-        .ad-debug-panel .debug-title {
-            color: #38bdf8;
-            font-weight: 700;
-            margin-bottom: 6px;
-            font-size: 0.75rem;
-        }
-        .ad-debug-panel .debug-ok { color: #4ade80; }
-        .ad-debug-panel .debug-err { color: #f87171; }
-        .ad-debug-panel .debug-warn { color: #fbbf24; }
-
         footer { border-top: 1px solid var(--border); padding: 30px 0; margin-top: 40px; text-align: center; color: var(--text-muted); font-size: 0.85rem; background: white; }
 
         .modal-info::-webkit-scrollbar, .payment-view::-webkit-scrollbar { width: 6px; }
@@ -970,14 +697,9 @@
 
     <div class="toast-container" id="toastContainer"></div>
 
-    <div class="ad-debug-panel" id="adDebugPanel">
-        <div class="debug-title">[AD DEBUG LOG]</div>
-        <div id="adDebugContent"></div>
-    </div>
-
     <header>
         <div class="container nav-wrapper">
-            <a href="#" class="logo">
+            <a href="www.writehub.my.id" class="logo">
                 <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjzgVAIKgZMS9W7eJKCaRyaFnoDviThQstfeD9l9mcwPxUDoovGo7xB3RQByxTXo15fGX0DIeTMxOWkVovnB4FC35iJN6ArGLOlBRI9U4d4gJ7VOTOp-Ki47RIaViiIs12QGjxRmGs2cQzCFniRpBE0GyNLW3s_03rvTcpPeHAruMaUdrIKNX8jaFZ1TcBw/s3264/28063.png" alt="Logo">
                 <span></span>
             </a>
@@ -1001,6 +723,7 @@
         <div class="filter-bar" id="filterBar"></div>
 
         <div class="product-grid" id="productGrid">
+            <!-- Loading Skeletons -->
             <div class="cv-card" style="cursor: default;">
                 <div class="card-image" style="background:#e2e8f0; animation: pulse 1.5s infinite;"></div>
                 <div class="card-content">
@@ -1064,12 +787,12 @@
                         <i class="fas fa-check-circle" style="color:var(--primary)"></i> Terpakai <span id="m-sold">0</span>x
                     </div>
 
-                    <!-- IKLAN MODAL PRODUK (RASIO 1280x350) -->
+                    <!-- IKLAN MODAL PRODUK (GOOGLE ADS STYLE) -->
                     <div class="modal-ad-banner" id="modalAdBanner">
-                        <span class="ad-label">Ad</span>
                         <a href="#" target="_blank" rel="noopener noreferrer" id="modalAdLink">
                             <img id="modalAdImage" src="" alt="Promo">
                         </a>
+                        <span class="ad-label">Sponsor</span>
                     </div>
 
                     <button id="btn-goto-payment" class="btn-buy">
@@ -1145,21 +868,6 @@
         </div>
     </div>
 
-    <!-- AD POPUP — FULL BLEED -->
-    <div class="ad-popup-overlay" id="adPopupOverlay">
-        <div class="ad-popup-card" id="adPopupCard">
-            <button class="ad-close-btn" id="adCloseBtn"><i class="fas fa-times"></i></button>
-            <div class="ad-popup-image-wrap" id="adImageWrap">
-                <a href="#" target="_blank" rel="noopener noreferrer" id="adLink">
-                    <img id="adImage" src="" alt="Promo">
-                </a>
-            </div>
-            <div class="ad-popup-timer-track">
-                <div class="ad-popup-timer-fill" id="adTimerBar"></div>
-            </div>
-        </div>
-    </div>
-
     <script type="module">
         import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 
@@ -1176,7 +884,12 @@
             try {
                 supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
                 useSupabase = true;
-            } catch(e) {}
+                console.log('%c[SYSTEM] Database Connected', 'color: green; font-weight: bold;');
+            } catch(e) {
+                console.error('%c[SYSTEM] Database Connection Failed', 'color: red; font-weight: bold;');
+            }
+        } else {
+            console.warn('%c[SYSTEM] Supabase Keys missing. App will not load data.', 'color: orange; font-weight: bold;');
         }
 
         // --- DATA SLIDER ---
@@ -1186,20 +899,9 @@
             { image: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjxTWsbzLOqH1aruzJhxr0MLHze9wHTVlrmjev9HIsR5T0jDuN1tzoTuzgIebdHebK2rY3qt1Ey-rLMssu_WWUOtmI4XdYCaii9_TR54mKVeNHinPZtix0UDc3IHzOiq7vXhnIVzHKp8J-iWFOkHnk7YhjfvQ_NKtcycA6pw-gJGvCR7vByb7dnV0gAisRF/s3264/29463.png', link: '#' }
         ];
 
-        const dummyData = [
-            { id: 1, title: "Modern Creative Portfolio", category: "Creative", price: 50000, original_price: 75000, sold_count: 120, description: "Template dengan layout asimetris yang modern. Cocok untuk desainer, arsitek, dan profesional kreatif.\n\nFitur Utama:\n- Format PDF & Word\n- Mudah diedit\n- Font gratis included", image: "https://picsum.photos/seed/clean1/600/600", images: ["https://picsum.photos/seed/clean1/600/600", "https://picsum.photos/seed/clean1b/600/600", "https://picsum.photos/seed/clean1c/600/600"], cover_letter_price: 25000, allow_addon: true },
-            { id: 2, title: "Executive Formal Blue", category: "Formal", price: 75000, original_price: null, sold_count: 85, description: "Struktur profesional untuk level manajerial. Memberikan kesan serius dan terpercaya.\n\nWarna biru navy yang elegan.", image: "https://picsum.photos/seed/clean2/600/600", images: ["https://picsum.photos/seed/clean2/600/600", "https://picsum.photos/seed/clean2b/600/600"], cover_letter_price: null, allow_addon: true }, 
-            { id: 3, title: "Developer Dark Mode", category: "Tech", price: 90000, original_price: 120000, sold_count: 200, description: "Tema gelap elegan untuk programmer. High contrast untuk keterbacaan maksimal.", image: "https://picsum.photos/seed/clean3/600/600", images: ["https://picsum.photos/seed/clean3/600/600"], allow_addon: false },
-            { id: 4, title: "Accounting Pro", category: "Akuntansi", price: 85000, original_price: 100000, sold_count: 50, description: "CV khusus untuk keuangan dan akuntansi. Fokus pada angka dan presisi.", image: "https://picsum.photos/seed/accounting/600/600", images: ["https://picsum.photos/seed/accounting/600/600"], allow_addon: true }
-        ];
-
-        const dummyPaymentMethods = [
-            { id: 1, type: 'bank', bank_name: "BCA", account_number: "1234567890", owner_name: "WriteHub Admin", logo: "https://placehold.co/100x50/FFFFFF/0056b3?text=BCA&font=roboto" },
-            { id: 2, type: 'bank', bank_name: "MANDIRI", account_number: "0987654321", owner_name: "WriteHub Admin", logo: "https://placehold.co/100x50/FFFFFF/003d79?text=MANDIRI&font=roboto" },
-            { id: 3, type: 'bank', bank_name: "BRI", account_number: "1122334455", owner_name: "WriteHub Official", logo: "https://placehold.co/100x50/FFFFFF/1a3b7c?text=BRI&font=roboto" },
-            { id: 4, type: 'qris', bank_name: "QRIS", account_number: "N/A", owner_name: "WriteHub", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Logo_QRIS.svg/1200px-Logo_QRIS.svg.png" }
-        ];
-
+        // CATATAN: dummyData RESMI DIHILANGKAN SESUAI PERMINTAAN.
+        // Sistem sekarang 100% bergantung pada database.
+        
         let products = [];
         let filteredProducts = [];
         let currentCategory = 'all';
@@ -1213,22 +915,11 @@
         let touchEndX = 0;
 
         // ============================================
-        // AD SYSTEM — VARIABEL
+        // ADVANCED AD SYSTEM — MODAL ONLY
         // ============================================
         const AD_CONFIG = {
-            showDelay: 3000,
-            autoDismiss: 15,
-            maxPerSession: 3,
-            cooldownBetweenAds: 30000,
             tableNames: ['iklan', 'ads', 'ad', 'iklan_banner', 'banner'],
-            debug: false
         };
-
-        let adDismissTimer = null;
-        let adShownCount = 0;
-        let lastAdShownTime = 0;
-        let allAdsCache = [];
-        let isAdShowing = false;
 
         let modalAdsCache = [];
         
@@ -1237,40 +928,6 @@
             image: 'image', images: 'images', category: 'category',
             description: 'description', sold_count: 'sold_count',
             cover_letter_price: 'cover_letter_price', allow_addon: 'allow_addon'
-        };
-
-        // ============================================
-        // AD DEBUG LOGGER
-        // ============================================
-        function adLog(message, type = 'ok') {
-            const timestamp = new Date().toLocaleTimeString('id-ID');
-            const fullMsg = `[${timestamp}] ${message}`;
-            
-            console.log(`%c[AD] ${message}`, 
-                type === 'ok' ? 'color: #4ade80' : 
-                type === 'err' ? 'color: #f87171' : 'color: #fbbf24'
-            );
-
-            if (AD_CONFIG.debug) {
-                const panel = document.getElementById('adDebugPanel');
-                const content = document.getElementById('adDebugContent');
-                if (panel && content) {
-                    const line = document.createElement('div');
-                    line.className = `debug-${type}`;
-                    line.textContent = fullMsg;
-                    content.appendChild(line);
-                    content.scrollTop = content.scrollHeight;
-                }
-            }
-        }
-
-        window.toggleAdDebug = function() {
-            const panel = document.getElementById('adDebugPanel');
-            if (panel) {
-                panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
-                AD_CONFIG.debug = panel.style.display === 'block';
-                adLog('Debug panel ' + (AD_CONFIG.debug ? 'AKTIF' : 'NONAKTIF'), 'ok');
-            }
         };
 
         // --- TOAST ---
@@ -1429,9 +1086,9 @@
         async function fetchPaymentMethods() {
             if (useSupabase) {
                 const { data } = await supabase.from('payment').select('*');
-                paymentMethods = (data && data.length > 0) ? data : dummyPaymentMethods;
+                paymentMethods = (data && data.length > 0) ? data : [];
             } else {
-                paymentMethods = dummyPaymentMethods;
+                paymentMethods = [];
             }
             renderPaymentMethods();
         }
@@ -1442,18 +1099,23 @@
                 if (sample && sample.length > 0) {
                     autoMapColumns(sample[0]);
                     const { data } = await supabase.from('cvs').select('*');
-                    products = data || dummyData;
-                } else { products = dummyData; }
+                    products = data || [];
+                    console.log(`[SYSTEM] Loaded ${products.length} products from DB.`);
+                } else { 
+                    console.warn('[SYSTEM] No products found in DB and dummy data removed.');
+                    products = []; 
+                }
             } else {
-                await new Promise(r => setTimeout(r, 800));
-                products = dummyData;
+                // Dummy data removed. Products will be empty.
+                console.error('[SYSTEM] Cannot fetch products: No DB Connection.');
+                products = [];
             }
             renderCategories();
             filterLogic();
         }
 
         // ============================================
-        // AD SYSTEM — HELPER FUNCTIONS
+        // AD SYSTEM — LOGIC
         // ============================================
 
         function getAdField(ad, possibilities) {
@@ -1486,19 +1148,6 @@
             return true;
         }
 
-        function getAdDuration(ad) {
-            const val = getAdField(ad, ['duration', 'durasi', 'show_time', 'auto_close', 'timeout']);
-            if (val && !isNaN(val) && Number(val) > 0) return Number(val);
-            return AD_CONFIG.autoDismiss;
-        }
-
-        function getAdPlacement(ad) {
-            return getAdField(ad, [
-                'placement', 'penempatan', 'posisi', 'position',
-                'location', 'lokasi', 'tipe', 'type', 'show_in'
-            ]);
-        }
-        
         function getAdTargetCategory(ad) {
             return getAdField(ad, [
                 'target_category',
@@ -1509,289 +1158,43 @@
                 'show_on_category'
             ]);
         }
+        
+        function getAdPlacement(ad) {
+            return getAdField(ad, [
+                'placement', 'penempatan', 'posisi', 'position',
+                'location', 'lokasi', 'tipe', 'type', 'show_in'
+            ]);
+        }
 
         async function fetchAds() {
             if (!useSupabase) {
-                adLog('Supabase tidak tersedia, skip fetch iklan', 'warn');
+                console.warn('[AD SYSTEM] Supabase not available.');
                 return [];
             }
 
-            adLog('Memulai fetch data iklan...', 'ok');
-
             for (const tableName of AD_CONFIG.tableNames) {
                 try {
-                    adLog(`Mencoba tabel: "${tableName}"`, 'ok');
                     const { data, error } = await supabase.from(tableName).select('*');
                     
-                    if (error) {
-                        adLog(`Tabel "${tableName}" error: ${error.message}`, 'warn');
-                        continue;
-                    }
+                    if (error) continue;
+                    if (!data || data.length === 0) continue;
                     
-                    if (!data || data.length === 0) {
-                        adLog(`Tabel "${tableName}" kosong`, 'warn');
-                        continue;
-                    }
-                    
-                    adLog(`Tabel "${tableName}" ditemukan: ${data.length} row(s)`, 'ok');
-                    
-                    if (data.length > 0) {
-                        const columns = Object.keys(data[0]);
-                        adLog(`Kolom: [${columns.join(', ')}]`, 'ok');
-                    }
-
                     const activeAds = data.filter(ad => isAdActive(ad));
-                    adLog(`${activeAds.length} dari ${data.length} iklan aktif`, 'ok');
                     
                     if (activeAds.length > 0) {
-                        adLog(`Berhasil! Menggunakan ${activeAds.length} iklan dari tabel "${tableName}"`, 'ok');
+                        console.log(`[AD SYSTEM] Loaded ${activeAds.length} ads from table "${tableName}"`);
                         return activeAds;
                     }
                     
                 } catch (err) {
-                    adLog(`Exception pada tabel "${tableName}": ${err.message}`, 'err');
                     continue;
                 }
             }
-
-            adLog('Semua tabel iklan gagal atau kosong', 'err');
             return [];
         }
 
-        // --- POPUP AD FUNCTIONS ---
-        function detectTransparency(imageUrl, callback) {
-            const testImg = new Image();
-            testImg.crossOrigin = "Anonymous";
-            testImg.onload = function() {
-                try {
-                    const canvas = document.createElement('canvas');
-                    const ctx = canvas.getContext('2d', { willReadFrequently: true });
-                    const w = this.naturalWidth;
-                    const h = this.naturalHeight;
-                    const points = [
-                        [0, 0], [w, 0], [0, h], [w, h],
-                        [Math.floor(w/2), Math.floor(h/2)],
-                        [Math.floor(w/4), Math.floor(h/4)],
-                        [Math.floor(w*3/4), Math.floor(h/4)],
-                        [Math.floor(w/2), 0]
-                    ];
-                    let transparentCount = 0;
-                    let sampledCount = 0;
-                    canvas.width = w;
-                    canvas.height = h;
-                    ctx.drawImage(this, 0, 0);
-                    for (const [x, y] of points) {
-                        if (x < w && y < h) {
-                            sampledCount++;
-                            const pixel = ctx.getImageData(x, y, 1, 1).data;
-                            if (pixel[3] === 0) transparentCount++;
-                        }
-                    }
-                    callback(sampledCount > 0 && (transparentCount / sampledCount) > 0.35);
-                } catch (e) {
-                    adLog('Transparency detection error: ' + e.message, 'warn');
-                    callback(false);
-                }
-            };
-            testImg.onerror = function() { callback(false); };
-            testImg.src = imageUrl;
-        }
-
-        function showAdPopup(adData) {
-            if (isAdShowing) {
-                adLog('Popup sudah aktif, abaikan request baru', 'warn');
-                return;
-            }
-
-            const imageUrl = getAdImageUrl(adData);
-            const linkUrl = getAdLinkUrl(adData);
-            const duration = getAdDuration(adData);
-
-            if (!imageUrl) { adLog('Tidak ada URL gambar, batal tampilkan', 'err'); return; }
-
-            const safeDuration = Math.max(3, Math.min(duration, 60));
-            if (safeDuration !== duration) {
-                adLog(`Duration disesuaikan: ${duration}s → ${safeDuration}s`, 'warn');
-            }
-
-            isAdShowing = true;
-            adLog(`Popup: ${imageUrl.substring(0, 60)}... (${safeDuration}s)`, 'ok');
-
-            const overlay = document.getElementById('adPopupOverlay');
-            const card = document.getElementById('adPopupCard');
-            const img = document.getElementById('adImage');
-            const link = document.getElementById('adLink');
-            const timerBar = document.getElementById('adTimerBar');
-
-            overlay.classList.remove('ad-visible', 'ad-exiting');
-            card.classList.remove('transparent-mode');
-            if (adDismissTimer) { clearTimeout(adDismissTimer); adDismissTimer = null; }
-
-            link.href = linkUrl;
-
-            timerBar.style.animation = 'none';
-            timerBar.offsetHeight;
-            timerBar.style.animation = `adTimerShrink ${safeDuration}s linear forwards`;
-
-            let imageLoaded = false;
-            let loadAttempted = false;
-
-            function onImageReady() {
-                if (imageLoaded) return;
-                imageLoaded = true;
-                adLog(`Popup loaded: ${img.naturalWidth}x${img.naturalHeight}`, 'ok');
-
-                overlay.style.display = 'flex';
-                requestAnimationFrame(() => {
-                    requestAnimationFrame(() => {
-                        overlay.classList.add('ad-visible');
-                    });
-                });
-
-                adShownCount++;
-                lastAdShownTime = Date.now();
-
-                detectTransparency(imageUrl, (isTransparent) => {
-                    if (isTransparent) {
-                        card.classList.add('transparent-mode');
-                        adLog('Mode transparan diaktifkan', 'ok');
-                    }
-                });
-
-                adDismissTimer = setTimeout(() => {
-                    adLog(`Popup auto-dismiss ${safeDuration}s`, 'ok');
-                    closeAd();
-                }, safeDuration * 1000);
-            }
-
-            function onImageError() {
-                adLog(`Popup GAGAL load: ${imageUrl}`, 'err');
-                if (!loadAttempted) {
-                    loadAttempted = true;
-                    img.crossOrigin = "Anonymous";
-                    img.src = imageUrl + (imageUrl.includes('?') ? '&' : '?') + '_retry=1';
-                } else {
-                    adLog('Retry gagal, skip iklan ini', 'err');
-                    isAdShowing = false;
-                    scheduleNextAd();
-                }
-            }
-
-            img.onload = onImageReady;
-            img.onerror = onImageError;
-            img.src = imageUrl;
-
-            setTimeout(() => {
-                if (!imageLoaded && !loadAttempted) {
-                    adLog('Fallback: gambar tidak trigger event dalam 8s', 'warn');
-                    if (img.naturalWidth > 0 && img.naturalHeight > 0) {
-                        onImageReady();
-                    } else {
-                        onImageError();
-                    }
-                }
-            }, 8000);
-        }
-
-        function selectNextAd(adsList) {
-            if (adsList.length === 0) return null;
-            if (adsList.length === 1) return adsList[0];
-            const sessionKey = 'wh_ad_shown_ids';
-            const shownIds = JSON.parse(sessionStorage.getItem(sessionKey) || '[]');
-            for (let i = 0; i < adsList.length; i++) {
-                const adId = adsList[i].id || adsList[i].image_url || i;
-                if (!shownIds.includes(String(adId))) {
-                    shownIds.push(String(adId));
-                    sessionStorage.setItem(sessionKey, JSON.stringify(shownIds));
-                    return adsList[i];
-                }
-            }
-            sessionStorage.setItem(sessionKey, JSON.stringify([]));
-            adLog('Semua iklan sudah ditampilkan sekali, reset rotasi', 'ok');
-            return adsList[0];
-        }
-
-        async function initAdSystem() {
-            adLog('=== SISTEM IKLAN DIMULAI ===', 'ok');
-            adLog(`Supabase: ${useSupabase ? 'TERHUBUNG' : 'TIDAK TERHUBUNG'}`, useSupabase ? 'ok' : 'warn');
-
-            if (!useSupabase) { adLog('Dibatalkan: Supabase tidak terhubung', 'err'); return; }
-
-            const ads = await fetchAds();
-            allAdsCache = ads;
-
-            modalAdsCache = ads.filter(ad => {
-                const placement = getAdPlacement(ad);
-                if (!placement) return false;
-                const p = String(placement).toLowerCase().trim();
-                return p.includes('modal') || p.includes('product') || p.includes('produk') || p.includes('detail');
-            });
-
-            const popupAds = ads.filter(ad => {
-                const placement = getAdPlacement(ad);
-                if (!placement) return true;
-                const p = String(placement).toLowerCase().trim();
-                return !p.includes('modal') && !p.includes('product') && !p.includes('produk') && !p.includes('detail');
-            });
-
-            adLog(`Distribusi: ${popupAds.length} popup, ${modalAdsCache.length} modal`, 'ok');
-
-            if (popupAds.length > 0) {
-                adLog(`Menunggu ${AD_CONFIG.showDelay}ms sebelum tampilkan popup...`, 'ok');
-                await new Promise(r => setTimeout(r, AD_CONFIG.showDelay));
-                showNextAd(popupAds);
-            }
-        }
-
-        function showNextAd(ads) {
-            if (!ads || ads.length === 0) return;
-            if (adShownCount >= AD_CONFIG.maxPerSession) { adLog(`Batas ${AD_CONFIG.maxPerSession}/session tercapai`, 'warn'); return; }
-            const now = Date.now();
-            if (lastAdShownTime > 0 && (now - lastAdShownTime) < AD_CONFIG.cooldownBetweenAds) {
-                const waitMs = AD_CONFIG.cooldownBetweenAds - (now - lastAdShownTime);
-                adLog(`Cooldown, tunggu ${Math.ceil(waitMs / 1000)}s`, 'warn');
-                setTimeout(() => showNextAd(ads), waitMs);
-                return;
-            }
-            const selectedAd = selectNextAd(ads);
-            if (selectedAd) showAdPopup(selectedAd);
-        }
-
-        function scheduleNextAd() {
-            if (allAdsCache.length > 1 && adShownCount < AD_CONFIG.maxPerSession) {
-                adLog(`Menjadwalkan iklan berikutnya dalam ${AD_CONFIG.cooldownBetweenAds / 1000}s`, 'ok');
-                setTimeout(() => showNextAd(allAdsCache), AD_CONFIG.cooldownBetweenAds);
-            }
-        }
-
-        window.closeAd = function() {
-            const overlay = document.getElementById('adPopupOverlay');
-            
-            if (!isAdShowing && !overlay.classList.contains('ad-visible')) {
-                return;
-            }
-
-            if (adDismissTimer) { clearTimeout(adDismissTimer); adDismissTimer = null; }
-            isAdShowing = false;
-
-            overlay.classList.add('ad-exiting');
-
-            setTimeout(() => {
-                overlay.classList.remove('ad-visible', 'ad-exiting');
-                overlay.style.display = 'none';
-                scheduleNextAd();
-            }, 350);
-        }
-
-        document.getElementById('adPopupOverlay').addEventListener('click', function(e) {
-            if (e.target === this) {
-                adLog('Popup ditutup via klik overlay', 'ok');
-                closeAd();
-            }
-        });
-
         // ============================================
-        // MODAL AD BANNER — LOGIKA KETAT (STRICT MATCHING)
+        // MODAL AD BANNER — ADVANCED SYSTEM
         // ============================================
 
         function showModalAdBanner() {
@@ -1807,12 +1210,12 @@
             }
 
             let selectedAd = null;
-            let matchReason = '';
-
+            
+            // LOGIKA GOOGLE ADS SEDERHANA (CONTEXTUAL TARGETING)
             if (currentProduct) {
                 const productCategory = String(getField(currentProduct, 'category')).toLowerCase().trim();
-                adLog(`[STRICT MODE] Filter Iklan Modal: Produk kategori [${productCategory}]`, 'ok');
-
+                
+                // 1. Exact Match (Prioritas Tertinggi)
                 const exactMatches = modalAdsCache.filter(ad => {
                     const adTargetCat = getAdTargetCategory(ad);
                     if (!adTargetCat) return false;
@@ -1820,10 +1223,11 @@
                 });
 
                 if (exactMatches.length > 0) {
+                    // Random selection among exact matches
                     selectedAd = exactMatches[Math.floor(Math.random() * exactMatches.length)];
-                    matchReason = 'STRICT-EXACT-MATCH';
-                    adLog(`[STRICT MODE] Ditemukan ${exactMatches.length} iklan SAMA PERSIS. Memilih salah satu.`, 'ok');
+                    console.log(`[AD SYSTEM] Showing Exact Match Ad for [${productCategory}]`);
                 } else {
+                    // 2. Universal/Wildcard Match (Fallback)
                     const universalAds = modalAdsCache.filter(ad => {
                         const cat = getAdTargetCategory(ad);
                         if (!cat) return false;
@@ -1833,11 +1237,7 @@
 
                     if (universalAds.length > 0) {
                         selectedAd = universalAds[Math.floor(Math.random() * universalAds.length)];
-                        matchReason = 'UNIVERSAL-WILDCARD';
-                        adLog(`[STRICT MODE] Tidak ada iklan spesifik, menggunakan iklan Universal (*).`, 'ok');
-                    } else {
-                        matchReason = 'NO-MATCH-FOUND';
-                        adLog(`[STRICT MODE] Tidak ada iklan cocok. Banner disembunyikan.`, 'warn');
+                        console.log(`[AD SYSTEM] Showing Universal Ad (No exact match for [${productCategory}])`);
                     }
                 }
             }
@@ -1847,10 +1247,10 @@
                 const linkUrl = getAdLinkUrl(selectedAd);
 
                 if (imageUrl) {
-                    adLog(`[STRICT MODE] Menampilkan banner [${matchReason}]`, 'ok');
                     linkEl.href = linkUrl;
 
                     function revealBanner() {
+                        // Menjaga rasio 1280x350 tapi responsif
                         const targetRatio = 350 / 1280;
                         const parentWidth = bannerEl.parentElement ? bannerEl.parentElement.offsetWidth : 400;
                         let bannerHeight = Math.round(parentWidth * targetRatio);
@@ -1862,6 +1262,7 @@
                         });
                     }
 
+                    // Preload logic
                     if (imgEl.src === imageUrl && imgEl.complete && imgEl.naturalWidth > 0) {
                         requestAnimationFrame(revealBanner);
                     } else {
@@ -1874,22 +1275,21 @@
                         const onImgError = () => {
                             if (bannerRevealed) return;
                             bannerRevealed = true;
-                            revealBanner(); 
+                            // Jangan reveal jika error
                         };
 
                         imgEl.onload = onImgReady;
                         imgEl.onerror = onImgError;
                         imgEl.src = imageUrl;
                         
+                        // Timeout fallback jika gambar tidak memicu event
                         setTimeout(() => {
                             if (!bannerRevealed) {
                                 bannerRevealed = true;
-                                revealBanner();
+                                // revealBanner(); // Opsional: reveal anyway atau biarkan tersembunyi
                             }
                         }, 3000);
                     }
-                } else {
-                    adLog('[STRICT MODE] Iklan dipilih tapi tidak memiliki URL gambar.', 'err');
                 }
             }
         }
@@ -1922,8 +1322,14 @@
         function renderProducts() {
             const grid = document.getElementById('productGrid');
             grid.innerHTML = '';
+            
+            if (!useSupabase) {
+                 grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-muted);">Database tidak terhubung. Mohon periksa konfigurasi.</div>';
+                 return;
+            }
+
             if (filteredProducts.length === 0) {
-                grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;padding:40px 20px;color:var(--text-muted);">CV tidak ditemukan</p>';
+                grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-muted);">Produk tidak ditemukan.</div>';
                 return;
             }
             filteredProducts.forEach(p => {
@@ -1978,6 +1384,10 @@
         function renderPaymentMethods() {
             const container = document.getElementById('paymentMethodsList');
             container.innerHTML = '';
+            if (paymentMethods.length === 0) {
+                container.innerHTML = '<div style="text-align:center; color:var(--text-muted); padding:20px;">Metode pembayaran tidak tersedia saat ini.</div>';
+                return;
+            }
             paymentMethods.forEach(method => {
                 const div = document.createElement('div');
                 const isQRIS = (method.bank_name || '').toLowerCase().includes('qris') || method.type === 'qris';
@@ -2261,11 +1671,7 @@
             document.getElementById('productModal').classList.add('active');
             document.body.style.overflow = 'hidden';
 
-            if (isAdShowing) {
-                adLog('Modal produk dibuka, menutup popup iklan', 'ok');
-                closeAd();
-            }
-
+            // Jalankan logika iklan modal (Google Ads Style)
             setTimeout(() => showModalAdBanner(), 150);
         }
 
@@ -2330,27 +1736,32 @@
 
         // --- INIT ---
         async function init() {
-            adLog('=== APLIKASI DIMULAI ===', 'ok');
+            console.log('%c[WRITEHUB] Initializing...', 'color: blue; font-weight: bold;');
             initSlider();
+            
+            // Iklan: Fetch hanya untuk modal, tidak ada init popup
+            if (useSupabase) {
+                const ads = await fetchAds();
+                modalAdsCache = ads.filter(ad => {
+                    const placement = getAdPlacement(ad);
+                    if (!placement) return false;
+                    const p = String(placement).toLowerCase().trim();
+                    // Filter khusus placement 'modal', 'product', 'detail', atau 'inside'
+                    return p.includes('modal') || p.includes('product') || p.includes('produk') || p.includes('detail') || p.includes('inside');
+                });
+                console.log(`[AD SYSTEM] Prepared ${modalAdsCache.length} modal ads.`);
+            }
             
             await fetchAdminNumbers();
             await fetchCoverLetterPrice();
             await fetchPaymentMethods();
             await fetchProducts();
             renderProducts();
-            
-            initAdSystem();
         }
 
         window.addEventListener('unhandledrejection', function(event) {
-            adLog('Unhandled Promise: ' + (event.reason?.message || event.reason), 'err');
+            console.error('Unhandled Promise:', event.reason);
             event.preventDefault();
-        });
-
-        window.addEventListener('error', function(event) {
-            if (event.filename && !event.filename.includes('cdn.jsdelivr.net')) {
-                adLog('Runtime Error: ' + event.message, 'err');
-            }
         });
 
         init();
