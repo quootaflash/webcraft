@@ -815,6 +815,12 @@
                 </div>
 
                 <div class="summary-card">
+                    <!-- ADDED: Order ID Row -->
+                    <div class="summary-row">
+                        <span>ID Pesanan</span>
+                        <span id="p-order-id" style="font-family: monospace; font-weight: 700; color: var(--primary);">-</span>
+                    </div>
+                    
                     <div class="summary-row">
                         <span>Produk</span>
                         <span id="p-product-name" style="font-weight:600; color:var(--text-main);">Nama Produk</span>
@@ -898,9 +904,6 @@
             { image: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjPwQ1jrQVR3aj8aOC12lSM7v4NwlaBip0dO76hxPZxVboWB6Pkt4wyTE6wcWUGrAWm-yOFIXa3GbKOLT0J2DsPPPUsYqDHwOSW0r1Ima3StZIVOvPk5CUy4ds6l8FGTt-7_2mPjq92rDMciTnYL-SW6X-9Tks4pZm2fCZv8xiFCdCo5qOHyHXPfqKU2K71/s3264/29445.png', link: '#' },
             { image: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjxTWsbzLOqH1aruzJhxr0MLHze9wHTVlrmjev9HIsR5T0jDuN1tzoTuzgIebdHebK2rY3qt1Ey-rLMssu_WWUOtmI4XdYCaii9_TR54mKVeNHinPZtix0UDc3IHzOiq7vXhnIVzHKp8J-iWFOkHnk7YhjfvQ_NKtcycA6pw-gJGvCR7vByb7dnV0gAisRF/s3264/29463.png', link: '#' }
         ];
-
-        // CATATAN: dummyData RESMI DIHILANGKAN SESUAI PERMINTAAN.
-        // Sistem sekarang 100% bergantung pada database.
         
         let products = [];
         let filteredProducts = [];
@@ -909,6 +912,7 @@
         let paymentMethods = [];
         let adminNumbersList = [];
         let currentUniqueTotal = 0;
+        let currentOrderId = ''; // NEW: Variable to store generated Order ID
         let paymentLockTimer = null;
         const LOCK_DURATION_MS = 120000;
         let touchStartX = 0;
@@ -983,6 +987,17 @@
         // --- HELPERS ---
         const formatRupiah = (num) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(num);
         function getField(item, fieldKey) { return item[fields[fieldKey]] || item[fieldKey]; }
+
+        // NEW: GENERATOR UNGUESSABLE ID
+        function generateOrderID() {
+            const prefix = "WH"; // Bisa diganti brand lain
+            const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; // Menghindari I, 1, O, 0 agar tidak bingung
+            let result = prefix + "-";
+            for (let i = 0; i < 6; i++) {
+                result += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return result;
+        }
 
         function autoMapColumns(sampleData) {
             if (!sampleData) return;
@@ -1106,9 +1121,8 @@
                     products = []; 
                 }
             } else {
-                // Dummy data removed. Products will be empty.
-                console.error('[SYSTEM] Cannot fetch products: No DB Connection.');
                 products = [];
+                console.error('[SYSTEM] Cannot fetch products: No DB Connection.');
             }
             renderCategories();
             filterLogic();
@@ -1223,7 +1237,6 @@
                 });
 
                 if (exactMatches.length > 0) {
-                    // Random selection among exact matches
                     selectedAd = exactMatches[Math.floor(Math.random() * exactMatches.length)];
                     console.log(`[AD SYSTEM] Showing Exact Match Ad for [${productCategory}]`);
                 } else {
@@ -1250,7 +1263,6 @@
                     linkEl.href = linkUrl;
 
                     function revealBanner() {
-                        // Menjaga rasio 1280x350 tapi responsif
                         const targetRatio = 350 / 1280;
                         const parentWidth = bannerEl.parentElement ? bannerEl.parentElement.offsetWidth : 400;
                         let bannerHeight = Math.round(parentWidth * targetRatio);
@@ -1275,18 +1287,15 @@
                         const onImgError = () => {
                             if (bannerRevealed) return;
                             bannerRevealed = true;
-                            // Jangan reveal jika error
                         };
 
                         imgEl.onload = onImgReady;
                         imgEl.onerror = onImgError;
                         imgEl.src = imageUrl;
                         
-                        // Timeout fallback jika gambar tidak memicu event
                         setTimeout(() => {
                             if (!bannerRevealed) {
                                 bannerRevealed = true;
-                                // revealBanner(); // Opsional: reveal anyway atau biarkan tersembunyi
                             }
                         }, 3000);
                     }
@@ -1593,6 +1602,10 @@
                 return;
             }
 
+            // UPDATED: Generate Order ID here
+            currentOrderId = generateOrderID();
+            document.getElementById('p-order-id').innerText = currentOrderId;
+
             const uniqueCode = Math.floor(Math.random() * 499) + 1;
             const finalPrice = isAddOn ? (basePrice + finalAddonPrice) : basePrice;
             const totalWithUnique = finalPrice + uniqueCode;
@@ -1697,7 +1710,8 @@
             const formattedTotal = formatRupiah(currentUniqueTotal);
             const orderTime = new Date().toLocaleString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
             
-            let message = `Halo Min, saya ingin membeli CV berikut:\n\n*Jenis CV:* ${templateName}\n*Total Pembayaran (Unik):* ${formattedTotal}\n*Waktu Pesanan:* ${orderTime}`;
+            // UPDATED: Include Order ID in message
+            let message = `Halo Min, saya ingin membeli CV berikut:\n\n*ID Pesanan:* ${currentOrderId}\n*Jenis CV:* ${templateName}\n*Total Pembayaran (Unik):* ${formattedTotal}\n*Waktu Pesanan:* ${orderTime}`;
             
             const isAddOn = toggleSwitch.checked;
             if (isAddOn) {
@@ -1746,7 +1760,6 @@
                     const placement = getAdPlacement(ad);
                     if (!placement) return false;
                     const p = String(placement).toLowerCase().trim();
-                    // Filter khusus placement 'modal', 'product', 'detail', atau 'inside'
                     return p.includes('modal') || p.includes('product') || p.includes('produk') || p.includes('detail') || p.includes('inside');
                 });
                 console.log(`[AD SYSTEM] Prepared ${modalAdsCache.length} modal ads.`);
