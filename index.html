@@ -1090,7 +1090,7 @@
             { id: 1, title: "Modern Creative Portfolio", category: "Creative", price: 50000, original_price: 75000, sold_count: 120, description: "Template dengan layout asimetris yang modern. Cocok untuk desainer, arsitek, dan profesional kreatif.\n\nFitur Utama:\n- Format PDF & Word\n- Mudah diedit\n- Font gratis included", image: "https://picsum.photos/seed/clean1/600/600", images: ["https://picsum.photos/seed/clean1/600/600", "https://picsum.photos/seed/clean1b/600/600", "https://picsum.photos/seed/clean1c/600/600"], cover_letter_price: 25000, allow_addon: true },
             { id: 2, title: "Executive Formal Blue", category: "Formal", price: 75000, original_price: null, sold_count: 85, description: "Struktur profesional untuk level manajerial. Memberikan kesan serius dan terpercaya.\n\nWarna biru navy yang elegan.", image: "https://picsum.photos/seed/clean2/600/600", images: ["https://picsum.photos/seed/clean2/600/600", "https://picsum.photos/seed/clean2b/600/600"], cover_letter_price: null, allow_addon: true }, 
             { id: 3, title: "Developer Dark Mode", category: "Tech", price: 90000, original_price: 120000, sold_count: 200, description: "Tema gelap elegan untuk programmer. High contrast untuk keterbacaan maksimal.", image: "https://picsum.photos/seed/clean3/600/600", images: ["https://picsum.photos/seed/clean3/600/600"], allow_addon: false },
-            { id: 4, title: "Clean Minimalist", category: "Simple", price: 35000, original_price: null, sold_count: 500, description: "Fokus pada konten tanpa gangguan visual. Pilihan terbaik untuk fresh graduate.", image: "https://picsum.photos/seed/clean4/600/600", images: ["https://picsum.photos/seed/clean4/600/600", "https://picsum.photos/seed/clean4b/600/600", "https://picsum.photos/seed/c4c/600/600"], cover_letter_price: 10000, allow_addon: true }
+            { id: 4, title: "Accounting Pro", category: "Akuntansi", price: 85000, original_price: 100000, sold_count: 50, description: "CV khusus untuk keuangan dan akuntansi. Fokus pada angka dan presisi.", image: "https://picsum.photos/seed/accounting/600/600", images: ["https://picsum.photos/seed/accounting/600/600"], allow_addon: true }
         ];
 
         const dummyPaymentMethods = [
@@ -1399,10 +1399,9 @@
             ]);
         }
         
-        // Fungsi baru: Mendapatkan target kategori iklan
         function getAdTargetCategory(ad) {
             return getAdField(ad, [
-                'target_category', // Rekomendasi
+                'target_category',
                 'kategori', 
                 'category', 
                 'kategori_iklan', 
@@ -1459,8 +1458,7 @@
             return [];
         }
 
-        // --- POPUP AD FUNCTIONS (Tetap sama) ---
-
+        // --- POPUP AD FUNCTIONS ---
         function detectTransparency(imageUrl, callback) {
             const testImg = new Image();
             testImg.crossOrigin = "Anonymous";
@@ -1693,7 +1691,7 @@
         });
 
         // ============================================
-        // MODAL AD BANNER — LOGIKA KATEGORI BARU
+        // MODAL AD BANNER — LOGIKA KETAT (STRICT MATCHING)
         // ============================================
 
         function showModalAdBanner() {
@@ -1704,68 +1702,62 @@
             bannerEl.classList.remove('visible');
             bannerEl.style.height = '0px';
 
-            // 1. Cek apakah ada iklan modal sama sekali
             if (modalAdsCache.length === 0) {
                 return;
             }
 
-            // 2. Dapatkan kategori produk saat ini
+            // 1. Dapatkan kategori produk saat ini
             let selectedAd = null;
-            let matchType = 'none';
+            let matchReason = '';
 
             if (currentProduct) {
                 const productCategory = String(getField(currentProduct, 'category')).toLowerCase().trim();
-                adLog(`Filter Iklan Modal: Produk kategori [${productCategory}]`, 'ok');
+                adLog(`[STRICT MODE] Filter Iklan Modal: Produk kategori [${productCategory}]`, 'ok');
 
-                if (productCategory) {
-                    // 3. Filter iklan yang cocok dengan kategori produk
-                    const categoryMatches = modalAdsCache.filter(ad => {
-                        const adTargetCat = getAdTargetCategory(ad);
-                        if (!adTargetCat) return false;
-                        return String(adTargetCat).toLowerCase().trim() === productCategory;
+                // 2. PENCARIAN MATCH KETAT (HANYA kategori yang SAMA PERSIS)
+                // Mencegah iklan kategori lain muncul di sini
+                const exactMatches = modalAdsCache.filter(ad => {
+                    const adTargetCat = getAdTargetCategory(ad);
+                    if (!adTargetCat) return false;
+                    return String(adTargetCat).toLowerCase().trim() === productCategory;
+                });
+
+                if (exactMatches.length > 0) {
+                    // Jika ada iklan khusus kategori, pilih satu secara acak
+                    selectedAd = exactMatches[Math.floor(Math.random() * exactMatches.length)];
+                    matchReason = 'STRICT-EXACT-MATCH';
+                    adLog(`[STRICT MODE] Ditemukan ${exactMatches.length} iklan SAMA PERSIS. Memilih salah satu.`, 'ok');
+                } else {
+                    // 3. PENCARIAN WILDCARD (Universal)
+                    // Hanya jika TIDAK ADA iklan spesifik, kita cari iklan Universal (* atau all)
+                    // Ini opsional tergantung keinginan 'ketat'. 
+                    // Jika user ingin "Hanya boleh muncul kategori cocok", hapus bagian ini.
+                    // Tapi untuk UX, biasanya diperbolehkan 1 wildcard global.
+                    const universalAds = modalAdsCache.filter(ad => {
+                        const cat = getAdTargetCategory(ad);
+                        if (!cat) return false; // Abaikan kosong
+                        const cleanCat = String(cat).toLowerCase().trim();
+                        return cleanCat === '*' || cleanCat === 'all' || cleanCat === 'universal';
                     });
 
-                    if (categoryMatches.length > 0) {
-                        // Jika ada iklan khusus kategori, pilih satu secara acak
-                        selectedAd = categoryMatches[Math.floor(Math.random() * categoryMatches.length)];
-                        matchType = 'category-specific';
-                        adLog(`Ditemukan ${categoryMatches.length} iklan kategori. Memilih salah satu.`, 'ok');
+                    if (universalAds.length > 0) {
+                        selectedAd = universalAds[Math.floor(Math.random() * universalAds.length)];
+                        matchReason = 'UNIVERSAL-WILDCARD';
+                        adLog(`[STRICT MODE] Tidak ada iklan spesifik, menggunakan iklan Universal (*).`, 'ok');
+                    } else {
+                        matchReason = 'NO-MATCH-FOUND';
+                        adLog(`[STRICT MODE] Tidak ada iklan cocok. Banner disembunyikan.`, 'warn');
                     }
                 }
             }
 
-            // 4. Fallback: Jika tidak ada iklan kategori spesifik, cari iklan 'General' atau 'Umum'
-            if (!selectedAd) {
-                adLog(`Tidak ada iklan kategori spesifik. Mencari iklan General...`, 'warn');
-                
-                const generalAds = modalAdsCache.filter(ad => {
-                    const adTargetCat = getAdTargetCategory(ad);
-                    if (!adTargetCat) return true; // Jika kolom kategori kosong, anggap general
-                    const cat = String(adTargetCat).toLowerCase();
-                    return cat.includes('general') || cat.includes('umum') || cat.includes('all') || cat === '*';
-                });
-
-                if (generalAds.length > 0) {
-                    selectedAd = generalAds[Math.floor(Math.random() * generalAds.length)];
-                    matchType = 'general-fallback';
-                    adLog(`Menggunakan iklan General (Umum).`, 'ok');
-                }
-            }
-
-            // 5. Fallback Absolut: Jika masih kosong, ambil iklan pertama yang ada
-            if (!selectedAd && modalAdsCache.length > 0) {
-                selectedAd = modalAdsCache[0];
-                matchType = 'absolute-fallback';
-                adLog(`Fallback absolut: Menggunakan iklan pertama di cache.`, 'warn');
-            }
-
-            // 6. Tampilkan Iklan
+            // 4. Tampilkan Iklan (Hanya jika selectedAd ada)
             if (selectedAd) {
                 const imageUrl = getAdImageUrl(selectedAd);
                 const linkUrl = getAdLinkUrl(selectedAd);
 
                 if (imageUrl) {
-                    adLog(`Menampilkan banner [${matchType}]`, 'ok');
+                    adLog(`[STRICT MODE] Menampilkan banner [${matchReason}]`, 'ok');
                     linkEl.href = linkUrl;
 
                     function revealBanner() {
@@ -1792,14 +1784,13 @@
                         const onImgError = () => {
                             if (bannerRevealed) return;
                             bannerRevealed = true;
-                            revealBanner(); // Tetap tampilkan meski gambar error (img alt akan muncul)
+                            revealBanner(); 
                         };
 
                         imgEl.onload = onImgReady;
                         imgEl.onerror = onImgError;
                         imgEl.src = imageUrl;
                         
-                        // Timeout safety
                         setTimeout(() => {
                             if (!bannerRevealed) {
                                 bannerRevealed = true;
@@ -1808,11 +1799,10 @@
                         }, 3000);
                     }
                 } else {
-                    adLog('Iklan dipilih tapi tidak memiliki URL gambar.', 'err');
+                    adLog('[STRICT MODE] Iklan dipilih tapi tidak memiliki URL gambar.', 'err');
                 }
-            } else {
-                adLog('Tidak ada iklan yang bisa ditampilkan.', 'warn');
             }
+            // Jika selectedAd null, banner tetap tersembunyi (height 0)
         }
 
         function hideModalAdBanner() {
@@ -2187,7 +2177,6 @@
                 closeAd();
             }
 
-            // Tampilkan iklan banner di modal (Sekarang berdasarkan kategori)
             setTimeout(() => showModalAdBanner(), 150);
         }
 
