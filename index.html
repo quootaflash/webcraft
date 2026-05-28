@@ -73,6 +73,7 @@
             font-size: 1.1rem;
             color: var(--text-main);
             white-space: nowrap;
+            cursor: pointer;
         }
         .logo img { height: 32px; width: auto; object-fit: contain; } 
 
@@ -152,34 +153,6 @@
             flex: 1;
         }
 
-        .top-badge {
-            background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%);
-            color: white;
-            font-size: 0.65rem;
-            font-weight: 800;
-            padding: 2px 8px;
-            border-radius: 4px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            box-shadow: 0 2px 4px rgba(217, 119, 6, 0.2);
-            flex-shrink: 0;
-            display: inline-block;
-        }
-
-        .rank-badge {
-            background: #f1f5f9;
-            color: #64748b;
-            font-size: 0.7rem;
-            font-weight: 700;
-            padding: 2px 6px;
-            border-radius: 4px;
-            min-width: 20px;
-            text-align: center;
-            flex-shrink: 0;
-            margin-left: 8px;
-            border: 1px solid #e2e8f0;
-        }
-
         .no-suggestion {
             padding: 12px 16px;
             font-size: 0.85rem;
@@ -207,6 +180,148 @@
             background: var(--primary-light);
             border-color: var(--primary);
         }
+
+        /* ==========================================
+           VIEWS (SPA LOGIC)
+           ========================================== */
+        .view-section {
+            display: none;
+            animation: fadeInView 0.4s ease;
+        }
+        .view-section.active {
+            display: block;
+        }
+        @keyframes fadeInView {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ==========================================
+           USER PROFILE PAGE (FULL PAGE)
+           ========================================== */
+        .profile-page-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 40px 0 60px;
+            text-align: center;
+            border-bottom-left-radius: 30px;
+            border-bottom-right-radius: 30px;
+            margin-bottom: -40px;
+        }
+        
+        .profile-avatar-lg {
+            width: 100px;
+            height: 100px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            margin: 0 auto 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            border: 4px solid rgba(255,255,255,0.3);
+        }
+
+        .profile-container {
+            position: relative;
+            z-index: 10;
+            margin-top: 40px;
+        }
+
+        .profile-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: var(--shadow-lg);
+            padding: 30px;
+            margin-bottom: 24px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .profile-info-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+        
+        @media (min-width: 640px) {
+            .profile-info-grid { grid-template-columns: 100px 1fr; }
+        }
+
+        .profile-label {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            padding-top: 4px;
+        }
+        .profile-value {
+            font-size: 1rem;
+            color: var(--text-main);
+            font-weight: 600;
+        }
+
+        .profile-role-badge {
+            background: var(--primary-light);
+            color: var(--primary);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            display: inline-block;
+        }
+
+        .profile-menu-list {
+            background: white;
+            border-radius: 20px;
+            box-shadow: var(--shadow-md);
+            overflow: hidden;
+            max-width: 600px;
+            margin: 0 auto 40px;
+        }
+        
+        .menu-item {
+            padding: 18px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--bg-body);
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .menu-item:last-child { border-bottom: none; }
+        .menu-item:hover { background: var(--bg-body); }
+        
+        .menu-left { display: flex; align-items: center; gap: 12px; font-weight: 500; }
+        .menu-icon { width: 24px; color: var(--text-muted); text-align: center; }
+        .menu-danger { color: var(--danger); }
+
+        .btn-logout-full {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            background: #fee2e2;
+            color: var(--danger);
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 20px;
+            text-align: center;
+            transition: 0.2s;
+        }
+        .btn-logout-full:hover { background: #fecaca; }
+
+        .btn-back-home {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: rgba(255,255,255,0.8);
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .btn-back-home:hover { color: white; }
 
         /* --- HERO SLIDER --- */
         .hero-section {
@@ -400,61 +515,6 @@
             cursor: pointer; color: var(--text-muted); transition: 0.2s;
         }
         .auth-close:hover { background: #fee2e2; color: var(--danger); }
-
-        /* ==========================================
-           DASHBOARD MODAL
-           ========================================== */
-        .dashboard-modal-overlay {
-            position: fixed; inset: 0; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px);
-            z-index: 3100; display: flex; align-items: center; justify-content: center;
-            opacity: 0; pointer-events: none; transition: 0.3s; padding: 16px;
-        }
-        .dashboard-modal-overlay.active { opacity: 1; pointer-events: all; }
-        
-        .dashboard-content {
-            background: white; width: 100%; max-width: 450px; border-radius: 20px;
-            overflow: hidden; box-shadow: var(--shadow-xl); transform: translateY(20px); transition: 0.3s;
-        }
-        .dashboard-modal-overlay.active .dashboard-content { transform: translateY(0); }
-
-        .dash-header {
-            background: var(--primary); color: white; padding: 30px 24px; text-align: center;
-            position: relative;
-        }
-        .dash-avatar {
-            width: 80px; height: 80px; background: rgba(255,255,255,0.2); border-radius: 50%;
-            margin: 0 auto 16px; display: flex; align-items: center; justify-content: center;
-            border: 3px solid rgba(255,255,255,0.4); font-size: 2rem;
-        }
-        .dash-name { font-size: 1.25rem; font-weight: 700; margin-bottom: 4px; }
-        .dash-email { font-size: 0.9rem; opacity: 0.9; }
-
-        .dash-body { padding: 24px; }
-        .dash-info-row {
-            display: flex; justify-content: space-between; padding: 12px 0;
-            border-bottom: 1px solid var(--border); font-size: 0.95rem;
-        }
-        .dash-info-row:last-child { border-bottom: none; }
-        .dash-label { color: var(--text-muted); }
-        .dash-value { font-weight: 600; color: var(--text-main); }
-        
-        .dash-role-badge {
-            background: var(--primary-light); color: var(--primary); padding: 4px 8px;
-            border-radius: 6px; font-size: 0.8rem; font-weight: 700;
-        }
-
-        .dash-footer { padding: 20px 24px; background: var(--bg-body); }
-        .btn-logout {
-            width: 100%; padding: 12px; border: 1px solid var(--danger); color: var(--danger);
-            background: white; border-radius: 12px; font-weight: 600; cursor: pointer; transition: 0.2s;
-        }
-        .btn-logout:hover { background: #fef2f2; }
-
-        .btn-close-dash {
-            position: absolute; top: 15px; right: 15px; color: white;
-            background: rgba(0,0,0,0.2); width: 32px; height: 32px; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center; cursor: pointer;
-        }
 
         /* --- MODAL --- */
         .modal-overlay {
@@ -917,7 +977,7 @@
 
     <header>
         <div class="container nav-wrapper">
-            <a href="www.writehub.my.id" class="logo">
+            <a href="#" onclick="window.navigateHome()" class="logo">
                 <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjzgVAIKgZMS9W7eJKCaRyaFnoDviThQstfeD9l9mcwPxUDoovGo7xB3RQByxTXo15fGX0DIeTMxOWkVovnB4FC35iJN6ArGLOlBRI9U4d4gJ7VOTOp-Ki47RIaViiIs12QGjxRmGs2cQzCFniRpBE0GyNLW3s_03rvTcpPeHAruMaUdrIKNX8jaFZ1TcBw/s3264/28063.png" alt="Logo">
                 <span></span>
             </a>
@@ -929,56 +989,125 @@
             </div>
 
             <!-- User Profile Button (Only visible when logged in) -->
-            <button class="user-profile-btn" id="headerProfileBtn" onclick="window.openDashboard()">
+            <button class="user-profile-btn" id="headerProfileBtn" onclick="window.navigateProfile()">
                 <i class="fas fa-user"></i>
             </button>
         </div>
     </header>
 
-    <main class="container">
-        <section class="hero-section" id="heroSlider">
-            <div class="slider-container" id="sliderTrack"></div>
-            <button class="slider-btn prev-btn" onclick="window.prevSlide()"><i class="fas fa-chevron-left"></i></button>
-            <button class="slider-btn next-btn" onclick="window.nextSlide()"><i class="fas fa-chevron-right"></i></button>
-            <div class="slider-dots" id="sliderDots"></div>
-        </section>
+    <!-- MAIN VIEW (HOME) -->
+    <div id="homeView" class="view-section active">
+        <main class="container">
+            <section class="hero-section" id="heroSlider">
+                <div class="slider-container" id="sliderTrack"></div>
+                <button class="slider-btn prev-btn" onclick="window.prevSlide()"><i class="fas fa-chevron-left"></i></button>
+                <button class="slider-btn next-btn" onclick="window.nextSlide()"><i class="fas fa-chevron-right"></i></button>
+                <div class="slider-dots" id="sliderDots"></div>
+            </section>
 
-        <div class="filter-bar" id="filterBar"></div>
+            <div class="filter-bar" id="filterBar"></div>
 
-        <div class="product-grid" id="productGrid">
-            <!-- Loading Skeletons -->
-            <div class="cv-card" style="cursor: default;">
-                <div class="card-image" style="background:#e2e8f0; animation: pulse 1.5s infinite;"></div>
-                <div class="card-content">
-                    <div style="height: 14px; background:#e2e8f0; width: 80%; margin-bottom: 6px; border-radius: 4px; animation: pulse 1.5s infinite;"></div>
-                    <div style="height: 14px; background:#e2e8f0; width: 60%; margin-bottom: 12px; border-radius: 4px; animation: pulse 1.5s infinite;"></div>
-                    <div style="height: 16px; background:#e2e8f0; width: 50%; border-radius: 4px; animation: pulse 1.5s infinite;"></div>
+            <div class="product-grid" id="productGrid">
+                <!-- Loading Skeletons -->
+                <div class="cv-card" style="cursor: default;">
+                    <div class="card-image" style="background:#e2e8f0; animation: pulse 1.5s infinite;"></div>
+                    <div class="card-content">
+                        <div style="height: 14px; background:#e2e8f0; width: 80%; margin-bottom: 6px; border-radius: 4px; animation: pulse 1.5s infinite;"></div>
+                        <div style="height: 14px; background:#e2e8f0; width: 60%; margin-bottom: 12px; border-radius: 4px; animation: pulse 1.5s infinite;"></div>
+                        <div style="height: 16px; background:#e2e8f0; width: 50%; border-radius: 4px; animation: pulse 1.5s infinite;"></div>
+                    </div>
+                </div>
+                <div class="cv-card" style="cursor: default;">
+                    <div class="card-image" style="background:#e2e8f0; animation: pulse 1.5s infinite;"></div>
+                    <div class="card-content">
+                        <div style="height: 14px; background:#e2e8f0; width: 80%; margin-bottom: 6px; border-radius: 4px; animation: pulse 1.5s infinite;"></div>
+                        <div style="height: 14px; background:#e2e8f0; width: 60%; margin-bottom: 12px; border-radius: 4px; animation: pulse 1.5s infinite;"></div>
+                        <div style="height: 16px; background:#e2e8f0; width: 50%; border-radius: 4px; animation: pulse 1.5s infinite;"></div>
+                    </div>
                 </div>
             </div>
-            <div class="cv-card" style="cursor: default;">
-                <div class="card-image" style="background:#e2e8f0; animation: pulse 1.5s infinite;"></div>
-                <div class="card-content">
-                    <div style="height: 14px; background:#e2e8f0; width: 80%; margin-bottom: 6px; border-radius: 4px; animation: pulse 1.5s infinite;"></div>
-                    <div style="height: 14px; background:#e2e8f0; width: 60%; margin-bottom: 12px; border-radius: 4px; animation: pulse 1.5s infinite;"></div>
-                    <div style="height: 16px; background:#e2e8f0; width: 50%; border-radius: 4px; animation: pulse 1.5s infinite;"></div>
+        </main>
+
+        <!-- REVISED FOOTER -->
+        <footer>
+            <div class="container footer-content">
+                <div class="footer-links">
+                    <a href="#"><i class="fab fa-instagram"></i> Instagram</a>
+                    <a href="#"><i class="fab fa-tiktok"></i> Tiktok</a>
+                    <a href="#"><i class="far fa-envelope"></i> Kontak</a>
+                </div>
+                <div class="footer-copyright">
+                    &copy; 2026 WriteHub. All Rights Reserved.
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- PROFILE VIEW -->
+    <div id="profileView" class="view-section">
+        <div class="profile-page-header">
+            <div class="container">
+                <div class="btn-back-home" onclick="window.navigateHome()">
+                    <i class="fas fa-arrow-left"></i> Kembali ke Beranda
+                </div>
+                <div class="profile-avatar-lg">
+                    <i class="fas fa-user"></i>
+                </div>
+                <h2 id="profNameDisplay" style="font-size:1.5rem; font-weight:700;">User</h2>
+                <p id="profEmailDisplay" style="opacity:0.9; margin-top:4px;">user@email.com</p>
+                <div style="margin-top:16px;">
+                    <span class="profile-role-badge" id="profRoleDisplay">MEMBER</span>
                 </div>
             </div>
         </div>
-    </main>
 
-    <!-- REVISED FOOTER -->
-    <footer>
-        <div class="container footer-content">
-            <div class="footer-links">
-                <a href="#"><i class="fab fa-instagram"></i> Instagram</a>
-                <a href="#"><i class="fab fa-tiktok"></i> Tiktok</a>
-                <a href="#"><i class="far fa-envelope"></i> Kontak</a>
+        <div class="container profile-container">
+            <div class="profile-card">
+                <h3 style="margin-bottom:20px; font-size:1.1rem; color:var(--text-main);">Informasi Akun</h3>
+                <div class="profile-info-grid">
+                    <div class="profile-label">Nama Lengkap</div>
+                    <div class="profile-value" id="profInfoName">-</div>
+                    
+                    <div class="profile-label">Email</div>
+                    <div class="profile-value" id="profInfoEmail">-</div>
+                    
+                    <div class="profile-label">Jenis User</div>
+                    <div class="profile-value"><span class="profile-role-badge" id="profInfoRole">MEMBER</span></div>
+                    
+                    <div class="profile-label">Status</div>
+                    <div class="profile-value" style="color:var(--success);">Aktif</div>
+                </div>
             </div>
-            <div class="footer-copyright">
-                &copy; 2026 WriteHub. All Rights Reserved.
+
+            <div class="profile-menu-list">
+                <div class="menu-item">
+                    <div class="menu-left">
+                        <div class="menu-icon"><i class="fas fa-history"></i></div>
+                        <span>Riwayat Pembelian</span>
+                    </div>
+                    <i class="fas fa-chevron-right" style="color:var(--text-muted); font-size:0.8rem;"></i>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-left">
+                        <div class="menu-icon"><i class="fas fa-cog"></i></div>
+                        <span>Pengaturan Akun</span>
+                    </div>
+                    <i class="fas fa-chevron-right" style="color:var(--text-muted); font-size:0.8rem;"></i>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-left">
+                        <div class="menu-icon"><i class="fas fa-question-circle"></i></div>
+                        <span>Bantuan</span>
+                    </div>
+                    <i class="fas fa-chevron-right" style="color:var(--text-muted); font-size:0.8rem;"></i>
+                </div>
             </div>
+
+            <button class="btn-logout-full" onclick="window.handleLogout()">
+                <i class="fas fa-sign-out-alt"></i> Keluar Akun
+            </button>
         </div>
-    </footer>
+    </div>
 
     <!-- BACK TO TOP BUTTON -->
     <button id="backToTopBtn" class="back-to-top" aria-label="Kembali ke atas">
@@ -1013,41 +1142,6 @@
                     <i class="fas fa-spinner fa-spin" id="authBtnLoader" style="display:none; margin-left:8px;"></i>
                 </button>
             </form>
-        </div>
-    </div>
-
-    <!-- DASHBOARD MODAL -->
-    <div class="dashboard-modal-overlay" id="dashboardModal">
-        <div class="dashboard-content">
-            <div class="dash-header">
-                <button class="btn-close-dash" onclick="window.closeDashboard()"><i class="fas fa-times"></i></button>
-                <div class="dash-avatar">
-                    <i class="fas fa-user"></i>
-                </div>
-                <div class="dash-name" id="dashName">Loading...</div>
-                <div class="dash-email" id="dashEmail">...</div>
-            </div>
-            <div class="dash-body">
-                <div class="dash-info-row">
-                    <span class="dash-label">Nama User</span>
-                    <span class="dash-value" id="dashInfoName">-</span>
-                </div>
-                <div class="dash-info-row">
-                    <span class="dash-label">Email User</span>
-                    <span class="dash-value" id="dashInfoEmail">-</span>
-                </div>
-                <div class="dash-info-row">
-                    <span class="dash-label">Jenis User</span>
-                    <span class="dash-role-badge" id="dashInfoRole">MEMBER</span>
-                </div>
-                <div class="dash-info-row">
-                    <span class="dash-label">Status</span>
-                    <span class="dash-value" style="color: var(--success);"><i class="fas fa-check-circle"></i> Aktif</span>
-                </div>
-            </div>
-            <div class="dash-footer">
-                <button class="btn-logout" onclick="window.handleLogout()">Keluar Akun</button>
-            </div>
         </div>
     </div>
 
@@ -1227,6 +1321,35 @@
         let touchEndX = 0;
 
         // ============================================
+        // NAVIGATION (SPA)
+        // ============================================
+        window.navigateHome = function() {
+            document.getElementById('homeView').classList.add('active');
+            document.getElementById('profileView').classList.remove('active');
+            window.scrollTo(0, 0);
+        }
+
+        window.navigateProfile = function() {
+            if (!userSession) {
+                showToast('Silakan login terlebih dahulu', 'warning');
+                window.openAuthModal(null);
+                return;
+            }
+            // Update Profile UI
+            document.getElementById('profNameDisplay').innerText = userProfile?.full_name || 'User';
+            document.getElementById('profEmailDisplay').innerText = userSession.user.email;
+            document.getElementById('profRoleDisplay').innerText = userProfile?.role || 'MEMBER';
+            
+            document.getElementById('profInfoName').innerText = userProfile?.full_name || 'User';
+            document.getElementById('profInfoEmail').innerText = userSession.user.email;
+            document.getElementById('profInfoRole').innerText = userProfile?.role || 'MEMBER';
+
+            document.getElementById('homeView').classList.remove('active');
+            document.getElementById('profileView').classList.add('active');
+            window.scrollTo(0, 0);
+        }
+
+        // ============================================
         // AUTH LOGIC - SUPABASE
         // ============================================
 
@@ -1346,7 +1469,7 @@
             userSession = null;
             userProfile = null;
             document.getElementById('headerProfileBtn').style.display = 'none';
-            window.closeDashboard();
+            window.navigateHome();
             showToast('Anda telah keluar', 'success');
         }
 
@@ -1369,24 +1492,6 @@
         window.closeAuthModal = function() {
             document.getElementById('authModal').classList.remove('active');
             pendingAction = null;
-        }
-
-        // Dashboard Functions
-        window.openDashboard = function() {
-            if (!userSession || !userProfile) return;
-            
-            document.getElementById('dashName').innerText = userProfile.full_name || 'User';
-            document.getElementById('dashEmail').innerText = userSession.user.email;
-            
-            document.getElementById('dashInfoName').innerText = userProfile.full_name || 'User';
-            document.getElementById('dashInfoEmail').innerText = userSession.user.email;
-            document.getElementById('dashInfoRole').innerText = userProfile.role || 'User Member';
-            
-            document.getElementById('dashboardModal').classList.add('active');
-        }
-
-        window.closeDashboard = function() {
-            document.getElementById('dashboardModal').classList.remove('active');
         }
 
         // ============================================
