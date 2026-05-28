@@ -37,13 +37,14 @@
             line-height: 1.5;
             -webkit-font-smoothing: antialiased;
             overflow-x: hidden;
+            padding-bottom: 0; 
             scroll-behavior: smooth;
             display: flex;
             flex-direction: column;
             min-height: 100vh;
         }
 
-        main { flex: 1; width: 100%; }
+        main { flex: 1; } 
 
         a { text-decoration: none; color: inherit; transition: var(--transition); }
         img { display: block; max-width: 100%; }
@@ -251,7 +252,7 @@
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 12px;
-            margin-bottom: 40px;
+            margin-bottom: 60px;
         }
 
         @media (min-width: 640px) { .product-grid { grid-template-columns: repeat(3, 1fr); gap: 16px; } }
@@ -408,7 +409,7 @@
 
         .modal-desc { 
             color: var(--text-muted); font-size: 0.95rem; line-height: 1.6;
-            flex-grow: 1; overflow-y: auto; margin-bottom: ing: 16px;
+            flex-grow: 1; overflow-y: auto; margin-bottom: 16px;
             white-space: pre-wrap;
         }
         
@@ -454,7 +455,9 @@
         }
         .btn-close:hover { background: var(--bg-body); }
 
-        /* --- MODAL AD BANNER --- */
+        /* ============================================
+           MODAL AD BANNER — GOOGLE ADS STYLE SPONSOR
+           ============================================ */
         .modal-ad-banner {
             display: block;
             width: 100%;
@@ -671,108 +674,92 @@
         @keyframes fadeOut { to { opacity: 0; transform: translateY(-10px); } }
 
         /* ============================================
-           FOOTER STYLE "HOMEY & MODERN"
+           PROFESSIONAL FOOTER DESIGN
            ============================================ */
-        .site-footer {
-            margin-top: 80px;
-            padding-bottom: 40px;
+        footer {
+            background-color: #ffffff;
+            border-top: 1px solid var(--border);
+            margin-top: auto; 
+            padding-top: 60px;
+            padding-bottom: 30px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
             position: relative;
-            z-index: 1;
+            z-index: 10;
         }
 
-        .footer-wrapper {
-            background: white;
-            border-radius: 20px;
-            padding: 40px;
-            box-shadow: var(--shadow-lg);
-            max-width: 1100px;
-            margin: 0 auto;
-            position: relative;
-            overflow: hidden;
-        }
-
-        /* Dekorasi halus di pojok */
-        .footer-wrapper::before {
-            content: '';
-            position: absolute;
-            top: -50px;
-            right: -50px;
-            width: 150px;
-            height: 150px;
-            background: var(--primary-light);
-            border-radius: 50%;
-            opacity: 0.5;
-            z-index: -1;
-        }
-        .footer-wrapper::after {
-            content: '';
-            position: absolute;
-            bottom: -30px;
-            left: -30px;
-            width: 100px;
-            height: 100px;
-            background: #dbeafe;
-            border-radius: 50%;
-            opacity: 0.5;
-            z-index: -1;
-        }
-
-        .footer-content {
+        .footer-grid {
             display: grid;
             grid-template-columns: 1.5fr 1fr 1fr 1fr;
-            gap: 30px;
-            position: relative;
-            z-index: 2;
+            gap: 40px;
+            margin-bottom: 50px;
         }
 
-        @media (max-width: 992px) {
-            .footer-content {
+        @media (max-width: 900px) {
+            .footer-grid {
                 grid-template-columns: 1fr 1fr;
                 gap: 30px;
             }
         }
+
         @media (max-width: 600px) {
-            .footer-content {
+            .footer-grid {
                 grid-template-columns: 1fr;
-                text-align: center;
+                gap: 30px;
             }
-            .footer-brand {
-                align-items: center;
-                justify-content: center;
-            }
-            .footer-desc {
-                margin: 0 auto 20px auto;
-            }
-            .social-icons {
-                justify-content: center;
-            }
-            .footer-links li {
-                justify-content: center;
-            }
+            footer { padding-top: 40px; }
         }
 
-        .footer-brand {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .footer-logo-text {
-            font-size: 1.5rem;
-            font-weight: 800;
-            color: var(--primary);
+        .footer-brand .footer-logo {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
+            font-weight: 700;
+            font-size: 1.25rem;
+            color: var(--text-main);
+            margin-bottom: 16px;
         }
-        .footer-logo-text img {
+        .footer-brand .footer-logo img {
             height: 32px;
+            width: auto;
+            object-fit: contain;
+        }
+        .footer-desc {
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+            max-width: 300px;
         }
 
-        .footer-desc {
-            color: var(--text-muted);
+        .footer-col h5 {
             font-size: 0.95rem;
-            line-height: 1.6;
+            font-weight: 600;
+            color: var(--text-main);
+            margin-bottom: 16px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .footer-list {
+            list-style: none;
+        }
+
+        .footer-list li {
+            margin-bottom: 12px;
+        }
+
+        .footer-list a {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: var(--transition);
+            display: inline-block;
+        }
+
+        .footer-list a:hover {
+            color: var(--primary);
+            transform: translateX(4px);
         }
 
         .social-icons {
@@ -782,93 +769,51 @@
         .social-link {
             width: 36px;
             height: 36px;
-            border-radius: 10px;
+            border-radius: 50%;
             background: var(--bg-body);
-            color: var(--primary);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.95rem;
-            transition: all 0.2s;
-            border: 1px solid transparent;
+            color: var(--text-main);
+            transition: var(--transition);
+            border: 1px solid var(--border);
         }
         .social-link:hover {
             background: var(--primary);
             color: white;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2);
-        }
-
-        .footer-section h4 {
-            font-size: 1.05rem;
-            font-weight: 700;
-            color: var(--text-main);
-            margin-bottom: 20px;
-            position: relative;
-            display: inline-block;
-        }
-        
-        .footer-section h4::after {
-            content: '';
-            position: absolute;
-            left: 0;
-            bottom: -5px;
-            width: 30px;
-            height: 3px;
-            background: var(--primary);
-            border-radius: 2px;
-        }
-
-        @media (max-width: 600px) {
-            .footer-section h4::after {
-                left: 50%;
-                transform: translateX(-50%);
-            }
-        }
-
-        .footer-links {
-            list-style: none;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-        .footer-links li {
-            display: flex;
-            align-items: center;
-        }
-
-        .footer-links a {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-            font-weight: 500;
-            transition: var(--transition);
-        }
-        .footer-links a:hover {
-            color: var(--primary);
-            padding-left: 5px;
+            border-color: var(--primary);
+            transform: translateY(-3px);
         }
 
         .footer-bottom {
-            margin-top: 40px;
-            padding-top: 25px;
-            border-top: 1px dashed var(--border);
+            padding-top: 30px;
+            border-top: 1px solid var(--border);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 0.85rem;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+        
+        .footer-copyright {
             color: var(--text-muted);
+            font-size: 0.85rem;
         }
 
-        @media (max-width: 600px) {
-            .footer-bottom {
-                flex-direction: column;
-                gap: 15px;
-                text-align: center;
-            }
+        .footer-legal {
+            display: flex;
+            gap: 20px;
         }
-
-        .footer-bottom a:hover {
+        
+        .footer-legal a {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            transition: 0.2s;
+        }
+        
+        .footer-legal a:hover {
             color: var(--primary);
+            text-decoration: underline;
         }
 
         /* --- BACK TO TOP BUTTON --- */
@@ -888,7 +833,7 @@
             align-items: center;
             justify-content: center;
             font-size: 1.1rem;
-            z-index: 999;
+            z-index: 999; /* Tetap di bawah modal tapi di atas footer */
             opacity: 0;
             pointer-events: none;
             transform: translateY(20px);
@@ -967,74 +912,68 @@
         </div>
     </main>
 
-    <!-- FOOTER STYLE BARU -->
-    <footer class="site-footer">
+    <!-- PROFESSIONAL FOOTER -->
+    <footer>
         <div class="container">
-            <div class="footer-wrapper">
-                <div class="footer-content">
-                    
-                    <!-- Brand Section -->
-                    <div class="footer-brand">
-                        <div class="footer-logo-text">
-                            <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjzgVAIKgZMS9W7eJKCaRyaFnoDviThQstfeD9l9mcwPxUDoovGo7xB3RQByxTXo15fGX0DIeTMxOWkVovnB4FC35iJN6ArGLOlBRI9U4d4gJ7VOTOp-Ki47RIaViiIs12QGjxRmGs2cQzCFniRpBE0GyNLW3s_03rvTcpPeHAruMaUdrIKNX8jaFZ1TcBw/s3264/28063.png" alt="WriteHub">
-                            WriteHub
-                        </div>
-                        <p class="footer-desc">
-                            Membantu Anda tampil profesional di depan rekruter dengan desain CV modern, bersih, dan mudah diedit.
-                        </p>
-                        <div class="social-icons">
-                            <a href="#" class="social-link" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                            <a href="#" class="social-link" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
-                            <a href="#" class="social-link" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-                        </div>
+            <div class="footer-grid">
+                <!-- Column 1: Brand & About -->
+                <div class="footer-col footer-brand">
+                    <div class="footer-logo">
+                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjzgVAIKgZMS9W7eJKCaRyaFnoDviThQstfeD9l9mcwPxUDoovGo7xB3RQByxTXo15fGX0DIeTMxOWkVovnB4FC35iJN6ArGLOlBRI9U4d4gJ7VOTOp-Ki47RIaViiIs12QGjxRmGs2cQzCFniRpBE0GyNLW3s_03rvTcpPeHAruMaUdrIKNX8jaFZ1TcBw/s3264/28063.png" alt="WriteHub">
+                        WriteHub
                     </div>
-
-                    <!-- Navigasi -->
-                    <div class="footer-section">
-                        <h4>Navigasi</h4>
-                        <ul class="footer-links">
-                            <li><a href="#">Beranda</a></li>
-                            <li><a href="#">Katalog CV</a></li>
-                            <li><a href="#">Paket Promo</a></li>
-                            <li><a href="#">Testimoni</a></li>
-                        </ul>
+                    <p class="footer-desc">
+                        Platform pembuatan CV profesional dan surat lamaran kerja terbaik untuk meningkatkan peluang karirmu agar lolos ATS dan dilirik HRD.
+                    </p>
+                    <div class="social-icons">
+                        <a href="#" class="social-link" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+                        <a href="#" class="social-link" aria-label="Email"><i class="far fa-envelope"></i></a>
+                        <a href="#" class="social-link" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
                     </div>
-
-                    <!-- Bantuan -->
-                    <div class="footer-section">
-                        <h4>Bantuan</h4>
-                        <ul class="footer-links">
-                            <li><a href="#">Cara Order</a></li>
-                            <li><a href="#">FAQ</a></li>
-                            <li><a href="#">Hubungi Kami</a></li>
-                            <li><a href="#">Kebijakan</a></li>
-                        </ul>
-                    </div>
-
-                    <!-- Kontak -->
-                    <div class="footer-section">
-                        <h4>Kontak</h4>
-                        <ul class="footer-links">
-                            <li>
-                                <a href="#"><i class="fab fa-whatsapp" style="margin-right:8px; color:#25D366;"></i> WhatsApp</a>
-                            </li>
-                            <li>
-                                <a href="#"><i class="far fa-envelope" style="margin-right:8px; color:#ea4335;"></i> Email</a>
-                            </li>
-                            <li>
-                                <a href="#"><i class="fas fa-map-marker-alt" style="margin-right:8px; color:#ef4444;"></i> Lokasi</a>
-                            </li>
-                        </ul>
-                    </div>
-
                 </div>
 
-                <div class="footer-bottom">
-                    <p>&copy; 2026 WriteHub Indonesia.</p>
-                    <div class="footer-links-inline" style="display:flex; gap:15px;">
-                        <a href="#">Privasi</a>
-                        <a href="#">Syarat</a>
-                    </div>
+                <!-- Column 2: Produk -->
+                <div class="footer-col">
+                    <h5>Produk</h5>
+                    <ul class="footer-list">
+                        <li><a href="#">CV ATS Friendly</a></li>
+                        <li><a href="#">Creative CV</a></li>
+                        <li><a href="#">Resume Eksekutif</a></li>
+                        <li><a href="#">Cover Letter</a></li>
+                    </ul>
+                </div>
+
+                <!-- Column 3: Perusahaan -->
+                <div class="footer-col">
+                    <h5>Perusahaan</h5>
+                    <ul class="footer-list">
+                        <li><a href="#">Tentang Kami</a></li>
+                        <li><a href="#">Karir</a></li>
+                        <li><a href="#">Blog Karir</a></li>
+                        <li><a href="#">Hubungi Kami</a></li>
+                    </ul>
+                </div>
+
+                <!-- Column 4: Dukungan -->
+                <div class="footer-col">
+                    <h5>Bantuan</h5>
+                    <ul class="footer-list">
+                        <li><a href="#">Pusat Bantuan</a></li>
+                        <li><a href="#">Cara Pemesanan</a></li>
+                        <li><a href="#">Kebijakan Privasi</a></li>
+                        <li><a href="#">Syarat & Ketentuan</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <div class="footer-copyright">
+                    &copy; 2026 WriteHub. All Rights Reserved.
+                </div>
+                <div class="footer-legal">
+                    <a href="#">Privacy</a>
+                    <a href="#">Terms</a>
                 </div>
             </div>
         </div>
@@ -1083,7 +1022,7 @@
                         <i class="fas fa-check-circle" style="color:var(--primary)"></i> Terpakai <span id="m-sold">0</span>x
                     </div>
 
-                    <!-- IKLAN MODAL PRODUK -->
+                    <!-- IKLAN MODAL PRODUK (GOOGLE ADS STYLE) -->
                     <div class="modal-ad-banner" id="modalAdBanner">
                         <a href="#" target="_blank" rel="noopener noreferrer" id="modalAdLink">
                             <img id="modalAdImage" src="" alt="Promo">
@@ -1111,6 +1050,7 @@
                 </div>
 
                 <div class="summary-card">
+                    <!-- ID PESANAN MUNCUL DI SINI -->
                     <div class="summary-row">
                         <span>ID Pesanan</span>
                         <span id="p-order-id" style="font-family: monospace; font-weight: 700; color: var(--primary);">-</span>
@@ -1172,6 +1112,7 @@
     <script type="module">
         import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 
+        // --- KONFIGURASI ---
         const SUPABASE_URL = 'https://neuylewfsxcuhayegygf.supabase.co'; 
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5ldXlsZXdmc3hjdWhheWVneWdmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkzNTMzNzYsImV4cCI6MjA5NDkyOTM3Nn0.Ra0qI5A87XxODy7v9HIJ-zxqVbO39GwXbJlV8n4ZeIc';
         const DEFAULT_ADMIN_WA = '6285885850204';
@@ -1180,18 +1121,39 @@
         let supabase;
         let useSupabase = false;
 
-        if (SUPABASE_URL.length > 10 && SUPABASE_ANON_KEY.length > 10) {
+        // Dummy Data untuk Fallback (Jika DB Error)
+        const DUMMY_PRODUCTS = [
+            { id: 1, title: "CV Professional ATS Friendly", category: "ATS", price: 45000, original_price: 99000, image: "https://picsum.photos/seed/cv1/600/600", description: "CV yang dirancang khusus untuk melewati sistem ATS perusahaan besar.", sold_count: 120, allow_addon: true, cover_letter_price: 15000 },
+            { id: 2, title: "Creative CV Designer", category: "Creative", price: 55000, original_price: 120000, image: "https://picsum.photos/seed/cv2/600/600", description: "Desain CV kreatif untuk industri kreatif, desain, dan marketing.", sold_count: 85, allow_addon: true, cover_letter_price: 15000 },
+            { id: 3, title: "Minimalist Clean CV", category: "Clean", price: 35000, original_price: 75000, image: "https://picsum.photos/seed/cv3/600/600", description: "CV dengan desain minimalis, bersih, dan fokus pada konten.", sold_count: 200, allow_addon: false, cover_letter_price: 0 },
+            { id: 4, title: "Executive Manager Resume", category: "Formal", price: 85000, original_price: 150000, image: "https://picsum.photos/seed/cv4/600/600", description: "Resume premium untuk posisi manajerial dan eksekutif.", sold_count: 45, allow_addon: true, cover_letter_price: 20000 },
+        ];
+
+        // Cek koneksi dengan lebih aman
+        if (SUPABASE_URL && SUPABASE_URL.length > 10 && SUPABASE_ANON_KEY && SUPABASE_ANON_KEY.length > 10) {
             try {
                 supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-                useSupabase = true;
-                console.log('%c[SYSTEM] Database Connected', 'color: green; font-weight: bold;');
+                // Lakukan tes koneksi sederhana
+                supabase.auth.getSession().then(({ data, error }) => {
+                    if (!error) {
+                        useSupabase = true;
+                        console.log('%c[SYSTEM] Database Connected', 'color: green; font-weight: bold;');
+                    } else {
+                        throw error;
+                    }
+                }).catch(() => {
+                    console.warn('%c[SYSTEM] Supabase Connection Failed. Using Dummy Data.', 'color: orange; font-weight: bold;');
+                    useSupabase = false;
+                });
             } catch(e) {
-                console.error('%c[SYSTEM] Database Connection Failed', 'color: red; font-weight: bold;');
+                console.error(e);
+                useSupabase = false;
             }
         } else {
-            console.warn('%c[SYSTEM] Supabase Keys missing. App will not load data.', 'color: orange; font-weight: bold;');
+            console.warn('%c[SYSTEM] Supabase Keys missing. Using Dummy Data.', 'color: orange; font-weight: bold;');
         }
 
+        // --- DATA SLIDER ---
         const sliderData = [
             { image: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgieMxVSq4yNK45tjG9DdAsuMaQ7dxXJ96XvbYe1Tw6iTMHlm0ETWVM70OBZY2RRoEZ98oCilYCgm7-PYHz9Vo3GBTJ4fMbqRovUaZLtxgdwREVayDd6uq-iJZWVhxoV2RitsUXz-3QR2M2MZkZtoFdjtefvHDmrUGWqyPq1W7JLRHJZwRvLv-vwL_QG8Ni/s3264/29467.png', link: '#' },
             { image: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjPwQ1jrQVR3aj8aOC12lSM7v4NwlaBip0dO76hxPZxVboWB6Pkt4wyTE6wcWUGrAWm-yOFIXa3GbKOLT0J2DsPPPUsYqDHwOSW0r1Ima3StZIVOvPk5CUy4ds6l8FGTt-7_2mPjq92rDMciTnYL-SW6X-9Tks4pZm2fCZv8xiFCdCo5qOHyHXPfqKU2K71/s3264/29445.png', link: '#' },
@@ -1205,12 +1167,15 @@
         let paymentMethods = [];
         let adminNumbersList = [];
         let currentUniqueTotal = 0;
-        let currentOrderId = '';
+        let currentOrderId = ''; 
         let paymentLockTimer = null;
         const LOCK_DURATION_MS = 120000;
         let touchStartX = 0;
         let touchEndX = 0;
 
+        // ============================================
+        // ADVANCED AD SYSTEM — MODAL ONLY
+        // ============================================
         const AD_CONFIG = {
             tableNames: ['iklan', 'ads', 'ad', 'iklan_banner', 'banner'],
         };
@@ -1224,6 +1189,7 @@
             cover_letter_price: 'cover_letter_price', allow_addon: 'allow_addon'
         };
 
+        // --- TOAST ---
         window.showToast = function(message, type = 'success') {
             const container = document.getElementById('toastContainer');
             const toast = document.createElement('div');
@@ -1237,6 +1203,7 @@
             }, 3000);
         }
 
+        // --- QRIS MODAL ---
         window.openQrisModal = function(imageUrl) {
             const modal = document.getElementById('qrisModal');
             document.getElementById('qrisDisplayImage').src = imageUrl;
@@ -1257,6 +1224,7 @@
         };
         document.getElementById('qrisModal').addEventListener('click', (e) => { if(e.target.id === 'qrisModal') closeQrisModal(); });
 
+        // --- TIMER LOGIC ---
         function lockWhatsAppButton() {
             const btn = document.getElementById('btn-confirm-whatsapp');
             if (paymentLockTimer) clearTimeout(paymentLockTimer);
@@ -1271,9 +1239,11 @@
         }
         function clearPaymentTimer() { if (paymentLockTimer) { clearTimeout(paymentLockTimer); paymentLockTimer = null; } }
 
+        // --- HELPERS ---
         const formatRupiah = (num) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(num);
         function getField(item, fieldKey) { return item[fields[fieldKey]] || item[fieldKey]; }
 
+        // FUNGSI GENERATE ID PESANAN
         function generateOrderID() {
             const prefix = "WH"; 
             const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; 
@@ -1302,6 +1272,7 @@
             fields = map;
         }
 
+        // --- SEARCH ---
         const searchInput = document.getElementById('searchInput');
         const suggestionsBox = document.getElementById('searchSuggestions');
 
@@ -1347,6 +1318,7 @@
         searchInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') { suggestionsBox.classList.remove('active'); searchInput.blur(); } });
         document.addEventListener('click', (e) => { if (!searchInput.contains(e.target) && !suggestionsBox.contains(e.target)) suggestionsBox.classList.remove('active'); });
 
+        // --- CATEGORIES ---
         function renderCategories() {
             const container = document.getElementById('filterBar');
             container.innerHTML = '';
@@ -1355,7 +1327,11 @@
             allChip.innerText = 'Semua';
             allChip.onclick = function() { setCategory('all', this); };
             container.appendChild(allChip);
-            [...new Set(products.map(p => getField(p, 'category')))].filter(Boolean).sort().forEach(cat => {
+            
+            // Ambil kategori unik dari produk
+            const categories = [...new Set(products.map(p => getField(p, 'category')))].filter(Boolean).sort();
+            
+            categories.forEach(cat => {
                 const chip = document.createElement('div');
                 chip.className = 'filter-chip';
                 chip.innerText = cat;
@@ -1364,51 +1340,71 @@
             });
         }
 
+        // --- FETCH FUNCTIONS ---
         async function fetchAdminNumbers() {
             if (useSupabase) {
-                const { data } = await supabase.from('no_wa').select('nomor');
-                if (data && data.length > 0) adminNumbersList = data.map(i => i.nomor).filter(n => n);
+                try {
+                    const { data, error } = await supabase.from('no_wa').select('nomor');
+                    if (!error && data && data.length > 0) {
+                        adminNumbersList = data.map(i => i.nomor).filter(n => n);
+                    }
+                } catch(e) { console.warn('Gagal ambil nomor admin'); }
             }
             if (adminNumbersList.length === 0) adminNumbersList = [DEFAULT_ADMIN_WA];
         }
 
         async function fetchCoverLetterPrice() {
             if (useSupabase) {
-                const { data } = await supabase.from('price_cover_letter').select('price, harga').single();
-                if (data) { const val = data.price || data.harga; if (val && !isNaN(val)) coverLetterPrice = Number(val); }
+                try {
+                    const { data } = await supabase.from('price_cover_letter').select('price, harga').single();
+                    if (data) { const val = data.price || data.harga; if (val && !isNaN(val)) coverLetterPrice = Number(val); }
+                } catch(e) {}
             }
             updateCoverLetterUI();
         }
 
         async function fetchPaymentMethods() {
             if (useSupabase) {
-                const { data } = await supabase.from('payment').select('*');
-                paymentMethods = (data && data.length > 0) ? data : [];
+                try {
+                    const { data } = await supabase.from('payment').select('*');
+                    if (data && data.length > 0) paymentMethods = data;
+                } catch(e) { paymentMethods = []; }
             } else {
-                paymentMethods = [];
+                // Dummy Payment jika DB Error
+                paymentMethods = [
+                    { bank_name: 'BCA', account_number: '1234567890', owner_name: 'Admin WriteHub', type: 'bank' },
+                    { bank_name: 'QRIS', image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Logo_QRIS.svg/1200px-Logo_QRIS.svg.png', type: 'qris' }
+                ];
             }
             renderPaymentMethods();
         }
 
         async function fetchProducts() {
             if (useSupabase) {
-                const { data: sample } = await supabase.from('cvs').select('*').limit(1);
-                if (sample && sample.length > 0) {
-                    autoMapColumns(sample[0]);
-                    const { data } = await supabase.from('cvs').select('*');
-                    products = data || [];
-                    console.log(`[SYSTEM] Loaded ${products.length} products from DB.`);
-                } else { 
-                    console.warn('[SYSTEM] No products found in DB and dummy data removed.');
-                    products = []; 
+                try {
+                    const { data: sample } = await supabase.from('cvs').select('*').limit(1);
+                    if (sample && sample.length > 0) {
+                        autoMapColumns(sample[0]);
+                        const { data } = await supabase.from('cvs').select('*');
+                        if (data) products = data;
+                        console.log(`[SYSTEM] Loaded ${products.length} products from DB.`);
+                    } else { 
+                        throw new Error('Table empty');
+                    }
+                } catch(e) {
+                    console.warn('[SYSTEM] DB Error. Loading Dummy Products.', e);
+                    products = DUMMY_PRODUCTS;
                 }
             } else {
-                products = [];
-                console.error('[SYSTEM] Cannot fetch products: No DB Connection.');
+                products = DUMMY_PRODUCTS;
             }
             renderCategories();
             filterLogic();
         }
+
+        // ============================================
+        // AD SYSTEM — LOGIC
+        // ============================================
 
         function getAdField(ad, possibilities) {
             for (const key of possibilities) {
@@ -1460,7 +1456,6 @@
 
         async function fetchAds() {
             if (!useSupabase) {
-                console.warn('[AD SYSTEM] Supabase not available.');
                 return [];
             }
 
@@ -1484,6 +1479,10 @@
             }
             return [];
         }
+
+        // ============================================
+        // MODAL AD BANNER — ADVANCED SYSTEM
+        // ============================================
 
         function showModalAdBanner() {
             const bannerEl = document.getElementById('modalAdBanner');
@@ -1510,7 +1509,6 @@
 
                 if (exactMatches.length > 0) {
                     selectedAd = exactMatches[Math.floor(Math.random() * exactMatches.length)];
-                    console.log(`[AD SYSTEM] Showing Exact Match Ad for [${productCategory}]`);
                 } else {
                     const universalAds = modalAdsCache.filter(ad => {
                         const cat = getAdTargetCategory(ad);
@@ -1521,7 +1519,6 @@
 
                     if (universalAds.length > 0) {
                         selectedAd = universalAds[Math.floor(Math.random() * universalAds.length)];
-                        console.log(`[AD SYSTEM] Showing Universal Ad (No exact match for [${productCategory}])`);
                     }
                 }
             }
@@ -1579,6 +1576,7 @@
             bannerEl.style.height = '0px';
         }
 
+        // --- CARD SLIDERS ---
         const cardSliders = {};
         function initCardSlider(cardElement, productId) {
             const container = cardElement.querySelector('.card-slider-container');
@@ -1596,15 +1594,11 @@
             start();
         }
 
+        // --- RENDER PRODUCTS ---
         function renderProducts() {
             const grid = document.getElementById('productGrid');
             grid.innerHTML = '';
             
-            if (!useSupabase) {
-                 grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-muted);">Database tidak terhubung. Mohon periksa konfigurasi.</div>';
-                 return;
-            }
-
             if (filteredProducts.length === 0) {
                 grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-muted);">Produk tidak ditemukan.</div>';
                 return;
@@ -1656,6 +1650,7 @@
             });
         }
 
+        // --- RENDER PAYMENT ---
         function renderPaymentMethods() {
             const container = document.getElementById('paymentMethodsList');
             container.innerHTML = '';
@@ -1711,6 +1706,7 @@
             });
         }
 
+        // --- HERO SLIDER ---
         let slideIndex = 0, slideInterval;
         function initSlider() {
             const track = document.getElementById('sliderTrack');
@@ -1751,6 +1747,7 @@
         window.nextSlide = nextSlide;
         window.prevSlide = prevSlide;
 
+        // --- FILTER ---
         window.setCategory = function(cat, el) {
             currentCategory = cat;
             document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
@@ -1769,6 +1766,7 @@
             renderProducts();
         }
 
+        // --- MODAL LOGIC ---
         let currentProduct = null, carouselIndex = 0, carouselImages = [];
         const trackEl = document.getElementById('carouselTrack');
         
@@ -2008,6 +2006,7 @@
             return selectedNumber || DEFAULT_ADMIN_WA;
         }
 
+        // --- INIT ---
         async function init() {
             console.log('%c[WRITEHUB] Initializing...', 'color: blue; font-weight: bold;');
             initSlider();
@@ -2047,6 +2046,7 @@
         });
         document.addEventListener('wheel', function(e) { if (e.ctrlKey) e.preventDefault(); }, { passive: false });
 
+        // --- BACK TO TOP LOGIC ---
         const backToTopBtn = document.getElementById('backToTopBtn');
 
         window.addEventListener('scroll', () => {
