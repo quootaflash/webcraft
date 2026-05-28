@@ -511,7 +511,7 @@
             font-weight: 600; 
             letter-spacing: 0.02em; 
             padding: 4px 10px;
-            border-radius: 99px; 
+            border-radius: 55px; 
             border: 1px solid rgba(255, 255, 255, 0.4);
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
             overflow: hidden;
@@ -898,7 +898,7 @@
                         <a href="#" target="_blank" rel="noopener noreferrer" id="modalAdLink">
                             <img id="modalAdImage" src="" alt="Promo">
                         </a>
-                        <span class="ad-label">Sponsor</span>
+                        <span class="ad-label">Ad</span>
                     </div>
 
                     <button id="btn-goto-payment" class="btn-buy">
@@ -952,7 +952,7 @@
 
                 <div class="mt-auto">
                     <button id="btn-confirm-whatsapp" class="btn-confirm-wa">
-                        <i class="fab fa-whatsapp" style="font-size:1.2rem;"></i> Lanjutkan ke WhatsApp
+                        <i class="fas fa-check-circle" style="font-size:1.2rem;"></i> Lanjutkan
                     </button>
                 </div>
             </div>
@@ -972,7 +972,7 @@
                 <i class="far fa-copy copy-icon-overlay"></i>
             </div>
             <div class="qris-modal-desc">
-                Nominal unik ini ditambahkan untuk verifikasi otomatis. Gunakan aplikasi pembayaran (GoPay/OVO/Dana) untuk scan QR ini, silakan screenshot Qris diatas.
+                Gunakan aplikasi pembayaran (GoPay/OVO/Dana) untuk scan QR ini, silakan screenshot Qris diatas.
             </div>
             <div class="qris-actions">
                 <button class="btn-close-qris" onclick="closeQrisModal()">Tutup</button>
@@ -986,7 +986,7 @@
         // --- KONFIGURASI ---
         const SUPABASE_URL = 'https://neuylewfsxcuhayegygf.supabase.co'; 
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5ldXlsZXdmc3hjdWhheWVneWdmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkzNTMzNzYsImV4cCI6MjA5NDkyOTM3Nn0.Ra0qI5A87XxODy7v9HIJ-zxqVbO39GwXbJlV8n4ZeIc';
-        const DEFAULT_ADMIN_WA = '6285885850204';
+        const DEFAULT_ADMIN_WA = '#';
         const DEFAULT_COVER_PRICE = 15000;
 
         let supabase;
@@ -1096,7 +1096,7 @@
 
         // FUNGSI GENERATE ID PESANAN
         function generateOrderID() {
-            const prefix = "WH"; 
+            const prefix = "KSP"; 
             // Karakter unik tanpa angka 0 dan huruf O agar tidak membingungkan
             const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; 
             let result = prefix + "-";
