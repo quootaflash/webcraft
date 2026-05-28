@@ -187,6 +187,27 @@
             text-align: center;
         }
 
+        /* USER PROFILE BTN IN HEADER */
+        .user-profile-btn {
+            background: var(--bg-body);
+            border: 1px solid var(--border);
+            padding: 8px;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            cursor: pointer;
+            transition: var(--transition);
+            display: none; /* Hidden by default */
+        }
+        .user-profile-btn:hover {
+            background: var(--primary-light);
+            border-color: var(--primary);
+        }
+
         /* --- HERO SLIDER --- */
         .hero-section {
             margin-top: 20px;
@@ -329,6 +350,111 @@
         }
 
         .sold-info { font-size: 0.7rem; color: var(--text-muted); text-align: right; white-space: nowrap; }
+
+        /* ==========================================
+           AUTH MODAL (LOGIN / REGISTER)
+           ========================================== */
+        .auth-modal-overlay {
+            position: fixed; inset: 0; background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(5px);
+            z-index: 3000; display: flex; align-items: center; justify-content: center;
+            opacity: 0; pointer-events: none; transition: 0.3s; padding: 16px;
+        }
+        .auth-modal-overlay.active { opacity: 1; pointer-events: all; }
+
+        .auth-modal-content {
+            background: white; width: 100%; max-width: 400px; border-radius: 20px;
+            padding: 30px; box-shadow: var(--shadow-xl); transform: scale(0.95); transition: 0.3s;
+            position: relative; overflow: hidden;
+        }
+        .auth-modal-overlay.active .auth-modal-content { transform: scale(1); }
+
+        .auth-header { text-align: center; margin-bottom: 24px; }
+        .auth-header h2 { font-size: 1.5rem; font-weight: 700; margin-bottom: 8px; }
+        .auth-header p { color: var(--text-muted); font-size: 0.9rem; }
+
+        .auth-tabs { display: flex; background: var(--bg-body); padding: 4px; border-radius: 12px; margin-bottom: 20px; }
+        .auth-tab {
+            flex: 1; padding: 10px; text-align: center; border-radius: 8px; font-size: 0.9rem; font-weight: 600;
+            cursor: pointer; color: var(--text-muted); transition: 0.2s;
+        }
+        .auth-tab.active { background: white; color: var(--primary); box-shadow: var(--shadow-sm); }
+
+        .form-group { margin-bottom: 16px; }
+        .form-label { display: block; font-size: 0.85rem; font-weight: 500; margin-bottom: 6px; color: var(--text-main); }
+        .form-input {
+            width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 10px;
+            background: var(--bg-body); font-size: 0.95rem; transition: 0.2s;
+        }
+        .form-input:focus { background: white; border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-light); }
+
+        .btn-auth {
+            width: 100%; padding: 14px; border-radius: 12px; background: var(--primary); color: white;
+            font-weight: 600; font-size: 1rem; cursor: pointer; transition: 0.2s;
+        }
+        .btn-auth:hover { background: var(--primary-dark); }
+        .btn-auth:disabled { background: var(--text-muted); cursor: not-allowed; opacity: 0.7; }
+
+        .auth-close {
+            position: absolute; top: 15px; right: 15px; background: var(--bg-body);
+            width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            cursor: pointer; color: var(--text-muted); transition: 0.2s;
+        }
+        .auth-close:hover { background: #fee2e2; color: var(--danger); }
+
+        /* ==========================================
+           DASHBOARD MODAL
+           ========================================== */
+        .dashboard-modal-overlay {
+            position: fixed; inset: 0; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px);
+            z-index: 3100; display: flex; align-items: center; justify-content: center;
+            opacity: 0; pointer-events: none; transition: 0.3s; padding: 16px;
+        }
+        .dashboard-modal-overlay.active { opacity: 1; pointer-events: all; }
+        
+        .dashboard-content {
+            background: white; width: 100%; max-width: 450px; border-radius: 20px;
+            overflow: hidden; box-shadow: var(--shadow-xl); transform: translateY(20px); transition: 0.3s;
+        }
+        .dashboard-modal-overlay.active .dashboard-content { transform: translateY(0); }
+
+        .dash-header {
+            background: var(--primary); color: white; padding: 30px 24px; text-align: center;
+            position: relative;
+        }
+        .dash-avatar {
+            width: 80px; height: 80px; background: rgba(255,255,255,0.2); border-radius: 50%;
+            margin: 0 auto 16px; display: flex; align-items: center; justify-content: center;
+            border: 3px solid rgba(255,255,255,0.4); font-size: 2rem;
+        }
+        .dash-name { font-size: 1.25rem; font-weight: 700; margin-bottom: 4px; }
+        .dash-email { font-size: 0.9rem; opacity: 0.9; }
+
+        .dash-body { padding: 24px; }
+        .dash-info-row {
+            display: flex; justify-content: space-between; padding: 12px 0;
+            border-bottom: 1px solid var(--border); font-size: 0.95rem;
+        }
+        .dash-info-row:last-child { border-bottom: none; }
+        .dash-label { color: var(--text-muted); }
+        .dash-value { font-weight: 600; color: var(--text-main); }
+        
+        .dash-role-badge {
+            background: var(--primary-light); color: var(--primary); padding: 4px 8px;
+            border-radius: 6px; font-size: 0.8rem; font-weight: 700;
+        }
+
+        .dash-footer { padding: 20px 24px; background: var(--bg-body); }
+        .btn-logout {
+            width: 100%; padding: 12px; border: 1px solid var(--danger); color: var(--danger);
+            background: white; border-radius: 12px; font-weight: 600; cursor: pointer; transition: 0.2s;
+        }
+        .btn-logout:hover { background: #fef2f2; }
+
+        .btn-close-dash {
+            position: absolute; top: 15px; right: 15px; color: white;
+            background: rgba(0,0,0,0.2); width: 32px; height: 32px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; cursor: pointer;
+        }
 
         /* --- MODAL --- */
         .modal-overlay {
@@ -801,6 +927,11 @@
                 <input type="text" id="searchInput" placeholder="Cari CV..." autocomplete="off">
                 <div class="search-suggestions" id="searchSuggestions"></div>
             </div>
+
+            <!-- User Profile Button (Only visible when logged in) -->
+            <button class="user-profile-btn" id="headerProfileBtn" onclick="window.openDashboard()">
+                <i class="fas fa-user"></i>
+            </button>
         </div>
     </header>
 
@@ -853,6 +984,72 @@
     <button id="backToTopBtn" class="back-to-top" aria-label="Kembali ke atas">
         <i class="fas fa-arrow-up"></i>
     </button>
+
+    <!-- AUTH MODAL (LOGIN / REGISTER) -->
+    <div class="auth-modal-overlay" id="authModal">
+        <div class="auth-modal-content">
+            <div class="auth-close" onclick="window.closeAuthModal()"><i class="fas fa-times"></i></div>
+            <div class="auth-header">
+                <h2 id="authTitle">Masuk Akun</h2>
+                <p id="authDesc">Silakan masuk untuk melanjutkan pembayaran</p>
+            </div>
+
+            <div class="auth-tabs">
+                <div class="auth-tab active" id="tabLogin" onclick="window.switchAuthTab('login')">Masuk</div>
+                <div class="auth-tab" id="tabRegister" onclick="window.switchAuthTab('register')">Daftar</div>
+            </div>
+
+            <form id="authForm" onsubmit="event.preventDefault(); window.handleAuthSubmit();">
+                <div class="form-group">
+                    <label class="form-label">Email Address</label>
+                    <input type="email" id="authEmail" class="form-input" placeholder="nama@email.com" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <input type="password" id="authPassword" class="form-input" placeholder="Minimal 6 karakter" required minlength="6">
+                </div>
+                <button type="submit" class="btn-auth" id="authSubmitBtn">
+                    <span id="authBtnText">Masuk Sekarang</span>
+                    <i class="fas fa-spinner fa-spin" id="authBtnLoader" style="display:none; margin-left:8px;"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- DASHBOARD MODAL -->
+    <div class="dashboard-modal-overlay" id="dashboardModal">
+        <div class="dashboard-content">
+            <div class="dash-header">
+                <button class="btn-close-dash" onclick="window.closeDashboard()"><i class="fas fa-times"></i></button>
+                <div class="dash-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="dash-name" id="dashName">Loading...</div>
+                <div class="dash-email" id="dashEmail">...</div>
+            </div>
+            <div class="dash-body">
+                <div class="dash-info-row">
+                    <span class="dash-label">Nama User</span>
+                    <span class="dash-value" id="dashInfoName">-</span>
+                </div>
+                <div class="dash-info-row">
+                    <span class="dash-label">Email User</span>
+                    <span class="dash-value" id="dashInfoEmail">-</span>
+                </div>
+                <div class="dash-info-row">
+                    <span class="dash-label">Jenis User</span>
+                    <span class="dash-role-badge" id="dashInfoRole">MEMBER</span>
+                </div>
+                <div class="dash-info-row">
+                    <span class="dash-label">Status</span>
+                    <span class="dash-value" style="color: var(--success);"><i class="fas fa-check-circle"></i> Aktif</span>
+                </div>
+            </div>
+            <div class="dash-footer">
+                <button class="btn-logout" onclick="window.handleLogout()">Keluar Akun</button>
+            </div>
+        </div>
+    </div>
 
     <!-- MODAL DETAIL PRODUK -->
     <div class="modal-overlay" id="productModal">
@@ -1003,6 +1200,12 @@
             console.warn('%c[SYSTEM] Supabase Keys missing. App will not load data.', 'color: orange; font-weight: bold;');
         }
 
+        // --- GLOBAL STATE ---
+        let userSession = null;
+        let userProfile = null; // Menyimpan data tambahan (role, nama lengkap) jika ada
+        let authMode = 'login'; // 'login' or 'register'
+        let pendingAction = null; // Callback function to run after successful login
+
         // --- DATA SLIDER ---
         const sliderData = [
             { image: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgieMxVSq4yNK45tjG9DdAsuMaQ7dxXJ96XvbYe1Tw6iTMHlm0ETWVM70OBZY2RRoEZ98oCilYCgm7-PYHz9Vo3GBTJ4fMbqRovUaZLtxgdwREVayDd6uq-iJZWVhxoV2RitsUXz-3QR2M2MZkZtoFdjtefvHDmrUGWqyPq1W7JLRHJZwRvLv-vwL_QG8Ni/s3264/29467.png', link: '#' },
@@ -1017,11 +1220,174 @@
         let paymentMethods = [];
         let adminNumbersList = [];
         let currentUniqueTotal = 0;
-        let currentOrderId = ''; // VARIABLE UNTUK MENYIMPAN ID
+        let currentOrderId = '';
         let paymentLockTimer = null;
         const LOCK_DURATION_MS = 120000;
         let touchStartX = 0;
         let touchEndX = 0;
+
+        // ============================================
+        // AUTH LOGIC - SUPABASE
+        // ============================================
+
+        // Check session on load
+        async function checkSession() {
+            if (!useSupabase) return;
+            const { data: { session } } = await supabase.auth.getSession();
+            if (session) {
+                userSession = session.user;
+                await fetchUserProfile(session.user.id);
+                updateUIForLoggedInUser();
+            }
+        }
+
+        // Fetch additional user data (Role, etc) from 'profiles' table
+        async function fetchUserProfile(userId) {
+            if (!useSupabase) return;
+            // Default profile data
+            userProfile = {
+                full_name: userSession.user.email.split('@')[0], // Fallback name
+                role: 'User Member' // Default role
+            };
+
+            try {
+                const { data, error } = await supabase
+                    .from('profiles')
+                    .select('*')
+                    .eq('id', userId)
+                    .single();
+                
+                if (data && !error) {
+                    userProfile.full_name = data.full_name || data.username || userProfile.full_name;
+                    userProfile.role = data.role || data.user_type || 'User Member';
+                }
+            } catch (err) {
+                console.warn('Could not fetch profile table, using defaults.');
+            }
+        }
+
+        window.switchAuthTab = function(mode) {
+            authMode = mode;
+            document.getElementById('tabLogin').classList.toggle('active', mode === 'login');
+            document.getElementById('tabRegister').classList.toggle('active', mode === 'register');
+            
+            const title = mode === 'login' ? 'Masuk Akun' : 'Daftar Akun Baru';
+            const desc = mode === 'login' ? 'Silakan masuk untuk melanjutkan pembayaran' : 'Buat akun untuk memulai pengalaman Anda';
+            const btnText = mode === 'login' ? 'Masuk Sekarang' : 'Daftar Sekarang';
+            
+            document.getElementById('authTitle').innerText = title;
+            document.getElementById('authDesc').innerText = desc;
+            document.getElementById('authBtnText').innerText = btnText;
+        }
+
+        window.handleAuthSubmit = async function() {
+            if (!useSupabase) {
+                showToast('Sistem Auth tidak tersedia', 'error');
+                return;
+            }
+
+            const email = document.getElementById('authEmail').value;
+            const password = document.getElementById('authPassword').value;
+            const btn = document.getElementById('authSubmitBtn');
+            const loader = document.getElementById('authBtnLoader');
+            const btnText = document.getElementById('authBtnText');
+
+            // UI Loading state
+            btn.disabled = true;
+            loader.style.display = 'inline-block';
+            btnText.style.opacity = '0.7';
+
+            try {
+                let error = null;
+
+                if (authMode === 'login') {
+                    const { data, error: err } = await supabase.auth.signInWithPassword({ email, password });
+                    error = err;
+                } else {
+                    const { data, error: err } = await supabase.auth.signUp({ email, password });
+                    error = err;
+                    // If signup requires email confirmation, Supabase might return null user but no error.
+                    if (!error && data.user === null) {
+                        showToast('Pendaftaran berhasil! Silakan cek email untuk verifikasi.', 'success');
+                        window.closeAuthModal();
+                        resetAuthForm();
+                        return;
+                    }
+                }
+
+                if (error) throw error;
+
+                // Success
+                showToast(`Berhasil ${authMode === 'login' ? 'Masuk' : 'Mendaftar'}!`, 'success');
+                window.closeAuthModal();
+                resetAuthForm();
+
+                // Refresh session data immediately
+                await checkSession();
+
+                // Execute pending action (e.g., go to payment modal)
+                if (pendingAction) {
+                    pendingAction();
+                    pendingAction = null;
+                }
+
+            } catch (err) {
+                showToast(err.message || 'Terjadi kesalahan', 'error');
+            } finally {
+                btn.disabled = false;
+                loader.style.display = 'none';
+                btnText.style.opacity = '1';
+            }
+        }
+
+        window.handleLogout = async function() {
+            if (!useSupabase) return;
+            await supabase.auth.signOut();
+            userSession = null;
+            userProfile = null;
+            document.getElementById('headerProfileBtn').style.display = 'none';
+            window.closeDashboard();
+            showToast('Anda telah keluar', 'success');
+        }
+
+        function updateUIForLoggedInUser() {
+            if (userSession) {
+                document.getElementById('headerProfileBtn').style.display = 'flex';
+            }
+        }
+
+        function resetAuthForm() {
+            document.getElementById('authEmail').value = '';
+            document.getElementById('authPassword').value = '';
+        }
+
+        window.openAuthModal = function(callback) {
+            pendingAction = callback;
+            document.getElementById('authModal').classList.add('active');
+        }
+
+        window.closeAuthModal = function() {
+            document.getElementById('authModal').classList.remove('active');
+            pendingAction = null;
+        }
+
+        // Dashboard Functions
+        window.openDashboard = function() {
+            if (!userSession || !userProfile) return;
+            
+            document.getElementById('dashName').innerText = userProfile.full_name || 'User';
+            document.getElementById('dashEmail').innerText = userSession.user.email;
+            
+            document.getElementById('dashInfoName').innerText = userProfile.full_name || 'User';
+            document.getElementById('dashInfoEmail').innerText = userSession.user.email;
+            document.getElementById('dashInfoRole').innerText = userProfile.role || 'User Member';
+            
+            document.getElementById('dashboardModal').classList.add('active');
+        }
+
+        window.closeDashboard = function() {
+            document.getElementById('dashboardModal').classList.remove('active');
+        }
 
         // ============================================
         // ADVANCED AD SYSTEM — MODAL ONLY
@@ -1096,7 +1462,6 @@
         // FUNGSI GENERATE ID PESANAN
         function generateOrderID() {
             const prefix = "WH"; 
-            // Karakter unik tanpa angka 0 dan huruf O agar tidak membingungkan
             const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; 
             let result = prefix + "-";
             for (let i = 0; i < 6; i++) {
@@ -1693,6 +2058,22 @@
         document.getElementById('btn-goto-payment').onclick = function() {
             if (!currentProduct) return;
             
+            // CHECK AUTHENTICATION
+            if (!userSession) {
+                // User is NOT logged in -> Open Auth Modal
+                window.openAuthModal(() => {
+                    // This callback runs AFTER successful login
+                    // Then proceed to payment logic
+                    proceedToPayment();
+                });
+                return;
+            }
+
+            // User is logged in -> Proceed directly
+            proceedToPayment();
+        };
+
+        function proceedToPayment() {
             const basePrice = Number(getField(currentProduct, 'price')) || 0;
             const isAddOn = toggleSwitch.checked;
             const customAddonPrice = Number(getField(currentProduct, 'cover_letter_price')) || 0;
@@ -1732,7 +2113,7 @@
             paymentView.classList.add('active');
             showToast(`Kode unik Rp ${uniqueCode} ditambahkan untuk verifikasi.`, 'success');
             lockWhatsAppButton();
-        };
+        }
 
         window.backToProduct = function() {
             clearPaymentTimer();
@@ -1814,6 +2195,11 @@
             // 2. Masukkan ID Pesanan ke Pesan WhatsApp
             let message = `Halo Min, saya ingin membeli CV berikut:\n\n*ID Pesanan:* ${currentOrderId}\n*Jenis CV:* ${templateName}\n*Total Pembayaran (Unik):* ${formattedTotal}\n*Waktu Pesanan:* ${orderTime}`;
             
+            // Tambah info user jika login
+            if (userSession && userProfile) {
+                message += `\n\n*Data Pembeli:*\nNama: ${userProfile.full_name}\nEmail: ${userSession.user.email}`;
+            }
+
             const isAddOn = toggleSwitch.checked;
             if (isAddOn) {
                 const customPrice = Number(getField(currentProduct, 'cover_letter_price')) || 0;
@@ -1853,6 +2239,9 @@
         async function init() {
             console.log('%c[WRITEHUB] Initializing...', 'color: blue; font-weight: bold;');
             initSlider();
+            
+            // Cek sesi user saat load
+            await checkSession();
             
             if (useSupabase) {
                 const ads = await fetchAds();
