@@ -73,7 +73,6 @@
             font-size: 1.1rem;
             color: var(--text-main);
             white-space: nowrap;
-            cursor: pointer;
         }
         .logo img { height: 32px; width: auto; object-fit: contain; } 
 
@@ -153,175 +152,40 @@
             flex: 1;
         }
 
+        .top-badge {
+            background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%);
+            color: white;
+            font-size: 0.65rem;
+            font-weight: 800;
+            padding: 2px 8px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 2px 4px rgba(217, 119, 6, 0.2);
+            flex-shrink: 0;
+            display: inline-block;
+        }
+
+        .rank-badge {
+            background: #f1f5f9;
+            color: #64748b;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 2px 6px;
+            border-radius: 4px;
+            min-width: 20px;
+            text-align: center;
+            flex-shrink: 0;
+            margin-left: 8px;
+            border: 1px solid #e2e8f0;
+        }
+
         .no-suggestion {
             padding: 12px 16px;
             font-size: 0.85rem;
             color: var(--text-muted);
             text-align: center;
         }
-
-        /* USER PROFILE BTN IN HEADER */
-        .user-profile-btn {
-            background: var(--bg-body);
-            border: 1px solid var(--border);
-            padding: 8px;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--primary);
-            cursor: pointer;
-            transition: var(--transition);
-            display: none; /* Hidden by default */
-        }
-        .user-profile-btn:hover {
-            background: var(--primary-light);
-            border-color: var(--primary);
-        }
-
-        /* ==========================================
-           VIEWS (SPA LOGIC)
-           ========================================== */
-        .view-section {
-            display: none;
-            animation: fadeInView 0.4s ease;
-        }
-        .view-section.active {
-            display: block;
-        }
-        @keyframes fadeInView {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* ==========================================
-           USER PROFILE PAGE (FULL PAGE)
-           ========================================== */
-        .profile-page-header {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            color: white;
-            padding: 40px 0 60px;
-            text-align: center;
-            border-bottom-left-radius: 30px;
-            border-bottom-right-radius: 30px;
-            margin-bottom: -40px;
-        }
-        
-        .profile-avatar-lg {
-            width: 100px;
-            height: 100px;
-            background: rgba(255,255,255,0.2);
-            border-radius: 50%;
-            margin: 0 auto 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2.5rem;
-            border: 4px solid rgba(255,255,255,0.3);
-        }
-
-        .profile-container {
-            position: relative;
-            z-index: 10;
-            margin-top: 40px;
-        }
-
-        .profile-card {
-            background: white;
-            border-radius: 20px;
-            box-shadow: var(--shadow-lg);
-            padding: 30px;
-            margin-bottom: 24px;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .profile-info-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 20px;
-        }
-        
-        @media (min-width: 640px) {
-            .profile-info-grid { grid-template-columns: 100px 1fr; }
-        }
-
-        .profile-label {
-            font-size: 0.9rem;
-            color: var(--text-muted);
-            font-weight: 500;
-            padding-top: 4px;
-        }
-        .profile-value {
-            font-size: 1rem;
-            color: var(--text-main);
-            font-weight: 600;
-        }
-
-        .profile-role-badge {
-            background: var(--primary-light);
-            color: var(--primary);
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 700;
-            display: inline-block;
-        }
-
-        .profile-menu-list {
-            background: white;
-            border-radius: 20px;
-            box-shadow: var(--shadow-md);
-            overflow: hidden;
-            max-width: 600px;
-            margin: 0 auto 40px;
-        }
-        
-        .menu-item {
-            padding: 18px 24px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border-bottom: 1px solid var(--bg-body);
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-        .menu-item:last-child { border-bottom: none; }
-        .menu-item:hover { background: var(--bg-body); }
-        
-        .menu-left { display: flex; align-items: center; gap: 12px; font-weight: 500; }
-        .menu-icon { width: 24px; color: var(--text-muted); text-align: center; }
-        .menu-danger { color: var(--danger); }
-
-        .btn-logout-full {
-            display: block;
-            width: 100%;
-            padding: 14px;
-            background: #fee2e2;
-            color: var(--danger);
-            border-radius: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            margin-top: 20px;
-            text-align: center;
-            transition: 0.2s;
-        }
-        .btn-logout-full:hover { background: #fecaca; }
-
-        .btn-back-home {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            color: rgba(255,255,255,0.8);
-            font-size: 0.9rem;
-            margin-bottom: 20px;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-        .btn-back-home:hover { color: white; }
 
         /* --- HERO SLIDER --- */
         .hero-section {
@@ -465,56 +329,6 @@
         }
 
         .sold-info { font-size: 0.7rem; color: var(--text-muted); text-align: right; white-space: nowrap; }
-
-        /* ==========================================
-           AUTH MODAL (LOGIN / REGISTER)
-           ========================================== */
-        .auth-modal-overlay {
-            position: fixed; inset: 0; background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(5px);
-            z-index: 3000; display: flex; align-items: center; justify-content: center;
-            opacity: 0; pointer-events: none; transition: 0.3s; padding: 16px;
-        }
-        .auth-modal-overlay.active { opacity: 1; pointer-events: all; }
-
-        .auth-modal-content {
-            background: white; width: 100%; max-width: 400px; border-radius: 20px;
-            padding: 30px; box-shadow: var(--shadow-xl); transform: scale(0.95); transition: 0.3s;
-            position: relative; overflow: hidden;
-        }
-        .auth-modal-overlay.active .auth-modal-content { transform: scale(1); }
-
-        .auth-header { text-align: center; margin-bottom: 24px; }
-        .auth-header h2 { font-size: 1.5rem; font-weight: 700; margin-bottom: 8px; }
-        .auth-header p { color: var(--text-muted); font-size: 0.9rem; }
-
-        .auth-tabs { display: flex; background: var(--bg-body); padding: 4px; border-radius: 12px; margin-bottom: 20px; }
-        .auth-tab {
-            flex: 1; padding: 10px; text-align: center; border-radius: 8px; font-size: 0.9rem; font-weight: 600;
-            cursor: pointer; color: var(--text-muted); transition: 0.2s;
-        }
-        .auth-tab.active { background: white; color: var(--primary); box-shadow: var(--shadow-sm); }
-
-        .form-group { margin-bottom: 16px; }
-        .form-label { display: block; font-size: 0.85rem; font-weight: 500; margin-bottom: 6px; color: var(--text-main); }
-        .form-input {
-            width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 10px;
-            background: var(--bg-body); font-size: 0.95rem; transition: 0.2s;
-        }
-        .form-input:focus { background: white; border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-light); }
-
-        .btn-auth {
-            width: 100%; padding: 14px; border-radius: 12px; background: var(--primary); color: white;
-            font-weight: 600; font-size: 1rem; cursor: pointer; transition: 0.2s;
-        }
-        .btn-auth:hover { background: var(--primary-dark); }
-        .btn-auth:disabled { background: var(--text-muted); cursor: not-allowed; opacity: 0.7; }
-
-        .auth-close {
-            position: absolute; top: 15px; right: 15px; background: var(--bg-body);
-            width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            cursor: pointer; color: var(--text-muted); transition: 0.2s;
-        }
-        .auth-close:hover { background: #fee2e2; color: var(--danger); }
 
         /* --- MODAL --- */
         .modal-overlay {
@@ -977,7 +791,7 @@
 
     <header>
         <div class="container nav-wrapper">
-            <a href="#" onclick="window.navigateHome()" class="logo">
+            <a href="www.writehub.my.id" class="logo">
                 <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjzgVAIKgZMS9W7eJKCaRyaFnoDviThQstfeD9l9mcwPxUDoovGo7xB3RQByxTXo15fGX0DIeTMxOWkVovnB4FC35iJN6ArGLOlBRI9U4d4gJ7VOTOp-Ki47RIaViiIs12QGjxRmGs2cQzCFniRpBE0GyNLW3s_03rvTcpPeHAruMaUdrIKNX8jaFZ1TcBw/s3264/28063.png" alt="Logo">
                 <span></span>
             </a>
@@ -987,163 +801,58 @@
                 <input type="text" id="searchInput" placeholder="Cari CV..." autocomplete="off">
                 <div class="search-suggestions" id="searchSuggestions"></div>
             </div>
-
-            <!-- User Profile Button (Only visible when logged in) -->
-            <button class="user-profile-btn" id="headerProfileBtn" onclick="window.navigateProfile()">
-                <i class="fas fa-user"></i>
-            </button>
         </div>
     </header>
 
-    <!-- MAIN VIEW (HOME) -->
-    <div id="homeView" class="view-section active">
-        <main class="container">
-            <section class="hero-section" id="heroSlider">
-                <div class="slider-container" id="sliderTrack"></div>
-                <button class="slider-btn prev-btn" onclick="window.prevSlide()"><i class="fas fa-chevron-left"></i></button>
-                <button class="slider-btn next-btn" onclick="window.nextSlide()"><i class="fas fa-chevron-right"></i></button>
-                <div class="slider-dots" id="sliderDots"></div>
-            </section>
+    <main class="container">
+        <section class="hero-section" id="heroSlider">
+            <div class="slider-container" id="sliderTrack"></div>
+            <button class="slider-btn prev-btn" onclick="window.prevSlide()"><i class="fas fa-chevron-left"></i></button>
+            <button class="slider-btn next-btn" onclick="window.nextSlide()"><i class="fas fa-chevron-right"></i></button>
+            <div class="slider-dots" id="sliderDots"></div>
+        </section>
 
-            <div class="filter-bar" id="filterBar"></div>
+        <div class="filter-bar" id="filterBar"></div>
 
-            <div class="product-grid" id="productGrid">
-                <!-- Loading Skeletons -->
-                <div class="cv-card" style="cursor: default;">
-                    <div class="card-image" style="background:#e2e8f0; animation: pulse 1.5s infinite;"></div>
-                    <div class="card-content">
-                        <div style="height: 14px; background:#e2e8f0; width: 80%; margin-bottom: 6px; border-radius: 4px; animation: pulse 1.5s infinite;"></div>
-                        <div style="height: 14px; background:#e2e8f0; width: 60%; margin-bottom: 12px; border-radius: 4px; animation: pulse 1.5s infinite;"></div>
-                        <div style="height: 16px; background:#e2e8f0; width: 50%; border-radius: 4px; animation: pulse 1.5s infinite;"></div>
-                    </div>
-                </div>
-                <div class="cv-card" style="cursor: default;">
-                    <div class="card-image" style="background:#e2e8f0; animation: pulse 1.5s infinite;"></div>
-                    <div class="card-content">
-                        <div style="height: 14px; background:#e2e8f0; width: 80%; margin-bottom: 6px; border-radius: 4px; animation: pulse 1.5s infinite;"></div>
-                        <div style="height: 14px; background:#e2e8f0; width: 60%; margin-bottom: 12px; border-radius: 4px; animation: pulse 1.5s infinite;"></div>
-                        <div style="height: 16px; background:#e2e8f0; width: 50%; border-radius: 4px; animation: pulse 1.5s infinite;"></div>
-                    </div>
+        <div class="product-grid" id="productGrid">
+            <!-- Loading Skeletons -->
+            <div class="cv-card" style="cursor: default;">
+                <div class="card-image" style="background:#e2e8f0; animation: pulse 1.5s infinite;"></div>
+                <div class="card-content">
+                    <div style="height: 14px; background:#e2e8f0; width: 80%; margin-bottom: 6px; border-radius: 4px; animation: pulse 1.5s infinite;"></div>
+                    <div style="height: 14px; background:#e2e8f0; width: 60%; margin-bottom: 12px; border-radius: 4px; animation: pulse 1.5s infinite;"></div>
+                    <div style="height: 16px; background:#e2e8f0; width: 50%; border-radius: 4px; animation: pulse 1.5s infinite;"></div>
                 </div>
             </div>
-        </main>
-
-        <!-- REVISED FOOTER -->
-        <footer>
-            <div class="container footer-content">
-                <div class="footer-links">
-                    <a href="#"><i class="fab fa-instagram"></i> Instagram</a>
-                    <a href="#"><i class="fab fa-tiktok"></i> Tiktok</a>
-                    <a href="#"><i class="far fa-envelope"></i> Kontak</a>
-                </div>
-                <div class="footer-copyright">
-                    &copy; 2026 WriteHub. All Rights Reserved.
-                </div>
-            </div>
-        </footer>
-    </div>
-
-    <!-- PROFILE VIEW -->
-    <div id="profileView" class="view-section">
-        <div class="profile-page-header">
-            <div class="container">
-                <div class="btn-back-home" onclick="window.navigateHome()">
-                    <i class="fas fa-arrow-left"></i> Kembali ke Beranda
-                </div>
-                <div class="profile-avatar-lg">
-                    <i class="fas fa-user"></i>
-                </div>
-                <h2 id="profNameDisplay" style="font-size:1.5rem; font-weight:700;">User</h2>
-                <p id="profEmailDisplay" style="opacity:0.9; margin-top:4px;">user@email.com</p>
-                <div style="margin-top:16px;">
-                    <span class="profile-role-badge" id="profRoleDisplay">MEMBER</span>
+            <div class="cv-card" style="cursor: default;">
+                <div class="card-image" style="background:#e2e8f0; animation: pulse 1.5s infinite;"></div>
+                <div class="card-content">
+                    <div style="height: 14px; background:#e2e8f0; width: 80%; margin-bottom: 6px; border-radius: 4px; animation: pulse 1.5s infinite;"></div>
+                    <div style="height: 14px; background:#e2e8f0; width: 60%; margin-bottom: 12px; border-radius: 4px; animation: pulse 1.5s infinite;"></div>
+                    <div style="height: 16px; background:#e2e8f0; width: 50%; border-radius: 4px; animation: pulse 1.5s infinite;"></div>
                 </div>
             </div>
         </div>
+    </main>
 
-        <div class="container profile-container">
-            <div class="profile-card">
-                <h3 style="margin-bottom:20px; font-size:1.1rem; color:var(--text-main);">Informasi Akun</h3>
-                <div class="profile-info-grid">
-                    <div class="profile-label">Nama Lengkap</div>
-                    <div class="profile-value" id="profInfoName">-</div>
-                    
-                    <div class="profile-label">Email</div>
-                    <div class="profile-value" id="profInfoEmail">-</div>
-                    
-                    <div class="profile-label">Jenis User</div>
-                    <div class="profile-value"><span class="profile-role-badge" id="profInfoRole">MEMBER</span></div>
-                    
-                    <div class="profile-label">Status</div>
-                    <div class="profile-value" style="color:var(--success);">Aktif</div>
-                </div>
+    <!-- REVISED FOOTER -->
+    <footer>
+        <div class="container footer-content">
+            <div class="footer-links">
+                <a href="#"><i class="fab fa-instagram"></i> Instagram</a>
+                <a href="#"><i class="fab fa-tiktok"></i> Tiktok</a>
+                <a href="#"><i class="far fa-envelope"></i> Kontak</a>
             </div>
-
-            <div class="profile-menu-list">
-                <div class="menu-item">
-                    <div class="menu-left">
-                        <div class="menu-icon"><i class="fas fa-history"></i></div>
-                        <span>Riwayat Pembelian</span>
-                    </div>
-                    <i class="fas fa-chevron-right" style="color:var(--text-muted); font-size:0.8rem;"></i>
-                </div>
-                <div class="menu-item">
-                    <div class="menu-left">
-                        <div class="menu-icon"><i class="fas fa-cog"></i></div>
-                        <span>Pengaturan Akun</span>
-                    </div>
-                    <i class="fas fa-chevron-right" style="color:var(--text-muted); font-size:0.8rem;"></i>
-                </div>
-                <div class="menu-item">
-                    <div class="menu-left">
-                        <div class="menu-icon"><i class="fas fa-question-circle"></i></div>
-                        <span>Bantuan</span>
-                    </div>
-                    <i class="fas fa-chevron-right" style="color:var(--text-muted); font-size:0.8rem;"></i>
-                </div>
+            <div class="footer-copyright">
+                &copy; 2026 WriteHub. All Rights Reserved.
             </div>
-
-            <button class="btn-logout-full" onclick="window.handleLogout()">
-                <i class="fas fa-sign-out-alt"></i> Keluar Akun
-            </button>
         </div>
-    </div>
+    </footer>
 
     <!-- BACK TO TOP BUTTON -->
     <button id="backToTopBtn" class="back-to-top" aria-label="Kembali ke atas">
         <i class="fas fa-arrow-up"></i>
     </button>
-
-    <!-- AUTH MODAL (LOGIN / REGISTER) -->
-    <div class="auth-modal-overlay" id="authModal">
-        <div class="auth-modal-content">
-            <div class="auth-close" onclick="window.closeAuthModal()"><i class="fas fa-times"></i></div>
-            <div class="auth-header">
-                <h2 id="authTitle">Masuk Akun</h2>
-                <p id="authDesc">Silakan masuk untuk melanjutkan pembayaran</p>
-            </div>
-
-            <div class="auth-tabs">
-                <div class="auth-tab active" id="tabLogin" onclick="window.switchAuthTab('login')">Masuk</div>
-                <div class="auth-tab" id="tabRegister" onclick="window.switchAuthTab('register')">Daftar</div>
-            </div>
-
-            <form id="authForm" onsubmit="event.preventDefault(); window.handleAuthSubmit();">
-                <div class="form-group">
-                    <label class="form-label">Email Address</label>
-                    <input type="email" id="authEmail" class="form-input" placeholder="nama@email.com" required>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Password</label>
-                    <input type="password" id="authPassword" class="form-input" placeholder="Minimal 6 karakter" required minlength="6">
-                </div>
-                <button type="submit" class="btn-auth" id="authSubmitBtn">
-                    <span id="authBtnText">Masuk Sekarang</span>
-                    <i class="fas fa-spinner fa-spin" id="authBtnLoader" style="display:none; margin-left:8px;"></i>
-                </button>
-            </form>
-        </div>
-    </div>
 
     <!-- MODAL DETAIL PRODUK -->
     <div class="modal-overlay" id="productModal">
@@ -1294,12 +1003,6 @@
             console.warn('%c[SYSTEM] Supabase Keys missing. App will not load data.', 'color: orange; font-weight: bold;');
         }
 
-        // --- GLOBAL STATE ---
-        let userSession = null;
-        let userProfile = null; // Menyimpan data tambahan (role, nama lengkap) jika ada
-        let authMode = 'login'; // 'login' or 'register'
-        let pendingAction = null; // Callback function to run after successful login
-
         // --- DATA SLIDER ---
         const sliderData = [
             { image: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgieMxVSq4yNK45tjG9DdAsuMaQ7dxXJ96XvbYe1Tw6iTMHlm0ETWVM70OBZY2RRoEZ98oCilYCgm7-PYHz9Vo3GBTJ4fMbqRovUaZLtxgdwREVayDd6uq-iJZWVhxoV2RitsUXz-3QR2M2MZkZtoFdjtefvHDmrUGWqyPq1W7JLRHJZwRvLv-vwL_QG8Ni/s3264/29467.png', link: '#' },
@@ -1314,185 +1017,11 @@
         let paymentMethods = [];
         let adminNumbersList = [];
         let currentUniqueTotal = 0;
-        let currentOrderId = '';
+        let currentOrderId = ''; // VARIABLE UNTUK MENYIMPAN ID
         let paymentLockTimer = null;
         const LOCK_DURATION_MS = 120000;
         let touchStartX = 0;
         let touchEndX = 0;
-
-        // ============================================
-        // NAVIGATION (SPA)
-        // ============================================
-        window.navigateHome = function() {
-            document.getElementById('homeView').classList.add('active');
-            document.getElementById('profileView').classList.remove('active');
-            window.scrollTo(0, 0);
-        }
-
-        window.navigateProfile = function() {
-            if (!userSession) {
-                showToast('Silakan login terlebih dahulu', 'warning');
-                window.openAuthModal(null);
-                return;
-            }
-            // Update Profile UI
-            document.getElementById('profNameDisplay').innerText = userProfile?.full_name || 'User';
-            document.getElementById('profEmailDisplay').innerText = userSession.user.email;
-            document.getElementById('profRoleDisplay').innerText = userProfile?.role || 'MEMBER';
-            
-            document.getElementById('profInfoName').innerText = userProfile?.full_name || 'User';
-            document.getElementById('profInfoEmail').innerText = userSession.user.email;
-            document.getElementById('profInfoRole').innerText = userProfile?.role || 'MEMBER';
-
-            document.getElementById('homeView').classList.remove('active');
-            document.getElementById('profileView').classList.add('active');
-            window.scrollTo(0, 0);
-        }
-
-        // ============================================
-        // AUTH LOGIC - SUPABASE
-        // ============================================
-
-        // Check session on load
-        async function checkSession() {
-            if (!useSupabase) return;
-            const { data: { session } } = await supabase.auth.getSession();
-            if (session) {
-                userSession = session.user;
-                await fetchUserProfile(session.user.id);
-                updateUIForLoggedInUser();
-            }
-        }
-
-        // Fetch additional user data (Role, etc) from 'profiles' table
-        async function fetchUserProfile(userId) {
-            if (!useSupabase) return;
-            // Default profile data
-            userProfile = {
-                full_name: userSession.user.email.split('@')[0], // Fallback name
-                role: 'User Member' // Default role
-            };
-
-            try {
-                const { data, error } = await supabase
-                    .from('profiles')
-                    .select('*')
-                    .eq('id', userId)
-                    .single();
-                
-                if (data && !error) {
-                    userProfile.full_name = data.full_name || data.username || userProfile.full_name;
-                    userProfile.role = data.role || data.user_type || 'User Member';
-                }
-            } catch (err) {
-                console.warn('Could not fetch profile table, using defaults.');
-            }
-        }
-
-        window.switchAuthTab = function(mode) {
-            authMode = mode;
-            document.getElementById('tabLogin').classList.toggle('active', mode === 'login');
-            document.getElementById('tabRegister').classList.toggle('active', mode === 'register');
-            
-            const title = mode === 'login' ? 'Masuk Akun' : 'Daftar Akun Baru';
-            const desc = mode === 'login' ? 'Silakan masuk untuk melanjutkan pembayaran' : 'Buat akun untuk memulai pengalaman Anda';
-            const btnText = mode === 'login' ? 'Masuk Sekarang' : 'Daftar Sekarang';
-            
-            document.getElementById('authTitle').innerText = title;
-            document.getElementById('authDesc').innerText = desc;
-            document.getElementById('authBtnText').innerText = btnText;
-        }
-
-        window.handleAuthSubmit = async function() {
-            if (!useSupabase) {
-                showToast('Sistem Auth tidak tersedia', 'error');
-                return;
-            }
-
-            const email = document.getElementById('authEmail').value;
-            const password = document.getElementById('authPassword').value;
-            const btn = document.getElementById('authSubmitBtn');
-            const loader = document.getElementById('authBtnLoader');
-            const btnText = document.getElementById('authBtnText');
-
-            // UI Loading state
-            btn.disabled = true;
-            loader.style.display = 'inline-block';
-            btnText.style.opacity = '0.7';
-
-            try {
-                let error = null;
-
-                if (authMode === 'login') {
-                    const { data, error: err } = await supabase.auth.signInWithPassword({ email, password });
-                    error = err;
-                } else {
-                    const { data, error: err } = await supabase.auth.signUp({ email, password });
-                    error = err;
-                    // If signup requires email confirmation, Supabase might return null user but no error.
-                    if (!error && data.user === null) {
-                        showToast('Pendaftaran berhasil! Silakan cek email untuk verifikasi.', 'success');
-                        window.closeAuthModal();
-                        resetAuthForm();
-                        return;
-                    }
-                }
-
-                if (error) throw error;
-
-                // Success
-                showToast(`Berhasil ${authMode === 'login' ? 'Masuk' : 'Mendaftar'}!`, 'success');
-                window.closeAuthModal();
-                resetAuthForm();
-
-                // Refresh session data immediately
-                await checkSession();
-
-                // Execute pending action (e.g., go to payment modal)
-                if (pendingAction) {
-                    pendingAction();
-                    pendingAction = null;
-                }
-
-            } catch (err) {
-                showToast(err.message || 'Terjadi kesalahan', 'error');
-            } finally {
-                btn.disabled = false;
-                loader.style.display = 'none';
-                btnText.style.opacity = '1';
-            }
-        }
-
-        window.handleLogout = async function() {
-            if (!useSupabase) return;
-            await supabase.auth.signOut();
-            userSession = null;
-            userProfile = null;
-            document.getElementById('headerProfileBtn').style.display = 'none';
-            window.navigateHome();
-            showToast('Anda telah keluar', 'success');
-        }
-
-        function updateUIForLoggedInUser() {
-            if (userSession) {
-                document.getElementById('headerProfileBtn').style.display = 'flex';
-            }
-        }
-
-        function resetAuthForm() {
-            document.getElementById('authEmail').value = '';
-            document.getElementById('authPassword').value = '';
-        }
-
-        window.openAuthModal = function(callback) {
-            pendingAction = callback;
-            document.getElementById('authModal').classList.add('active');
-        }
-
-        window.closeAuthModal = function() {
-            document.getElementById('authModal').classList.remove('active');
-            pendingAction = null;
-        }
 
         // ============================================
         // ADVANCED AD SYSTEM — MODAL ONLY
@@ -1567,6 +1096,7 @@
         // FUNGSI GENERATE ID PESANAN
         function generateOrderID() {
             const prefix = "WH"; 
+            // Karakter unik tanpa angka 0 dan huruf O agar tidak membingungkan
             const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; 
             let result = prefix + "-";
             for (let i = 0; i < 6; i++) {
@@ -2163,22 +1693,6 @@
         document.getElementById('btn-goto-payment').onclick = function() {
             if (!currentProduct) return;
             
-            // CHECK AUTHENTICATION
-            if (!userSession) {
-                // User is NOT logged in -> Open Auth Modal
-                window.openAuthModal(() => {
-                    // This callback runs AFTER successful login
-                    // Then proceed to payment logic
-                    proceedToPayment();
-                });
-                return;
-            }
-
-            // User is logged in -> Proceed directly
-            proceedToPayment();
-        };
-
-        function proceedToPayment() {
             const basePrice = Number(getField(currentProduct, 'price')) || 0;
             const isAddOn = toggleSwitch.checked;
             const customAddonPrice = Number(getField(currentProduct, 'cover_letter_price')) || 0;
@@ -2218,7 +1732,7 @@
             paymentView.classList.add('active');
             showToast(`Kode unik Rp ${uniqueCode} ditambahkan untuk verifikasi.`, 'success');
             lockWhatsAppButton();
-        }
+        };
 
         window.backToProduct = function() {
             clearPaymentTimer();
@@ -2300,11 +1814,6 @@
             // 2. Masukkan ID Pesanan ke Pesan WhatsApp
             let message = `Halo Min, saya ingin membeli CV berikut:\n\n*ID Pesanan:* ${currentOrderId}\n*Jenis CV:* ${templateName}\n*Total Pembayaran (Unik):* ${formattedTotal}\n*Waktu Pesanan:* ${orderTime}`;
             
-            // Tambah info user jika login
-            if (userSession && userProfile) {
-                message += `\n\n*Data Pembeli:*\nNama: ${userProfile.full_name}\nEmail: ${userSession.user.email}`;
-            }
-
             const isAddOn = toggleSwitch.checked;
             if (isAddOn) {
                 const customPrice = Number(getField(currentProduct, 'cover_letter_price')) || 0;
@@ -2344,9 +1853,6 @@
         async function init() {
             console.log('%c[WRITEHUB] Initializing...', 'color: blue; font-weight: bold;');
             initSlider();
-            
-            // Cek sesi user saat load
-            await checkSession();
             
             if (useSupabase) {
                 const ads = await fetchAds();
