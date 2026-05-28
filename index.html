@@ -3,260 +3,289 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>WRITEHUB | CV Profesional Oleh Ahlinya</title>
+    <title>WRITEHUB | Professional Resume Templates</title>
+    <meta name="description" content="Template CV profesional ATS-friendly untuk karir impian Anda.">
     
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Fonts: Inter & Plus Jakarta Sans for Headings to give that modern startup look -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
+        /* --- MODERN DESIGN TOKENS --- */
         :root {
-            --primary: #2563eb;
-            --primary-dark: #1e40af;
-            --primary-light: #eff6ff;
-            --bg-body: #f8fafc;
+            /* Colors: A sophisticated Slate & Indigo palette */
+            --primary: #4f46e5;       /* Indigo 600 */
+            --primary-hover: #4338ca; /* Indigo 700 */
+            --primary-light: #eef2ff; /* Indigo 50 */
+            
+            --text-main: #0f172a;     /* Slate 900 */
+            --text-muted: #64748b;    /* Slate 500 */
+            --text-light: #94a3b8;    /* Slate 400 */
+            
+            --bg-body: #f8fafc;       /* Slate 50 */
             --bg-card: #ffffff;
-            --text-main: #0f172a;
-            --text-muted: #64748b;
-            --border: #e2e8f0;
-            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
-            --radius: 16px;
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            --danger: #ef4444;
+            --bg-glass: rgba(255, 255, 255, 0.85);
+            
+            --border: #e2e8f0;        /* Slate 200 */
+            --border-focus: #a5b4fc;  /* Indigo 300 */
+            
             --success: #10b981;
+            --danger: #ef4444;
             --warning: #f59e0b;
+
+            /* Shadows: Soft, diffused shadows for depth */
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-glow: 0 0 15px rgba(79, 70, 229, 0.15);
+
+            /* Radius & Transition */
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 20px;
+            --radius-full: 9999px;
+            
+            --ease-out: cubic-bezier(0.215, 0.61, 0.355, 1);
+            --transition: all 0.3s var(--ease-out);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        /* --- RESET & BASE --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         
         body { 
             background-color: var(--bg-body); 
             color: var(--text-main); 
-            line-height: 1.5;
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
             -webkit-font-smoothing: antialiased;
             overflow-x: hidden;
-            padding-bottom: 80px;
+            padding-bottom: 100px;
             scroll-behavior: smooth;
         }
 
-        a { text-decoration: none; color: inherit; transition: var(--transition); }
-        img { display: block; max-width: 100%; }
-        button, input { font-family: inherit; border: none; outline: none; }
+        h1, h2, h3, h4, h5, h6 { font-family: 'Plus Jakarta Sans', sans-serif; letter-spacing: -0.02em; }
+        
+        a { text-decoration: none; color: inherit; }
+        img { display: block; max-width: 100%; height: auto; }
+        button, input, select, textarea { font-family: inherit; border: none; outline: none; }
+        ul { list-style: none; }
 
-        .container { max-width: 1200px; margin: 0 auto; padding: 0 16px; }
+        /* --- UTILITIES --- */
+        .container { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+        .hidden { display: none !important; }
+        .flex { display: flex; }
+        .items-center { align-items: center; }
+        .justify-between { justify-content: space-between; }
+        .gap-2 { gap: 0.5rem; }
+        .gap-4 { gap: 1rem; }
+        .text-sm { font-size: 0.875rem; }
+        .font-bold { font-weight: 700; }
+        .truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
         /* --- HEADER --- */
         header {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--border);
             position: sticky;
             top: 0;
             z-index: 100;
-            padding: 12px 0;
+            background: var(--bg-glass);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border);
+            padding: 16px 0;
+            transition: var(--transition);
         }
 
         .nav-wrapper {
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            gap: 16px;
+            gap: 24px;
         }
 
         .logo {
             display: flex;
             align-items: center;
-            gap: 8px;
-            font-weight: 700;
-            font-size: 1.1rem;
+            gap: 12px;
+            font-weight: 800;
+            font-size: 1.25rem;
             color: var(--text-main);
-            white-space: nowrap;
+            letter-spacing: -0.03em;
         }
-        .logo img { height: 32px; width: auto; object-fit: contain; } 
+        .logo img { height: 36px; width: auto; } 
 
+        /* Modern Search Bar */
         .search-box {
             flex: 1;
+            max-width: 500px;
             position: relative;
-            z-index: 1000;
         }
 
         .search-box input {
             width: 100%;
-            padding: 10px 16px 10px 36px;
-            border-radius: 50px;
-            background: var(--bg-body);
+            padding: 14px 20px 14px 48px;
+            border-radius: var(--radius-full);
+            background: #f1f5f9;
             border: 1px solid transparent;
             color: var(--text-main);
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             transition: var(--transition);
         }
+
         .search-box input:focus {
             background: var(--bg-card);
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px var(--primary-light);
-        }
-        .search-box i.fa-search {
-            position: absolute;
-            left: 14px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--text-muted);
-            font-size: 0.85rem;
-            z-index: 2;
+            box-shadow: 0 0 0 4px var(--primary-light);
+            transform: translateY(-1px);
         }
 
+        .search-box i.fa-search {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-light);
+            pointer-events: none;
+            transition: var(--transition);
+        }
+        .search-box input:focus + i { color: var(--primary); }
+
+        /* Search Suggestions Dropdown */
         .search-suggestions {
             position: absolute;
-            top: 110%;
+            top: calc(100% + 12px);
             left: 0;
             right: 0;
-            background: white;
-            border-radius: 12px;
+            background: var(--bg-card);
+            border-radius: var(--radius-md);
             box-shadow: var(--shadow-lg);
             border: 1px solid var(--border);
             display: none;
             flex-direction: column;
-            max-height: 300px;
+            max-height: 320px;
             overflow-y: auto;
-            z-index: 1001;
-            padding: 6px 0;
+            z-index: 101;
+            padding: 8px;
+            animation: slideUpFade 0.2s ease-out;
         }
-        .search-suggestions.active {
-            display: flex;
-            animation: slideDownFade 0.2s ease-out;
-        }
-        @keyframes slideDownFade {
-            from { opacity: 0; transform: translateY(-10px); }
+        @keyframes slideUpFade {
+            from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
+
         .suggestion-item {
-            padding: 10px 16px;
+            padding: 12px 16px;
+            border-radius: var(--radius-sm);
             font-size: 0.9rem;
             color: var(--text-main);
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            transition: background 0.1s;
+            transition: background 0.15s;
         }
         .suggestion-item:hover {
             background: var(--bg-body);
             color: var(--primary);
         }
-        .suggestion-content {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            flex: 1;
-        }
 
         .top-badge {
-            background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%);
+            background: linear-gradient(135deg, #f59e0b, #d97706);
             color: white;
             font-size: 0.65rem;
             font-weight: 800;
-            padding: 2px 8px;
-            border-radius: 4px;
+            padding: 3px 8px;
+            border-radius: 6px;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
-            box-shadow: 0 2px 4px rgba(217, 119, 6, 0.2);
-            flex-shrink: 0;
-            display: inline-block;
+            letter-spacing: 0.05em;
+            box-shadow: 0 2px 5px rgba(217, 119, 6, 0.25);
         }
 
-        .rank-badge {
-            background: #f1f5f9;
-            color: #64748b;
-            font-size: 0.7rem;
-            font-weight: 700;
-            padding: 2px 6px;
-            border-radius: 4px;
-            min-width: 20px;
-            text-align: center;
-            flex-shrink: 0;
-            margin-left: 8px;
-            border: 1px solid #e2e8f0;
-        }
-
-        .no-suggestion {
-            padding: 12px 16px;
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            text-align: center;
-        }
-
-        /* --- HERO SLIDER --- */
+        /* --- HERO SECTION --- */
         .hero-section {
-            margin-top: 20px;
+            margin-top: 32px;
             position: relative;
             width: 100%;
-            aspect-ratio: 1280 / 500;
-            max-width: 1280px;
-            margin-left: auto;
-            margin-right: auto;
-            background: #e2e8f0;
-            border-radius: var(--radius);
+            aspect-ratio: 16/6; /* Modern wide aspect ratio */
+            max-height: 400px;
+            border-radius: var(--radius-lg);
             overflow: hidden;
             box-shadow: var(--shadow-md);
+            background: #e2e8f0;
         }
+        
         .slider-container { width: 100%; height: 100%; position: relative; }
-        .slide { position: absolute; inset: 0; opacity: 0; transition: opacity 0.8s ease-in-out; display: flex; align-items: center; justify-content: center; }
-        .slide.active { opacity: 1; z-index: 1; }
+        
+        .slide { 
+            position: absolute; inset: 0; opacity: 0; 
+            transition: opacity 0.6s ease-in-out; 
+            display: flex; align-items: center; justify-content: center;
+            pointer-events: none;
+        }
+        .slide.active { opacity: 1; z-index: 1; pointer-events: auto; }
         .slide img { width: 100%; height: 100%; object-fit: cover; }
 
         .slider-btn {
             position: absolute; top: 50%; transform: translateY(-50%);
-            background: rgba(255, 255, 255, 0.8); color: var(--text-main);
-            width: 36px; height: 36px; border-radius: 50%;
+            background: rgba(255, 255, 255, 0.9); color: var(--text-main);
+            width: 44px; height: 44px; border-radius: 50%;
             display: flex; align-items: center; justify-content: center; z-index: 2;
-            cursor: pointer; transition: 0.2s; opacity: 0;
+            cursor: pointer; transition: var(--transition); opacity: 0;
+            box-shadow: var(--shadow-md);
         }
         .hero-section:hover .slider-btn { opacity: 1; }
-        .slider-btn:hover { background: white; transform: translateY(-50%) scale(1.1); }
-        .prev-btn { left: 15px; }
-        .next-btn { right: 15px; }
+        .slider-btn:hover { transform: translateY(-50%) scale(1.1); background: white; }
+        .prev-btn { left: 20px; }
+        .next-btn { right: 20px; }
 
         .slider-dots {
-            position: absolute; bottom: 15px; left: 50%; transform: translateX(-50%);
-            display: flex; gap: 6px; z-index: 2;
+            position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
+            display: flex; gap: 8px; z-index: 2;
+            background: rgba(0,0,0,0.2);
+            padding: 6px 12px;
+            border-radius: 20px;
+            backdrop-filter: blur(4px);
         }
-        .dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.5); cursor: pointer; transition: 0.3s; }
+        .dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.4); cursor: pointer; transition: var(--transition); }
         .dot.active { background: white; width: 20px; border-radius: 10px; }
 
-        /* --- FILTER BAR --- */
+        /* --- FILTERS --- */
         .filter-bar {
-            display: flex; gap: 10px; margin: 24px 0;
-            overflow-x: auto; padding-bottom: 4px;
+            display: flex; gap: 12px; margin: 32px 0;
+            overflow-x: auto; padding-bottom: 8px;
             -ms-overflow-style: none; scrollbar-width: none;
         }
         .filter-bar::-webkit-scrollbar { display: none; }
+        
         .filter-chip {
-            padding: 6px 14px; background: white; border: 1px solid var(--border);
-            border-radius: 50px; font-size: 0.85rem; color: var(--text-muted);
-            white-space: nowrap; cursor: pointer; transition: var(--transition);
+            padding: 10px 20px; background: white; border: 1px solid var(--border);
+            border-radius: var(--radius-full); font-size: 0.9rem; font-weight: 500;
+            color: var(--text-muted); white-space: nowrap; cursor: pointer;
+            transition: var(--transition); user-select: none;
         }
-        .filter-chip:hover, .filter-chip.active {
+        .filter-chip:hover {
+            border-color: var(--primary); color: var(--primary);
+            transform: translateY(-1px);
+        }
+        .filter-chip.active {
             background: var(--primary); color: white; border-color: var(--primary);
-            box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2);
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25);
         }
 
         /* --- PRODUCT GRID --- */
         .product-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-            margin-bottom: 60px;
+            gap: 20px;
+            padding-bottom: 60px;
         }
+        @media (min-width: 640px) { .product-grid { grid-template-columns: repeat(3, 1fr); } }
+        @media (min-width: 1024px) { .product-grid { grid-template-columns: repeat(4, 1fr); } }
 
-        @media (min-width: 640px) { .product-grid { grid-template-columns: repeat(3, 1fr); gap: 16px; } }
-        @media (min-width: 1024px) { .product-grid { grid-template-columns: repeat(4, 1fr); gap: 20px; } }
-
-        /* --- CARD STYLE --- */
+        /* --- CARD STYLE (Redesigned) --- */
         .cv-card {
             background: var(--bg-card);
-            border-radius: 12px;
+            border-radius: var(--radius-lg);
             overflow: hidden;
             box-shadow: var(--shadow-sm);
             transition: var(--transition);
@@ -265,17 +294,18 @@
             border: 1px solid var(--border);
             display: flex;
             flex-direction: column;
+            group: 'card';
         }
 
         .cv-card:hover {
-            transform: translateY(-4px);
+            transform: translateY(-6px);
             box-shadow: var(--shadow-lg);
-            border-color: var(--primary-light);
+            border-color: var(--border-focus);
         }
 
         .card-image {
             position: relative;
-            padding-top: 100%;
+            padding-top: 128%; /* Slightly taller portrait ratio */
             background: #f1f5f9;
             overflow: hidden;
         }
@@ -285,26 +315,36 @@
             display: flex; transition: transform 0.5s ease;
         }
         .card-slide { min-width: 100%; height: 100%; }
-        .card-slide img { width: 100%; height: 100%; object-fit: cover; }
+        .card-slide img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.7s ease; }
+        .cv-card:hover .card-slide img { transform: scale(1.05); }
 
         .card-content {
-            padding: 12px;
+            padding: 16px;
             flex: 1;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
             background: white;
             position: relative;
-            z-index: 5;
+            z-index: 2;
+        }
+
+        .card-category {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 6px;
+            display: inline-block;
         }
 
         .card-title {
-            font-size: 0.9rem;
-            font-weight: 600;
+            font-size: 1rem;
+            font-weight: 700;
             color: var(--text-main);
-            margin-bottom: 8px;
+            margin-bottom: 12px;
             line-height: 1.4;
-            height: 2.5rem;
+            height: 2.8rem;
             overflow: hidden;
             display: -webkit-box;
             -webkit-line-clamp: 2;
@@ -312,44 +352,58 @@
         }
 
         .card-footer {
+            margin-top: auto;
             display: flex;
             justify-content: space-between;
             align-items: flex-end;
-            margin-top: auto;
+            padding-top: 12px;
+            border-top: 1px dashed var(--border);
         }
 
-        .price-container { display: flex; flex-direction: column; align-items: flex-start; }
-        .price-original { font-size: 0.7rem; color: var(--text-muted); text-decoration: line-through; font-weight: 500; margin-bottom: 2px; white-space: nowrap; }
-        .price-main { font-size: 1rem; font-weight: 700; color: var(--primary); line-height: 1.1; white-space: nowrap; }
+        .price-container { display: flex; flex-direction: column; }
+        .price-original { font-size: 0.75rem; color: var(--text-light); text-decoration: line-through; margin-bottom: 2px; }
+        .price-main { font-size: 1.1rem; font-weight: 800; color: var(--primary); letter-spacing: -0.02em; }
 
-        @media (min-width: 768px) {
-            .card-title { font-size: 1rem; height: 2.8rem; }
-            .price-original { font-size: 0.8rem; }
-            .price-main { font-size: 1.2rem; }
+        .sold-info { 
+            font-size: 0.75rem; color: var(--text-muted); 
+            background: var(--bg-body); padding: 4px 8px; border-radius: 6px;
+            font-weight: 500;
         }
 
-        .sold-info { font-size: 0.7rem; color: var(--text-muted); text-align: right; white-space: nowrap; }
+        /* Skeleton Loading */
+        .skeleton-pulse { background: linear-gradient(90deg, #f0f0f0 25%, #f8f8f8 50%, #f0f0f0 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; }
+        @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
 
-        /* --- MODAL --- */
+        /* --- MODAL OVERLAY --- */
         .modal-overlay {
-            position: fixed; inset: 0; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px);
-            z-index: 2000; display: flex; align-items: center; justify-content: center;
+            position: fixed; inset: 0; background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(5px);
+            z-index: 1000; display: flex; align-items: center; justify-content: center;
             opacity: 0; pointer-events: none; transition: 0.3s; padding: 16px;
         }
         .modal-overlay.active { opacity: 1; pointer-events: all; }
 
         .modal-content {
-            background: white; width: 100%; max-width: 900px; border-radius: 20px;
+            background: white; width: 100%; max-width: 1000px; border-radius: 24px;
             overflow: hidden; display: flex; flex-direction: column;
-            box-shadow: var(--shadow-xl); transform: scale(0.95); transition: 0.3s; position: relative;
+            box-shadow: var(--shadow-xl); transform: scale(0.95) translateY(10px); 
+            transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1); position: relative;
             max-height: 90vh;
         }
-        .modal-overlay.active .modal-content { transform: scale(1); }
+        .modal-overlay.active .modal-content { transform: scale(1) translateY(0); }
 
+        .btn-close {
+            position: absolute; top: 20px; right: 20px;
+            background: white; width: 40px; height: 40px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; z-index: 20; box-shadow: var(--shadow-md);
+            color: var(--text-main); transition: 0.2s; border: 1px solid var(--border);
+        }
+        .btn-close:hover { background: var(--bg-body); transform: rotate(90deg); }
+
+        /* Modal Layout */
         .modal-body { display: flex; flex-direction: column; overflow: hidden; height: 100%; }
-        
         @media (min-width: 768px) {
-            .modal-body { flex-direction: row; height: 550px; }
+            .modal-body { flex-direction: row; height: 600px; }
             .modal-img-wrapper { width: 55%; }
             .modal-info { width: 45%; }
         }
@@ -358,16 +412,13 @@
             position: relative;
             background: #f8fafc;
             overflow: hidden;
-            height: 300px;
+            height: 350px;
             flex-shrink: 0;
         }
         @media (min-width: 768px) { .modal-img-wrapper { height: 100%; } }
 
         .carousel-track {
-            display: flex;
-            height: 100%;
-            transition: transform 0.3s ease-out;
-            cursor: grab;
+            display: flex; height: 100%; transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1); cursor: grab;
         }
         .carousel-track:active { cursor: grabbing; }
         .carousel-slide { min-width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; }
@@ -375,436 +426,276 @@
 
         .carousel-nav {
             position: absolute; top: 50%; transform: translateY(-50%);
-            width: 32px; height: 32px; border-radius: 50%;
-            background: rgba(255,255,255,0.7); color: #000;
+            width: 40px; height: 40px; border-radius: 50%;
+            background: rgba(255,255,255,0.9); color: #000;
             display: flex; align-items: center; justify-content: center;
-            cursor: pointer; z-index: 5; user-select: none;
+            cursor: pointer; z-index: 5; box-shadow: var(--shadow-md);
+            transition: 0.2s; border: 1px solid var(--border);
         }
-        .carousel-nav:hover { background: white; }
-        .c-prev { left: 10px; }
-        .c-next { right: 10px; }
+        .carousel-nav:hover { background: white; transform: translateY(-50%) scale(1.1); }
+        .c-prev { left: 20px; }
+        .c-next { right: 20px; }
 
         .carousel-dots {
-            position: absolute; bottom: 15px; left: 0; right: 0;
-            display: flex; justify-content: center; gap: 6px; z-index: 5;
+            position: absolute; bottom: 20px; left: 0; right: 0;
+            display: flex; justify-content: center; gap: 8px; z-index: 5;
         }
-        .c-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.5); cursor: pointer; }
-        .c-dot.active { background: white; transform: scale(1.3); }
-        
-        .modal-info { padding: 24px; display: flex; flex-direction: column; overflow-y: auto; height: 100%; }
-        .modal-cat { color: var(--primary); font-weight: 600; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
-        .modal-title { font-size: 1.4rem; font-weight: 700; color: var(--text-main); margin-bottom: 12px; line-height: 1.3; flex-shrink: 0; }
+        .c-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(0,0,0,0.2); cursor: pointer; transition: 0.3s; }
+        .c-dot.active { background: var(--primary); width: 24px; border-radius: 10px; }
+
+        /* Modal Info Panel */
+        .modal-info { 
+            padding: 32px; display: flex; flex-direction: column; 
+            overflow-y: auto; height: 100%; position: relative;
+        }
+        .modal-info::-webkit-scrollbar { width: 6px; }
+        .modal-info::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+
+        .modal-cat { color: var(--primary); font-weight: 700; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px; }
+        .modal-title { font-size: 1.6rem; font-weight: 800; color: var(--text-main); margin-bottom: 16px; line-height: 1.2; }
         
         .modal-price-wrap {
-            display: flex; align-items: baseline; gap: 10px;
-            margin-bottom: 16px; flex-shrink: 0;
+            display: flex; align-items: baseline; gap: 12px;
+            margin-bottom: 24px; padding-bottom: 24px;
+            border-bottom: 1px solid var(--border);
         }
-        .modal-price-original { font-size: 1rem; color: var(--text-muted); text-decoration: line-through; font-weight: 500; }
-        .modal-price-final { font-size: 1.5rem; font-weight: 700; color: var(--primary); }
+        .modal-price-original { font-size: 1.1rem; color: var(--text-muted); text-decoration: line-through; font-weight: 500; }
+        .modal-price-final { font-size: 1.8rem; font-weight: 800; color: var(--primary); letter-spacing: -0.03em; }
 
         .modal-desc { 
-            color: var(--text-muted); font-size: 0.95rem; line-height: 1.6;
-            flex-grow: 1; overflow-y: auto; margin-bottom: 16px;
-            white-space: pre-wrap;
+            color: var(--text-muted); font-size: 0.95rem; line-height: 1.7;
+            flex-grow: 1; overflow-y: auto; margin-bottom: 24px; white-space: pre-wrap;
         }
         
+        /* Addon Toggle */
         .addon-section {
-            background: var(--bg-body);
-            padding: 12px; border-radius: 12px; margin-bottom: 16px;
-            border: 1px solid var(--border); flex-shrink: 0;
+            background: var(--bg-body); padding: 16px; border-radius: var(--radius-md); 
+            margin-bottom: 24px; border: 1px solid var(--border);
         }
         .addon-header { display: flex; justify-content: space-between; align-items: center; }
-        .addon-title { font-size: 0.9rem; font-weight: 600; color: var(--text-main); display: flex; align-items: center; gap: 8px; }
-        .addon-price { font-size: 0.8rem; color: var(--text-muted); margin-top: 4px; }
+        .addon-title { font-size: 0.95rem; font-weight: 600; color: var(--text-main); display: flex; align-items: center; gap: 10px; }
+        .addon-price { font-size: 0.85rem; color: var(--text-muted); margin-top: 4px; margin-left: 28px; }
         
-        .switch { position: relative; display: inline-block; width: 44px; height: 24px; }
+        .switch { position: relative; display: inline-block; width: 48px; height: 26px; flex-shrink: 0; }
         .switch input { opacity: 0; width: 0; height: 0; }
         .slider-toggle {
-            position: absolute; cursor: pointer;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background-color: #ccc; transition: .4s; border-radius: 34px;
+            position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #cbd5e1; transition: .4s; border-radius: 34px;
         }
         .slider-toggle:before {
-            position: absolute; content: "";
-            height: 18px; width: 18px;
-            left: 3px; bottom: 3px;
-            background-color: white; transition: .4s; border-radius: 50%;
+            position: absolute; content: ""; height: 20px; width: 20px;
+            left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
         input:checked + .slider-toggle { background-color: var(--primary); }
-        input:checked + .slider-toggle:before { transform: translateX(20px); }
+        input:checked + .slider-toggle:before { transform: translateX(22px); }
 
+        /* Primary Action Button */
         .btn-buy {
-            background: var(--primary); color: white; padding: 16px;
-            border-radius: 12px; font-weight: 600; font-size: 1rem; text-align: center;
-            transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%;
-            cursor: pointer; flex-shrink: 0;
+            background: var(--primary); color: white; padding: 18px;
+            border-radius: var(--radius-md); font-weight: 700; font-size: 1.05rem; text-align: center;
+            transition: var(--transition); display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%;
+            cursor: pointer; flex-shrink: 0; box-shadow: 0 4px 6px rgba(79, 70, 229, 0.2);
         }
-        .btn-buy:hover { background: var(--primary-dark); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3); }
+        .btn-buy:hover { background: var(--primary-hover); transform: translateY(-2px); box-shadow: 0 8px 15px rgba(79, 70, 229, 0.3); }
+        .btn-buy:active { transform: translateY(0); }
 
-        .btn-close {
-            position: absolute; top: 20px; right: 20px;
-            background: white; width: 36px; height: 36px; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            cursor: pointer; z-index: 20; box-shadow: var(--shadow-md);
-            color: var(--text-main); transition: 0.2s;
-        }
-        .btn-close:hover { background: var(--bg-body); }
-
-        /* ============================================
-           MODAL AD BANNER — GOOGLE ADS STYLE SPONSOR
-           ============================================ */
+        /* --- MODAL AD BANNER --- */
         .modal-ad-banner {
-            display: block;
-            width: 100%;
-            flex-shrink: 0;
-            overflow: hidden;
-            position: relative;
-            background: transparent;
-            border-radius: 12px;
-            border: 1px solid rgba(0,0,0,0.05);
-            height: 0;
-            opacity: 0;
-            margin-bottom: 0;
-            pointer-events: none;
-            transition: height 0.4s cubic-bezier(0.25, 1, 0.5, 1),
-                        opacity 0.3s ease 0.05s,
-                        margin-bottom 0.4s ease;
+            display: block; width: 100%; flex-shrink: 0; overflow: hidden;
+            position: relative; background: transparent; border-radius: var(--radius-md);
+            margin-bottom: 0; height: 0; opacity: 0; pointer-events: none;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .modal-ad-banner.visible {
-            opacity: 1;
-            pointer-events: auto;
-            margin-bottom: 20px;
+            opacity: 1; pointer-events: auto; margin-bottom: 24px; height: auto;
         }
-
-        .modal-ad-banner a {
-            display: block;
-            width: 100%;
-            height: 100%;
-            position: relative;
-            overflow: hidden;
-            border-radius: 12px;
-        }
-        .modal-ad-banner img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover; 
-            object-position: center;
-            display: block;
-            transition: transform 0.5s ease;
-        }
-        .modal-ad-banner a:hover img {
-            transform: scale(1.03);
-        }
-
+        .modal-ad-banner img { width: 100%; border-radius: var(--radius-md); border: 1px solid var(--border); }
         .ad-label {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            z-index: 10;
-            pointer-events: none;
-            background: rgba(255, 255, 255, 0.55); 
-            backdrop-filter: blur(6px);
-            -webkit-backdrop-filter: blur(6px);
-            color: #334155; 
-            font-size: 0.7rem; 
-            font-weight: 600; 
-            letter-spacing: 0.02em; 
-            padding: 4px 10px;
-            border-radius: 99px; 
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-            overflow: hidden;
-            line-height: 1.2;
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            transition: background 0.2s ease;
-        }
-        
-        .modal-ad-banner a:hover + .ad-label, 
-        .modal-ad-banner:hover .ad-label {
-            background: rgba(255, 255, 255, 0.85);
-            color: #000;
+            position: absolute; top: 8px; right: 8px; z-index: 10;
+            background: rgba(255,255,255,0.9); backdrop-filter: blur(4px);
+            font-size: 0.65rem; font-weight: 700; padding: 4px 8px;
+            border-radius: 4px; color: #64748b; border: 1px solid rgba(0,0,0,0.05);
         }
 
         /* --- PAYMENT VIEW --- */
         .payment-view {
-            display: none;
-            padding: 30px 24px;
-            height: 100%;
-            overflow-y: auto;
-            flex-direction: column;
-            animation: fadeIn 0.3s ease;
+            display: none; padding: 0; height: 100%; overflow-y: auto;
+            flex-direction: column; animation: fadeUp 0.3s ease;
         }
         .payment-view.active { display: flex; }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 
         .payment-header {
-            display: flex; align-items: center; gap: 10px;
-            margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid var(--border);
+            padding: 20px 24px; border-bottom: 1px solid var(--border);
+            background: white; position: sticky; top: 0; z-index: 10;
         }
-        .btn-back { background: none; font-size: 1.2rem; cursor: pointer; color: var(--text-muted); padding: 5px; }
-        .btn-back:hover { color: var(--primary); }
+        .btn-back { 
+            background: none; font-size: 1.1rem; cursor: pointer; 
+            color: var(--text-main); width: 32px; height: 32px; 
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 8px; transition: 0.2s;
+        }
+        .btn-back:hover { background: var(--bg-body); }
 
-        .summary-card { background: var(--bg-body); border-radius: 12px; padding: 16px; margin-bottom: 24px; }
-        .summary-row { display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 0.9rem; color: var(--text-muted); }
+        .payment-content { padding: 24px; }
+
+        .summary-card { 
+            background: var(--bg-body); border-radius: var(--radius-md); padding: 20px; margin-bottom: 24px;
+            border: 1px solid var(--border);
+        }
+        .summary-row { display: flex; justify-content: space-between; margin-bottom: 14px; font-size: 0.95rem; color: var(--text-muted); }
         .summary-row.total {
-            margin-top: 16px; padding-top: 12px; border-top: 1px dashed var(--border);
-            font-weight: 700; color: var(--text-main); font-size: 1.1rem; margin-bottom: 0;
+            margin-top: 20px; padding-top: 20px; border-top: 1px dashed var(--border);
+            font-weight: 700; color: var(--text-main); font-size: 1.2rem; margin-bottom: 0;
         }
 
         .unique-amount-alert {
-            background: #fff7ed; border: 1px solid #ffedd5; color: #c2410c;
-            padding: 12px; border-radius: 8px; font-size: 0.85rem; margin-bottom: 20px;
-            display: flex; gap: 10px; align-items: start;
+            background: #fffbeb; border: 1px solid #fcd34d; color: #b45309;
+            padding: 14px; border-radius: var(--radius-md); font-size: 0.85rem; margin-bottom: 24px;
+            display: flex; gap: 12px; align-items: start; line-height: 1.5;
         }
-        .unique-amount-alert i { margin-top: 3px; }
-        .unique-amount-alert strong { color: #ea580c; }
 
-        .payment-methods { display: flex; flex-direction: column; gap: 12px; margin-bottom: 24px; }
-        
+        .payment-methods { display: flex; flex-direction: column; gap: 16px; margin-bottom: 24px; }
         .payment-option-card {
-            border: 1px solid var(--border); border-radius: 12px; padding: 16px;
+            border: 1px solid var(--border); border-radius: var(--radius-md); padding: 16px;
             display: flex; justify-content: space-between; align-items: center;
             background: white; transition: 0.2s;
         }
         .payment-option-card:hover { border-color: var(--primary); box-shadow: var(--shadow-sm); }
         
-        .bank-info { display: flex; align-items: center; gap: 12px; }
-        .bank-logo-img { width: 60px; height: auto; max-height: 30px; object-fit: contain; }
-        .qris-img { width: 80px; height: 80px; border-radius: 8px; border: 1px solid #eee; }
-        .qris-container { display: flex; align-items: center; gap: 16px; }
-        .bank-details h4 { font-size: 0.95rem; margin-bottom: 2px; display: flex; align-items: center; gap: 8px; color: #333; }
-        .bank-number { font-family: monospace; font-size: 1.1rem; letter-spacing: 1px; color: var(--text-main); font-weight: 600; }
-        .bank-name { font-size: 0.75rem; color: var(--text-muted); }
+        .bank-info { display: flex; align-items: center; gap: 14px; }
+        .bank-logo-img { height: 28px; width: auto; object-fit: contain; }
+        .bank-details h4 { font-size: 1rem; font-weight: 700; color: #333; margin-bottom: 2px; }
+        .bank-number { font-family: 'Space Mono', monospace; font-size: 1.1rem; letter-spacing: 0.5px; color: var(--text-main); font-weight: 700; }
+        .bank-name { font-size: 0.8rem; color: var(--text-muted); font-weight: 500; }
 
         .btn-copy {
-            background: var(--bg-body); border: 1px solid var(--border);
-            padding: 8px 12px; border-radius: 8px; cursor: pointer;
-            font-size: 0.8rem; color: var(--primary); display: flex; align-items: center; gap: 6px;
-            transition: 0.2s; flex-shrink: 0;
+            background: white; border: 1px solid var(--border);
+            padding: 10px 16px; border-radius: 8px; cursor: pointer;
+            font-size: 0.85rem; font-weight: 600; color: var(--primary); 
+            display: flex; align-items: center; gap: 8px; transition: 0.2s; flex-shrink: 0;
         }
         .btn-copy:hover { background: var(--primary-light); border-color: var(--primary); }
 
         .btn-confirm-wa {
-            background: #25D366; color: white; padding: 16px;
-            border-radius: 12px; font-weight: 600; font-size: 1rem; text-align: center;
-            width: 100%; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px;
-            transition: 0.3s;
+            background: #25D366; color: white; padding: 18px;
+            border-radius: var(--radius-md); font-weight: 700; font-size: 1rem; 
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+            cursor: pointer; transition: 0.3s; width: 100%; box-shadow: 0 4px 6px rgba(37, 211, 102, 0.2);
         }
-        .btn-confirm-wa:hover { background: #1ebc57; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3); }
-        
-        .btn-confirm-wa.locked {
-            background-color: #9ca3af; cursor: not-allowed; opacity: 0.7;
-            pointer-events: none; box-shadow: none; transform: none;
-        }
-        
-        .mt-auto { margin-top: auto; }
+        .btn-confirm-wa:hover { background: #20bd5a; transform: translateY(-2px); box-shadow: 0 8px 12px rgba(37, 211, 102, 0.25); }
+        .btn-confirm-wa.locked { background: #94a3b8; cursor: not-allowed; pointer-events: none; transform: none; opacity: 0.8; box-shadow: none; }
 
         /* --- QRIS MODAL --- */
         .qris-modal-overlay {
-            position: fixed; inset: 0; background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(5px);
-            z-index: 3000; display: flex; align-items: center; justify-content: center;
-            opacity: 0; pointer-events: none; transition: 0.3s; padding: 16px;
+            position: fixed; inset: 0; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(8px);
+            z-index: 2000; display: flex; align-items: center; justify-content: center;
+            opacity: 0; pointer-events: none; transition: 0.3s; padding: 20px;
         }
         .qris-modal-overlay.active { opacity: 1; pointer-events: all; }
-
         .qris-modal-content {
-            background: white; width: 100%; max-width: 400px; border-radius: 20px;
-            padding: 30px 20px; text-align: center;
-            box-shadow: var(--shadow-xl); transform: scale(0.9); transition: 0.3s; position: relative;
+            background: white; width: 100%; max-width: 380px; border-radius: 24px;
+            padding: 32px; text-align: center; box-shadow: var(--shadow-xl);
+            transform: scale(0.9); transition: 0.3s; position: relative;
         }
         .qris-modal-overlay.active .qris-modal-content { transform: scale(1); }
-
-        .qris-modal-title { font-size: 1.2rem; font-weight: 700; color: var(--text-main); margin-bottom: 20px; }
+        
+        .qris-modal-title { font-size: 1.2rem; font-weight: 800; color: var(--text-main); margin-bottom: 20px; }
         .qris-modal-image-wrapper {
-            background: #fff; padding: 10px; border: 2px dashed var(--border);
-            border-radius: 12px; margin-bottom: 20px; display: flex; justify-content: center;
+            background: #fff; padding: 16px; border: 2px dashed var(--border);
+            border-radius: 16px; margin-bottom: 20px; display: flex; justify-content: center;
         }
-        .qris-modal-image-wrapper img { width: 200px; height: 200px; object-fit: contain; }
+        .qris-modal-image-wrapper img { width: 220px; height: 220px; object-fit: contain; }
         
         .qris-modal-price-area {
-            background: var(--bg-body); border: 1px solid var(--border);
-            border-radius: 12px; padding: 15px; margin-bottom: 10px;
-            cursor: pointer; transition: 0.2s; position: relative;
+            background: #f8fafc; border: 1px solid var(--border);
+            border-radius: 12px; padding: 16px; margin-bottom: 20px;
+            cursor: pointer; transition: 0.2s; position: relative; user-select: none;
         }
         .qris-modal-price-area:active { background: #e2e8f0; transform: scale(0.98); }
-        .qris-modal-price-area:hover { border-color: var(--primary); }
-        .copy-hint { font-size: 0.7rem; color: var(--primary); margin-bottom: 4px; font-weight: 600; text-transform: uppercase; }
-        .qris-modal-total { font-size: 1.5rem; font-weight: 800; color: var(--danger); }
-        .copy-icon-overlay { position: absolute; top: 10px; right: 10px; color: var(--primary); opacity: 0.5; }
-        .qris-modal-desc { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 20px; line-height: 1.4; }
+        .copy-hint { font-size: 0.7rem; color: var(--primary); margin-bottom: 4px; font-weight: 700; text-transform: uppercase; }
+        .qris-modal-total { font-size: 1.8rem; font-weight: 800; color: var(--danger); font-family: 'Space Mono', monospace; }
+        
         .qris-actions { display: flex; gap: 10px; justify-content: center; }
         .btn-close-qris {
-            background: var(--bg-body); color: var(--text-main); padding: 12px 24px;
+            background: var(--bg-body); color: var(--text-main); padding: 14px 32px;
             border-radius: 12px; font-weight: 600; cursor: pointer;
-            transition: 0.2s; border: 1px solid var(--border);
+            transition: 0.2s; border: 1px solid var(--border); font-size: 0.95rem;
         }
         .btn-close-qris:hover { background: #e2e8f0; }
 
         /* --- TOAST --- */
         .toast-container {
-            position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+            position: fixed; top: 24px; left: 50%; transform: translateX(-50%);
             z-index: 5000; display: flex; flex-direction: column; gap: 10px;
             pointer-events: none; width: 90%; max-width: 400px;
         }
         .toast {
             background: white; color: var(--text-main);
-            padding: 12px 16px; border-radius: 10px;
-            box-shadow: var(--shadow-lg); border-left: 4px solid var(--primary);
-            display: flex; align-items: center; gap: 12px;
-            animation: slideDown 0.3s ease-out forwards; opacity: 0; transform: translateY(-20px);
-            pointer-events: all; font-size: 0.9rem;
+            padding: 14px 20px; border-radius: 12px;
+            box-shadow: var(--shadow-lg); border: 1px solid var(--border);
+            display: flex; align-items: center; gap: 14px;
+            animation: toastEnter 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); opacity: 0; transform: translateY(-20px);
+            pointer-events: all; font-size: 0.9rem; font-weight: 500;
         }
-        .toast.success { border-left-color: var(--success); }
-        .toast.error { border-left-color: var(--danger); }
-        .toast.warning { border-left-color: var(--warning); }
+        .toast.success { border-left: 4px solid var(--success); }
+        .toast.error { border-left: 4px solid var(--danger); }
         .toast i { font-size: 1.2rem; flex-shrink: 0; }
         .toast.success i { color: var(--success); }
         .toast.error i { color: var(--danger); }
-        .toast.warning i { color: var(--warning); }
-        
-        @keyframes slideDown { to { opacity: 1; transform: translateY(0); } }
-        @keyframes fadeOut { to { opacity: 0; transform: translateY(-10px); } }
+        @keyframes toastEnter { to { opacity: 1; transform: translateY(0); } }
 
-        /* --- REVISED FOOTER --- */
+        /* --- FOOTER --- */
         footer {
-            background-color: #ffffff;
-            border-top: 1px solid var(--border);
-            margin-top: 60px;
-            padding: 40px 0 30px;
-            color: var(--text-muted);
-            font-size: 0.9rem;
-            position: relative;
-            z-index: 10;
+            background: white; border-top: 1px solid var(--border);
+            margin-top: 80px; padding: 60px 0 30px;
+            color: var(--text-muted); font-size: 0.9rem; position: relative; z-index: 10;
         }
+        .footer-content { display: flex; flex-direction: column; align-items: center; gap: 24px; text-align: center; }
+        .footer-logo { font-weight: 800; font-size: 1.5rem; color: var(--text-main); letter-spacing: -0.03em; }
+        .footer-links { display: flex; gap: 32px; }
+        .footer-links a { font-weight: 600; color: var(--text-muted); transition: 0.2s; }
+        .footer-links a:hover { color: var(--primary); }
 
-        .footer-content {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 20px;
-            text-align: center;
-        }
-
-        .footer-logo {
-            font-weight: 700;
-            font-size: 1.2rem;
-            color: var(--text-main);
-            margin-bottom: 4px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .footer-links {
-            display: flex;
-            gap: 24px;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        .footer-links a {
-            color: var(--text-muted);
-            font-weight: 500;
-            position: relative;
-            padding-bottom: 2px;
-        }
-
-        .footer-links a::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 1.5px;
-            bottom: 0;
-            left: 50%;
-            background-color: var(--primary);
-            transition: all 0.3s ease;
-        }
-
-        .footer-links a:hover {
-            color: var(--primary);
-        }
-
-        .footer-links a:hover::after {
-            width: 100%;
-            left: 0;
-        }
-
-        .footer-copyright {
-            font-size: 0.85rem;
-            opacity: 0.7;
-            margin-top: 10px;
-        }
-
-        /* --- BACK TO TOP BUTTON --- */
+        /* --- BACK TO TOP --- */
         .back-to-top {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background-color: var(--primary);
-            color: white;
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            border: none;
-            box-shadow: var(--shadow-lg);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.1rem;
-            z-index: 999;
-            opacity: 0;
-            pointer-events: none;
-            transform: translateY(20px);
+            position: fixed; bottom: 32px; right: 32px;
+            background: var(--text-main); color: white;
+            width: 50px; height: 50px; border-radius: 50%;
+            border: none; box-shadow: var(--shadow-lg); cursor: pointer;
+            display: flex; align-items: center; justify-content: center; font-size: 1.1rem;
+            z-index: 999; opacity: 0; pointer-events: none; transform: translateY(20px);
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
+        .back-to-top.visible { opacity: 1; pointer-events: auto; transform: translateY(0); }
+        .back-to-top:hover { transform: translateY(-4px); background: var(--primary); }
 
-        .back-to-top.visible {
-            opacity: 1;
-            pointer-events: auto;
-            transform: translateY(0);
-        }
-
-        .back-to-top:hover {
-            background-color: var(--primary-dark);
-            transform: translateY(-4px);
-            box-shadow: 0 10px 20px rgba(37, 99, 235, 0.3);
-        }
-
-        .back-to-top:active {
-            transform: translateY(-1px);
-        }
-
-        .modal-info::-webkit-scrollbar, .payment-view::-webkit-scrollbar { width: 6px; }
-        .modal-info::-webkit-scrollbar-thumb, .payment-view::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
-
-        @keyframes pulse { 0% { opacity: 0.6; } 50% { opacity: 1; } 100% { opacity: 0.6; } }
     </style>
 </head>
 <body oncontextmenu="return false;">
 
+    <!-- Toast Container -->
     <div class="toast-container" id="toastContainer"></div>
 
+    <!-- Header -->
     <header>
         <div class="container nav-wrapper">
-            <a href="www.writehub.my.id" class="logo">
+            <a href="https://writehub.my.id" class="logo">
                 <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjzgVAIKgZMS9W7eJKCaRyaFnoDviThQstfeD9l9mcwPxUDoovGo7xB3RQByxTXo15fGX0DIeTMxOWkVovnB4FC35iJN6ArGLOlBRI9U4d4gJ7VOTOp-Ki47RIaViiIs12QGjxRmGs2cQzCFniRpBE0GyNLW3s_03rvTcpPeHAruMaUdrIKNX8jaFZ1TcBw/s3264/28063.png" alt="Logo">
-                <span></span>
+                <span>WRITEHUB</span>
             </a>
             
             <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Cari template CV (ex: Creative, ATS, Manager)..." autocomplete="off">
                 <i class="fas fa-search"></i>
-                <input type="text" id="searchInput" placeholder="Cari CV..." autocomplete="off">
                 <div class="search-suggestions" id="searchSuggestions"></div>
             </div>
         </div>
     </header>
 
     <main class="container">
+        <!-- Hero Slider -->
         <section class="hero-section" id="heroSlider">
             <div class="slider-container" id="sliderTrack"></div>
             <button class="slider-btn prev-btn" onclick="window.prevSlide()"><i class="fas fa-chevron-left"></i></button>
@@ -812,53 +703,68 @@
             <div class="slider-dots" id="sliderDots"></div>
         </section>
 
+        <!-- Category Filters -->
         <div class="filter-bar" id="filterBar"></div>
 
+        <!-- Product Grid -->
         <div class="product-grid" id="productGrid">
-            <!-- Loading Skeletons -->
+            <!-- Skeletons Loading -->
             <div class="cv-card" style="cursor: default;">
-                <div class="card-image" style="background:#e2e8f0; animation: pulse 1.5s infinite;"></div>
+                <div class="card-image skeleton-pulse"></div>
                 <div class="card-content">
-                    <div style="height: 14px; background:#e2e8f0; width: 80%; margin-bottom: 6px; border-radius: 4px; animation: pulse 1.5s infinite;"></div>
-                    <div style="height: 14px; background:#e2e8f0; width: 60%; margin-bottom: 12px; border-radius: 4px; animation: pulse 1.5s infinite;"></div>
-                    <div style="height: 16px; background:#e2e8f0; width: 50%; border-radius: 4px; animation: pulse 1.5s infinite;"></div>
+                    <div style="height: 14px; width: 30%; background:#e2e8f0; border-radius: 4px; margin-bottom: 8px; skeleton-pulse;"></div>
+                    <div style="height: 20px; width: 90%; background:#e2e8f0; border-radius: 4px; margin-bottom: 8px; skeleton-pulse;"></div>
+                    <div style="height: 20px; width: 60%; background:#e2e8f0; border-radius: 4px; margin-bottom: 24px; skeleton-pulse;"></div>
+                    <div style="height: 24px; width: 40%; background:#e2e8f0; border-radius: 4px; skeleton-pulse;"></div>
                 </div>
             </div>
             <div class="cv-card" style="cursor: default;">
-                <div class="card-image" style="background:#e2e8f0; animation: pulse 1.5s infinite;"></div>
+                <div class="card-image skeleton-pulse"></div>
                 <div class="card-content">
-                    <div style="height: 14px; background:#e2e8f0; width: 80%; margin-bottom: 6px; border-radius: 4px; animation: pulse 1.5s infinite;"></div>
-                    <div style="height: 14px; background:#e2e8f0; width: 60%; margin-bottom: 12px; border-radius: 4px; animation: pulse 1.5s infinite;"></div>
-                    <div style="height: 16px; background:#e2e8f0; width: 50%; border-radius: 4px; animation: pulse 1.5s infinite;"></div>
+                    <div style="height: 14px; width: 30%; background:#e2e8f0; border-radius: 4px; margin-bottom: 8px; skeleton-pulse;"></div>
+                    <div style="height: 20px; width: 90%; background:#e2e8f0; border-radius: 4px; margin-bottom: 8px; skeleton-pulse;"></div>
+                    <div style="height: 20px; width: 60%; background:#e2e8f0; border-radius: 4px; margin-bottom: 24px; skeleton-pulse;"></div>
+                    <div style="height: 24px; width: 40%; background:#e2e8f0; border-radius: 4px; skeleton-pulse;"></div>
+                </div>
+            </div>
+            <div class="cv-card" style="cursor: default;">
+                <div class="card-image skeleton-pulse"></div>
+                <div class="card-content">
+                    <div style="height: 14px; width: 30%; background:#e2e8f0; border-radius: 4px; margin-bottom: 8px; skeleton-pulse;"></div>
+                    <div style="height: 20px; width: 90%; background:#e2e8f0; border-radius: 4px; margin-bottom: 8px; skeleton-pulse;"></div>
+                    <div style="height: 20px; width: 60%; background:#e2e8f0; border-radius: 4px; margin-bottom: 24px; skeleton-pulse;"></div>
+                    <div style="height: 24px; width: 40%; background:#e2e8f0; border-radius: 4px; skeleton-pulse;"></div>
                 </div>
             </div>
         </div>
     </main>
 
-    <!-- REVISED FOOTER -->
+    <!-- Footer -->
     <footer>
         <div class="container footer-content">
+            <div class="footer-logo">WRITEHUB</div>
             <div class="footer-links">
                 <a href="#"><i class="fab fa-instagram"></i> Instagram</a>
-                <a href="#"><i class="fab fa-tiktok"></i> Tiktok</a>
-                <a href="#"><i class="far fa-envelope"></i> Kontak</a>
+                <a href="#"><i class="fab fa-tiktok"></i> TikTok</a>
+                <a href="#"><i class="far fa-envelope"></i> Contact</a>
             </div>
-            <div class="footer-copyright">
-                &copy; 2026 WriteHub. All Rights Reserved.
+            <div style="font-size: 0.8rem; opacity: 0.6;">
+                &copy; 2026 WriteHub. Crafted with professionalism.
             </div>
         </div>
     </footer>
 
-    <!-- BACK TO TOP BUTTON -->
+    <!-- Back to Top -->
     <button id="backToTopBtn" class="back-to-top" aria-label="Kembali ke atas">
         <i class="fas fa-arrow-up"></i>
     </button>
 
-    <!-- MODAL DETAIL PRODUK -->
+    <!-- MAIN MODAL -->
     <div class="modal-overlay" id="productModal">
         <div class="modal-content">
             <div class="btn-close" onclick="closeModal()"><i class="fas fa-times"></i></div>
             
+            <!-- View 1: Product Detail -->
             <div class="modal-body" id="productView">
                 <div class="modal-img-wrapper" id="modalImgWrapper">
                     <div class="carousel-track" id="carouselTrack"></div>
@@ -870,6 +776,7 @@
                 <div class="modal-info">
                     <div id="m-cat" class="modal-cat">CATEGORY</div>
                     <h2 id="m-title" class="modal-title">Product Title</h2>
+                    
                     <div class="modal-price-wrap" id="m-price-wrap"></div>
 
                     <div class="addon-section" id="addonSection">
@@ -888,11 +795,12 @@
 
                     <p id="m-desc" class="modal-desc">Description here...</p>
                     
-                    <div style="margin-bottom: 20px; font-size: 0.9rem; color: var(--text-muted); flex-shrink: 0;">
-                        <i class="fas fa-check-circle" style="color:var(--primary)"></i> Terpakai <span id="m-sold">0</span>x
+                    <div style="margin-bottom: 24px; font-size: 0.85rem; color: var(--text-muted); flex-shrink: 0; display: flex; align-items: center; gap: 8px;">
+                        <span style="background:#e0f2fe; color:#0284c7; padding: 2px 6px; border-radius:4px; font-weight:700; font-size:0.7rem;">BEST SELLER</span> 
+                        <span>Terpakai <span id="m-sold" style="font-weight:700; color:var(--text-main);">0</span>x</span>
                     </div>
 
-                    <!-- IKLAN MODAL PRODUK (GOOGLE ADS STYLE) -->
+                    <!-- AD BANNER -->
                     <div class="modal-ad-banner" id="modalAdBanner">
                         <a href="#" target="_blank" rel="noopener noreferrer" id="modalAdLink">
                             <img id="modalAdImage" src="" alt="Promo">
@@ -901,58 +809,59 @@
                     </div>
 
                     <button id="btn-goto-payment" class="btn-buy">
-                        <i class="fas fa-shopping-cart"></i> Pakai Sekarang
+                        <i class="fas fa-shopping-cart"></i> Beli Sekarang
                     </button>
                 </div>
             </div>
 
+            <!-- View 2: Payment -->
             <div class="payment-view" id="paymentView">
                 <div class="payment-header">
                     <button class="btn-back" onclick="backToProduct()"><i class="fas fa-arrow-left"></i></button>
-                    <h3 style="margin:0; font-size:1.1rem; font-weight:700;">Detail Pembayaran</h3>
+                    <div style="font-size:1.1rem; font-weight:800;">Checkout Secure</div>
                 </div>
 
-                <div class="unique-amount-alert">
-                    <i class="fas fa-exclamation-circle"></i>
-                    <div>
-                        <strong>PENTING:</strong> Mohon transfer sesuai <strong>Total Nominal Unik</strong> di bawah ini (termasuk 3 digit terakhir) untuk verifikasi otomatis.
+                <div class="payment-content">
+                    <div class="unique-amount-alert">
+                        <i class="fas fa-info-circle" style="margin-top:2px;"></i>
+                        <div>
+                            <strong>PENTING:</strong> Transfer sesuai Total <strong>Nominal Unik</strong> di bawah ini (termasuk 3 digit terakhir) agar sistem dapat verifikasi otomatis pesanan Anda.
+                        </div>
                     </div>
-                </div>
 
-                <div class="summary-card">
-                    <!-- ID PESANAN MUNCUL DI SINI -->
-                    <div class="summary-row">
-                        <span>ID Pesanan</span>
-                        <span id="p-order-id" style="font-family: monospace; font-weight: 700; color: var(--primary);">-</span>
+                    <div class="summary-card">
+                        <div class="summary-row">
+                            <span>ID Pesanan</span>
+                            <span id="p-order-id" style="font-family: monospace; font-weight: 700; color: var(--primary);">-</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Produk</span>
+                            <span id="p-product-name" style="font-weight:700; color:var(--text-main);">Nama Produk</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Harga</span>
+                            <span id="p-unit-price">Rp 0</span>
+                        </div>
+                        <div class="summary-row" id="row-addon" style="display:none;">
+                            <span>Surat Lamaran</span>
+                            <span id="p-addon-price">Rp 0</span>
+                        </div>
+                        <div class="summary-row total">
+                            <span>Total Bayar</span>
+                            <span id="p-total-price" style="color:var(--danger);">Rp 0</span>
+                        </div>
                     </div>
-                    
-                    <div class="summary-row">
-                        <span>Produk</span>
-                        <span id="p-product-name" style="font-weight:600; color:var(--text-main);">Nama Produk</span>
-                    </div>
-                    <div class="summary-row">
-                        <span>Harga Satuan</span>
-                        <span id="p-unit-price">Rp 0</span>
-                    </div>
-                    <div class="summary-row" id="row-addon" style="display:none;">
-                        <span>Surat Lamaran</span>
-                        <span id="p-addon-price">Rp 0</span>
-                    </div>
-                    <div class="summary-row total">
-                        <span>Total Bayar (Unik)</span>
-                        <span id="p-total-price" style="color:var(--danger);">Rp 0</span>
-                    </div>
-                </div>
 
-                <h4 style="margin-bottom:12px; font-size:0.9rem; font-weight:600; color:var(--text-muted);">Metode Pembayaran</h4>
-                <div class="payment-methods" id="paymentMethodsList">
-                    <div style="text-align:center; color:var(--text-muted); padding:20px;">Memuat metode pembayaran...</div>
-                </div>
+                    <h4 style="margin-bottom:16px; font-size:0.95rem; font-weight:700; color:var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em;">Metode Pembayaran</h4>
+                    <div class="payment-methods" id="paymentMethodsList">
+                        <!-- Payment methods injected via JS -->
+                    </div>
 
-                <div class="mt-auto">
-                    <button id="btn-confirm-whatsapp" class="btn-confirm-wa">
-                        <i class="fab fa-whatsapp" style="font-size:1.2rem;"></i> Lanjutkan ke WhatsApp
-                    </button>
+                    <div style="margin-top: auto;">
+                        <button id="btn-confirm-whatsapp" class="btn-confirm-wa">
+                            <i class="fab fa-whatsapp" style="font-size:1.3rem;"></i> Konfirmasi via WhatsApp
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -966,23 +875,20 @@
                 <img id="qrisDisplayImage" src="" alt="QRIS Code">
             </div>
             <div class="qris-modal-price-area" onclick="copyTotalPrice()">
-                <div class="copy-hint"><i class="fas fa-hand-pointer"></i> Klik untuk Salin</div>
+                <div class="copy-hint">Ketuk untuk Salin Nominal</div>
                 <div class="qris-modal-total" id="qrisDisplayTotal">Rp 0</div>
-                <i class="far fa-copy copy-icon-overlay"></i>
             </div>
-            <div class="qris-modal-desc">
-                Nominal unik ini ditambahkan untuk verifikasi otomatis. Gunakan aplikasi pembayaran (GoPay/OVO/Dana) untuk scan QR ini, silakan screenshot Qris diatas.
+            <div style="font-size:0.8rem; color:var(--text-muted); margin-bottom:24px;">
+                Screenshot QRIS ini untuk pembayaran via GoPay, OVO, Dana, atau Mobile Banking.
             </div>
-            <div class="qris-actions">
-                <button class="btn-close-qris" onclick="closeQrisModal()">Tutup</button>
-            </div>
+            <button class="btn-close-qris" onclick="closeQrisModal()">Tutup</button>
         </div>
     </div>
 
     <script type="module">
         import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 
-        // --- KONFIGURASI ---
+        // --- CONFIGURATION ---
         const SUPABASE_URL = 'https://neuylewfsxcuhayegygf.supabase.co'; 
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5ldXlsZXdmc3hjdWhheWVneWdmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkzNTMzNzYsImV4cCI6MjA5NDkyOTM3Nn0.Ra0qI5A87XxODy7v9HIJ-zxqVbO39GwXbJlV8n4ZeIc';
         const DEFAULT_ADMIN_WA = '6285885850204';
@@ -995,15 +901,13 @@
             try {
                 supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
                 useSupabase = true;
-                console.log('%c[SYSTEM] Database Connected', 'color: green; font-weight: bold;');
+                console.log('%c[SYSTEM] Database Connected', 'color: #10b981; font-weight: bold;');
             } catch(e) {
-                console.error('%c[SYSTEM] Database Connection Failed', 'color: red; font-weight: bold;');
+                console.error('%c[SYSTEM] DB Failed', 'color: #ef4444; font-weight: bold;');
             }
-        } else {
-            console.warn('%c[SYSTEM] Supabase Keys missing. App will not load data.', 'color: orange; font-weight: bold;');
         }
 
-        // --- DATA SLIDER ---
+        // --- DATA ---
         const sliderData = [
             { image: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgieMxVSq4yNK45tjG9DdAsuMaQ7dxXJ96XvbYe1Tw6iTMHlm0ETWVM70OBZY2RRoEZ98oCilYCgm7-PYHz9Vo3GBTJ4fMbqRovUaZLtxgdwREVayDd6uq-iJZWVhxoV2RitsUXz-3QR2M2MZkZtoFdjtefvHDmrUGWqyPq1W7JLRHJZwRvLv-vwL_QG8Ni/s3264/29467.png', link: '#' },
             { image: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjPwQ1jrQVR3aj8aOC12lSM7v4NwlaBip0dO76hxPZxVboWB6Pkt4wyTE6wcWUGrAWm-yOFIXa3GbKOLT0J2DsPPPUsYqDHwOSW0r1Ima3StZIVOvPk5CUy4ds6l8FGTt-7_2mPjq92rDMciTnYL-SW6X-9Tks4pZm2fCZv8xiFCdCo5qOHyHXPfqKU2K71/s3264/29445.png', link: '#' },
@@ -1017,20 +921,16 @@
         let paymentMethods = [];
         let adminNumbersList = [];
         let currentUniqueTotal = 0;
-        let currentOrderId = ''; // VARIABLE UNTUK MENYIMPAN ID
+        let currentOrderId = '';
         let paymentLockTimer = null;
         const LOCK_DURATION_MS = 120000;
         let touchStartX = 0;
         let touchEndX = 0;
 
-        // ============================================
-        // ADVANCED AD SYSTEM — MODAL ONLY
-        // ============================================
-        const AD_CONFIG = {
-            tableNames: ['iklan', 'ads', 'ad', 'iklan_banner', 'banner'],
-        };
-
+        // --- STATE & AD SYSTEM ---
+        const AD_CONFIG = { tableNames: ['iklan', 'ads', 'ad', 'iklan_banner', 'banner'] };
         let modalAdsCache = [];
+        let currentProduct = null, carouselIndex = 0, carouselImages = [];
         
         let fields = {
             title: 'title', price: 'price', original_price: 'original_price',
@@ -1039,69 +939,29 @@
             cover_letter_price: 'cover_letter_price', allow_addon: 'allow_addon'
         };
 
-        // --- TOAST ---
+        // --- UTILS ---
         window.showToast = function(message, type = 'success') {
             const container = document.getElementById('toastContainer');
             const toast = document.createElement('div');
             toast.className = `toast ${type}`;
-            let icon = type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-exclamation-triangle';
+            let icon = type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle';
             toast.innerHTML = `<i class="fas ${icon}"></i><div class="toast-message">${message}</div>`;
             container.appendChild(toast);
             setTimeout(() => {
-                toast.style.animation = 'fadeOut 0.3s ease-in forwards';
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateY(-10px)';
                 setTimeout(() => toast.remove(), 300);
             }, 3000);
         }
 
-        // --- QRIS MODAL ---
-        window.openQrisModal = function(imageUrl) {
-            const modal = document.getElementById('qrisModal');
-            document.getElementById('qrisDisplayImage').src = imageUrl;
-            document.getElementById('qrisDisplayTotal').innerText = "Rp " + new Intl.NumberFormat('id-ID').format(currentUniqueTotal);
-            modal.classList.add('active');
-        };
-        window.closeQrisModal = function() { document.getElementById('qrisModal').classList.remove('active'); };
-        window.copyTotalPrice = function() {
-            const text = document.getElementById('qrisDisplayTotal').innerText;
-            navigator.clipboard.writeText(text).then(() => {
-                showToast('Nominal unik berhasil disalin!', 'success');
-            }).catch(() => {
-                const ta = document.createElement("textarea");
-                ta.value = text; document.body.appendChild(ta); ta.select();
-                document.execCommand("Copy"); ta.remove();
-                showToast('Nominal unik berhasil disalin!', 'success');
-            });
-        };
-        document.getElementById('qrisModal').addEventListener('click', (e) => { if(e.target.id === 'qrisModal') closeQrisModal(); });
-
-        // --- TIMER LOGIC ---
-        function lockWhatsAppButton() {
-            const btn = document.getElementById('btn-confirm-whatsapp');
-            if (paymentLockTimer) clearTimeout(paymentLockTimer);
-            btn.classList.add('locked');
-            btn.innerHTML = `<i class="fas fa-clock"></i> Menunggu...`;
-            paymentLockTimer = setTimeout(unlockWhatsAppButton, LOCK_DURATION_MS);
-        }
-        function unlockWhatsAppButton() {
-            const btn = document.getElementById('btn-confirm-whatsapp');
-            btn.classList.remove('locked');
-            btn.innerHTML = `<i class="fab fa-whatsapp" style="font-size:1.2rem;"></i> Lanjutkan ke WhatsApp`;
-        }
-        function clearPaymentTimer() { if (paymentLockTimer) { clearTimeout(paymentLockTimer); paymentLockTimer = null; } }
-
-        // --- HELPERS ---
         const formatRupiah = (num) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(num);
         function getField(item, fieldKey) { return item[fields[fieldKey]] || item[fieldKey]; }
 
-        // FUNGSI GENERATE ID PESANAN
         function generateOrderID() {
             const prefix = "WH"; 
-            // Karakter unik tanpa angka 0 dan huruf O agar tidak membingungkan
             const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; 
             let result = prefix + "-";
-            for (let i = 0; i < 6; i++) {
-                result += chars.charAt(Math.floor(Math.random() * chars.length));
-            }
+            for (let i = 0; i < 6; i++) result += chars.charAt(Math.floor(Math.random() * chars.length));
             return result;
         }
 
@@ -1123,7 +983,7 @@
             fields = map;
         }
 
-        // --- SEARCH ---
+        // --- SEARCH LOGIC ---
         const searchInput = document.getElementById('searchInput');
         const suggestionsBox = document.getElementById('searchSuggestions');
 
@@ -1151,13 +1011,13 @@
             });
             suggestionList.sort((a, b) => b.score - a.score);
             if (suggestionList.length === 0) {
-                suggestionsBox.innerHTML = '<div class="no-suggestion">Pencarian tidak ditemukan</div>';
+                suggestionsBox.innerHTML = '<div style="padding:12px; font-size:0.85rem; color:var(--text-muted); text-align:center;">Tidak ditemukan</div>';
             } else {
                 suggestionList.slice(0, 5).forEach((item, index) => {
                     const div = document.createElement('div');
                     div.className = 'suggestion-item';
-                    let rankHtml = index === 0 ? '<span class="top-badge">TOP</span>' : (index === 1 || index === 2) ? `<span class="rank-badge">${index + 1}</span>` : '';
-                    div.innerHTML = `<div class="suggestion-content">${item.text}</div>${rankHtml}`;
+                    let rankHtml = index === 0 ? '<span class="top-badge">TOP</span>' : '';
+                    div.innerHTML = `<div class="flex items-center gap-2">${item.text}</div>${rankHtml}`;
                     div.onclick = () => { searchInput.value = item.text; suggestionsBox.classList.remove('active'); filterLogic(); };
                     suggestionsBox.appendChild(div);
                 });
@@ -1186,8 +1046,25 @@
                 container.appendChild(chip);
             });
         }
+        window.setCategory = function(cat, el) {
+            currentCategory = cat;
+            document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+            el.classList.add('active');
+            filterLogic();
+        }
+        function filterLogic() {
+            const q = document.getElementById('searchInput').value.toLowerCase().trim();
+            filteredProducts = products.filter(p => {
+                const title = (getField(p, 'title') || '').toLowerCase();
+                const category = (getField(p, 'category') || '').toLowerCase();
+                const matchCategory = currentCategory === 'all' || category.includes(currentCategory.toLowerCase());
+                const matchSearch = !q || title.includes(q) || category.includes(q);
+                return matchCategory && matchSearch;
+            });
+            renderProducts();
+        }
 
-        // --- FETCH FUNCTIONS ---
+        // --- DATA FETCHING ---
         async function fetchAdminNumbers() {
             if (useSupabase) {
                 const { data } = await supabase.from('no_wa').select('nomor');
@@ -1208,9 +1085,7 @@
             if (useSupabase) {
                 const { data } = await supabase.from('payment').select('*');
                 paymentMethods = (data && data.length > 0) ? data : [];
-            } else {
-                paymentMethods = [];
-            }
+            } else { paymentMethods = []; }
             renderPaymentMethods();
         }
 
@@ -1221,228 +1096,81 @@
                     autoMapColumns(sample[0]);
                     const { data } = await supabase.from('cvs').select('*');
                     products = data || [];
-                    console.log(`[SYSTEM] Loaded ${products.length} products from DB.`);
-                } else { 
-                    console.warn('[SYSTEM] No products found in DB and dummy data removed.');
-                    products = []; 
-                }
-            } else {
-                products = [];
-                console.error('[SYSTEM] Cannot fetch products: No DB Connection.');
-            }
+                    console.log(`[SYSTEM] Loaded ${products.length} products.`);
+                } else { products = []; }
+            } else { products = []; }
             renderCategories();
             filterLogic();
         }
 
-        // ============================================
-        // AD SYSTEM — LOGIC
-        // ============================================
-
+        // --- AD LOGIC ---
         function getAdField(ad, possibilities) {
-            for (const key of possibilities) {
-                if (ad[key] !== undefined && ad[key] !== null && ad[key] !== '') {
-                    return ad[key];
-                }
-            }
+            for (const key of possibilities) { if (ad[key] !== undefined && ad[key] !== null && ad[key] !== '') return ad[key]; }
             return null;
         }
-
-        function getAdImageUrl(ad) {
-            return getAdField(ad, [
-                'image_url', 'gambar', 'image', 'url_gambar', 'foto',
-                'img_url', 'banner_url', 'src', 'thumbnail', 'picture'
-            ]);
-        }
-
-        function getAdLinkUrl(ad) {
-            return getAdField(ad, [
-                'link_url', 'link', 'url', 'target_url', 'redirect_url',
-                'destination', 'href', 'go_to'
-            ]) || '#';
-        }
-
-        function isAdActive(ad) {
-            const val = getAdField(ad, ['is_active', 'active', 'aktif', 'status', 'is_show', 'show', 'visible']);
-            if (val === true || val === 1 || val === '1' || val === 'true') return true;
-            if (val === false || val === 0 || val === '0' || val === 'false') return false;
-            return true;
-        }
-
-        function getAdTargetCategory(ad) {
-            return getAdField(ad, [
-                'target_category',
-                'kategori', 
-                'category', 
-                'kategori_iklan', 
-                'product_category',
-                'show_on_category'
-            ]);
-        }
+        function getAdImageUrl(ad) { return getAdField(ad, ['image_url', 'gambar', 'image', 'url_gambar', 'foto', 'img_url', 'banner_url', 'src']); }
+        function getAdLinkUrl(ad) { return getAdField(ad, ['link_url', 'link', 'url', 'target_url', 'redirect_url', 'destination']) || '#'; }
+        function isAdActive(ad) { const val = getAdField(ad, ['is_active', 'active', 'aktif', 'status']); return val === true || val === 1 || val === '1' || val === 'true'; }
+        function getAdTargetCategory(ad) { return getAdField(ad, ['target_category', 'kategori', 'category', 'show_on_category']); }
         
-        function getAdPlacement(ad) {
-            return getAdField(ad, [
-                'placement', 'penempatan', 'posisi', 'position',
-                'location', 'lokasi', 'tipe', 'type', 'show_in'
-            ]);
-        }
-
         async function fetchAds() {
-            if (!useSupabase) {
-                console.warn('[AD SYSTEM] Supabase not available.');
-                return [];
-            }
-
+            if (!useSupabase) return [];
             for (const tableName of AD_CONFIG.tableNames) {
                 try {
                     const { data, error } = await supabase.from(tableName).select('*');
-                    
                     if (error) continue;
                     if (!data || data.length === 0) continue;
-                    
                     const activeAds = data.filter(ad => isAdActive(ad));
-                    
-                    if (activeAds.length > 0) {
-                        console.log(`[AD SYSTEM] Loaded ${activeAds.length} ads from table "${tableName}"`);
-                        return activeAds;
-                    }
-                    
-                } catch (err) {
-                    continue;
-                }
+                    if (activeAds.length > 0) { console.log(`[AD SYSTEM] Loaded ${activeAds.length} ads from ${tableName}`); return activeAds; }
+                } catch (err) { continue; }
             }
             return [];
         }
-
-        // ============================================
-        // MODAL AD BANNER — ADVANCED SYSTEM
-        // ============================================
 
         function showModalAdBanner() {
             const bannerEl = document.getElementById('modalAdBanner');
             const imgEl = document.getElementById('modalAdImage');
             const linkEl = document.getElementById('modalAdLink');
-
             bannerEl.classList.remove('visible');
             bannerEl.style.height = '0px';
 
-            if (modalAdsCache.length === 0) {
-                return;
-            }
+            if (modalAdsCache.length === 0) return;
 
             let selectedAd = null;
-            
             if (currentProduct) {
                 const productCategory = String(getField(currentProduct, 'category')).toLowerCase().trim();
-                
-                const exactMatches = modalAdsCache.filter(ad => {
-                    const adTargetCat = getAdTargetCategory(ad);
-                    if (!adTargetCat) return false;
-                    return String(adTargetCat).toLowerCase().trim() === productCategory;
-                });
-
-                if (exactMatches.length > 0) {
-                    selectedAd = exactMatches[Math.floor(Math.random() * exactMatches.length)];
-                    console.log(`[AD SYSTEM] Showing Exact Match Ad for [${productCategory}]`);
-                } else {
-                    const universalAds = modalAdsCache.filter(ad => {
-                        const cat = getAdTargetCategory(ad);
-                        if (!cat) return false;
-                        const cleanCat = String(cat).toLowerCase().trim();
-                        return cleanCat === '*' || cleanCat === 'all' || cleanCat === 'universal';
-                    });
-
-                    if (universalAds.length > 0) {
-                        selectedAd = universalAds[Math.floor(Math.random() * universalAds.length)];
-                        console.log(`[AD SYSTEM] Showing Universal Ad (No exact match for [${productCategory}])`);
-                    }
+                const exactMatches = modalAdsCache.filter(ad => String(getAdTargetCategory(ad)).toLowerCase().trim() === productCategory);
+                if (exactMatches.length > 0) selectedAd = exactMatches[Math.floor(Math.random() * exactMatches.length)];
+                else {
+                    const universalAds = modalAdsCache.filter(ad => { const cat = getAdTargetCategory(ad); return !cat || ['*','all','universal'].includes(String(cat).toLowerCase()); });
+                    if (universalAds.length > 0) selectedAd = universalAds[Math.floor(Math.random() * universalAds.length)];
                 }
             }
 
             if (selectedAd) {
                 const imageUrl = getAdImageUrl(selectedAd);
-                const linkUrl = getAdLinkUrl(selectedAd);
-
                 if (imageUrl) {
-                    linkEl.href = linkUrl;
-
+                    linkEl.href = getAdLinkUrl(selectedAd);
                     function revealBanner() {
-                        const targetRatio = 350 / 1280;
                         const parentWidth = bannerEl.parentElement ? bannerEl.parentElement.offsetWidth : 400;
-                        let bannerHeight = Math.round(parentWidth * targetRatio);
-                        bannerHeight = Math.max(60, Math.min(bannerHeight, 180));
-
+                        let bannerHeight = Math.round(parentWidth * 0.35); 
+                        bannerHeight = Math.max(80, Math.min(bannerHeight, 200));
                         bannerEl.style.height = bannerHeight + 'px';
-                        requestAnimationFrame(() => {
-                            bannerEl.classList.add('visible');
-                        });
+                        requestAnimationFrame(() => bannerEl.classList.add('visible'));
                     }
-
-                    if (imgEl.src === imageUrl && imgEl.complete && imgEl.naturalWidth > 0) {
-                        requestAnimationFrame(revealBanner);
-                    } else {
-                        let bannerRevealed = false;
-                        const onImgReady = () => {
-                            if (bannerRevealed) return;
-                            bannerRevealed = true;
-                            revealBanner();
-                        };
-                        const onImgError = () => {
-                            if (bannerRevealed) return;
-                            bannerRevealed = true;
-                        };
-
-                        imgEl.onload = onImgReady;
-                        imgEl.onerror = onImgError;
-                        imgEl.src = imageUrl;
-                        
-                        setTimeout(() => {
-                            if (!bannerRevealed) {
-                                bannerRevealed = true;
-                            }
-                        }, 3000);
-                    }
+                    if (imgEl.src === imageUrl && imgEl.complete) revealBanner();
+                    else { imgEl.onload = revealBanner; imgEl.onerror = revealBanner; imgEl.src = imageUrl; }
                 }
             }
         }
 
-        function hideModalAdBanner() {
-            const bannerEl = document.getElementById('modalAdBanner');
-            bannerEl.classList.remove('visible');
-            bannerEl.style.height = '0px';
-        }
-
-        // --- CARD SLIDERS ---
-        const cardSliders = {};
-        function initCardSlider(cardElement, productId) {
-            const container = cardElement.querySelector('.card-slider-container');
-            const images = container.querySelectorAll('.card-slide');
-            if (images.length <= 1) return;
-            let index = 0, interval;
-            const move = () => { index = (index + 1) % images.length; container.style.transform = `translateX(-${index * 100}%)`; };
-            const start = () => { clearInterval(interval); interval = setInterval(move, 3000); };
-            const stop = () => { clearInterval(interval); };
-            cardElement.addEventListener('mouseenter', stop);
-            cardElement.addEventListener('mouseleave', start);
-            cardElement.addEventListener('touchstart', stop, { passive: true });
-            cardElement.addEventListener('touchend', start, { passive: true });
-            cardSliders[productId] = { start, stop, move, index };
-            start();
-        }
-
-        // --- RENDER PRODUCTS ---
+        // --- RENDER FUNCTIONS ---
         function renderProducts() {
             const grid = document.getElementById('productGrid');
             grid.innerHTML = '';
+            if (!useSupabase) { grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px;color:var(--text-muted);">Database tidak terhubung.</div>'; return; }
+            if (filteredProducts.length === 0) { grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px;color:var(--text-muted);">Produk tidak ditemukan.</div>'; return; }
             
-            if (!useSupabase) {
-                 grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-muted);">Database tidak terhubung. Mohon periksa konfigurasi.</div>';
-                 return;
-            }
-
-            if (filteredProducts.length === 0) {
-                grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-muted);">Produk tidak ditemukan.</div>';
-                return;
-            }
             filteredProducts.forEach(p => {
                 const card = document.createElement('div');
                 card.className = 'cv-card';
@@ -1471,7 +1199,7 @@
 
                 let slidesHTML = '';
                 allCardImages.forEach(imgSrc => {
-                    slidesHTML += `<div class="card-slide"><img src="${imgSrc || 'https://picsum.photos/seed/fallback/600/600'}" loading="lazy" alt="${title}" onerror="this.src='https://picsum.photos/seed/error/600/600'"></div>`;
+                    slidesHTML += `<div class="card-slide"><img src="${imgSrc || 'https://picsum.photos/seed/fallback/600/800'}" loading="lazy" alt="${title}" onerror="this.src='https://picsum.photos/seed/error/600/800'"></div>`;
                 });
 
                 card.innerHTML = `
@@ -1479,10 +1207,11 @@
                         <div class="card-slider-container">${slidesHTML}</div>
                     </div>
                     <div class="card-content">
+                        <span class="card-category">${category || 'Umum'}</span>
                         <h3 class="card-title">${title || 'Tanpa Judul'}</h3>
                         <div class="card-footer">
                             <div class="price-container">${priceHTML}</div>
-                            <div class="sold-info">${soldCount || 0} Terpakai</div>
+                            <div class="sold-info">${soldCount || 0} Terjual</div>
                         </div>
                     </div>`;
                 grid.appendChild(card);
@@ -1490,28 +1219,39 @@
             });
         }
 
-        // --- RENDER PAYMENT ---
+        const cardSliders = {};
+        function initCardSlider(cardElement, productId) {
+            const container = cardElement.querySelector('.card-slider-container');
+            const images = container.querySelectorAll('.card-slide');
+            if (images.length <= 1) return;
+            let index = 0, interval;
+            const move = () => { index = (index + 1) % images.length; container.style.transform = `translateX(-${index * 100}%)`; };
+            const start = () => { clearInterval(interval); interval = setInterval(move, 3000); };
+            const stop = () => { clearInterval(interval); };
+            cardElement.addEventListener('mouseenter', stop);
+            cardElement.addEventListener('mouseleave', start);
+            cardSliders[productId] = { start, stop };
+            start();
+        }
+
         function renderPaymentMethods() {
             const container = document.getElementById('paymentMethodsList');
             container.innerHTML = '';
-            if (paymentMethods.length === 0) {
-                container.innerHTML = '<div style="text-align:center; color:var(--text-muted); padding:20px;">Metode pembayaran tidak tersedia saat ini.</div>';
-                return;
-            }
+            if (paymentMethods.length === 0) { container.innerHTML = '<div style="text-align:center; padding:20px; color:var(--text-muted);">Tidak ada metode pembayaran.</div>'; return; }
+            
             paymentMethods.forEach(method => {
                 const div = document.createElement('div');
                 const isQRIS = (method.bank_name || '').toLowerCase().includes('qris') || method.type === 'qris';
                 if (isQRIS) {
-                    div.className = 'payment-option-card qris-container';
-                    div.style.flexDirection = 'column';
-                    div.style.alignItems = 'flex-start';
+                    div.className = 'payment-option-card';
+                    div.style.flexDirection = 'column'; div.style.alignItems = 'stretch';
                     const qrisImg = method.image || "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Logo_QRIS.svg/1200px-Logo_QRIS.svg.png";
                     div.innerHTML = `
-                        <div style="display:flex;justify-content:space-between;width:100%;margin-bottom:12px;">
-                            <div class="bank-info"><h4><i class="fas fa-qrcode"></i> QRIS</h4></div>
+                        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+                            <h4 style="margin:0; color:#333;"><i class="fas fa-qrcode" style="color:var(--primary)"></i> QRIS (All Payment)</h4>
                         </div>
-                        <div style="display:flex;align-items:center;justify-content:space-between;width:100%;">
-                            <img src="${qrisImg}" class="qris-img" alt="QRIS">
+                        <div style="display:flex;align-items:center;justify-content:space-between;">
+                            <img src="${qrisImg}" style="height:50px;" alt="QRIS">
                             <button class="btn-copy" onclick="openQrisModal('${qrisImg}')"><i class="fas fa-expand"></i> Scan</button>
                         </div>`;
                 } else {
@@ -1519,7 +1259,7 @@
                     const bank = method.bank_name || method.nama_bank || 'Bank';
                     const number = method.account_number || method.no_rekening || '---';
                     const owner = method.owner_name || method.atas_nama || '---';
-                    let logoUrl = method.logo || `https://placehold.co/100x50/f8f9fa/333333?text=${encodeURIComponent(bank)}&font=roboto`;
+                    let logoUrl = method.logo || `https://placehold.co/120x60/f8f9fa/333333?text=${encodeURIComponent(bank)}&font=roboto`;
                     div.innerHTML = `
                         <div class="bank-info">
                             <img src="${logoUrl}" class="bank-logo-img" alt="${bank}">
@@ -1537,16 +1277,15 @@
 
         window.copyToClipboard = function(text) {
             const sanitized = String(text).replace(/[^\d\s\-\/.]/g, '').trim();
-            navigator.clipboard.writeText(sanitized).then(() => {
-                showToast(`Nomor ${sanitized} berhasil disalin!`, 'success');
-            }).catch(() => {
+            navigator.clipboard.writeText(sanitized).then(() => showToast('Berhasil disalin!', 'success'))
+            .catch(() => {
                 const ta = document.createElement("textarea"); ta.value = sanitized;
                 document.body.appendChild(ta); ta.select(); document.execCommand("Copy"); ta.remove();
-                showToast(`Nomor ${sanitized} berhasil disalin!`, 'success');
+                showToast('Berhasil disalin!', 'success');
             });
         }
 
-        // --- HERO SLIDER ---
+        // --- HERO SLIDER LOGIC ---
         let slideIndex = 0, slideInterval;
         function initSlider() {
             const track = document.getElementById('sliderTrack');
@@ -1565,10 +1304,6 @@
             const heroEl = document.getElementById('heroSlider');
             heroEl.addEventListener('mouseenter', stopSlide);
             heroEl.addEventListener('mouseleave', startSlide);
-            document.addEventListener('visibilitychange', () => {
-                if (document.hidden) stopSlide();
-                else startSlide();
-            });
         }
         function goToSlide(n) {
             const slides = document.querySelectorAll('.slide');
@@ -1587,64 +1322,36 @@
         window.nextSlide = nextSlide;
         window.prevSlide = prevSlide;
 
-        // --- FILTER ---
-        window.setCategory = function(cat, el) {
-            currentCategory = cat;
-            document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
-            el.classList.add('active');
-            filterLogic();
-        }
-        function filterLogic() {
-            const q = document.getElementById('searchInput').value.toLowerCase().trim();
-            filteredProducts = products.filter(p => {
-                const title = (getField(p, 'title') || '').toLowerCase();
-                const category = (getField(p, 'category') || '').toLowerCase();
-                const matchCategory = currentCategory === 'all' || category.includes(currentCategory.toLowerCase());
-                const matchSearch = !q || title.includes(q) || category.includes(q);
-                return matchCategory && matchSearch;
-            });
-            renderProducts();
-        }
-
         // --- MODAL LOGIC ---
-        let currentProduct = null, carouselIndex = 0, carouselImages = [];
-        const trackEl = document.getElementById('carouselTrack');
-        
-        let lastSwipeTime = 0;
-        trackEl.addEventListener('touchstart', e => { 
-            touchStartX = e.changedTouches[0].screenX; 
-        }, {passive: true});
-        trackEl.addEventListener('touchend', e => {
-            const now = Date.now();
-            if (now - lastSwipeTime < 300) return;
-            lastSwipeTime = now;
-            
-            touchEndX = e.changedTouches[0].screenX;
-            const diff = touchEndX - touchStartX;
-            if (diff < -50) moveCarousel(1);
-            else if (diff > 50) moveCarousel(-1);
-        }, {passive: true});
+        window.openQrisModal = function(imageUrl) {
+            const modal = document.getElementById('qrisModal');
+            document.getElementById('qrisDisplayImage').src = imageUrl;
+            document.getElementById('qrisDisplayTotal').innerText = formatRupiah(currentUniqueTotal);
+            modal.classList.add('active');
+        };
+        window.closeQrisModal = function() { document.getElementById('qrisModal').classList.remove('active'); };
+        window.copyTotalPrice = function() {
+            const text = document.getElementById('qrisDisplayTotal').innerText;
+            navigator.clipboard.writeText(text).then(() => showToast('Nominal disalin!', 'success'))
+            .catch(() => showToast('Gagal menyalin', 'error'));
+        };
 
-        window.moveCarousel = function(direction) {
-            const count = carouselImages.length;
-            if (count <= 1) return;
-            carouselIndex = (carouselIndex + direction + count) % count;
-            updateCarouselUI();
+        function lockWhatsAppButton() {
+            const btn = document.getElementById('btn-confirm-whatsapp');
+            if (paymentLockTimer) clearTimeout(paymentLockTimer);
+            btn.classList.add('locked');
+            btn.innerHTML = `<i class="fas fa-circle-notch fa-spin"></i> Menunggu Pembayaran...`;
+            paymentLockTimer = setTimeout(unlockWhatsAppButton, LOCK_DURATION_MS);
         }
-
-        function updateCarouselUI() {
-            const track = document.getElementById('carouselTrack');
-            const dotsContainer = document.getElementById('carouselDots');
-            track.style.transform = `translateX(-${carouselIndex * 100}%)`;
-            dotsContainer.innerHTML = '';
-            carouselImages.forEach((_, idx) => {
-                const dot = document.createElement('div');
-                dot.className = `c-dot ${idx === carouselIndex ? 'active' : ''}`;
-                dot.onclick = () => { carouselIndex = idx; updateCarouselUI(); };
-                dotsContainer.appendChild(dot);
-            });
+        function unlockWhatsAppButton() {
+            const btn = document.getElementById('btn-confirm-whatsapp');
+            btn.classList.remove('locked');
+            btn.innerHTML = `<i class="fab fa-whatsapp" style="font-size:1.3rem;"></i> Konfirmasi via WhatsApp`;
         }
+        function clearPaymentTimer() { if (paymentLockTimer) { clearTimeout(paymentLockTimer); paymentLockTimer = null; } }
 
+        const productView = document.getElementById('productView');
+        const paymentView = document.getElementById('paymentView');
         const toggleSwitch = document.getElementById('coverLetterToggle');
         toggleSwitch.addEventListener('change', updateModalPriceDisplay);
 
@@ -1654,8 +1361,7 @@
             const addonPriceText = document.getElementById('coverLetterPriceText');
             const allowAddon = getField(currentProduct, 'allow_addon');
             const clPrice = getField(currentProduct, 'cover_letter_price');
-            
-            const isNotAllowed = allowAddon === false || allowAddon === 'false' || allowAddon === 0 || allowAddon === '0';
+            const isNotAllowed = allowAddon === false || allowAddon === 'false' || allowAddon === 0;
             const hasNoPrice = clPrice === null || clPrice === undefined;
             
             if (isNotAllowed || hasNoPrice) {
@@ -1687,23 +1393,15 @@
             }
         }
 
-        const productView = document.getElementById('productView');
-        const paymentView = document.getElementById('paymentView');
-
         document.getElementById('btn-goto-payment').onclick = function() {
             if (!currentProduct) return;
-            
             const basePrice = Number(getField(currentProduct, 'price')) || 0;
             const isAddOn = toggleSwitch.checked;
             const customAddonPrice = Number(getField(currentProduct, 'cover_letter_price')) || 0;
             const finalAddonPrice = (customAddonPrice > 0) ? customAddonPrice : coverLetterPrice;
             
-            if (basePrice <= 0) {
-                showToast('Harga produk tidak valid', 'error');
-                return;
-            }
+            if (basePrice <= 0) { showToast('Harga produk tidak valid', 'error'); return; }
 
-            // 1. Generate ID Pesanan
             currentOrderId = generateOrderID();
             document.getElementById('p-order-id').innerText = currentOrderId;
 
@@ -1726,11 +1424,12 @@
             totalEl.innerText = formatRupiah(totalWithUnique);
             totalEl.style.color = 'var(--danger)';
 
-            hideModalAdBanner();
+            document.getElementById('modalAdBanner').classList.remove('visible');
+            document.getElementById('modalAdBanner').style.height = '0';
 
             productView.style.display = 'none';
             paymentView.classList.add('active');
-            showToast(`Kode unik Rp ${uniqueCode} ditambahkan untuk verifikasi.`, 'success');
+            showToast(`Kode unik Rp ${uniqueCode} ditambahkan`, 'success');
             lockWhatsAppButton();
         };
 
@@ -1755,10 +1454,7 @@
             const mainImage = getField(p, 'image');
             const extraImages = getField(p, 'images');
             carouselImages = (Array.isArray(extraImages) && extraImages.length > 0) ? [mainImage, ...extraImages].filter(img => img) : [mainImage];
-            
-            if (carouselImages.length === 0 || !carouselImages[0]) {
-                carouselImages = ['https://picsum.photos/seed/nofallback/800/600'];
-            }
+            if (carouselImages.length === 0 || !carouselImages[0]) carouselImages = ['https://picsum.photos/seed/nofallback/800/600'];
 
             const track = document.getElementById('carouselTrack');
             track.innerHTML = '';
@@ -1780,12 +1476,11 @@
 
             const btn = document.getElementById('btn-confirm-whatsapp');
             btn.classList.remove('locked');
-            btn.innerHTML = `<i class="fab fa-whatsapp" style="font-size:1.2rem;"></i> Lanjutkan ke WhatsApp`;
+            btn.innerHTML = `<i class="fab fa-whatsapp" style="font-size:1.3rem;"></i> Konfirmasi via WhatsApp`;
 
             document.getElementById('productModal').classList.add('active');
             document.body.style.overflow = 'hidden';
 
-            // Jalankan logika iklan modal (Google Ads Style)
             setTimeout(() => showModalAdBanner(), 150);
         }
 
@@ -1794,118 +1489,100 @@
             document.getElementById('productModal').classList.remove('active');
             document.body.style.overflow = 'auto';
             currentProduct = null;
-            hideModalAdBanner();
+            document.getElementById('modalAdBanner').classList.remove('visible');
+            document.getElementById('modalAdBanner').style.height = '0';
         }
 
         document.getElementById('productModal').addEventListener('click', (e) => { if(e.target.id === 'productModal') closeModal(); });
 
-        document.getElementById('btn-confirm-whatsapp').onclick = function() {
-            if (!currentProduct) return;
-            
-            if (currentUniqueTotal <= 0) {
-                showToast('Total pembayaran tidak valid, silakan coba lagi', 'error');
-                return;
-            }
+        window.moveCarousel = function(direction) {
+            const count = carouselImages.length;
+            if (count <= 1) return;
+            carouselIndex = (carouselIndex + direction + count) % count;
+            updateCarouselUI();
+        }
+        function updateCarouselUI() {
+            const track = document.getElementById('carouselTrack');
+            const dotsContainer = document.getElementById('carouselDots');
+            track.style.transform = `translateX(-${carouselIndex * 100}%)`;
+            dotsContainer.innerHTML = '';
+            carouselImages.forEach((_, idx) => {
+                const dot = document.createElement('div');
+                dot.className = `c-dot ${idx === carouselIndex ? 'active' : ''}`;
+                dot.onclick = () => { carouselIndex = idx; updateCarouselUI(); };
+                dotsContainer.appendChild(dot);
+            });
+        }
+        
+        // Touch support for carousel
+        const trackEl = document.getElementById('carouselTrack');
+        let lastSwipeTime = 0;
+        trackEl.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].screenX; }, {passive: true});
+        trackEl.addEventListener('touchend', e => {
+            const now = Date.now();
+            if (now - lastSwipeTime < 300) return;
+            lastSwipeTime = now;
+            touchEndX = e.changedTouches[0].screenX;
+            const diff = touchEndX - touchStartX;
+            if (diff < -50) moveCarousel(1);
+            else if (diff > 50) moveCarousel(-1);
+        }, {passive: true});
 
+        document.getElementById('btn-confirm-whatsapp').onclick = function() {
+            if (!currentProduct || currentUniqueTotal <= 0) return;
             const templateName = getField(currentProduct, 'title');
             const formattedTotal = formatRupiah(currentUniqueTotal);
             const orderTime = new Date().toLocaleString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
             
-            // 2. Masukkan ID Pesanan ke Pesan WhatsApp
-            let message = `Halo Min, saya ingin membeli CV berikut:\n\n*ID Pesanan:* ${currentOrderId}\n*Jenis CV:* ${templateName}\n*Total Pembayaran (Unik):* ${formattedTotal}\n*Waktu Pesanan:* ${orderTime}`;
+            let message = `Halo Min, saya mau pesan CV:\n\n*ID:* ${currentOrderId}\n*Produk:* ${templateName}\n*Total:* ${formattedTotal}\n*Waktu:* ${orderTime}`;
             
             const isAddOn = toggleSwitch.checked;
             if (isAddOn) {
                 const customPrice = Number(getField(currentProduct, 'cover_letter_price')) || 0;
                 const finalPrice = (customPrice > 0) ? customPrice : coverLetterPrice;
-                message += `\n\n*Addon:* Surat Lamaran Kerja (+${formatRupiah(finalPrice)})`;
+                message += `\n\n*Addon:* Surat Lamaran (+${formatRupiah(finalPrice)})`;
             }
-            message += `\n\nSaya sudah transfer sesuai nominal unik. Mohon segera diproses ya Min.`;
+            message += `\n\nSudah transfer ya Min.`;
 
-            const adminNumber = getRotatedAdminNumber();
-            showToast('Mengalihkan ke WhatsApp...', 'success');
-            
-            setTimeout(() => {
-                try {
-                    window.open(`https://wa.me/${adminNumber}?text=${encodeURIComponent(message)}`, '_blank');
-                } catch (err) {
-                    const a = document.createElement('a');
-                    a.href = `https://wa.me/${adminNumber}?text=${encodeURIComponent(message)}`;
-                    a.target = '_blank';
-                    a.rel = 'noopener noreferrer';
-                    document.body.appendChild(a);
-                    a.click();
-                    a.remove();
-                }
-            }, 800);
-        }
-
-        function getRotatedAdminNumber() {
-            let currentIndex = parseInt(localStorage.getItem('wa_admin_index') || '0');
-            if (isNaN(currentIndex) || currentIndex < 0) currentIndex = 0;
-            currentIndex = currentIndex % adminNumbersList.length;
-            const selectedNumber = adminNumbersList[currentIndex];
-            localStorage.setItem('wa_admin_index', ((currentIndex + 1) % adminNumbersList.length).toString());
-            return selectedNumber || DEFAULT_ADMIN_WA;
+            const adminNumber = adminNumbersList[0] || DEFAULT_ADMIN_WA; // Simplified rotation for demo
+            showToast('Membuka WhatsApp...', 'success');
+            setTimeout(() => window.open(`https://wa.me/${adminNumber}?text=${encodeURIComponent(message)}`, '_blank'), 800);
         }
 
         // --- INIT ---
         async function init() {
-            console.log('%c[WRITEHUB] Initializing...', 'color: blue; font-weight: bold;');
+            console.log('%c[WRITEHUB] Starting App...', 'color: #4f46e5; font-weight: bold;');
             initSlider();
             
             if (useSupabase) {
                 const ads = await fetchAds();
                 modalAdsCache = ads.filter(ad => {
-                    const placement = getAdPlacement(ad);
+                    const placement = getAdField(ad, ['placement', 'penempatan', 'posisi', 'location']);
                     if (!placement) return false;
-                    const p = String(placement).toLowerCase().trim();
-                    return p.includes('modal') || p.includes('product') || p.includes('produk') || p.includes('detail') || p.includes('inside');
+                    return String(placement).toLowerCase().includes('modal') || String(placement).toLowerCase().includes('detail');
                 });
-                console.log(`[AD SYSTEM] Prepared ${modalAdsCache.length} modal ads.`);
             }
             
             await fetchAdminNumbers();
             await fetchCoverLetterPrice();
             await fetchPaymentMethods();
             await fetchProducts();
-            renderProducts();
         }
 
-        window.addEventListener('unhandledrejection', function(event) {
-            console.error('Unhandled Promise:', event.reason);
-            event.preventDefault();
+        // --- BACK TO TOP ---
+        const backToTopBtn = document.getElementById('backToTopBtn');
+        window.addEventListener('scroll', () => {
+            backToTopBtn.classList.toggle('visible', window.scrollY > 400);
+        });
+        backToTopBtn.addEventListener('click', () => { window.scrollTo({ top: 0, behavior: 'smooth' }); });
+
+        // --- SECURITY & PERFORMANCE ---
+        document.addEventListener('contextmenu', e => e.preventDefault());
+        document.addEventListener('keydown', e => {
+            if (e.ctrlKey && (e.key === 'u' || e.key === 's' || e.key === 'p')) e.preventDefault();
         });
 
         init();
-    </script>
-    <script>
-        document.addEventListener('contextmenu', e => e.preventDefault());
-        document.onkeydown = function(e) {
-            if(e.keyCode == 123 || (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74 || e.keyCode == 67)) || (e.ctrlKey && e.keyCode == 85)) return false;
-        };
-        document.addEventListener('keydown', function(e) {
-            if ((e.ctrlKey || e.metaKey) && (e.key === '+' || e.key === '-' || e.key === '0')) e.preventDefault();
-        });
-        document.addEventListener('wheel', function(e) { if (e.ctrlKey) e.preventDefault(); }, { passive: false });
-
-        // --- BACK TO TOP LOGIC ---
-        const backToTopBtn = document.getElementById('backToTopBtn');
-
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 300) {
-                backToTopBtn.classList.add('visible');
-            } else {
-                backToTopBtn.classList.remove('visible');
-            }
-        });
-
-        backToTopBtn.addEventListener('click', () => {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
-        });
     </script>
 </body>
 </html>
