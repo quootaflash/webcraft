@@ -37,14 +37,9 @@
             line-height: 1.5;
             -webkit-font-smoothing: antialiased;
             overflow-x: hidden;
-            padding-bottom: 0; 
+            padding-bottom: 80px;
             scroll-behavior: smooth;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
         }
-
-        main { flex: 1; } 
 
         a { text-decoration: none; color: inherit; transition: var(--transition); }
         img { display: block; max-width: 100%; }
@@ -673,147 +668,75 @@
         @keyframes slideDown { to { opacity: 1; transform: translateY(0); } }
         @keyframes fadeOut { to { opacity: 0; transform: translateY(-10px); } }
 
-        /* ============================================
-           PROFESSIONAL FOOTER DESIGN
-           ============================================ */
+        /* --- REVISED FOOTER --- */
         footer {
             background-color: #ffffff;
             border-top: 1px solid var(--border);
-            margin-top: auto; 
-            padding-top: 60px;
-            padding-bottom: 30px;
+            margin-top: 60px;
+            padding: 40px 0 30px;
             color: var(--text-muted);
             font-size: 0.9rem;
             position: relative;
             z-index: 10;
         }
 
-        .footer-grid {
-            display: grid;
-            grid-template-columns: 1.5fr 1fr 1fr 1fr;
-            gap: 40px;
-            margin-bottom: 50px;
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            text-align: center;
         }
 
-        @media (max-width: 900px) {
-            .footer-grid {
-                grid-template-columns: 1fr 1fr;
-                gap: 30px;
-            }
-        }
-
-        @media (max-width: 600px) {
-            .footer-grid {
-                grid-template-columns: 1fr;
-                gap: 30px;
-            }
-            footer { padding-top: 40px; }
-        }
-
-        .footer-brand .footer-logo {
+        .footer-logo {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: var(--text-main);
+            margin-bottom: 4px;
             display: flex;
             align-items: center;
             gap: 8px;
-            font-weight: 700;
-            font-size: 1.25rem;
-            color: var(--text-main);
-            margin-bottom: 16px;
-        }
-        .footer-brand .footer-logo img {
-            height: 32px;
-            width: auto;
-            object-fit: contain;
-        }
-        .footer-desc {
-            font-size: 0.9rem;
-            line-height: 1.6;
-            color: var(--text-muted);
-            margin-bottom: 20px;
-            max-width: 300px;
         }
 
-        .footer-col h5 {
-            font-size: 0.95rem;
-            font-weight: 600;
-            color: var(--text-main);
-            margin-bottom: 16px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .footer-list {
-            list-style: none;
-        }
-
-        .footer-list li {
-            margin-bottom: 12px;
-        }
-
-        .footer-list a {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-            font-weight: 500;
-            transition: var(--transition);
-            display: inline-block;
-        }
-
-        .footer-list a:hover {
-            color: var(--primary);
-            transform: translateX(4px);
-        }
-
-        .social-icons {
+        .footer-links {
             display: flex;
-            gap: 12px;
-        }
-        .social-link {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            background: var(--bg-body);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-main);
-            transition: var(--transition);
-            border: 1px solid var(--border);
-        }
-        .social-link:hover {
-            background: var(--primary);
-            color: white;
-            border-color: var(--primary);
-            transform: translateY(-3px);
-        }
-
-        .footer-bottom {
-            padding-top: 30px;
-            border-top: 1px solid var(--border);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            gap: 24px;
             flex-wrap: wrap;
-            gap: 16px;
-        }
-        
-        .footer-copyright {
-            color: var(--text-muted);
-            font-size: 0.85rem;
+            justify-content: center;
         }
 
-        .footer-legal {
-            display: flex;
-            gap: 20px;
-        }
-        
-        .footer-legal a {
+        .footer-links a {
             color: var(--text-muted);
-            font-size: 0.85rem;
-            transition: 0.2s;
+            font-weight: 500;
+            position: relative;
+            padding-bottom: 2px;
         }
-        
-        .footer-legal a:hover {
+
+        .footer-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 1.5px;
+            bottom: 0;
+            left: 50%;
+            background-color: var(--primary);
+            transition: all 0.3s ease;
+        }
+
+        .footer-links a:hover {
             color: var(--primary);
-            text-decoration: underline;
+        }
+
+        .footer-links a:hover::after {
+            width: 100%;
+            left: 0;
+        }
+
+        .footer-copyright {
+            font-size: 0.85rem;
+            opacity: 0.7;
+            margin-top: 10px;
         }
 
         /* --- BACK TO TOP BUTTON --- */
@@ -833,7 +756,7 @@
             align-items: center;
             justify-content: center;
             font-size: 1.1rem;
-            z-index: 999; /* Tetap di bawah modal tapi di atas footer */
+            z-index: 999;
             opacity: 0;
             pointer-events: none;
             transform: translateY(20px);
@@ -912,69 +835,16 @@
         </div>
     </main>
 
-    <!-- PROFESSIONAL FOOTER -->
+    <!-- REVISED FOOTER -->
     <footer>
-        <div class="container">
-            <div class="footer-grid">
-                <!-- Column 1: Brand & About -->
-                <div class="footer-col footer-brand">
-                    <div class="footer-logo">
-                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjzgVAIKgZMS9W7eJKCaRyaFnoDviThQstfeD9l9mcwPxUDoovGo7xB3RQByxTXo15fGX0DIeTMxOWkVovnB4FC35iJN6ArGLOlBRI9U4d4gJ7VOTOp-Ki47RIaViiIs12QGjxRmGs2cQzCFniRpBE0GyNLW3s_03rvTcpPeHAruMaUdrIKNX8jaFZ1TcBw/s3264/28063.png" alt="WriteHub">
-                        WriteHub
-                    </div>
-                    <p class="footer-desc">
-                        Platform pembuatan CV profesional dan surat lamaran kerja terbaik untuk meningkatkan peluang karirmu agar lolos ATS dan dilirik HRD.
-                    </p>
-                    <div class="social-icons">
-                        <a href="#" class="social-link" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                        <a href="#" class="social-link" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
-                        <a href="#" class="social-link" aria-label="Email"><i class="far fa-envelope"></i></a>
-                        <a href="#" class="social-link" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
-                    </div>
-                </div>
-
-                <!-- Column 2: Produk -->
-                <div class="footer-col">
-                    <h5>Produk</h5>
-                    <ul class="footer-list">
-                        <li><a href="#">CV ATS Friendly</a></li>
-                        <li><a href="#">Creative CV</a></li>
-                        <li><a href="#">Resume Eksekutif</a></li>
-                        <li><a href="#">Cover Letter</a></li>
-                    </ul>
-                </div>
-
-                <!-- Column 3: Perusahaan -->
-                <div class="footer-col">
-                    <h5>Perusahaan</h5>
-                    <ul class="footer-list">
-                        <li><a href="#">Tentang Kami</a></li>
-                        <li><a href="#">Karir</a></li>
-                        <li><a href="#">Blog Karir</a></li>
-                        <li><a href="#">Hubungi Kami</a></li>
-                    </ul>
-                </div>
-
-                <!-- Column 4: Dukungan -->
-                <div class="footer-col">
-                    <h5>Bantuan</h5>
-                    <ul class="footer-list">
-                        <li><a href="#">Pusat Bantuan</a></li>
-                        <li><a href="#">Cara Pemesanan</a></li>
-                        <li><a href="#">Kebijakan Privasi</a></li>
-                        <li><a href="#">Syarat & Ketentuan</a></li>
-                    </ul>
-                </div>
+        <div class="container footer-content">
+            <div class="footer-links">
+                <a href="#"><i class="fab fa-instagram"></i> Instagram</a>
+                <a href="#"><i class="fab fa-tiktok"></i> Tiktok</a>
+                <a href="#"><i class="far fa-envelope"></i> Kontak</a>
             </div>
-
-            <div class="footer-bottom">
-                <div class="footer-copyright">
-                    &copy; 2026 WriteHub. All Rights Reserved.
-                </div>
-                <div class="footer-legal">
-                    <a href="#">Privacy</a>
-                    <a href="#">Terms</a>
-                </div>
+            <div class="footer-copyright">
+                &copy; 2026 WriteHub. All Rights Reserved.
             </div>
         </div>
     </footer>
@@ -1121,36 +991,16 @@
         let supabase;
         let useSupabase = false;
 
-        // Dummy Data untuk Fallback (Jika DB Error)
-        const DUMMY_PRODUCTS = [
-            { id: 1, title: "CV Professional ATS Friendly", category: "ATS", price: 45000, original_price: 99000, image: "https://picsum.photos/seed/cv1/600/600", description: "CV yang dirancang khusus untuk melewati sistem ATS perusahaan besar.", sold_count: 120, allow_addon: true, cover_letter_price: 15000 },
-            { id: 2, title: "Creative CV Designer", category: "Creative", price: 55000, original_price: 120000, image: "https://picsum.photos/seed/cv2/600/600", description: "Desain CV kreatif untuk industri kreatif, desain, dan marketing.", sold_count: 85, allow_addon: true, cover_letter_price: 15000 },
-            { id: 3, title: "Minimalist Clean CV", category: "Clean", price: 35000, original_price: 75000, image: "https://picsum.photos/seed/cv3/600/600", description: "CV dengan desain minimalis, bersih, dan fokus pada konten.", sold_count: 200, allow_addon: false, cover_letter_price: 0 },
-            { id: 4, title: "Executive Manager Resume", category: "Formal", price: 85000, original_price: 150000, image: "https://picsum.photos/seed/cv4/600/600", description: "Resume premium untuk posisi manajerial dan eksekutif.", sold_count: 45, allow_addon: true, cover_letter_price: 20000 },
-        ];
-
-        // Cek koneksi dengan lebih aman
-        if (SUPABASE_URL && SUPABASE_URL.length > 10 && SUPABASE_ANON_KEY && SUPABASE_ANON_KEY.length > 10) {
+        if (SUPABASE_URL.length > 10 && SUPABASE_ANON_KEY.length > 10) {
             try {
                 supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-                // Lakukan tes koneksi sederhana
-                supabase.auth.getSession().then(({ data, error }) => {
-                    if (!error) {
-                        useSupabase = true;
-                        console.log('%c[SYSTEM] Database Connected', 'color: green; font-weight: bold;');
-                    } else {
-                        throw error;
-                    }
-                }).catch(() => {
-                    console.warn('%c[SYSTEM] Supabase Connection Failed. Using Dummy Data.', 'color: orange; font-weight: bold;');
-                    useSupabase = false;
-                });
+                useSupabase = true;
+                console.log('%c[SYSTEM] Database Connected', 'color: green; font-weight: bold;');
             } catch(e) {
-                console.error(e);
-                useSupabase = false;
+                console.error('%c[SYSTEM] Database Connection Failed', 'color: red; font-weight: bold;');
             }
         } else {
-            console.warn('%c[SYSTEM] Supabase Keys missing. Using Dummy Data.', 'color: orange; font-weight: bold;');
+            console.warn('%c[SYSTEM] Supabase Keys missing. App will not load data.', 'color: orange; font-weight: bold;');
         }
 
         // --- DATA SLIDER ---
@@ -1167,7 +1017,7 @@
         let paymentMethods = [];
         let adminNumbersList = [];
         let currentUniqueTotal = 0;
-        let currentOrderId = ''; 
+        let currentOrderId = ''; // VARIABLE UNTUK MENYIMPAN ID
         let paymentLockTimer = null;
         const LOCK_DURATION_MS = 120000;
         let touchStartX = 0;
@@ -1246,6 +1096,7 @@
         // FUNGSI GENERATE ID PESANAN
         function generateOrderID() {
             const prefix = "WH"; 
+            // Karakter unik tanpa angka 0 dan huruf O agar tidak membingungkan
             const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; 
             let result = prefix + "-";
             for (let i = 0; i < 6; i++) {
@@ -1327,11 +1178,7 @@
             allChip.innerText = 'Semua';
             allChip.onclick = function() { setCategory('all', this); };
             container.appendChild(allChip);
-            
-            // Ambil kategori unik dari produk
-            const categories = [...new Set(products.map(p => getField(p, 'category')))].filter(Boolean).sort();
-            
-            categories.forEach(cat => {
+            [...new Set(products.map(p => getField(p, 'category')))].filter(Boolean).sort().forEach(cat => {
                 const chip = document.createElement('div');
                 chip.className = 'filter-chip';
                 chip.innerText = cat;
@@ -1343,60 +1190,45 @@
         // --- FETCH FUNCTIONS ---
         async function fetchAdminNumbers() {
             if (useSupabase) {
-                try {
-                    const { data, error } = await supabase.from('no_wa').select('nomor');
-                    if (!error && data && data.length > 0) {
-                        adminNumbersList = data.map(i => i.nomor).filter(n => n);
-                    }
-                } catch(e) { console.warn('Gagal ambil nomor admin'); }
+                const { data } = await supabase.from('no_wa').select('nomor');
+                if (data && data.length > 0) adminNumbersList = data.map(i => i.nomor).filter(n => n);
             }
             if (adminNumbersList.length === 0) adminNumbersList = [DEFAULT_ADMIN_WA];
         }
 
         async function fetchCoverLetterPrice() {
             if (useSupabase) {
-                try {
-                    const { data } = await supabase.from('price_cover_letter').select('price, harga').single();
-                    if (data) { const val = data.price || data.harga; if (val && !isNaN(val)) coverLetterPrice = Number(val); }
-                } catch(e) {}
+                const { data } = await supabase.from('price_cover_letter').select('price, harga').single();
+                if (data) { const val = data.price || data.harga; if (val && !isNaN(val)) coverLetterPrice = Number(val); }
             }
             updateCoverLetterUI();
         }
 
         async function fetchPaymentMethods() {
             if (useSupabase) {
-                try {
-                    const { data } = await supabase.from('payment').select('*');
-                    if (data && data.length > 0) paymentMethods = data;
-                } catch(e) { paymentMethods = []; }
+                const { data } = await supabase.from('payment').select('*');
+                paymentMethods = (data && data.length > 0) ? data : [];
             } else {
-                // Dummy Payment jika DB Error
-                paymentMethods = [
-                    { bank_name: 'BCA', account_number: '1234567890', owner_name: 'Admin WriteHub', type: 'bank' },
-                    { bank_name: 'QRIS', image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Logo_QRIS.svg/1200px-Logo_QRIS.svg.png', type: 'qris' }
-                ];
+                paymentMethods = [];
             }
             renderPaymentMethods();
         }
 
         async function fetchProducts() {
             if (useSupabase) {
-                try {
-                    const { data: sample } = await supabase.from('cvs').select('*').limit(1);
-                    if (sample && sample.length > 0) {
-                        autoMapColumns(sample[0]);
-                        const { data } = await supabase.from('cvs').select('*');
-                        if (data) products = data;
-                        console.log(`[SYSTEM] Loaded ${products.length} products from DB.`);
-                    } else { 
-                        throw new Error('Table empty');
-                    }
-                } catch(e) {
-                    console.warn('[SYSTEM] DB Error. Loading Dummy Products.', e);
-                    products = DUMMY_PRODUCTS;
+                const { data: sample } = await supabase.from('cvs').select('*').limit(1);
+                if (sample && sample.length > 0) {
+                    autoMapColumns(sample[0]);
+                    const { data } = await supabase.from('cvs').select('*');
+                    products = data || [];
+                    console.log(`[SYSTEM] Loaded ${products.length} products from DB.`);
+                } else { 
+                    console.warn('[SYSTEM] No products found in DB and dummy data removed.');
+                    products = []; 
                 }
             } else {
-                products = DUMMY_PRODUCTS;
+                products = [];
+                console.error('[SYSTEM] Cannot fetch products: No DB Connection.');
             }
             renderCategories();
             filterLogic();
@@ -1456,6 +1288,7 @@
 
         async function fetchAds() {
             if (!useSupabase) {
+                console.warn('[AD SYSTEM] Supabase not available.');
                 return [];
             }
 
@@ -1509,6 +1342,7 @@
 
                 if (exactMatches.length > 0) {
                     selectedAd = exactMatches[Math.floor(Math.random() * exactMatches.length)];
+                    console.log(`[AD SYSTEM] Showing Exact Match Ad for [${productCategory}]`);
                 } else {
                     const universalAds = modalAdsCache.filter(ad => {
                         const cat = getAdTargetCategory(ad);
@@ -1519,6 +1353,7 @@
 
                     if (universalAds.length > 0) {
                         selectedAd = universalAds[Math.floor(Math.random() * universalAds.length)];
+                        console.log(`[AD SYSTEM] Showing Universal Ad (No exact match for [${productCategory}])`);
                     }
                 }
             }
@@ -1599,6 +1434,11 @@
             const grid = document.getElementById('productGrid');
             grid.innerHTML = '';
             
+            if (!useSupabase) {
+                 grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-muted);">Database tidak terhubung. Mohon periksa konfigurasi.</div>';
+                 return;
+            }
+
             if (filteredProducts.length === 0) {
                 grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-muted);">Produk tidak ditemukan.</div>';
                 return;
@@ -1863,6 +1703,7 @@
                 return;
             }
 
+            // 1. Generate ID Pesanan
             currentOrderId = generateOrderID();
             document.getElementById('p-order-id').innerText = currentOrderId;
 
@@ -1944,6 +1785,7 @@
             document.getElementById('productModal').classList.add('active');
             document.body.style.overflow = 'hidden';
 
+            // Jalankan logika iklan modal (Google Ads Style)
             setTimeout(() => showModalAdBanner(), 150);
         }
 
@@ -1969,6 +1811,7 @@
             const formattedTotal = formatRupiah(currentUniqueTotal);
             const orderTime = new Date().toLocaleString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
             
+            // 2. Masukkan ID Pesanan ke Pesan WhatsApp
             let message = `Halo Min, saya ingin membeli CV berikut:\n\n*ID Pesanan:* ${currentOrderId}\n*Jenis CV:* ${templateName}\n*Total Pembayaran (Unik):* ${formattedTotal}\n*Waktu Pesanan:* ${orderTime}`;
             
             const isAddOn = toggleSwitch.checked;
