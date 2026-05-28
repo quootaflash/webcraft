@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -600,7 +599,13 @@
             background-color: #9ca3af; cursor: not-allowed; opacity: 0.7;
             pointer-events: none; box-shadow: none; transform: none;
         }
-        
+
+        /* State saat tombol sudah diklik (Completed) */
+        .btn-confirm-wa.completed {
+            background-color: var(--success); cursor: default;
+            pointer-events: none; transform: none; opacity: 1;
+        }
+
         .mt-auto { margin-top: auto; }
 
         /* --- QRIS MODAL --- */
@@ -1023,6 +1028,9 @@
         const LOCK_DURATION_MS = 120000;
         let touchStartX = 0;
         let touchEndX = 0;
+        
+        // Flag untuk mencegah klik berulang
+        let isOrderProcessing = false;
 
         // ============================================
         // ADVANCED AD SYSTEM — MODAL ONLY
@@ -1747,6 +1755,7 @@
             currentProduct = p;
             carouselIndex = 0;
             toggleSwitch.checked = false;
+            isOrderProcessing = false; // Reset flag saat buka modal baru
 
             document.getElementById('m-cat').innerText = getField(p, 'category') || 'CATEGORY';
             document.getElementById('m-title').innerText = getField(p, 'title') || 'Product Title';
@@ -1780,7 +1789,8 @@
             updateCoverLetterUI();
 
             const btn = document.getElementById('btn-confirm-whatsapp');
-            btn.classList.remove('locked');
+            btn.classList.remove('locked', 'completed');
+            btn.disabled = false;
             btn.innerHTML = `<i class="fas fa-check-circle" style="font-size:1.2rem;"></i> Lanjutkan`;
 
             document.getElementById('productModal').classList.add('active');
@@ -1800,7 +1810,39 @@
 
         document.getElementById('productModal').addEventListener('click', (e) => { if(e.target.id === 'productModal') closeModal(); });
 
-        document.getElementById('btn-confirm-whatsapp').onclick = function() {
+        // ============================================
+        // LOGIKA INTI: SIMPAN ORDER & KONFIRMASI WA
+        // ============================================
+        
+        // Fungsi untuk menyimpan ke tabel 'orders' di Supabase
+        async function saveOrderToDatabase(orderData) {
+            if (!useSupabase) {
+                console.warn("Database not connected, skipping order save.");
+                return { error: null }; // Biarkan lanjut ke WA walau DB mati (optional)
+            }
+
+            try {
+                const { data, error } = await supabase
+                    .from('orders')
+                    .insert([orderData])
+                    .select();
+
+                if (error) throw error;
+                console.log("Order saved:", data);
+                return { error: null, data };
+            } catch (err) {
+                console.error("Error saving order:", err);
+                return { error: err };
+            }
+        }
+
+        document.getElementById('btn-confirm-whatsapp').onclick = async function() {
+            // 1. Cegah Klik Berulang
+            if (isOrderProcessing) {
+                showToast('Pesanan sedang diproses atau sudah selesai.', 'warning');
+                return;
+            }
+
             if (!currentProduct) return;
             
             if (currentUniqueTotal <= 0) {
@@ -1808,23 +1850,55 @@
                 return;
             }
 
+            // Lock UI & Flag
+            isOrderProcessing = true;
+            const btn = this;
+            btn.disabled = true;
+            btn.classList.add('locked');
+            btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Memproses...`;
+
             const templateName = getField(currentProduct, 'title');
             const formattedTotal = formatRupiah(currentUniqueTotal);
             const orderTime = new Date().toLocaleString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+            const basePrice = Number(getField(currentProduct, 'price')) || 0;
+            const isAddOn = toggleSwitch.checked;
+            const customAddonPrice = Number(getField(currentProduct, 'cover_letter_price')) || 0;
+            const finalAddonPrice = (customAddonPrice > 0) ? customAddonPrice : coverLetterPrice;
             
-            // 2. Masukkan ID Pesanan ke Pesan WhatsApp
+            // 2. Siapkan Data untuk Database
+            const orderData = {
+                id: currentOrderId,
+                jenis_produk: templateName,
+                harga_satuan: basePrice,
+                has_addon: isAddOn,
+                harga_addon: isAddOn ? finalAddonPrice : 0,
+                total_bayar: currentUniqueTotal,
+                status: 'Paid', // Auto deteksi paid saat klik tombol
+                tgl_order: new Date().toISOString()
+            };
+
+            // 3. Simpan ke Database
+            const dbResult = await saveOrderToDatabase(orderData);
+
+            if (dbResult.error) {
+                showToast('Gagal menyimpan data pesanan. Silakan coba lagi.', 'error');
+                isOrderProcessing = false; // Unlock agar bisa coba lagi
+                btn.disabled = false;
+                btn.classList.remove('locked');
+                btn.innerHTML = `<i class="fas fa-redo"></i> Coba Lagi`;
+                return;
+            }
+
+            // 4. Jika DB Sukses: Siapkan Pesan WA
             let message = `Halo Min, saya ingin membeli CV berikut:\n\n*Order ID:* ${currentOrderId}\n*Jenis CV:* ${templateName}\n*Total Pembayaran (Unik):* ${formattedTotal}\n*Waktu Pesanan:* ${orderTime}`;
             
-            const isAddOn = toggleSwitch.checked;
             if (isAddOn) {
-                const customPrice = Number(getField(currentProduct, 'cover_letter_price')) || 0;
-                const finalPrice = (customPrice > 0) ? customPrice : coverLetterPrice;
-                message += `\n\n*Addon:* Surat Lamaran Kerja (+${formatRupiah(finalPrice)})`;
+                message += `\n\n*Addon:* Surat Lamaran Kerja (+${formatRupiah(finalAddonPrice)})`;
             }
             message += `\n\nSaya sudah transfer sesuai nominal unik. Mohon segera diproses ya Min. Berikut bukti transfer yang saya lampirkan`;
 
+            // 5. Buka WhatsApp
             const adminNumber = getRotatedAdminNumber();
-            showToast('Menghubungkan.....', 'success');
             
             setTimeout(() => {
                 try {
@@ -1838,7 +1912,20 @@
                     a.click();
                     a.remove();
                 }
-            }, 800);
+            }, 500);
+
+            // 6. Update UI ke Status "Completed"
+            showToast('Pesanan Berhasil Disimpan! Mengalihkan ke WhatsApp...', 'success');
+            btn.classList.remove('locked');
+            btn.classList.add('completed');
+            btn.innerHTML = `<i class="fas fa-check"></i> Pesanan Terkirim`;
+
+            // 7. Tutup Modal Otomatis setelah delay singkat
+            setTimeout(() => {
+                closeModal();
+                // Reset flag agar jika user buka produk lain, bisa order lagi
+                isOrderProcessing = false; 
+            }, 2000); // Delay 2 detik agar user sempat melihat notifikasi sukses
         }
 
         function getRotatedAdminNumber() {
