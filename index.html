@@ -967,7 +967,7 @@
                 <img id="qrisDisplayImage" src="" alt="QRIS Code">
             </div>
             <div class="qris-modal-price-area" onclick="copyTotalPrice()">
-                <div class="copy-hint"><i class="fas fa-hand-pointer"></i>Salin</div>
+                <div class="copy-hint"><i class="fas fa-hand-pointer"></i> Salin</div>
                 <div class="qris-modal-total" id="qrisDisplayTotal">Rp 0</div>
                 <i class="far fa-copy copy-icon-overlay"></i>
             </div>
@@ -1781,7 +1781,7 @@
 
             const btn = document.getElementById('btn-confirm-whatsapp');
             btn.classList.remove('locked');
-            btn.innerHTML = `<i class="fab fa-whatsapp" style="font-size:1.2rem;"></i> Lanjutkan ke WhatsApp`;
+            btn.innerHTML = `<i class="fas fa-check-circle" style="font-size:1.2rem;"></i> Lanjutkan`;
 
             document.getElementById('productModal').classList.add('active');
             document.body.style.overflow = 'hidden';
@@ -1824,7 +1824,7 @@
             message += `\n\nSaya sudah transfer sesuai nominal unik. Mohon segera diproses ya Min. Berikut bukti transfer yang saya lampirkan`;
 
             const adminNumber = getRotatedAdminNumber();
-            showToast('Mengalihkan ke WhatsApp...', 'success');
+            showToast('Menghubungkan.....', 'success');
             
             setTimeout(() => {
                 try {
