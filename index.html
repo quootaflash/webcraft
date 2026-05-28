@@ -511,7 +511,7 @@
             font-weight: 600; 
             letter-spacing: 0.02em; 
             padding: 4px 10px;
-            border-radius: 22px; 
+            border-radius: 99px; 
             border: 1px solid rgba(255, 255, 255, 0.4);
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
             overflow: hidden;
@@ -910,7 +910,7 @@
             <div class="payment-view" id="paymentView">
                 <div class="payment-header">
                     <button class="btn-back" onclick="backToProduct()"><i class="fas fa-arrow-left"></i></button>
-                    <h3 style="margin:0; font-size:1.1rem; font-weight:700;">Detail Pembayaran</h3>
+                    <h3 style="margin:0; font-size:1.1rem; font-weight:700;">Payment</h3>
                 </div>
 
                 <div class="unique-amount-alert">
@@ -923,7 +923,7 @@
                 <div class="summary-card">
                     <!-- ID PESANAN MUNCUL DI SINI -->
                     <div class="summary-row">
-                        <span>ID Pesanan</span>
+                        <span>Order ID</span>
                         <span id="p-order-id" style="font-family: monospace; font-weight: 700; color: var(--primary);">-</span>
                     </div>
                     
@@ -952,7 +952,7 @@
 
                 <div class="mt-auto">
                     <button id="btn-confirm-whatsapp" class="btn-confirm-wa">
-                        <i class="fas fa-check-circle" style="font-size:1.2rem;"></i> Lanjutkan
+                        <i class="fab fa-whatsapp" style="font-size:1.2rem;"></i> Lanjutkan ke WhatsApp
                     </button>
                 </div>
             </div>
@@ -967,12 +967,12 @@
                 <img id="qrisDisplayImage" src="" alt="QRIS Code">
             </div>
             <div class="qris-modal-price-area" onclick="copyTotalPrice()">
-                <div class="copy-hint"><i class="fas fa-hand-pointer"></i> Klik untuk Salin</div>
+                <div class="copy-hint"><i class="fas fa-hand-pointer"></i>Salin</div>
                 <div class="qris-modal-total" id="qrisDisplayTotal">Rp 0</div>
                 <i class="far fa-copy copy-icon-overlay"></i>
             </div>
             <div class="qris-modal-desc">
-                Gunakan aplikasi pembayaran (GoPay/OVO/Dana) untuk scan QR ini, silakan screenshot Qris diatas.
+                Nominal unik ini ditambahkan untuk verifikasi otomatis. Gunakan aplikasi pembayaran (GoPay/OVO/Dana) untuk scan QR ini, silakan screenshot Qris diatas.
             </div>
             <div class="qris-actions">
                 <button class="btn-close-qris" onclick="closeQrisModal()">Tutup</button>
@@ -1086,7 +1086,7 @@
         function unlockWhatsAppButton() {
             const btn = document.getElementById('btn-confirm-whatsapp');
             btn.classList.remove('locked');
-            btn.innerHTML = `<i class="fab fa-whatsapp" style="font-size:1.2rem;"></i> Lanjutkan ke WhatsApp`;
+            btn.innerHTML = `<i class="fas fa-check-circle" style="font-size:1.2rem;"></i> Lanjutkan`;
         }
         function clearPaymentTimer() { if (paymentLockTimer) { clearTimeout(paymentLockTimer); paymentLockTimer = null; } }
 
@@ -1813,7 +1813,7 @@
             const orderTime = new Date().toLocaleString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
             
             // 2. Masukkan ID Pesanan ke Pesan WhatsApp
-            let message = `Halo Min, saya ingin membeli CV berikut:\n\n*ID Pesanan:* ${currentOrderId}\n*Jenis CV:* ${templateName}\n*Total Pembayaran (Unik):* ${formattedTotal}\n*Waktu Pesanan:* ${orderTime}`;
+            let message = `Halo Min, saya ingin membeli CV berikut:\n\n*Order ID:* ${currentOrderId}\n*Jenis CV:* ${templateName}\n*Total Pembayaran (Unik):* ${formattedTotal}\n*Waktu Pesanan:* ${orderTime}`;
             
             const isAddOn = toggleSwitch.checked;
             if (isAddOn) {
@@ -1821,7 +1821,7 @@
                 const finalPrice = (customPrice > 0) ? customPrice : coverLetterPrice;
                 message += `\n\n*Addon:* Surat Lamaran Kerja (+${formatRupiah(finalPrice)})`;
             }
-            message += `\n\nSaya sudah transfer sesuai nominal unik. Mohon segera diproses ya Min.`;
+            message += `\n\nSaya sudah transfer sesuai nominal unik. Mohon segera diproses ya Min. Berikut bukti transfer yang saya lampirkan`;
 
             const adminNumber = getRotatedAdminNumber();
             showToast('Mengalihkan ke WhatsApp...', 'success');
