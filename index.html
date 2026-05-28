@@ -37,9 +37,15 @@
             line-height: 1.5;
             -webkit-font-smoothing: antialiased;
             overflow-x: hidden;
-            padding-bottom: 80px;
+            /* DIPERBAIKI: Padding bawah dihapus agar tidak ada space kosong aneh di bawah footer */
+            padding-bottom: 0; 
             scroll-behavior: smooth;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
+
+        main { flex: 1; width: 100%; } /* Pushes footer down */
 
         a { text-decoration: none; color: inherit; transition: var(--transition); }
         img { display: block; max-width: 100%; }
@@ -247,7 +253,7 @@
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 12px;
-            margin-bottom: 60px;
+            margin-bottom: 40px; /* DIPERBAIKI: Margin bottom dikurangi agar tidak terlalu jauh dari footer */
         }
 
         @media (min-width: 640px) { .product-grid { grid-template-columns: repeat(3, 1fr); gap: 16px; } }
@@ -668,75 +674,164 @@
         @keyframes slideDown { to { opacity: 1; transform: translateY(0); } }
         @keyframes fadeOut { to { opacity: 0; transform: translateY(-10px); } }
 
-        /* --- REVISED FOOTER --- */
+        /* --- PROFESSIONAL & MINIMALIST FOOTER (FIXED VERSION) --- */
         footer {
             background-color: #ffffff;
             border-top: 1px solid var(--border);
-            margin-top: 60px;
-            padding: 40px 0 30px;
-            color: var(--text-muted);
+            margin-top: 60px; /* Jarak aman dari konten */
+            padding: 50px 0 20px;
+            color: var(--text-main);
             font-size: 0.9rem;
             position: relative;
             z-index: 10;
+            flex-shrink: 0; /* Memastikan footer tidak mengecil */
         }
 
-        .footer-content {
+        .footer-top {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        /* Responsive Breakpoints yang Lebih Presisi */
+        @media (max-width: 992px) {
+            .footer-top { 
+                grid-template-columns: 1fr 1fr; 
+                gap: 40px; 
+            }
+        }
+        @media (max-width: 640px) {
+            .footer-top { 
+                grid-template-columns: 1fr; 
+                gap: 30px; 
+                text-align: center; 
+            }
+            .footer-col { 
+                align-items: center; 
+            }
+            .footer-brand-logo { 
+                justify-content: center; 
+            }
+            .social-icons { 
+                justify-content: center; 
+            }
+            .footer-links li {
+                display: block; /* Reset list style if needed */
+            }
+        }
+
+        .footer-col {
             display: flex;
             flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 20px;
-            text-align: center;
         }
 
-        .footer-logo {
+        /* Brand Section */
+        .footer-brand-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+        .footer-brand-logo img {
+            height: 36px;
+            width: auto;
+        }
+        .footer-brand-logo span {
             font-weight: 700;
-            font-size: 1.2rem;
+            font-size: 1.25rem;
             color: var(--text-main);
-            margin-bottom: 4px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+        }
+        .footer-desc {
+            color: var(--text-muted);
+            line-height: 1.6;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+            max-width: 300px;
+        }
+        @media (max-width: 640px) {
+            .footer-desc { margin: 0 auto 20px auto; }
         }
 
+        /* Links Sections */
+        .footer-heading {
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
         .footer-links {
+            list-style: none;
             display: flex;
-            gap: 24px;
-            flex-wrap: wrap;
-            justify-content: center;
+            flex-direction: column;
+            gap: 12px;
         }
-
         .footer-links a {
             color: var(--text-muted);
             font-weight: 500;
-            position: relative;
-            padding-bottom: 2px;
+            font-size: 0.9rem;
+            transition: var(--transition);
+            display: inline-block;
         }
-
-        .footer-links a::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 1.5px;
-            bottom: 0;
-            left: 50%;
-            background-color: var(--primary);
-            transition: all 0.3s ease;
-        }
-
         .footer-links a:hover {
             color: var(--primary);
+            transform: translateX(4px);
+        }
+        @media (max-width: 640px) {
+            .footer-links a:hover { transform: none; }
         }
 
-        .footer-links a:hover::after {
-            width: 100%;
-            left: 0;
+        /* Social Icons */
+        .social-icons {
+            display: flex;
+            gap: 16px;
+        }
+        .social-link {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--bg-body);
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            border: 1px solid var(--border);
+            transition: var(--transition);
+        }
+        .social-link:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            transform: translateY(-3px);
         }
 
-        .footer-copyright {
+        /* Footer Bottom */
+        .footer-bottom {
+            border-top: 1px solid var(--border);
+            padding-top: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
             font-size: 0.85rem;
-            opacity: 0.7;
-            margin-top: 10px;
+            color: var(--text-muted);
+        }
+        @media (max-width: 640px) {
+            .footer-bottom { flex-direction: column; gap: 10px; }
+        }
+        
+        .footer-bottom-links {
+            display: flex;
+            gap: 24px;
+        }
+        @media (max-width: 640px) {
+            .footer-bottom-links { gap: 15px; font-size: 0.8rem; }
+        }
+        .footer-bottom-links a:hover {
+            color: var(--primary);
+            text-decoration: underline;
         }
 
         /* --- BACK TO TOP BUTTON --- */
@@ -744,7 +839,7 @@
             position: fixed;
             bottom: 30px;
             right: 30px;
-            background-color: var(--primary);
+            background-color: var(--text-main);
             color: white;
             width: 48px;
             height: 48px;
@@ -756,7 +851,7 @@
             align-items: center;
             justify-content: center;
             font-size: 1.1rem;
-            z-index: 999;
+            z-index: 999; /* Di atas footer */
             opacity: 0;
             pointer-events: none;
             transform: translateY(20px);
@@ -770,7 +865,7 @@
         }
 
         .back-to-top:hover {
-            background-color: var(--primary-dark);
+            background-color: var(--primary);
             transform: translateY(-4px);
             box-shadow: 0 10px 20px rgba(37, 99, 235, 0.3);
         }
@@ -835,16 +930,66 @@
         </div>
     </main>
 
-    <!-- REVISED FOOTER -->
+    <!-- FOOTER -->
     <footer>
-        <div class="container footer-content">
-            <div class="footer-links">
-                <a href="#"><i class="fab fa-instagram"></i> Instagram</a>
-                <a href="#"><i class="fab fa-tiktok"></i> Tiktok</a>
-                <a href="#"><i class="far fa-envelope"></i> Kontak</a>
+        <div class="container">
+            <div class="footer-top">
+                <!-- Brand -->
+                <div class="footer-col">
+                    <div class="footer-brand-logo">
+                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjzgVAIKgZMS9W7eJKCaRyaFnoDviThQstfeD9l9mcwPxUDoovGo7xB3RQByxTXo15fGX0DIeTMxOWkVovnB4FC35iJN6ArGLOlBRI9U4d4gJ7VOTOp-Ki47RIaViiIs12QGjxRmGs2cQzCFniRpBE0GyNLW3s_03rvTcpPeHAruMaUdrIKNX8jaFZ1TcBw/s3264/28063.png" alt="WriteHub Logo">
+                        <span>WriteHub</span>
+                    </div>
+                    <p class="footer-desc">
+                        Platform pembuatan CV profesional desain premium untuk membantu karir Anda menonjol. Cepat, mudah, dan terjangkau.
+                    </p>
+                    <div class="social-icons">
+                        <a href="#" class="social-link" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+                        <a href="#" class="social-link" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link" aria-label="Email"><i class="far fa-envelope"></i></a>
+                    </div>
+                </div>
+
+                <!-- Produk -->
+                <div class="footer-col">
+                    <h4 class="footer-heading">Produk</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Semua Template</a></li>
+                        <li><a href="#">CV ATS Friendly</a></li>
+                        <li><a href="#">CV Kreatif</a></li>
+                        <li><a href="#">Paket Lengkap</a></li>
+                    </ul>
+                </div>
+
+                <!-- Perusahaan -->
+                <div class="footer-col">
+                    <h4 class="footer-heading">Perusahaan</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Tentang Kami</a></li>
+                        <li><a href="#">Hubungi Kami</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Karir</a></li>
+                    </ul>
+                </div>
+
+                <!-- Legal -->
+                <div class="footer-col">
+                    <h4 class="footer-heading">Legal</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Syarat & Ketentuan</a></li>
+                        <li><a href="#">Kebijakan Privasi</a></li>
+                        <li><a href="#">Kebijakan Refund</a></li>
+                    </ul>
+                </div>
             </div>
-            <div class="footer-copyright">
-                &copy; 2026 WriteHub. All Rights Reserved.
+
+            <div class="footer-bottom">
+                <p>&copy; 2026 WriteHub. Hak Cipta Dilindungi.</p>
+                <div class="footer-bottom-links">
+                    <a href="#">Peta Situs</a>
+                    <a href="#">Bantuan</a>
+                </div>
             </div>
         </div>
     </footer>
@@ -1017,15 +1162,12 @@
         let paymentMethods = [];
         let adminNumbersList = [];
         let currentUniqueTotal = 0;
-        let currentOrderId = ''; // VARIABLE UNTUK MENYIMPAN ID
+        let currentOrderId = '';
         let paymentLockTimer = null;
         const LOCK_DURATION_MS = 120000;
         let touchStartX = 0;
         let touchEndX = 0;
 
-        // ============================================
-        // ADVANCED AD SYSTEM — MODAL ONLY
-        // ============================================
         const AD_CONFIG = {
             tableNames: ['iklan', 'ads', 'ad', 'iklan_banner', 'banner'],
         };
@@ -1039,7 +1181,6 @@
             cover_letter_price: 'cover_letter_price', allow_addon: 'allow_addon'
         };
 
-        // --- TOAST ---
         window.showToast = function(message, type = 'success') {
             const container = document.getElementById('toastContainer');
             const toast = document.createElement('div');
@@ -1053,7 +1194,6 @@
             }, 3000);
         }
 
-        // --- QRIS MODAL ---
         window.openQrisModal = function(imageUrl) {
             const modal = document.getElementById('qrisModal');
             document.getElementById('qrisDisplayImage').src = imageUrl;
@@ -1074,7 +1214,6 @@
         };
         document.getElementById('qrisModal').addEventListener('click', (e) => { if(e.target.id === 'qrisModal') closeQrisModal(); });
 
-        // --- TIMER LOGIC ---
         function lockWhatsAppButton() {
             const btn = document.getElementById('btn-confirm-whatsapp');
             if (paymentLockTimer) clearTimeout(paymentLockTimer);
@@ -1089,14 +1228,11 @@
         }
         function clearPaymentTimer() { if (paymentLockTimer) { clearTimeout(paymentLockTimer); paymentLockTimer = null; } }
 
-        // --- HELPERS ---
         const formatRupiah = (num) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(num);
         function getField(item, fieldKey) { return item[fields[fieldKey]] || item[fieldKey]; }
 
-        // FUNGSI GENERATE ID PESANAN
         function generateOrderID() {
             const prefix = "WH"; 
-            // Karakter unik tanpa angka 0 dan huruf O agar tidak membingungkan
             const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; 
             let result = prefix + "-";
             for (let i = 0; i < 6; i++) {
@@ -1123,7 +1259,6 @@
             fields = map;
         }
 
-        // --- SEARCH ---
         const searchInput = document.getElementById('searchInput');
         const suggestionsBox = document.getElementById('searchSuggestions');
 
@@ -1169,7 +1304,6 @@
         searchInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') { suggestionsBox.classList.remove('active'); searchInput.blur(); } });
         document.addEventListener('click', (e) => { if (!searchInput.contains(e.target) && !suggestionsBox.contains(e.target)) suggestionsBox.classList.remove('active'); });
 
-        // --- CATEGORIES ---
         function renderCategories() {
             const container = document.getElementById('filterBar');
             container.innerHTML = '';
@@ -1187,7 +1321,6 @@
             });
         }
 
-        // --- FETCH FUNCTIONS ---
         async function fetchAdminNumbers() {
             if (useSupabase) {
                 const { data } = await supabase.from('no_wa').select('nomor');
@@ -1233,10 +1366,6 @@
             renderCategories();
             filterLogic();
         }
-
-        // ============================================
-        // AD SYSTEM — LOGIC
-        // ============================================
 
         function getAdField(ad, possibilities) {
             for (const key of possibilities) {
@@ -1312,10 +1441,6 @@
             }
             return [];
         }
-
-        // ============================================
-        // MODAL AD BANNER — ADVANCED SYSTEM
-        // ============================================
 
         function showModalAdBanner() {
             const bannerEl = document.getElementById('modalAdBanner');
@@ -1411,7 +1536,6 @@
             bannerEl.style.height = '0px';
         }
 
-        // --- CARD SLIDERS ---
         const cardSliders = {};
         function initCardSlider(cardElement, productId) {
             const container = cardElement.querySelector('.card-slider-container');
@@ -1429,7 +1553,6 @@
             start();
         }
 
-        // --- RENDER PRODUCTS ---
         function renderProducts() {
             const grid = document.getElementById('productGrid');
             grid.innerHTML = '';
@@ -1490,7 +1613,6 @@
             });
         }
 
-        // --- RENDER PAYMENT ---
         function renderPaymentMethods() {
             const container = document.getElementById('paymentMethodsList');
             container.innerHTML = '';
@@ -1546,7 +1668,6 @@
             });
         }
 
-        // --- HERO SLIDER ---
         let slideIndex = 0, slideInterval;
         function initSlider() {
             const track = document.getElementById('sliderTrack');
@@ -1587,7 +1708,6 @@
         window.nextSlide = nextSlide;
         window.prevSlide = prevSlide;
 
-        // --- FILTER ---
         window.setCategory = function(cat, el) {
             currentCategory = cat;
             document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
@@ -1606,7 +1726,6 @@
             renderProducts();
         }
 
-        // --- MODAL LOGIC ---
         let currentProduct = null, carouselIndex = 0, carouselImages = [];
         const trackEl = document.getElementById('carouselTrack');
         
@@ -1703,7 +1822,6 @@
                 return;
             }
 
-            // 1. Generate ID Pesanan
             currentOrderId = generateOrderID();
             document.getElementById('p-order-id').innerText = currentOrderId;
 
@@ -1785,7 +1903,6 @@
             document.getElementById('productModal').classList.add('active');
             document.body.style.overflow = 'hidden';
 
-            // Jalankan logika iklan modal (Google Ads Style)
             setTimeout(() => showModalAdBanner(), 150);
         }
 
@@ -1811,7 +1928,6 @@
             const formattedTotal = formatRupiah(currentUniqueTotal);
             const orderTime = new Date().toLocaleString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
             
-            // 2. Masukkan ID Pesanan ke Pesan WhatsApp
             let message = `Halo Min, saya ingin membeli CV berikut:\n\n*ID Pesanan:* ${currentOrderId}\n*Jenis CV:* ${templateName}\n*Total Pembayaran (Unik):* ${formattedTotal}\n*Waktu Pesanan:* ${orderTime}`;
             
             const isAddOn = toggleSwitch.checked;
@@ -1849,7 +1965,6 @@
             return selectedNumber || DEFAULT_ADMIN_WA;
         }
 
-        // --- INIT ---
         async function init() {
             console.log('%c[WRITEHUB] Initializing...', 'color: blue; font-weight: bold;');
             initSlider();
@@ -1889,7 +2004,6 @@
         });
         document.addEventListener('wheel', function(e) { if (e.ctrlKey) e.preventDefault(); }, { passive: false });
 
-        // --- BACK TO TOP LOGIC ---
         const backToTopBtn = document.getElementById('backToTopBtn');
 
         window.addEventListener('scroll', () => {
