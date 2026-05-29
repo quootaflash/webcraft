@@ -48,38 +48,16 @@
 
         .container { max-width: 1200px; margin: 0 auto; padding: 0 16px; }
 
-        /* --- BUTTONS & INPUTS --- */
+        /* --- BUTTONS & INPUTS (NEW FOR AUTH) --- */
         .btn {
-            padding: 10px 20px; border-radius: 8px; font-weight: 600; cursor: pointer; transition: 0.2s; display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.9rem;
+            padding: 10px 20px; border-radius: 8px; font-weight: 600; cursor: pointer; transition: 0.2s; display: inline-flex; align-items: center; gap: 8px; font-size: 0.9rem;
         }
         .btn-primary { background: var(--primary); color: white; }
         .btn-primary:hover { background: var(--primary-dark); transform: translateY(-1px); }
         .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text-main); }
-        .btn-outline:hover { border-color: var(--primary); color: var(--primary); background: white; }
+        .btn-outline:hover { border-color: var(--primary); color: var(--primary); }
         .btn-danger { background: var(--danger); color: white; }
         
-        /* --- NEW ICON BUTTON STYLE FOR HEADER --- */
-        .btn-icon-nav {
-            width: 40px; height: 40px;
-            padding: 0;
-            border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 1.1rem;
-            background: var(--bg-body);
-            color: var(--text-main);
-            border: 1px solid transparent;
-        }
-        .btn-icon-nav:hover {
-            background: var(--primary-light);
-            color: var(--primary);
-            border-color: var(--primary);
-        }
-        .btn-icon-nav.active {
-            background: var(--primary);
-            color: white;
-            box-shadow: 0 4px 10px rgba(37, 99, 235, 0.3);
-        }
-
         .input-group { margin-bottom: 16px; text-align: left; }
         .input-group label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 6px; color: var(--text-main); }
         .input-field {
@@ -95,19 +73,14 @@
             border-bottom: 1px solid var(--border);
             position: sticky; top: 0; z-index: 100; padding: 12px 0;
         }
-        .nav-wrapper { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+        .nav-wrapper { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
         .logo { display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 1.1rem; color: var(--text-main); white-space: nowrap; }
-        .logo img { height: 28px; width: auto; object-fit: contain; } 
+        .logo img { height: 32px; width: auto; object-fit: contain; } 
 
         .search-box {
             flex: 1;
             position: relative;
             z-index: 1000;
-            max-width: 400px; /* Prevent search bar from getting too huge */
-        }
-        @media (max-width: 600px) {
-            .search-box { display: none; } /* Hide search on very small mobile for simplicity, or make it expandable */
-            .nav-wrapper { justify-content: space-between; }
         }
 
         .search-box input {
@@ -179,6 +152,7 @@
             gap: 10px;
             flex: 1;
         }
+
         .top-badge {
             background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%);
             color: white;
@@ -192,6 +166,7 @@
             flex-shrink: 0;
             display: inline-block;
         }
+
         .rank-badge {
             background: #f1f5f9;
             color: #64748b;
@@ -205,6 +180,7 @@
             margin-left: 8px;
             border: 1px solid #e2e8f0;
         }
+
         .no-suggestion {
             padding: 12px 16px;
             font-size: 0.85rem;
@@ -212,13 +188,12 @@
             text-align: center;
         }
 
-        /* --- HERO SLIDER (FIXED) --- */
+        /* --- HERO SLIDER --- */
         .hero-section {
             margin-top: 20px;
             position: relative;
             width: 100%;
-            /* Fixed height strategy for better mobile handling */
-            height: 200px; 
+            aspect-ratio: 1280 / 500;
             max-width: 1280px;
             margin-left: auto;
             margin-right: auto;
@@ -227,22 +202,8 @@
             overflow: hidden;
             box-shadow: var(--shadow-md);
         }
-
-        @media (min-width: 640px) {
-            .hero-section { height: 280px; }
-        }
-        @media (min-width: 1024px) {
-            .hero-section { height: 400px; }
-        }
-
         .slider-container { width: 100%; height: 100%; position: relative; }
-        .slide { 
-            position: absolute; inset: 0; 
-            opacity: 0; 
-            transition: opacity 0.8s ease-in-out; 
-            display: flex; align-items: center; justify-content: center; 
-            z-index: 0; /* Default z-index */
-        }
+        .slide { position: absolute; inset: 0; opacity: 0; transition: opacity 0.8s ease-in-out; display: flex; align-items: center; justify-content: center; }
         .slide.active { opacity: 1; z-index: 1; }
         .slide img { width: 100%; height: 100%; object-fit: cover; }
 
@@ -250,21 +211,20 @@
             position: absolute; top: 50%; transform: translateY(-50%);
             background: rgba(255, 255, 255, 0.8); color: var(--text-main);
             width: 36px; height: 36px; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center; z-index: 10;
+            display: flex; align-items: center; justify-content: center; z-index: 2;
             cursor: pointer; transition: 0.2s; opacity: 0;
         }
         .hero-section:hover .slider-btn { opacity: 1; }
-        .hero-section:active .slider-btn { opacity: 1; } /* Show on touch */
         .slider-btn:hover { background: white; transform: translateY(-50%) scale(1.1); }
-        .prev-btn { left: 10px; }
-        .next-btn { right: 10px; }
+        .prev-btn { left: 15px; }
+        .next-btn { right: 15px; }
 
         .slider-dots {
             position: absolute; bottom: 15px; left: 50%; transform: translateX(-50%);
-            display: flex; gap: 6px; z-index: 10;
+            display: flex; gap: 6px; z-index: 2;
         }
-        .dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.5); cursor: pointer; transition: 0.3s; }
-        .dot.active { background: white; width: 24px; border-radius: 10px; }
+        .dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.5); cursor: pointer; transition: 0.3s; }
+        .dot.active { background: white; width: 20px; border-radius: 10px; }
 
         /* --- FILTER BAR --- */
         .filter-bar {
@@ -274,7 +234,7 @@
         }
         .filter-bar::-webkit-scrollbar { display: none; }
         .filter-chip {
-            padding: 8px 16px; background: white; border: 1px solid var(--border);
+            padding: 6px 14px; background: white; border: 1px solid var(--border);
             border-radius: 50px; font-size: 0.85rem; color: var(--text-muted);
             white-space: nowrap; cursor: pointer; transition: var(--transition);
         }
@@ -290,6 +250,7 @@
             gap: 12px;
             margin-bottom: 60px;
         }
+
         @media (min-width: 640px) { .product-grid { grid-template-columns: repeat(3, 1fr); gap: 16px; } }
         @media (min-width: 1024px) { .product-grid { grid-template-columns: repeat(4, 1fr); gap: 20px; } }
 
@@ -306,23 +267,27 @@
             display: flex;
             flex-direction: column;
         }
+
         .cv-card:hover {
             transform: translateY(-4px);
             box-shadow: var(--shadow-lg);
             border-color: var(--primary-light);
         }
+
         .card-image {
             position: relative;
-            padding-top: 100%; /* Square */
+            padding-top: 100%;
             background: #f1f5f9;
             overflow: hidden;
         }
+
         .card-slider-container {
             position: absolute; inset: 0; width: 100%; height: 100%;
             display: flex; transition: transform 0.5s ease;
         }
         .card-slide { min-width: 100%; height: 100%; }
         .card-slide img { width: 100%; height: 100%; object-fit: cover; }
+
         .card-content {
             padding: 12px;
             flex: 1;
@@ -333,6 +298,7 @@
             position: relative;
             z-index: 5;
         }
+
         .card-title {
             font-size: 0.9rem;
             font-weight: 600;
@@ -345,20 +311,24 @@
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
         }
+
         .card-footer {
             display: flex;
             justify-content: space-between;
             align-items: flex-end;
             margin-top: auto;
         }
+
         .price-container { display: flex; flex-direction: column; align-items: flex-start; }
         .price-original { font-size: 0.7rem; color: var(--text-muted); text-decoration: line-through; font-weight: 500; margin-bottom: 2px; white-space: nowrap; }
         .price-main { font-size: 1rem; font-weight: 700; color: var(--primary); line-height: 1.1; white-space: nowrap; }
+
         @media (min-width: 768px) {
             .card-title { font-size: 1rem; height: 2.8rem; }
             .price-original { font-size: 0.8rem; }
             .price-main { font-size: 1.2rem; }
         }
+
         .sold-info { font-size: 0.7rem; color: var(--text-muted); text-align: right; white-space: nowrap; }
 
         /* --- MODAL --- */
@@ -368,6 +338,7 @@
             opacity: 0; pointer-events: none; transition: 0.3s; padding: 16px;
         }
         .modal-overlay.active { opacity: 1; pointer-events: all; }
+
         .modal-content {
             background: white; width: 100%; max-width: 900px; border-radius: 20px;
             overflow: hidden; display: flex; flex-direction: column;
@@ -375,12 +346,15 @@
             max-height: 90vh;
         }
         .modal-overlay.active .modal-content { transform: scale(1); }
+
         .modal-body { display: flex; flex-direction: column; overflow: hidden; height: 100%; }
+        
         @media (min-width: 768px) {
             .modal-body { flex-direction: row; height: 550px; }
             .modal-img-wrapper { width: 55%; }
             .modal-info { width: 45%; }
         }
+
         .modal-img-wrapper {
             position: relative;
             background: #f8fafc;
@@ -389,10 +363,17 @@
             flex-shrink: 0;
         }
         @media (min-width: 768px) { .modal-img-wrapper { height: 100%; } }
-        .carousel-track { display: flex; height: 100%; transition: transform 0.3s ease-out; cursor: grab; }
+
+        .carousel-track {
+            display: flex;
+            height: 100%;
+            transition: transform 0.3s ease-out;
+            cursor: grab;
+        }
         .carousel-track:active { cursor: grabbing; }
         .carousel-slide { min-width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; }
         .carousel-slide img { width: 100%; height: 100%; object-fit: contain; background: white; }
+
         .carousel-nav {
             position: absolute; top: 50%; transform: translateY(-50%);
             width: 32px; height: 32px; border-radius: 50%;
@@ -403,33 +384,40 @@
         .carousel-nav:hover { background: white; }
         .c-prev { left: 10px; }
         .c-next { right: 10px; }
+
         .carousel-dots {
             position: absolute; bottom: 15px; left: 0; right: 0;
             display: flex; justify-content: center; gap: 6px; z-index: 5;
         }
         .c-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.5); cursor: pointer; }
         .c-dot.active { background: white; transform: scale(1.3); }
+        
         .modal-info { padding: 24px; display: flex; flex-direction: column; overflow-y: auto; height: 100%; }
         .modal-cat { color: var(--primary); font-weight: 600; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
         .modal-title { font-size: 1.4rem; font-weight: 700; color: var(--text-main); margin-bottom: 12px; line-height: 1.3; flex-shrink: 0; }
+        
         .modal-price-wrap {
             display: flex; align-items: baseline; gap: 10px;
             margin-bottom: 16px; flex-shrink: 0;
         }
         .modal-price-original { font-size: 1rem; color: var(--text-muted); text-decoration: line-through; font-weight: 500; }
         .modal-price-final { font-size: 1.5rem; font-weight: 700; color: var(--primary); }
+
         .modal-desc { 
             color: var(--text-muted); font-size: 0.95rem; line-height: 1.6;
             flex-grow: 1; overflow-y: auto; margin-bottom: 16px;
             white-space: pre-wrap;
         }
+        
         .addon-section {
-            background: var(--bg-body); padding: 12px; border-radius: 12px; margin-bottom: 16px;
+            background: var(--bg-body);
+            padding: 12px; border-radius: 12px; margin-bottom: 16px;
             border: 1px solid var(--border); flex-shrink: 0;
         }
         .addon-header { display: flex; justify-content: space-between; align-items: center; }
         .addon-title { font-size: 0.9rem; font-weight: 600; color: var(--text-main); display: flex; align-items: center; gap: 8px; }
         .addon-price { font-size: 0.8rem; color: var(--text-muted); margin-top: 4px; }
+        
         .switch { position: relative; display: inline-block; width: 44px; height: 24px; }
         .switch input { opacity: 0; width: 0; height: 0; }
         .slider-toggle {
@@ -445,6 +433,7 @@
         }
         input:checked + .slider-toggle { background-color: var(--primary); }
         input:checked + .slider-toggle:before { transform: translateX(20px); }
+
         .btn-buy {
             background: var(--primary); color: white; padding: 16px;
             border-radius: 12px; font-weight: 600; font-size: 1rem; text-align: center;
@@ -452,6 +441,7 @@
             cursor: pointer; flex-shrink: 0;
         }
         .btn-buy:hover { background: var(--primary-dark); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3); }
+
         .btn-close {
             position: absolute; top: 20px; right: 20px;
             background: white; width: 36px; height: 36px; border-radius: 50%;
@@ -461,41 +451,110 @@
         }
         .btn-close:hover { background: var(--bg-body); }
 
-        /* --- MODAL AD BANNER --- */
+        /* ============================================
+           MODAL AD BANNER — GOOGLE ADS STYLE SPONSOR
+           ============================================ */
         .modal-ad-banner {
-            display: block; width: 100%; flex-shrink: 0; overflow: hidden;
-            position: relative; background: transparent; border-radius: 12px;
-            border: 1px solid rgba(0,0,0,0.05); height: 0; opacity: 0;
-            margin-bottom: 0; pointer-events: none;
-            transition: height 0.4s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.3s ease 0.05s, margin-bottom 0.4s ease;
+            display: block;
+            width: 100%;
+            flex-shrink: 0;
+            overflow: hidden;
+            position: relative;
+            background: transparent;
+            border-radius: 12px;
+            border: 1px solid rgba(0,0,0,0.05);
+            height: 0;
+            opacity: 0;
+            margin-bottom: 0;
+            pointer-events: none;
+            transition: height 0.4s cubic-bezier(0.25, 1, 0.5, 1),
+                        opacity 0.3s ease 0.05s,
+                        margin-bottom 0.4s ease;
         }
-        .modal-ad-banner.visible { opacity: 1; pointer-events: auto; margin-bottom: 20px; }
-        .modal-ad-banner a { display: block; width: 100%; height: 100%; position: relative; overflow: hidden; border-radius: 12px; }
-        .modal-ad-banner img { width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; transition: transform 0.5s ease; }
-        .modal-ad-banner a:hover img { transform: scale(1.03); }
+        .modal-ad-banner.visible {
+            opacity: 1;
+            pointer-events: auto;
+            margin-bottom: 20px;
+        }
+
+        .modal-ad-banner a {
+            display: block;
+            width: 100%;
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+        }
+        .modal-ad-banner img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; 
+            object-position: center;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+        .modal-ad-banner a:hover img {
+            transform: scale(1.03);
+        }
+
         .ad-label {
-            position: absolute; top: 10px; right: 10px; z-index: 10; pointer-events: none;
-            background: rgba(255, 255, 255, 0.55); backdrop-filter: blur(6px);
-            -webkit-backdrop-filter: blur(6px); color: #334155; font-size: 0.7rem; font-weight: 600;
-            padding: 4px 10px; border-radius: 99px; border: 1px solid rgba(255, 255, 255, 0.4);
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04); overflow: hidden; line-height: 1.2; display: inline-flex; align-items: center; gap: 4px;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 10;
+            pointer-events: none;
+            background: rgba(255, 255, 255, 0.55); 
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            color: #334155; 
+            font-size: 0.7rem; 
+            font-weight: 600; 
+            letter-spacing: 0.02em; 
+            padding: 4px 10px;
+            border-radius: 99px; 
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            overflow: hidden;
+            line-height: 1.2;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            transition: background 0.2s ease;
         }
         
+        .modal-ad-banner a:hover + .ad-label, 
+        .modal-ad-banner:hover .ad-label {
+            background: rgba(255, 255, 255, 0.85);
+            color: #000;
+        }
+
         /* --- PAYMENT VIEW --- */
         .payment-view {
-            display: none; padding: 30px 24px; height: 100%; overflow-y: auto; flex-direction: column; animation: fadeIn 0.3s ease;
+            display: none;
+            padding: 30px 24px;
+            height: 100%;
+            overflow-y: auto;
+            flex-direction: column;
+            animation: fadeIn 0.3s ease;
         }
         .payment-view.active { display: flex; }
+
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .payment-header { display: flex; align-items: center; gap: 10px; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
+
+        .payment-header {
+            display: flex; align-items: center; gap: 10px;
+            margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid var(--border);
+        }
         .btn-back { background: none; font-size: 1.2rem; cursor: pointer; color: var(--text-muted); padding: 5px; }
         .btn-back:hover { color: var(--primary); }
+
         .summary-card { background: var(--bg-body); border-radius: 12px; padding: 16px; margin-bottom: 24px; }
         .summary-row { display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 0.9rem; color: var(--text-muted); }
         .summary-row.total {
             margin-top: 16px; padding-top: 12px; border-top: 1px dashed var(--border);
             font-weight: 700; color: var(--text-main); font-size: 1.1rem; margin-bottom: 0;
         }
+
         .unique-amount-alert {
             background: #fff7ed; border: 1px solid #ffedd5; color: #c2410c;
             padding: 12px; border-radius: 8px; font-size: 0.85rem; margin-bottom: 20px;
@@ -503,13 +562,16 @@
         }
         .unique-amount-alert i { margin-top: 3px; }
         .unique-amount-alert strong { color: #ea580c; }
+
         .payment-methods { display: flex; flex-direction: column; gap: 12px; margin-bottom: 24px; }
+        
         .payment-option-card {
             border: 1px solid var(--border); border-radius: 12px; padding: 16px;
             display: flex; justify-content: space-between; align-items: center;
             background: white; transition: 0.2s;
         }
         .payment-option-card:hover { border-color: var(--primary); box-shadow: var(--shadow-sm); }
+        
         .bank-info { display: flex; align-items: center; gap: 12px; }
         .bank-logo-img { width: 60px; height: auto; max-height: 30px; object-fit: contain; }
         .qris-img { width: 80px; height: 80px; border-radius: 8px; border: 1px solid #eee; }
@@ -517,6 +579,7 @@
         .bank-details h4 { font-size: 0.95rem; margin-bottom: 2px; display: flex; align-items: center; gap: 8px; color: #333; }
         .bank-number { font-family: monospace; font-size: 1.1rem; letter-spacing: 1px; color: var(--text-main); font-weight: 600; }
         .bank-name { font-size: 0.75rem; color: var(--text-muted); }
+
         .btn-copy {
             background: var(--bg-body); border: 1px solid var(--border);
             padding: 8px 12px; border-radius: 8px; cursor: pointer;
@@ -524,14 +587,26 @@
             transition: 0.2s; flex-shrink: 0;
         }
         .btn-copy:hover { background: var(--primary-light); border-color: var(--primary); }
+
         .btn-confirm-wa {
-            background: #25D366; color: white; padding: 16px; border-radius: 12px; font-weight: 600; font-size: 1rem; text-align: center;
+            background: #25D366; color: white; padding: 16px;
+            border-radius: 12px; font-weight: 600; font-size: 1rem; text-align: center;
             width: 100%; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px;
             transition: 0.3s;
         }
         .btn-confirm-wa:hover { background: #1ebc57; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3); }
-        .btn-confirm-wa.locked { background-color: #9ca3af; cursor: not-allowed; opacity: 0.7; pointer-events: none; box-shadow: none; transform: none; }
-        .btn-confirm-wa.completed { background-color: var(--success); cursor: default; pointer-events: none; transform: none; opacity: 1; }
+        
+        .btn-confirm-wa.locked {
+            background-color: #9ca3af; cursor: not-allowed; opacity: 0.7;
+            pointer-events: none; box-shadow: none; transform: none;
+        }
+
+        /* State saat tombol sudah diklik (Completed) */
+        .btn-confirm-wa.completed {
+            background-color: var(--success); cursor: default;
+            pointer-events: none; transform: none; opacity: 1;
+        }
+
         .mt-auto { margin-top: auto; }
 
         /* --- QRIS MODAL --- */
@@ -541,21 +616,25 @@
             opacity: 0; pointer-events: none; transition: 0.3s; padding: 16px;
         }
         .qris-modal-overlay.active { opacity: 1; pointer-events: all; }
+
         .qris-modal-content {
             background: white; width: 100%; max-width: 400px; border-radius: 20px;
             padding: 30px 20px; text-align: center;
             box-shadow: var(--shadow-xl); transform: scale(0.9); transition: 0.3s; position: relative;
         }
         .qris-modal-overlay.active .qris-modal-content { transform: scale(1); }
+
         .qris-modal-title { font-size: 1.2rem; font-weight: 700; color: var(--text-main); margin-bottom: 20px; }
         .qris-modal-image-wrapper {
             background: #fff; padding: 10px; border: 2px dashed var(--border);
             border-radius: 12px; margin-bottom: 20px; display: flex; justify-content: center;
         }
         .qris-modal-image-wrapper img { width: 200px; height: 200px; object-fit: contain; }
+        
         .qris-modal-price-area {
-            background: var(--bg-body); border: 1px solid var(--border); border-radius: 12px; padding: 15px;
-            margin-bottom: 10px; cursor: pointer; transition: 0.2s; position: relative;
+            background: var(--bg-body); border: 1px solid var(--border);
+            border-radius: 12px; padding: 15px; margin-bottom: 10px;
+            cursor: pointer; transition: 0.2s; position: relative;
         }
         .qris-modal-price-area:active { background: #e2e8f0; transform: scale(0.98); }
         .qris-modal-price-area:hover { border-color: var(--primary); }
@@ -566,7 +645,8 @@
         .qris-actions { display: flex; gap: 10px; justify-content: center; }
         .btn-close-qris {
             background: var(--bg-body); color: var(--text-main); padding: 12px 24px;
-            border-radius: 12px; font-weight: 600; cursor: pointer; transition: 0.2s; border: 1px solid var(--border);
+            border-radius: 12px; font-weight: 600; cursor: pointer;
+            transition: 0.2s; border: 1px solid var(--border);
         }
         .btn-close-qris:hover { background: #e2e8f0; }
 
@@ -577,7 +657,8 @@
             pointer-events: none; width: 90%; max-width: 400px;
         }
         .toast {
-            background: white; color: var(--text-main); padding: 12px 16px; border-radius: 10px;
+            background: white; color: var(--text-main);
+            padding: 12px 16px; border-radius: 10px;
             box-shadow: var(--shadow-lg); border-left: 4px solid var(--primary);
             display: flex; align-items: center; gap: 12px;
             animation: slideDown 0.3s ease-out forwards; opacity: 0; transform: translateY(-20px);
@@ -590,38 +671,120 @@
         .toast.success i { color: var(--success); }
         .toast.error i { color: var(--danger); }
         .toast.warning i { color: var(--warning); }
+        
         @keyframes slideDown { to { opacity: 1; transform: translateY(0); } }
         @keyframes fadeOut { to { opacity: 0; transform: translateY(-10px); } }
 
-        /* --- FOOTER --- */
+        /* --- REVISED FOOTER --- */
         footer {
-            background-color: #ffffff; border-top: 1px solid var(--border);
-            margin-top: 60px; padding: 40px 0 30px; color: var(--text-muted);
-            font-size: 0.9rem; position: relative; z-index: 10;
+            background-color: #ffffff;
+            border-top: 1px solid var(--border);
+            margin-top: 60px;
+            padding: 40px 0 30px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            position: relative;
+            z-index: 10;
         }
-        .footer-content { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px; text-align: center; }
-        .footer-logo { font-weight: 700; font-size: 1.2rem; color: var(--text-main); margin-bottom: 4px; display: flex; align-items: center; gap: 8px; }
-        .footer-links { display: flex; gap: 24px; flex-wrap: wrap; justify-content: center; }
-        .footer-links a { color: var(--text-muted); font-weight: 500; position: relative; padding-bottom: 2px; }
-        .footer-links a::after {
-            content: ''; position: absolute; width: 0; height: 1.5px; bottom: 0; left: 50%;
-            background-color: var(--primary); transition: all 0.3s ease;
-        }
-        .footer-links a:hover { color: var(--primary); }
-        .footer-links a:hover::after { width: 100%; left: 0; }
-        .footer-copyright { font-size: 0.85rem; opacity: 0.7; margin-top: 10px; }
 
-        /* --- BACK TO TOP --- */
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            text-align: center;
+        }
+
+        .footer-logo {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: var(--text-main);
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 24px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .footer-links a {
+            color: var(--text-muted);
+            font-weight: 500;
+            position: relative;
+            padding-bottom: 2px;
+        }
+
+        .footer-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 1.5px;
+            bottom: 0;
+            left: 50%;
+            background-color: var(--primary);
+            transition: all 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary);
+        }
+
+        .footer-links a:hover::after {
+            width: 100%;
+            left: 0;
+        }
+
+        .footer-copyright {
+            font-size: 0.85rem;
+            opacity: 0.7;
+            margin-top: 10px;
+        }
+
+        /* --- BACK TO TOP BUTTON --- */
         .back-to-top {
-            position: fixed; bottom: 30px; right: 30px; background-color: var(--primary); color: white;
-            width: 48px; height: 48px; border-radius: 50%; border: none; box-shadow: var(--shadow-lg);
-            cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.1rem;
-            z-index: 999; opacity: 0; pointer-events: none; transform: translateY(20px);
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: var(--primary);
+            color: white;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: none;
+            box-shadow: var(--shadow-lg);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            z-index: 999;
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(20px);
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-        .back-to-top.visible { opacity: 1; pointer-events: auto; transform: translateY(0); }
-        .back-to-top:hover { background-color: var(--primary-dark); transform: translateY(-4px); box-shadow: 0 10px 20px rgba(37, 99, 235, 0.3); }
-        .back-to-top:active { transform: translateY(-1px); }
+
+        .back-to-top.visible {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateY(0);
+        }
+
+        .back-to-top:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-4px);
+            box-shadow: 0 10px 20px rgba(37, 99, 235, 0.3);
+        }
+
+        .back-to-top:active {
+            transform: translateY(-1px);
+        }
 
         .modal-info::-webkit-scrollbar, .payment-view::-webkit-scrollbar { width: 6px; }
         .modal-info::-webkit-scrollbar-thumb, .payment-view::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
@@ -629,9 +792,11 @@
         @keyframes pulse { 0% { opacity: 0.6; } 50% { opacity: 1; } 100% { opacity: 0.6; } }
 
         /* ============================================
-           NEW: RESPONSIVE DASHBOARD & AUTH STYLES
+           NEW: AUTH & DASHBOARD STYLES
            ============================================ */
-        .auth-container { min-height: 80vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
+        .auth-container {
+            min-height: 80vh; display: flex; align-items: center; justify-content: center; padding: 20px;
+        }
         .auth-card {
             background: white; width: 100%; max-width: 400px; border-radius: 20px;
             box-shadow: var(--shadow-xl); padding: 40px 30px; position: relative;
@@ -643,9 +808,8 @@
         .toggle-btn { flex: 1; padding: 8px; text-align: center; font-size: 0.9rem; font-weight: 600; border-radius: 6px; cursor: pointer; transition: 0.2s; color: var(--text-muted); }
         .toggle-btn.active { background: white; color: var(--primary); box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
 
-        /* --- DASHBOARD GRID LAYOUT --- */
-        .dashboard-grid { display: grid; gap: 24px; grid-template-columns: 1fr; }
-        @media (min-width: 768px) { .dashboard-grid { grid-template-columns: 320px 1fr; } }
+        .dashboard-grid { display: grid; gap: 24px; }
+        @media (min-width: 768px) { .dashboard-grid { grid-template-columns: 300px 1fr; } }
 
         .profile-card {
             background: white; border-radius: 20px; padding: 24px; box-shadow: var(--shadow-sm); border: 1px solid var(--border); text-align: center; height: fit-content;
@@ -656,7 +820,7 @@
             font-size: 2rem; font-weight: 700; margin: 0 auto 16px; border: 3px solid white; box-shadow: 0 4px 10px rgba(37,99,235,0.2);
         }
         .profile-name { font-size: 1.2rem; font-weight: 700; color: var(--text-main); margin-bottom: 4px; }
-        .profile-email { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 16px; word-break: break-all; }
+        .profile-email { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 16px; }
         .member-badge {
             display: inline-block; padding: 4px 12px; background: linear-gradient(135deg, #f59e0b, #d97706);
             color: white; border-radius: 20px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;
@@ -664,59 +828,11 @@
 
         .history-card { background: white; border-radius: 20px; padding: 24px; box-shadow: var(--shadow-sm); border: 1px solid var(--border); }
         .history-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        
-        /* --- RESPONSIVE TABLE --- */
-        .history-table-container { width: 100%; overflow-x: auto; }
         .history-table { width: 100%; border-collapse: collapse; }
-        .history-table th { text-align: left; padding: 12px; font-size: 0.8rem; color: var(--text-muted); border-bottom: 2px solid var(--bg-body); font-weight: 600; text-transform: uppercase; white-space: nowrap; }
+        .history-table th { text-align: left; padding: 12px; font-size: 0.8rem; color: var(--text-muted); border-bottom: 2px solid var(--bg-body); font-weight: 600; text-transform: uppercase; }
         .history-table td { padding: 16px 12px; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
-        
-        .status-badge { padding: 4px 10px; border-radius: 6px; font-size: 0.75rem; font-weight: 600; white-space: nowrap; }
+        .status-badge { padding: 4px 10px; border-radius: 6px; font-size: 0.75rem; font-weight: 600; }
         .status-Paid { background: #dcfce7; color: #166534; }
-
-        /* Mobile Card View for Table */
-        @media (max-width: 768px) {
-            .history-table, .history-table tbody, .history-table tr, .history-table td {
-                display: block; width: 100%;
-            }
-            .history-table thead { display: none; }
-            
-            .history-table tr {
-                margin-bottom: 16px;
-                border: 1px solid var(--border);
-                border-radius: 12px;
-                padding: 12px;
-                box-shadow: var(--shadow-sm);
-                background: #fff;
-            }
-            
-            .history-table td {
-                text-align: right;
-                padding: 8px 0;
-                border-bottom: 1px dashed #f1f5f9;
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-            }
-            
-            .history-table td:last-child { border-bottom: none; }
-
-            /* Label before content using data-label attribute */
-            .history-table td::before {
-                content: attr(data-label);
-                font-weight: 600;
-                color: var(--text-muted);
-                font-size: 0.85rem;
-                text-align: left;
-            }
-            
-            .history-table td:nth-child(2) {
-                /* Style Order ID specifically */
-                font-family: monospace;
-                font-size: 1rem;
-                color: var(--primary);
-            }
-        }
     </style>
 </head>
 <body oncontextmenu="return false;">
@@ -737,7 +853,8 @@
             </div>
             
             <div class="nav-actions" id="navActions">
-                <!-- Icon Buttons will be injected here via JS -->
+                <!-- Dinamis: Masuk / Dashboard -->
+                <a href="#auth" class="btn btn-outline"><i class="fas fa-sign-in-alt"></i> Masuk</a>
             </div>
         </div>
     </header>
@@ -829,7 +946,7 @@
                     <div class="history-header">
                         <h3>Riwayat Transaksi</h3>
                     </div>
-                    <div class="history-table-container">
+                    <div style="overflow-x:auto;">
                         <table class="history-table">
                             <thead>
                                 <tr>
@@ -852,7 +969,7 @@
 
     </main>
 
-    <!-- FOOTER -->
+    <!-- REVISED FOOTER -->
     <footer>
         <div class="container footer-content">
             <div class="footer-links">
@@ -866,7 +983,7 @@
         </div>
     </footer>
 
-    <!-- BACK TO TOP -->
+    <!-- BACK TO TOP BUTTON -->
     <button id="backToTopBtn" class="back-to-top" aria-label="Kembali ke atas">
         <i class="fas fa-arrow-up"></i>
     </button>
@@ -909,7 +1026,7 @@
                         <i class="fa-solid fa-envelope-open-text" style="color:var(--primary)"></i><strong> Terpakai</strong> <span id="m-sold">0</span>
                     </div>
 
-                    <!-- IKLAN MODAL -->
+                    <!-- IKLAN MODAL PRODUK (GOOGLE ADS STYLE) -->
                     <div class="modal-ad-banner" id="modalAdBanner">
                         <a href="#" target="_blank" rel="noopener noreferrer" id="modalAdLink">
                             <img id="modalAdImage" src="" alt="Promo">
@@ -937,10 +1054,12 @@
                 </div>
 
                 <div class="summary-card">
+                    <!-- ID PESANAN MUNCUL DI SINI -->
                     <div class="summary-row">
                         <span>Order ID</span>
                         <span id="p-order-id" style="font-family: monospace; font-weight: 700; color: var(--primary);">-</span>
                     </div>
+                    
                     <div class="summary-row">
                         <span>Produk</span>
                         <span id="p-product-name" style="font-weight:600; color:var(--text-main);">Nama Produk</span>
@@ -1032,17 +1151,25 @@
         let paymentMethods = [];
         let adminNumbersList = [];
         let currentUniqueTotal = 0;
-        let currentOrderId = '';
+        let currentOrderId = ''; // VARIABLE UNTUK MENYIMPAN ID
         let paymentLockTimer = null;
         const LOCK_DURATION_MS = 120000;
         let touchStartX = 0;
         let touchEndX = 0;
+        
+        // Flag untuk mencegah klik berulang
         let isOrderProcessing = false;
-        let currentUser = null;
+        let currentUser = null; // AUTH STATE
 
-        // --- AD SYSTEM --- 
-        const AD_CONFIG = { tableNames: ['iklan', 'ads', 'ad', 'iklan_banner', 'banner'], };
+        // ============================================
+        // ADVANCED AD SYSTEM — MODAL ONLY
+        // ============================================
+        const AD_CONFIG = {
+            tableNames: ['iklan', 'ads', 'ad', 'iklan_banner', 'banner'],
+        };
+
         let modalAdsCache = [];
+        
         let fields = {
             title: 'title', price: 'price', original_price: 'original_price',
             image: 'image', images: 'images', category: 'category',
@@ -1085,7 +1212,7 @@
         };
         document.getElementById('qrisModal').addEventListener('click', (e) => { if(e.target.id === 'qrisModal') closeQrisModal(); });
 
-        // --- TIMER ---
+        // --- TIMER LOGIC ---
         function lockWhatsAppButton() {
             const btn = document.getElementById('btn-confirm-whatsapp');
             if (paymentLockTimer) clearTimeout(paymentLockTimer);
@@ -1095,6 +1222,7 @@
         }
         function unlockWhatsAppButton() {
             const btn = document.getElementById('btn-confirm-whatsapp');
+            // Hanya unlock jika TIDAK sedang memproses (karena tombol hanya bisa 1 kali klik)
             if (!isOrderProcessing) {
                 btn.classList.remove('locked');
                 btn.innerHTML = `<i class="fas fa-check-circle" style="font-size:1.2rem;"></i> Lanjutkan`;
@@ -1105,12 +1233,19 @@
         // --- HELPERS ---
         const formatRupiah = (num) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(num);
         function getField(item, fieldKey) { return item[fields[fieldKey]] || item[fieldKey]; }
+
+        // FUNGSI GENERATE ID PESANAN
         function generateOrderID() {
-            const prefix = "KSP"; const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; 
+            const prefix = "KSP"; 
+            // Karakter unik tanpa angka 0 dan huruf O agar tidak membingungkan
+            const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; 
             let result = prefix + "-";
-            for (let i = 0; i < 6; i++) { result += chars.charAt(Math.floor(Math.random() * chars.length)); }
+            for (let i = 0; i < 6; i++) {
+                result += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
             return result;
         }
+
         function autoMapColumns(sampleData) {
             if (!sampleData) return;
             const keys = Object.keys(sampleData);
@@ -1132,6 +1267,7 @@
         // --- SEARCH ---
         const searchInput = document.getElementById('searchInput');
         const suggestionsBox = document.getElementById('searchSuggestions');
+
         function renderSuggestions(query) {
             suggestionsBox.innerHTML = '';
             if (!query) { suggestionsBox.classList.remove('active'); return; }
@@ -1146,7 +1282,9 @@
                     if (!seenTitles.has(displayTitle)) {
                         seenTitles.add(displayTitle);
                         let score = 0;
-                        if (title === query) score += 1000; else if (title.startsWith(query)) score += 500; else if (title.includes(query)) score += 100;
+                        if (title === query) score += 1000;
+                        else if (title.startsWith(query)) score += 500;
+                        else if (title.includes(query)) score += 100;
                         score += (soldCount * 0.1);
                         suggestionList.push({ type: 'product', text: displayTitle, sold: soldCount, score });
                     }
@@ -1167,6 +1305,7 @@
             }
             suggestionsBox.classList.add('active');
         }
+
         searchInput.addEventListener('input', (e) => { renderSuggestions(e.target.value.toLowerCase()); filterLogic(); });
         searchInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') { suggestionsBox.classList.remove('active'); searchInput.blur(); } });
         document.addEventListener('click', (e) => { if (!searchInput.contains(e.target) && !suggestionsBox.contains(e.target)) suggestionsBox.classList.remove('active'); });
@@ -1176,11 +1315,16 @@
             const container = document.getElementById('filterBar');
             container.innerHTML = '';
             const allChip = document.createElement('div');
-            allChip.className = 'filter-chip active'; allChip.innerText = 'Semua';
-            allChip.onclick = function() { setCategory('all', this); }; container.appendChild(allChip);
+            allChip.className = 'filter-chip active';
+            allChip.innerText = 'Semua';
+            allChip.onclick = function() { setCategory('all', this); };
+            container.appendChild(allChip);
             [...new Set(products.map(p => getField(p, 'category')))].filter(Boolean).sort().forEach(cat => {
-                const chip = document.createElement('div'); chip.className = 'filter-chip'; chip.innerText = cat;
-                chip.onclick = function() { setCategory(cat, this); }; container.appendChild(chip);
+                const chip = document.createElement('div');
+                chip.className = 'filter-chip';
+                chip.innerText = cat;
+                chip.onclick = function() { setCategory(cat, this); };
+                container.appendChild(chip);
             });
         }
 
@@ -1192,6 +1336,7 @@
             }
             if (adminNumbersList.length === 0) adminNumbersList = [DEFAULT_ADMIN_WA];
         }
+
         async function fetchCoverLetterPrice() {
             if (useSupabase) {
                 const { data } = await supabase.from('price_cover_letter').select('price, harga').single();
@@ -1199,13 +1344,17 @@
             }
             updateCoverLetterUI();
         }
+
         async function fetchPaymentMethods() {
             if (useSupabase) {
                 const { data } = await supabase.from('payment').select('*');
                 paymentMethods = (data && data.length > 0) ? data : [];
-            } else { paymentMethods = []; }
+            } else {
+                paymentMethods = [];
+            }
             renderPaymentMethods();
         }
+
         async function fetchProducts() {
             if (useSupabase) {
                 const { data: sample } = await supabase.from('cvs').select('*').limit(1);
@@ -1214,174 +1363,385 @@
                     const { data } = await supabase.from('cvs').select('*');
                     products = data || [];
                     console.log(`[SYSTEM] Loaded ${products.length} products from DB.`);
-                } else { products = []; console.warn('[SYSTEM] No products found in DB.'); }
-            } else { products = []; console.error('[SYSTEM] Cannot fetch products: No DB Connection.'); }
-            renderCategories(); filterLogic();
+                } else { 
+                    console.warn('[SYSTEM] No products found in DB and dummy data removed.');
+                    products = []; 
+                }
+            } else {
+                products = [];
+                console.error('[SYSTEM] Cannot fetch products: No DB Connection.');
+            }
+            renderCategories();
+            filterLogic();
         }
 
-        // --- AD SYSTEM LOGIC ---
+        // ============================================
+        // AD SYSTEM — LOGIC
+        // ============================================
+
         function getAdField(ad, possibilities) {
-            for (const key of possibilities) if (ad[key] !== undefined && ad[key] !== null && ad[key] !== '') return ad[key];
+            for (const key of possibilities) {
+                if (ad[key] !== undefined && ad[key] !== null && ad[key] !== '') {
+                    return ad[key];
+                }
+            }
             return null;
         }
-        function getAdImageUrl(ad) { return getAdField(ad, ['image_url', 'gambar', 'image', 'url_gambar', 'foto', 'img_url', 'banner_url', 'src', 'thumbnail', 'picture']); }
-        function getAdLinkUrl(ad) { return getAdField(ad, ['link_url', 'link', 'url', 'target_url', 'redirect_url', 'destination', 'href', 'go_to']) || '#'; }
-        function isAdActive(ad) { const val = getAdField(ad, ['is_active', 'active', 'aktif', 'status', 'is_show', 'show', 'visible']); if (val === true || val === 1 || val === '1' || val === 'true') return true; if (val === false || val === 0 || val === '0' || val === 'false') return false; return true; }
-        function getAdTargetCategory(ad) { return getAdField(ad, ['target_category', 'kategori', 'category', 'kategori_iklan', 'product_category', 'show_on_category']); }
-        function getAdPlacement(ad) { return getAdField(ad, ['placement', 'penempatan', 'posisi', 'position', 'location', 'lokasi', 'tipe', 'type', 'show_in']); }
+
+        function getAdImageUrl(ad) {
+            return getAdField(ad, [
+                'image_url', 'gambar', 'image', 'url_gambar', 'foto',
+                'img_url', 'banner_url', 'src', 'thumbnail', 'picture'
+            ]);
+        }
+
+        function getAdLinkUrl(ad) {
+            return getAdField(ad, [
+                'link_url', 'link', 'url', 'target_url', 'redirect_url',
+                'destination', 'href', 'go_to'
+            ]) || '#';
+        }
+
+        function isAdActive(ad) {
+            const val = getAdField(ad, ['is_active', 'active', 'aktif', 'status', 'is_show', 'show', 'visible']);
+            if (val === true || val === 1 || val === '1' || val === 'true') return true;
+            if (val === false || val === 0 || val === '0' || val === 'false') return false;
+            return true;
+        }
+
+        function getAdTargetCategory(ad) {
+            return getAdField(ad, [
+                'target_category',
+                'kategori', 
+                'category', 
+                'kategori_iklan', 
+                'product_category',
+                'show_on_category'
+            ]);
+        }
+        
+        function getAdPlacement(ad) {
+            return getAdField(ad, [
+                'placement', 'penempatan', 'posisi', 'position',
+                'location', 'lokasi', 'tipe', 'type', 'show_in'
+            ]);
+        }
+
         async function fetchAds() {
-            if (!useSupabase) return [];
+            if (!useSupabase) {
+                console.warn('[AD SYSTEM] Supabase not available.');
+                return [];
+            }
+
             for (const tableName of AD_CONFIG.tableNames) {
                 try {
                     const { data, error } = await supabase.from(tableName).select('*');
-                    if (error) continue; if (!data || data.length === 0) continue;
+                    
+                    if (error) continue;
+                    if (!data || data.length === 0) continue;
+                    
                     const activeAds = data.filter(ad => isAdActive(ad));
-                    if (activeAds.length > 0) { console.log(`[AD SYSTEM] Loaded ${activeAds.length} ads from "${tableName}"`); return activeAds; }
-                } catch (err) { continue; }
-            } return [];
+                    
+                    if (activeAds.length > 0) {
+                        console.log(`[AD SYSTEM] Loaded ${activeAds.length} ads from table "${tableName}"`);
+                        return activeAds;
+                    }
+                    
+                } catch (err) {
+                    continue;
+                }
+            }
+            return [];
         }
 
-        // --- MODAL AD BANNER ---
+        // ============================================
+        // MODAL AD BANNER — ADVANCED SYSTEM
+        // ============================================
+
         function showModalAdBanner() {
-            const bannerEl = document.getElementById('modalAdBanner'); const imgEl = document.getElementById('modalAdImage'); const linkEl = document.getElementById('modalAdLink');
-            bannerEl.classList.remove('visible'); bannerEl.style.height = '0px';
-            if (modalAdsCache.length === 0) return;
+            const bannerEl = document.getElementById('modalAdBanner');
+            const imgEl = document.getElementById('modalAdImage');
+            const linkEl = document.getElementById('modalAdLink');
+
+            bannerEl.classList.remove('visible');
+            bannerEl.style.height = '0px';
+
+            if (modalAdsCache.length === 0) {
+                return;
+            }
+
             let selectedAd = null;
+            
             if (currentProduct) {
                 const productCategory = String(getField(currentProduct, 'category')).toLowerCase().trim();
-                const exactMatches = modalAdsCache.filter(ad => { const adTargetCat = getAdTargetCategory(ad); if (!adTargetCat) return false; return String(adTargetCat).toLowerCase().trim() === productCategory; });
-                if (exactMatches.length > 0) { selectedAd = exactMatches[Math.floor(Math.random() * exactMatches.length)]; console.log(`[AD SYSTEM] Showing Exact Match Ad for [${productCategory}]`); }
-                else {
-                    const universalAds = modalAdsCache.filter(ad => { const cat = getAdTargetCategory(ad); if (!cat) return false; const cleanCat = String(cat).toLowerCase().trim(); return cleanCat === '*' || cleanCat === 'all' || cleanCat === 'universal'; });
-                    if (universalAds.length > 0) { selectedAd = universalAds[Math.floor(Math.random() * universalAds.length)]; console.log(`[AD SYSTEM] Showing Universal Ad`); }
+                
+                const exactMatches = modalAdsCache.filter(ad => {
+                    const adTargetCat = getAdTargetCategory(ad);
+                    if (!adTargetCat) return false;
+                    return String(adTargetCat).toLowerCase().trim() === productCategory;
+                });
+
+                if (exactMatches.length > 0) {
+                    selectedAd = exactMatches[Math.floor(Math.random() * exactMatches.length)];
+                    console.log(`[AD SYSTEM] Showing Exact Match Ad for [${productCategory}]`);
+                } else {
+                    const universalAds = modalAdsCache.filter(ad => {
+                        const cat = getAdTargetCategory(ad);
+                        if (!cat) return false;
+                        const cleanCat = String(cat).toLowerCase().trim();
+                        return cleanCat === '*' || cleanCat === 'all' || cleanCat === 'universal';
+                    });
+
+                    if (universalAds.length > 0) {
+                        selectedAd = universalAds[Math.floor(Math.random() * universalAds.length)];
+                        console.log(`[AD SYSTEM] Showing Universal Ad (No exact match for [${productCategory}])`);
+                    }
                 }
             }
+
             if (selectedAd) {
-                const imageUrl = getAdImageUrl(selectedAd); const linkUrl = getAdLinkUrl(selectedAd);
+                const imageUrl = getAdImageUrl(selectedAd);
+                const linkUrl = getAdLinkUrl(selectedAd);
+
                 if (imageUrl) {
                     linkEl.href = linkUrl;
+
                     function revealBanner() {
-                        const targetRatio = 350 / 1280; const parentWidth = bannerEl.parentElement ? bannerEl.parentElement.offsetWidth : 400; let bannerHeight = Math.round(parentWidth * targetRatio); bannerHeight = Math.max(60, Math.min(bannerHeight, 180)); bannerEl.style.height = bannerHeight + 'px'; requestAnimationFrame(() => { bannerEl.classList.add('visible'); });
+                        const targetRatio = 350 / 1280;
+                        const parentWidth = bannerEl.parentElement ? bannerEl.parentElement.offsetWidth : 400;
+                        let bannerHeight = Math.round(parentWidth * targetRatio);
+                        bannerHeight = Math.max(60, Math.min(bannerHeight, 180));
+
+                        bannerEl.style.height = bannerHeight + 'px';
+                        requestAnimationFrame(() => {
+                            bannerEl.classList.add('visible');
+                        });
                     }
-                    if (imgEl.src === imageUrl && imgEl.complete && imgEl.naturalWidth > 0) { requestAnimationFrame(revealBanner); }
-                    else {
+
+                    if (imgEl.src === imageUrl && imgEl.complete && imgEl.naturalWidth > 0) {
+                        requestAnimationFrame(revealBanner);
+                    } else {
                         let bannerRevealed = false;
-                        const onImgReady = () => { if (bannerRevealed) return; bannerRevealed = true; revealBanner(); };
-                        const onImgError = () => { if (bannerRevealed) return; bannerRevealed = true; };
-                        imgEl.onload = onImgReady; imgEl.onerror = onImgError; imgEl.src = imageUrl; setTimeout(() => { if (!bannerRevealed) bannerRevealed = true; }, 3000);
+                        const onImgReady = () => {
+                            if (bannerRevealed) return;
+                            bannerRevealed = true;
+                            revealBanner();
+                        };
+                        const onImgError = () => {
+                            if (bannerRevealed) return;
+                            bannerRevealed = true;
+                        };
+
+                        imgEl.onload = onImgReady;
+                        imgEl.onerror = onImgError;
+                        imgEl.src = imageUrl;
+                        
+                        setTimeout(() => {
+                            if (!bannerRevealed) {
+                                bannerRevealed = true;
+                            }
+                        }, 3000);
                     }
                 }
             }
         }
-        function hideModalAdBanner() { const bannerEl = document.getElementById('modalAdBanner'); bannerEl.classList.remove('visible'); bannerEl.style.height = '0px'; }
+
+        function hideModalAdBanner() {
+            const bannerEl = document.getElementById('modalAdBanner');
+            bannerEl.classList.remove('visible');
+            bannerEl.style.height = '0px';
+        }
 
         // --- CARD SLIDERS ---
         const cardSliders = {};
         function initCardSlider(cardElement, productId) {
-            const container = cardElement.querySelector('.card-slider-container'); const images = container.querySelectorAll('.card-slide');
+            const container = cardElement.querySelector('.card-slider-container');
+            const images = container.querySelectorAll('.card-slide');
             if (images.length <= 1) return;
             let index = 0, interval;
             const move = () => { index = (index + 1) % images.length; container.style.transform = `translateX(-${index * 100}%)`; };
             const start = () => { clearInterval(interval); interval = setInterval(move, 3000); };
             const stop = () => { clearInterval(interval); };
-            cardElement.addEventListener('mouseenter', stop); cardElement.addEventListener('mouseleave', start);
-            cardElement.addEventListener('touchstart', stop, { passive: true }); cardElement.addEventListener('touchend', start, { passive: true });
-            cardSliders[productId] = { start, stop, move, index }; start();
+            cardElement.addEventListener('mouseenter', stop);
+            cardElement.addEventListener('mouseleave', start);
+            cardElement.addEventListener('touchstart', stop, { passive: true });
+            cardElement.addEventListener('touchend', start, { passive: true });
+            cardSliders[productId] = { start, stop, move, index };
+            start();
         }
 
         // --- RENDER PRODUCTS ---
         function renderProducts() {
-            const grid = document.getElementById('productGrid'); grid.innerHTML = '';
-            if (!useSupabase) { grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-muted);">Database tidak terhubung.</div>'; return; }
-            if (filteredProducts.length === 0) { grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-muted);">Produk tidak ditemukan.</div>'; return; }
+            const grid = document.getElementById('productGrid');
+            grid.innerHTML = '';
+            
+            if (!useSupabase) {
+                 grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-muted);">Database tidak terhubung. Mohon periksa konfigurasi.</div>';
+                 return;
+            }
+
+            if (filteredProducts.length === 0) {
+                grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-muted);">Produk tidak ditemukan.</div>';
+                return;
+            }
             filteredProducts.forEach(p => {
-                const card = document.createElement('div'); card.className = 'cv-card'; card.onclick = () => openModal(p);
-                const title = getField(p, 'title'); const price = getField(p, 'price'); const originalPrice = getField(p, 'original_price');
-                const image = getField(p, 'image'); const extraImages = getField(p, 'images'); const soldCount = getField(p, 'sold_count');
+                const card = document.createElement('div');
+                card.className = 'cv-card';
+                card.onclick = () => openModal(p);
+                const title = getField(p, 'title');
+                const price = getField(p, 'price');
+                const originalPrice = getField(p, 'original_price');
+                const category = getField(p, 'category');
+                const image = getField(p, 'image');
+                const extraImages = getField(p, 'images');
+                const soldCount = getField(p, 'sold_count');
                 const pId = getField(p, 'id') || Math.random();
+
                 const safePrice = (price && !isNaN(Number(price))) ? Number(price) : 0;
                 const safeOriginalPrice = (originalPrice && !isNaN(Number(originalPrice))) ? Number(originalPrice) : 0;
+
                 let priceHTML = '';
-                if (safeOriginalPrice > 0 && safeOriginalPrice > safePrice) { priceHTML = `<div class="price-original">${formatRupiah(safeOriginalPrice)}</div><div class="price-main">${formatRupiah(safePrice)}</div>`; }
-                else { priceHTML = `<div class="price-main">${formatRupiah(safePrice)}</div>`; }
-                let allCardImages = [image]; if (Array.isArray(extraImages) && extraImages.length > 0) allCardImages = [image, ...extraImages].filter(img => img);
-                let slidesHTML = ''; allCardImages.forEach(imgSrc => { slidesHTML += `<div class="card-slide"><img src="${imgSrc || 'https://picsum.photos/seed/fallback/600/600'}" loading="lazy" alt="${title}" onerror="this.src='https://picsum.photos/seed/error/600/600'"></div>`; });
-                card.innerHTML = `<div class="card-image"><div class="card-slider-container">${slidesHTML}</div></div><div class="card-content"><h3 class="card-title">${title || 'Tanpa Judul'}</h3><div class="card-footer"><div class="price-container">${priceHTML}</div><div class="sold-info">${soldCount || 0} Terpakai</div></div></div>`;
-                grid.appendChild(card); initCardSlider(card, pId);
+                if (safeOriginalPrice > 0 && safeOriginalPrice > safePrice) {
+                    priceHTML = `<div class="price-original">${formatRupiah(safeOriginalPrice)}</div><div class="price-main">${formatRupiah(safePrice)}</div>`;
+                } else {
+                    priceHTML = `<div class="price-main">${formatRupiah(safePrice)}</div>`;
+                }
+
+                let allCardImages = [image];
+                if (Array.isArray(extraImages) && extraImages.length > 0) allCardImages = [image, ...extraImages].filter(img => img);
+
+                let slidesHTML = '';
+                allCardImages.forEach(imgSrc => {
+                    slidesHTML += `<div class="card-slide"><img src="${imgSrc || 'https://picsum.photos/seed/fallback/600/600'}" loading="lazy" alt="${title}" onerror="this.src='https://picsum.photos/seed/error/600/600'"></div>`;
+                });
+
+                card.innerHTML = `
+                    <div class="card-image">
+                        <div class="card-slider-container">${slidesHTML}</div>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">${title || 'Tanpa Judul'}</h3>
+                        <div class="card-footer">
+                            <div class="price-container">${priceHTML}</div>
+                            <div class="sold-info">${soldCount || 0} Terpakai</div>
+                        </div>
+                    </div>`;
+                grid.appendChild(card);
+                initCardSlider(card, pId);
             });
         }
 
         // --- RENDER PAYMENT ---
         function renderPaymentMethods() {
-            const container = document.getElementById('paymentMethodsList'); container.innerHTML = '';
-            if (paymentMethods.length === 0) { container.innerHTML = '<div style="text-align:center; color:var(--text-muted); padding:20px;">Metode pembayaran tidak tersedia saat ini.</div>'; return; }
+            const container = document.getElementById('paymentMethodsList');
+            container.innerHTML = '';
+            if (paymentMethods.length === 0) {
+                container.innerHTML = '<div style="text-align:center; color:var(--text-muted); padding:20px;">Metode pembayaran tidak tersedia saat ini.</div>';
+                return;
+            }
             paymentMethods.forEach(method => {
                 const div = document.createElement('div');
                 const isQRIS = (method.bank_name || '').toLowerCase().includes('qris') || method.type === 'qris';
                 if (isQRIS) {
-                    div.className = 'payment-option-card qris-container'; div.style.flexDirection = 'column'; div.style.alignItems = 'flex-start';
+                    div.className = 'payment-option-card qris-container';
+                    div.style.flexDirection = 'column';
+                    div.style.alignItems = 'flex-start';
                     const qrisImg = method.image || "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Logo_QRIS.svg/1200px-Logo_QRIS.svg.png";
-                    div.innerHTML = `<div style="display:flex;justify-content:space-between;width:100%;margin-bottom:12px;"><div class="bank-info"><h4><i class="fas fa-qrcode"></i> QRIS</h4></div></div><div style="display:flex;align-items:center;justify-content:space-between;width:100%;"><img src="${qrisImg}" class="qris-img" alt="QRIS"><button class="btn-copy" onclick="openQrisModal('${qrisImg}')"><i class="fas fa-expand"></i> Scan</button></div>`;
+                    div.innerHTML = `
+                        <div style="display:flex;justify-content:space-between;width:100%;margin-bottom:12px;">
+                            <div class="bank-info"><h4><i class="fas fa-qrcode"></i> QRIS</h4></div>
+                        </div>
+                        <div style="display:flex;align-items:center;justify-content:space-between;width:100%;">
+                            <img src="${qrisImg}" class="qris-img" alt="QRIS">
+                            <button class="btn-copy" onclick="openQrisModal('${qrisImg}')"><i class="fas fa-expand"></i> Scan</button>
+                        </div>`;
                 } else {
                     div.className = 'payment-option-card';
-                    const bank = method.bank_name || method.nama_bank || 'Bank'; const number = method.account_number || method.no_rekening || '---'; const owner = method.owner_name || method.atas_nama || '---';
+                    const bank = method.bank_name || method.nama_bank || 'Bank';
+                    const number = method.account_number || method.no_rekening || '---';
+                    const owner = method.owner_name || method.atas_nama || '---';
                     let logoUrl = method.logo || `https://placehold.co/100x50/f8f9fa/333333?text=${encodeURIComponent(bank)}&font=roboto`;
-                    div.innerHTML = `<div class="bank-info"><img src="${logoUrl}" class="bank-logo-img" alt="${bank}"><div class="bank-details"><h4>${bank}</h4><div class="bank-number">${number}</div><div class="bank-name">a.n ${owner}</div></div></div><button class="btn-copy" onclick="copyToClipboard('${number}')"><i class="far fa-copy"></i> Salin</button>`;
+                    div.innerHTML = `
+                        <div class="bank-info">
+                            <img src="${logoUrl}" class="bank-logo-img" alt="${bank}">
+                            <div class="bank-details">
+                                <h4>${bank}</h4>
+                                <div class="bank-number">${number}</div>
+                                <div class="bank-name">a.n ${owner}</div>
+                            </div>
+                        </div>
+                        <button class="btn-copy" onclick="copyToClipboard('${number}')"><i class="far fa-copy"></i> Salin</button>`;
                 }
                 container.appendChild(div);
             });
         }
+
         window.copyToClipboard = function(text) {
             const sanitized = String(text).replace(/[^\d\s\-\/.]/g, '').trim();
-            navigator.clipboard.writeText(sanitized).then(() => { showToast(`Nomor ${sanitized} berhasil disalin!`, 'success'); }).catch(() => {
-                const ta = document.createElement("textarea"); ta.value = sanitized; document.body.appendChild(ta); ta.select(); document.execCommand("Copy"); ta.remove(); showToast(`Nomor ${sanitized} berhasil disalin!`, 'success');
+            navigator.clipboard.writeText(sanitized).then(() => {
+                showToast(`Nomor ${sanitized} berhasil disalin!`, 'success');
+            }).catch(() => {
+                const ta = document.createElement("textarea"); ta.value = sanitized;
+                document.body.appendChild(ta); ta.select(); document.execCommand("Copy"); ta.remove();
+                showToast(`Nomor ${sanitized} berhasil disalin!`, 'success');
             });
         }
 
-        // --- HERO SLIDER (FIXED) ---
+        // --- HERO SLIDER ---
         let slideIndex = 0, slideInterval;
         function initSlider() {
-            const track = document.getElementById('sliderTrack'); const dots = document.getElementById('sliderDots');
+            const track = document.getElementById('sliderTrack');
+            const dots = document.getElementById('sliderDots');
             sliderData.forEach((s, i) => {
-                const div = document.createElement('div'); div.className = `slide ${i===0?'active':''}`; div.innerHTML = `<a href="${s.link}"><img src="${s.image}" loading="lazy"></a>`; track.appendChild(div);
-                const dot = document.createElement('div'); dot.className = `dot ${i===0?'active':''}`; dot.onclick = () => goToSlide(i); dots.appendChild(dot);
+                const div = document.createElement('div');
+                div.className = `slide ${i===0?'active':''}`;
+                div.innerHTML = `<a href="${s.link}"><img src="${s.image}" loading="lazy"></a>`;
+                track.appendChild(div);
+                const dot = document.createElement('div');
+                dot.className = `dot ${i===0?'active':''}`;
+                dot.onclick = () => goToSlide(i);
+                dots.appendChild(dot);
             });
             startSlide();
             const heroEl = document.getElementById('heroSlider');
-            heroEl.addEventListener('mouseenter', stopSlide); heroEl.addEventListener('mouseleave', startSlide);
-            // Touch support for hero
-            heroEl.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].screenX; stopSlide(); }, {passive: true});
-            heroEl.addEventListener('touchend', e => {
-                touchEndX = e.changedTouches[0].screenX; const diff = touchEndX - touchStartX;
-                if (diff < -50) { nextSlide(); startSlide(); } else if (diff > 50) { prevSlide(); startSlide(); } else { startSlide(); }
-            }, {passive: true});
-            
-            document.addEventListener('visibilitychange', () => { if (document.hidden) stopSlide(); else startSlide(); });
+            heroEl.addEventListener('mouseenter', stopSlide);
+            heroEl.addEventListener('mouseleave', startSlide);
+            document.addEventListener('visibilitychange', () => {
+                if (document.hidden) stopSlide();
+                else startSlide();
+            });
         }
         function goToSlide(n) {
-            stopSlide(); // Always stop on manual interaction
-            const slides = document.querySelectorAll('.slide'); const dots = document.querySelectorAll('.dot');
+            const slides = document.querySelectorAll('.slide');
+            const dots = document.querySelectorAll('.dot');
             if (n < 0 || n >= slides.length) return;
-            slides.forEach(s => s.classList.remove('active')); dots.forEach(d => d.classList.remove('active'));
-            slides[n].classList.add('active'); dots[n].classList.add('active');
+            slides.forEach(s => s.classList.remove('active'));
+            dots.forEach(d => d.classList.remove('active'));
+            slides[n].classList.add('active');
+            dots[n].classList.add('active');
             slideIndex = n;
-            startSlide(); // Restart timer
         }
         function nextSlide() { goToSlide((slideIndex + 1) % sliderData.length); }
         function prevSlide() { goToSlide((slideIndex - 1 + sliderData.length) % sliderData.length); }
         function startSlide() { stopSlide(); slideInterval = setInterval(nextSlide, 5000); }
         function stopSlide() { if (slideInterval) { clearInterval(slideInterval); slideInterval = null; } }
-        window.nextSlide = nextSlide; window.prevSlide = prevSlide;
+        window.nextSlide = nextSlide;
+        window.prevSlide = prevSlide;
 
         // --- FILTER ---
         window.setCategory = function(cat, el) {
-            currentCategory = cat; document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active')); el.classList.add('active'); filterLogic();
+            currentCategory = cat;
+            document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+            el.classList.add('active');
+            filterLogic();
         }
         function filterLogic() {
             const q = document.getElementById('searchInput').value.toLowerCase().trim();
             filteredProducts = products.filter(p => {
-                const title = (getField(p, 'title') || '').toLowerCase(); const category = (getField(p, 'category') || '').toLowerCase();
-                const matchCategory = currentCategory === 'all' || category.includes(currentCategory.toLowerCase()); const matchSearch = !q || title.includes(q) || category.includes(q);
+                const title = (getField(p, 'title') || '').toLowerCase();
+                const category = (getField(p, 'category') || '').toLowerCase();
+                const matchCategory = currentCategory === 'all' || category.includes(currentCategory.toLowerCase());
+                const matchSearch = !q || title.includes(q) || category.includes(q);
                 return matchCategory && matchSearch;
             });
             renderProducts();
@@ -1391,216 +1751,485 @@
         let currentProduct = null, carouselIndex = 0, carouselImages = [];
         const trackEl = document.getElementById('carouselTrack');
         
-        trackEl.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].screenX; }, {passive: true});
-        trackEl.addEventListener('touchend', e => {
-            const now = Date.now(); if (now - lastSwipeTime < 300) return; lastSwipeTime = now;
-            touchEndX = e.changedTouches[0].screenX; const diff = touchEndX - touchStartX;
-            if (diff < -50) moveCarousel(1); else if (diff > 50) moveCarousel(-1);
-        }, {passive: true});
         let lastSwipeTime = 0;
+        trackEl.addEventListener('touchstart', e => { 
+            touchStartX = e.changedTouches[0].screenX; 
+        }, {passive: true});
+        trackEl.addEventListener('touchend', e => {
+            const now = Date.now();
+            if (now - lastSwipeTime < 300) return;
+            lastSwipeTime = now;
+            
+            touchEndX = e.changedTouches[0].screenX;
+            const diff = touchEndX - touchStartX;
+            if (diff < -50) moveCarousel(1);
+            else if (diff > 50) moveCarousel(-1);
+        }, {passive: true});
 
         window.moveCarousel = function(direction) {
-            const count = carouselImages.length; if (count <= 1) return;
-            carouselIndex = (carouselIndex + direction + count) % count; updateCarouselUI();
+            const count = carouselImages.length;
+            if (count <= 1) return;
+            carouselIndex = (carouselIndex + direction + count) % count;
+            updateCarouselUI();
         }
+
         function updateCarouselUI() {
-            const track = document.getElementById('carouselTrack'); const dotsContainer = document.getElementById('carouselDots');
-            track.style.transform = `translateX(-${carouselIndex * 100}%)`; dotsContainer.innerHTML = '';
+            const track = document.getElementById('carouselTrack');
+            const dotsContainer = document.getElementById('carouselDots');
+            track.style.transform = `translateX(-${carouselIndex * 100}%)`;
+            dotsContainer.innerHTML = '';
             carouselImages.forEach((_, idx) => {
-                const dot = document.createElement('div'); dot.className = `c-dot ${idx === carouselIndex ? 'active' : ''}`;
-                dot.onclick = () => { carouselIndex = idx; updateCarouselUI(); }; dotsContainer.appendChild(dot);
+                const dot = document.createElement('div');
+                dot.className = `c-dot ${idx === carouselIndex ? 'active' : ''}`;
+                dot.onclick = () => { carouselIndex = idx; updateCarouselUI(); };
+                dotsContainer.appendChild(dot);
             });
         }
+
         const toggleSwitch = document.getElementById('coverLetterToggle');
         toggleSwitch.addEventListener('change', updateModalPriceDisplay);
 
         function updateCoverLetterUI() {
             if (!currentProduct) return;
-            const addonSection = document.getElementById('addonSection'); const addonPriceText = document.getElementById('coverLetterPriceText');
-            const allowAddon = getField(currentProduct, 'allow_addon'); const clPrice = getField(currentProduct, 'cover_letter_price');
-            const isNotAllowed = allowAddon === false || allowAddon === 'false' || allowAddon === 0 || allowAddon === '0'; const hasNoPrice = clPrice === null || clPrice === undefined;
-            if (isNotAllowed || hasNoPrice) { addonSection.style.display = 'none'; toggleSwitch.checked = false; }
-            else {
-                addonSection.style.display = 'block'; const customPrice = Number(clPrice); const finalPrice = (!isNaN(customPrice) && customPrice > 0) ? customPrice : coverLetterPrice; addonPriceText.innerText = `+ ${formatRupiah(finalPrice)}`; updateModalPriceDisplay();
+            const addonSection = document.getElementById('addonSection');
+            const addonPriceText = document.getElementById('coverLetterPriceText');
+            const allowAddon = getField(currentProduct, 'allow_addon');
+            const clPrice = getField(currentProduct, 'cover_letter_price');
+            
+            const isNotAllowed = allowAddon === false || allowAddon === 'false' || allowAddon === 0 || allowAddon === '0';
+            const hasNoPrice = clPrice === null || clPrice === undefined;
+            
+            if (isNotAllowed || hasNoPrice) {
+                addonSection.style.display = 'none';
+                toggleSwitch.checked = false;
+            } else {
+                addonSection.style.display = 'block';
+                const customPrice = Number(clPrice);
+                const finalPrice = (!isNaN(customPrice) && customPrice > 0) ? customPrice : coverLetterPrice;
+                addonPriceText.innerText = `+ ${formatRupiah(finalPrice)}`;
+                updateModalPriceDisplay();
             }
         }
+
         function updateModalPriceDisplay() {
             if (!currentProduct) return;
-            const basePrice = Number(getField(currentProduct, 'price')) || 0; const originalPrice = Number(getField(currentProduct, 'original_price')) || 0;
-            const customAddonPrice = Number(getField(currentProduct, 'cover_letter_price')) || 0; const finalAddonPrice = (customAddonPrice > 0) ? customAddonPrice : coverLetterPrice;
-            const isAddOn = toggleSwitch.checked; const finalPrice = isAddOn ? (basePrice + finalAddonPrice) : basePrice; const priceWrap = document.getElementById('m-price-wrap');
-            if (originalPrice > 0 && originalPrice > basePrice) { priceWrap.innerHTML = `<div class="modal-price-original">${formatRupiah(originalPrice)}</div><div class="modal-price-final">${formatRupiah(finalPrice)}</div>`; }
-            else { priceWrap.innerHTML = `<div class="modal-price-final">${formatRupiah(finalPrice)}</div>`; }
+            const basePrice = Number(getField(currentProduct, 'price')) || 0;
+            const originalPrice = Number(getField(currentProduct, 'original_price')) || 0;
+            const customAddonPrice = Number(getField(currentProduct, 'cover_letter_price')) || 0;
+            const finalAddonPrice = (customAddonPrice > 0) ? customAddonPrice : coverLetterPrice;
+            const isAddOn = toggleSwitch.checked;
+            const finalPrice = isAddOn ? (basePrice + finalAddonPrice) : basePrice;
+            const priceWrap = document.getElementById('m-price-wrap');
+            
+            if (originalPrice > 0 && originalPrice > basePrice) {
+                priceWrap.innerHTML = `<div class="modal-price-original">${formatRupiah(originalPrice)}</div><div class="modal-price-final">${formatRupiah(finalPrice)}</div>`;
+            } else {
+                priceWrap.innerHTML = `<div class="modal-price-final">${formatRupiah(finalPrice)}</div>`;
+            }
         }
-        const productView = document.getElementById('productView'); const paymentView = document.getElementById('paymentView');
+
+        const productView = document.getElementById('productView');
+        const paymentView = document.getElementById('paymentView');
 
         document.getElementById('btn-goto-payment').onclick = function() {
             if (!currentProduct) return;
-            const basePrice = Number(getField(currentProduct, 'price')) || 0; const isAddOn = toggleSwitch.checked;
-            const customAddonPrice = Number(getField(currentProduct, 'cover_letter_price')) || 0; const finalAddonPrice = (customAddonPrice > 0) ? customAddonPrice : coverLetterPrice;
-            if (basePrice <= 0) { showToast('Harga produk tidak valid', 'error'); return; }
-            currentOrderId = generateOrderID(); document.getElementById('p-order-id').innerText = currentOrderId;
-            const uniqueCode = Math.floor(Math.random() * 499) + 1; const finalPrice = isAddOn ? (basePrice + finalAddonPrice) : basePrice; const totalWithUnique = finalPrice + uniqueCode; currentUniqueTotal = totalWithUnique;
-            document.getElementById('p-product-name').innerText = getField(currentProduct, 'title'); document.getElementById('p-unit-price').innerText = formatRupiah(basePrice);
+            
+            const basePrice = Number(getField(currentProduct, 'price')) || 0;
+            const isAddOn = toggleSwitch.checked;
+            const customAddonPrice = Number(getField(currentProduct, 'cover_letter_price')) || 0;
+            const finalAddonPrice = (customAddonPrice > 0) ? customAddonPrice : coverLetterPrice;
+            
+            if (basePrice <= 0) {
+                showToast('Harga produk tidak valid', 'error');
+                return;
+            }
+
+            // 1. Generate ID Pesanan
+            currentOrderId = generateOrderID();
+            document.getElementById('p-order-id').innerText = currentOrderId;
+
+            const uniqueCode = Math.floor(Math.random() * 499) + 1;
+            const finalPrice = isAddOn ? (basePrice + finalAddonPrice) : basePrice;
+            const totalWithUnique = finalPrice + uniqueCode;
+            currentUniqueTotal = totalWithUnique;
+
+            document.getElementById('p-product-name').innerText = getField(currentProduct, 'title');
+            document.getElementById('p-unit-price').innerText = formatRupiah(basePrice);
             const addonRow = document.getElementById('row-addon');
-            if (isAddOn) { addonRow.style.display = 'flex'; document.getElementById('p-addon-price').innerText = formatRupiah(finalAddonPrice); }
-            else { addonRow.style.display = 'none'; }
-            const totalEl = document.getElementById('p-total-price'); totalEl.innerText = formatRupiah(totalWithUnique); totalEl.style.color = 'var(--danger)';
-            hideModalAdBanner(); productView.style.display = 'none'; paymentView.classList.add('active');
-            showToast(`Kode unik Rp ${uniqueCode} ditambahkan untuk verifikasi.`, 'success'); lockWhatsAppButton();
+            if (isAddOn) { 
+                addonRow.style.display = 'flex'; 
+                document.getElementById('p-addon-price').innerText = formatRupiah(finalAddonPrice); 
+            } else { 
+                addonRow.style.display = 'none'; 
+            }
+            
+            const totalEl = document.getElementById('p-total-price');
+            totalEl.innerText = formatRupiah(totalWithUnique);
+            totalEl.style.color = 'var(--danger)';
+
+            hideModalAdBanner();
+
+            productView.style.display = 'none';
+            paymentView.classList.add('active');
+            showToast(`Kode unik Rp ${uniqueCode} ditambahkan untuk verifikasi.`, 'success');
+            lockWhatsAppButton();
         };
 
         window.backToProduct = function() {
-            clearPaymentTimer(); paymentView.classList.remove('active'); productView.style.display = 'flex'; showModalAdBanner();
+            clearPaymentTimer();
+            paymentView.classList.remove('active');
+            productView.style.display = 'flex';
+            showModalAdBanner();
         };
 
         window.openModal = function(p) {
-            if (!currentUser) { showToast('Silakan Login terlebih dahulu untuk memesan.', 'warning'); window.location.hash = '#auth'; return; }
-            clearPaymentTimer(); currentProduct = p; carouselIndex = 0; toggleSwitch.checked = false; isOrderProcessing = false;
-            document.getElementById('m-cat').innerText = getField(p, 'category') || 'CATEGORY'; document.getElementById('m-title').innerText = getField(p, 'title') || 'Product Title';
-            document.getElementById('m-desc').innerText = getField(p, 'description') || "Deskripsi tidak tersedia."; document.getElementById('m-sold').innerText = getField(p, 'sold_count') || 0;
-            const mainImage = getField(p, 'image'); const extraImages = getField(p, 'images');
+            // --- CEK LOGIN (FITUR BARU) ---
+            if (!currentUser) {
+                showToast('Silakan Login terlebih dahulu untuk memesan.', 'warning');
+                window.location.hash = '#auth';
+                return;
+            }
+
+            clearPaymentTimer();
+            currentProduct = p;
+            carouselIndex = 0;
+            toggleSwitch.checked = false;
+            
+            // RESET FLAG HANYA SAAT BUKA MODAL BARU (Sesi Baru)
+            isOrderProcessing = false;
+
+            document.getElementById('m-cat').innerText = getField(p, 'category') || 'CATEGORY';
+            document.getElementById('m-title').innerText = getField(p, 'title') || 'Product Title';
+            document.getElementById('m-desc').innerText = getField(p, 'description') || "Deskripsi tidak tersedia.";
+            document.getElementById('m-sold').innerText = getField(p, 'sold_count') || 0;
+
+            const mainImage = getField(p, 'image');
+            const extraImages = getField(p, 'images');
             carouselImages = (Array.isArray(extraImages) && extraImages.length > 0) ? [mainImage, ...extraImages].filter(img => img) : [mainImage];
-            if (carouselImages.length === 0 || !carouselImages[0]) { carouselImages = ['https://picsum.photos/seed/nofallback/800/600']; }
-            const track = document.getElementById('carouselTrack'); track.innerHTML = '';
+            
+            if (carouselImages.length === 0 || !carouselImages[0]) {
+                carouselImages = ['https://picsum.photos/seed/nofallback/800/600'];
+            }
+
+            const track = document.getElementById('carouselTrack');
+            track.innerHTML = '';
             carouselImages.forEach(imgSrc => {
-                const slide = document.createElement('div'); slide.className = 'carousel-slide'; slide.innerHTML = `<img src="${imgSrc}" alt="Slide" onerror="this.src='https://picsum.photos/seed/error/800/600'">`; track.appendChild(slide);
+                const slide = document.createElement('div');
+                slide.className = 'carousel-slide';
+                slide.innerHTML = `<img src="${imgSrc}" alt="Slide" onerror="this.src='https://picsum.photos/seed/error/800/600'">`;
+                track.appendChild(slide);
             });
-            updateCarouselUI(); const navs = document.querySelectorAll('.carousel-nav');
-            if (carouselImages.length > 1) navs.forEach(n => n.style.display = 'flex'); else navs.forEach(n => n.style.display = 'none');
-            paymentView.classList.remove('active'); productView.style.display = 'flex'; updateCoverLetterUI();
-            const btn = document.getElementById('btn-confirm-whatsapp'); btn.classList.remove('locked', 'completed'); btn.disabled = false; btn.innerHTML = `<i class="fas fa-check-circle" style="font-size:1.2rem;"></i> Lanjutkan`;
-            document.getElementById('productModal').classList.add('active'); document.body.style.overflow = 'hidden';
+            updateCarouselUI();
+            
+            const navs = document.querySelectorAll('.carousel-nav');
+            if (carouselImages.length > 1) navs.forEach(n => n.style.display = 'flex');
+            else navs.forEach(n => n.style.display = 'none');
+
+            paymentView.classList.remove('active');
+            productView.style.display = 'flex';
+            updateCoverLetterUI();
+
+            const btn = document.getElementById('btn-confirm-whatsapp');
+            btn.classList.remove('locked', 'completed');
+            btn.disabled = false;
+            btn.innerHTML = `<i class="fas fa-check-circle" style="font-size:1.2rem;"></i> Lanjutkan`;
+
+            document.getElementById('productModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+
+            // Jalankan logika iklan modal (Google Ads Style)
             setTimeout(() => showModalAdBanner(), 150);
         }
 
         window.closeModal = function() {
-            clearPaymentTimer(); document.getElementById('productModal').classList.remove('active'); document.body.style.overflow = 'auto'; currentProduct = null; hideModalAdBanner();
+            clearPaymentTimer();
+            document.getElementById('productModal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+            currentProduct = null;
+            hideModalAdBanner();
         }
+
         document.getElementById('productModal').addEventListener('click', (e) => { if(e.target.id === 'productModal') closeModal(); });
 
         // ============================================
         // LOGIKA INTI: SIMPAN ORDER & KONFIRMASI WA
         // ============================================
+        
+        // Fungsi untuk menyimpan ke tabel 'orders' di Supabase
         async function saveOrderToDatabase(orderData) {
-            if (!useSupabase) { console.warn("Database not connected, skipping order save."); return { error: null }; }
+            if (!useSupabase) {
+                console.warn("Database not connected, skipping order save.");
+                return { error: null }; 
+            }
+
             try {
-                const { data, error } = await supabase.from('orders').insert([orderData]).select();
-                if (error) throw error; console.log("Order saved:", data); return { error: null, data };
-            } catch (err) { console.error("Error saving order:", err); return { error: err }; }
+                const { data, error } = await supabase
+                    .from('orders')
+                    .insert([orderData])
+                    .select();
+
+                if (error) throw error;
+                console.log("Order saved:", data);
+                return { error: null, data };
+            } catch (err) {
+                console.error("Error saving order:", err);
+                return { error: err };
+            }
         }
 
         document.getElementById('btn-confirm-whatsapp').onclick = async function() {
-            if (isOrderProcessing) { showToast('Sesi ini sudah berakhir. Silakan refresh halaman.', 'warning'); return; }
-            if (!currentProduct) return; if (currentUniqueTotal <= 0) { showToast('Total pembayaran tidak valid', 'error'); return; }
-            isOrderProcessing = true; const btn = this; btn.disabled = true; btn.classList.add('locked'); btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Memproses...`;
-            const templateName = getField(currentProduct, 'title'); const formattedTotal = formatRupiah(currentUniqueTotal);
-            const basePrice = Number(getField(currentProduct, 'price')) || 0; const isAddOn = toggleSwitch.checked;
-            const customAddonPrice = Number(getField(currentProduct, 'cover_letter_price')) || 0; const finalAddonPrice = (customAddonPrice > 0) ? customAddonPrice : coverLetterPrice;
-            const orderData = {
-                id: currentOrderId, jenis_produk: templateName, harga_satuan: basePrice,
-                has_addon: isAddOn, harga_addon: isAddOn ? finalAddonPrice : 0, total_bayar: currentUniqueTotal,
-                status: 'Paid', user_id: currentUser.id
-            };
-            const dbResult = await saveOrderToDatabase(orderData);
-            if (dbResult.error) {
-                showToast('Terjadi kesalahan sistem. Pesanan gagal tersimpan.', 'error'); return;
+            // 1. Cegah Klik Berulang (Jika sedang memproses, abaikan)
+            if (isOrderProcessing) {
+                showToast('Sesi ini sudah berakhir. Silakan refresh halaman.', 'warning');
+                return;
             }
+
+            if (!currentProduct) return;
+            
+            if (currentUniqueTotal <= 0) {
+                showToast('Total pembayaran tidak valid, silakan coba lagi', 'error');
+                return;
+            }
+
+            // Lock UI & Flag (PERMANEN UNTUK SESI INI)
+            isOrderProcessing = true;
+            const btn = this;
+            btn.disabled = true;
+            btn.classList.add('locked');
+            btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Memproses...`;
+
+            const templateName = getField(currentProduct, 'title');
+            const formattedTotal = formatRupiah(currentUniqueTotal);
+            const basePrice = Number(getField(currentProduct, 'price')) || 0;
+            const isAddOn = toggleSwitch.checked;
+            const customAddonPrice = Number(getField(currentProduct, 'cover_letter_price')) || 0;
+            const finalAddonPrice = (customAddonPrice > 0) ? customAddonPrice : coverLetterPrice;
+            
+            // 2. Siapkan Data untuk Database
+            // CATATAN: Kita HAPUS 'tgl_order' dari payload agar DB handle default now()
+            const orderData = {
+                id: currentOrderId,
+                jenis_produk: templateName,
+                harga_satuan: basePrice,
+                has_addon: isAddOn,
+                harga_addon: isAddOn ? finalAddonPrice : 0,
+                total_bayar: currentUniqueTotal,
+                status: 'Paid',
+                user_id: currentUser.id // <--- PENTING: LINK KE USER (AUTH)
+            };
+
+            // 3. Simpan ke Database
+            const dbResult = await saveOrderToDatabase(orderData);
+
+            // 4. Jika DB Error: TOMBOL TETAP TERKUNCI (Sesuai aturan 1x klik)
+            if (dbResult.error) {
+                showToast('Terjadi kesalahan sistem. Pesanan gagal tersimpan. Silakan Refresh Halaman.', 'error');
+                // TIDAK mereset isOrderProcessing
+                // TIDAK meng-enable tombol
+                return; 
+            }
+
+            // 5. Jika DB Sukses: Siapkan Pesan WA
             let message = `Halo Min, saya ingin membeli CV berikut:\n\n*Order ID:* ${currentOrderId}\n*Jenis CV:* ${templateName}\n*Total Pembayaran (Unik):* ${formattedTotal}`;
-            if (isAddOn) { message += `\n\n*Addon:* Surat Lamaran Kerja (+${formatRupiah(finalAddonPrice)})`; }
-            message += `\n\nSaya sudah transfer sesuai nominal unik. Mohon segera diproses ya Min.`;
+            
+            if (isAddOn) {
+                message += `\n\n*Addon:* Surat Lamaran Kerja (+${formatRupiah(finalAddonPrice)})`;
+            }
+            message += `\n\nSaya sudah transfer sesuai nominal unik. Mohon segera diproses ya Min. Berikut bukti transfer yang saya lampirkan`;
+
+            // 6. Buka WhatsApp
             const adminNumber = getRotatedAdminNumber();
+            
             setTimeout(() => {
-                try { window.open(`https://wa.me/${adminNumber}?text=${encodeURIComponent(message)}`, '_blank'); }
-                catch (err) {
-                    const a = document.createElement('a'); a.href = `https://wa.me/${adminNumber}?text=${encodeURIComponent(message)}`; a.target = '_blank'; a.rel = 'noopener noreferrer'; document.body.appendChild(a); a.click(); a.remove();
+                try {
+                    window.open(`https://wa.me/${adminNumber}?text=${encodeURIComponent(message)}`, '_blank');
+                } catch (err) {
+                    const a = document.createElement('a');
+                    a.href = `https://wa.me/${adminNumber}?text=${encodeURIComponent(message)}`;
+                    a.target = '_blank';
+                    a.rel = 'noopener noreferrer';
+                    document.body.appendChild(a);
+                    a.click();
+                    a.remove();
                 }
             }, 500);
+
+            // 7. Update UI ke Status "Completed"
             showToast('Pesanan Berhasil Disimpan! Mengalihkan ke WhatsApp...', 'success');
-            btn.classList.remove('locked'); btn.classList.add('completed'); btn.innerHTML = `<i class="fas fa-check"></i> Pesanan Terkirim`;
-            setTimeout(() => { closeModal(); }, 2000);
+            btn.classList.remove('locked');
+            btn.classList.add('completed');
+            btn.innerHTML = `<i class="fas fa-check"></i> Pesanan Terkirim`;
+
+            // 8. Tutup Modal Otomatis setelah delay singkat
+            setTimeout(() => {
+                closeModal();
+                // Flag reset hanya saat user refresh atau buka produk baru
+            }, 2000); 
         }
+
         function getRotatedAdminNumber() {
-            let currentIndex = parseInt(localStorage.getItem('wa_admin_index') || '0'); if (isNaN(currentIndex) || currentIndex < 0) currentIndex = 0; currentIndex = currentIndex % adminNumbersList.length;
-            const selectedNumber = adminNumbersList[currentIndex]; localStorage.setItem('wa_admin_index', ((currentIndex + 1) % adminNumbersList.length).toString()); return selectedNumber || DEFAULT_ADMIN_WA;
+            let currentIndex = parseInt(localStorage.getItem('wa_admin_index') || '0');
+            if (isNaN(currentIndex) || currentIndex < 0) currentIndex = 0;
+            currentIndex = currentIndex % adminNumbersList.length;
+            const selectedNumber = adminNumbersList[currentIndex];
+            localStorage.setItem('wa_admin_index', ((currentIndex + 1) % adminNumbersList.length).toString());
+            return selectedNumber || DEFAULT_ADMIN_WA;
         }
 
         // ============================================
         // AUTH & DASHBOARD LOGIC
         // ============================================
+
         function handleRoute() {
             const hash = window.location.hash || '#home';
-            document.getElementById('home-view').classList.add('hidden'); document.getElementById('auth-view').classList.add('hidden'); document.getElementById('user-view').classList.add('hidden'); document.getElementById('productModal').classList.remove('active');
+            
+            // Hide all views
+            document.getElementById('home-view').classList.add('hidden');
+            document.getElementById('auth-view').classList.add('hidden');
+            document.getElementById('user-view').classList.add('hidden');
+            document.getElementById('productModal').classList.remove('active');
+
             if (hash === '#auth') {
-                if (currentUser) { window.location.hash = '#user'; } else { document.getElementById('auth-view').classList.remove('hidden'); }
+                // Check if already logged in
+                if (currentUser) {
+                    window.location.hash = '#user';
+                } else {
+                    document.getElementById('auth-view').classList.remove('hidden');
+                }
             } else if (hash === '#user') {
-                if (!currentUser) { window.location.hash = '#auth'; return; }
-                loadDashboard(); document.getElementById('user-view').classList.remove('hidden');
-            } else { document.getElementById('home-view').classList.remove('hidden'); }
+                // Check if logged in
+                if (!currentUser) {
+                    window.location.hash = '#auth';
+                    return;
+                }
+                loadDashboard();
+                document.getElementById('user-view').classList.remove('hidden');
+            } else {
+                // Home
+                document.getElementById('home-view').classList.remove('hidden');
+            }
             updateNavUI();
         }
+
         window.addEventListener('hashchange', handleRoute);
-        window.addEventListener('load', async () => { await checkSession(); await fetchProducts(); handleRoute(); initSlider(); });
+        window.addEventListener('load', async () => {
+            await checkSession();
+            await fetchProducts();
+            handleRoute();
+            initSlider();
+        });
 
         async function checkSession() {
-            const { data: { session } } = await supabase.auth.getSession(); currentUser = session?.user || null; updateNavUI();
+            const { data: { session } } = await supabase.auth.getSession();
+            currentUser = session?.user || null;
+            updateNavUI();
         }
-        
-        // --- ICON-ONLY BUTTON LOGIC ---
+
         function updateNavUI() {
             const nav = document.getElementById('navActions');
             if (currentUser) {
-                nav.innerHTML = `<a href="#user" class="btn btn-icon-nav" aria-label="Dashboard"><i class="fas fa-user"></i></a>`;
+                nav.innerHTML = `<a href="#user" class="btn btn-primary"><i class="fas fa-user"></i> </a>`;
             } else {
-                nav.innerHTML = `<a href="#auth" class="btn btn-icon-nav" aria-label="Masuk"><i class="fas fa-sign-in-alt"></i></a>`;
+                nav.innerHTML = `<a href="#auth" class="btn btn-outline"><i class="fas fa-sign-in-alt"></i> </a>`;
             }
         }
 
         window.switchAuthMode = (mode) => {
-            const title = document.getElementById('authTitle'); const btn = document.getElementById('authSubmitBtn'); const nameGroup = document.getElementById('nameGroup');
-            if (mode === 'register') { title.innerText = "Daftar Akun Baru"; btn.innerText = "Daftar Sekarang"; nameGroup.style.display = 'block'; }
-            else { title.innerText = "Masuk Akun"; btn.innerText = "Masuk"; nameGroup.style.display = 'none'; }
+            const title = document.getElementById('authTitle');
+            const btn = document.getElementById('authSubmitBtn');
+            const nameGroup = document.getElementById('nameGroup');
+            
+            if (mode === 'register') {
+                title.innerText = "Daftar Akun Baru";
+                btn.innerText = "Daftar Sekarang";
+                nameGroup.style.display = 'block';
+            } else {
+                title.innerText = "Masuk Akun";
+                btn.innerText = "Masuk";
+                nameGroup.style.display = 'none';
+            }
         }
 
         window.handleAuth = async (e) => {
-            e.preventDefault(); const email = document.getElementById('authEmail').value; const password = document.getElementById('authPassword').value;
-            const name = document.getElementById('authName').value; const btn = document.getElementById('authSubmitBtn');
-            const isRegister = document.getElementById('nameGroup').style.display !== 'none'; btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Memproses...`;
+            e.preventDefault();
+            const email = document.getElementById('authEmail').value;
+            const password = document.getElementById('authPassword').value;
+            const name = document.getElementById('authName').value;
+            const btn = document.getElementById('authSubmitBtn');
+            const isRegister = document.getElementById('nameGroup').style.display !== 'none';
+
+            btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Memproses...`;
+
             try {
                 if (isRegister) {
-                    const { data, error } = await supabase.auth.signUp({ email, password, options: { data: { full_name: name } } });
-                    if (error) throw error; showToast('Pendaftaran berhasil! Silakan Masuk.', 'success'); switchAuthMode('login');
+                    const { data, error } = await supabase.auth.signUp({
+                        email, password,
+                        options: { data: { full_name: name } }
+                    });
+                    if (error) throw error;
+                    showToast('Pendaftaran berhasil! Silakan Masuk.', 'success');
+                    switchAuthMode('login');
                 } else {
-                    const { data, error } = await supabase.auth.signInWithPassword({ email, password }); if (error) throw error; showToast('Login Berhasil!', 'success'); window.location.hash = '#user';
+                    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+                    if (error) throw error;
+                    showToast('Login Berhasil!', 'success');
+                    window.location.hash = '#user';
                 }
-            } catch (err) { showToast(err.message, 'error'); } finally { btn.innerHTML = isRegister ? "Daftar Sekarang" : "Masuk"; }
+            } catch (err) {
+                showToast(err.message, 'error');
+            } finally {
+                btn.innerHTML = isRegister ? "Daftar Sekarang" : "Masuk";
+            }
         }
 
         window.handleLogout = async () => {
-            await supabase.auth.signOut(); currentUser = null; window.location.hash = '#home'; showToast('Anda telah keluar.', 'success');
+            await supabase.auth.signOut();
+            currentUser = null;
+            window.location.hash = '#home';
+            showToast('Anda telah keluar.', 'success');
         }
 
-        // --- RESPONSIVE DASHBOARD LOADER ---
         async function loadDashboard() {
             if (!currentUser) return;
-            const metadata = currentUser.user_metadata || {}; document.getElementById('dashAvatar').innerText = (metadata.full_name || currentUser.email)[0].toUpperCase();
-            document.getElementById('dashName').innerText = metadata.full_name || "Pengguna"; document.getElementById('dashEmail').innerText = currentUser.email;
-            const tbody = document.getElementById('historyBody'); tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">Memuat data...</td></tr>';
-            const { data, error } = await supabase.from('orders').select('*').eq('user_id', currentUser.id).order('tgl_order', { ascending: false });
-            if (error) { tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color:red;">Gagal memuat riwayat.</td></tr>'; return; }
-            if (!data || data.length === 0) { tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color:var(--text-muted);">Belum ada transaksi.</td></tr>'; return; }
+
+            // Profile
+            const metadata = currentUser.user_metadata || {};
+            document.getElementById('dashAvatar').innerText = (metadata.full_name || currentUser.email)[0].toUpperCase();
+            document.getElementById('dashName').innerText = metadata.full_name || "Pengguna";
+            document.getElementById('dashEmail').innerText = currentUser.email;
+
+            // History
+            const tbody = document.getElementById('historyBody');
+            tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">Memuat data...</td></tr>';
+
+            const { data, error } = await supabase
+                .from('orders')
+                .select('*')
+                .eq('user_id', currentUser.id)
+                .order('tgl_order', { ascending: false });
+
+            if (error) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color:red;">Gagal memuat riwayat.</td></tr>';
+                return;
+            }
+
+            if (!data || data.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color:var(--text-muted);">Belum ada transaksi.</td></tr>';
+                return;
+            }
+
             tbody.innerHTML = '';
             data.forEach(order => {
                 const tr = document.createElement('tr');
                 const date = new Date(order.tgl_order).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute:'2-digit' });
                 const formattedPrice = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(order.total_bayar);
-                // Added data-label for responsive CSS mobile view
+                
                 tr.innerHTML = `
-                    <td data-label="Tanggal">${date}</td>
-                    <td data-label="Order ID"><span style="font-family:monospace; font-weight:600;">${order.id}</span></td>
-                    <td data-label="Produk">${order.jenis_produk}</td>
-                    <td data-label="Total">${formattedPrice}</td>
-                    <td data-label="Status"><span class="status-badge status-Paid">${order.status}</span></td>
+                    <td>${date}</td>
+                    <td><span style="font-family:monospace; font-weight:600;">${order.id}</span></td>
+                    <td>${order.jenis_produk}</td>
+                    <td>${formattedPrice}</td>
+                    <td><span class="status-badge status-Paid">${order.status}</span></td>
                 `;
                 tbody.appendChild(tr);
             });
@@ -1610,23 +2239,59 @@
         async function init() {
             console.log('%c[WRITEHUB] Initializing...', 'color: blue; font-weight: bold;');
             initSlider();
+            
             if (useSupabase) {
-                const ads = await fetchAds(); modalAdsCache = ads.filter(ad => { const placement = getAdPlacement(ad); if (!placement) return false; const p = String(placement).toLowerCase().trim(); return p.includes('modal') || p.includes('product') || p.includes('produk') || p.includes('detail') || p.includes('inside'); });
+                const ads = await fetchAds();
+                modalAdsCache = ads.filter(ad => {
+                    const placement = getAdPlacement(ad);
+                    if (!placement) return false;
+                    const p = String(placement).toLowerCase().trim();
+                    return p.includes('modal') || p.includes('product') || p.includes('produk') || p.includes('detail') || p.includes('inside');
+                });
                 console.log(`[AD SYSTEM] Prepared ${modalAdsCache.length} modal ads.`);
             }
-            await fetchAdminNumbers(); await fetchCoverLetterPrice(); await fetchPaymentMethods(); await fetchProducts(); renderProducts();
+            
+            await fetchAdminNumbers();
+            await fetchCoverLetterPrice();
+            await fetchPaymentMethods();
+            await fetchProducts();
+            renderProducts();
         }
-        window.addEventListener('unhandledrejection', function(event) { console.error('Unhandled Promise:', event.reason); event.preventDefault(); });
+
+        window.addEventListener('unhandledrejection', function(event) {
+            console.error('Unhandled Promise:', event.reason);
+            event.preventDefault();
+        });
+
         init();
     </script>
     <script>
         document.addEventListener('contextmenu', e => e.preventDefault());
-        document.onkeydown = function(e) { if(e.keyCode == 123 || (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74 || e.keyCode == 67)) || (e.ctrlKey && e.keyCode == 85)) return false; };
-        document.addEventListener('keydown', function(e) { if ((e.ctrlKey || e.metaKey) && (e.key === '+' || e.key === '-' || e.key === '0')) e.preventDefault(); });
+        document.onkeydown = function(e) {
+            if(e.keyCode == 123 || (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74 || e.keyCode == 67)) || (e.ctrlKey && e.keyCode == 85)) return false;
+        };
+        document.addEventListener('keydown', function(e) {
+            if ((e.ctrlKey || e.metaKey) && (e.key === '+' || e.key === '-' || e.key === '0')) e.preventDefault();
+        });
         document.addEventListener('wheel', function(e) { if (e.ctrlKey) e.preventDefault(); }, { passive: false });
+
+        // --- BACK TO TOP LOGIC ---
         const backToTopBtn = document.getElementById('backToTopBtn');
-        window.addEventListener('scroll', () => { if (window.scrollY > 300) { backToTopBtn.classList.add('visible'); } else { backToTopBtn.classList.remove('visible'); } });
-        backToTopBtn.addEventListener('click', () => { window.scrollTo({ top: 0, behavior: 'smooth' }); });
+
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                backToTopBtn.classList.add('visible');
+            } else {
+                backToTopBtn.classList.remove('visible');
+            }
+        });
+
+        backToTopBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
     </script>
 </body>
 </html>
