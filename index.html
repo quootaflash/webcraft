@@ -790,6 +790,49 @@
         .modal-info::-webkit-scrollbar-thumb, .payment-view::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
 
         @keyframes pulse { 0% { opacity: 0.6; } 50% { opacity: 1; } 100% { opacity: 0.6; } }
+
+        /* ============================================
+           NEW: AUTH & DASHBOARD STYLES
+           ============================================ */
+        .auth-container {
+            min-height: 80vh; display: flex; align-items: center; justify-content: center; padding: 20px;
+        }
+        .auth-card {
+            background: white; width: 100%; max-width: 400px; border-radius: 20px;
+            box-shadow: var(--shadow-xl); padding: 40px 30px; position: relative;
+        }
+        .auth-header { text-align: center; margin-bottom: 30px; }
+        .auth-header h2 { font-size: 1.5rem; color: var(--text-main); margin-bottom: 8px; }
+        .auth-header p { font-size: 0.9rem; color: var(--text-muted); }
+        .auth-toggle { display: flex; background: var(--bg-body); padding: 4px; border-radius: 8px; margin-bottom: 24px; }
+        .toggle-btn { flex: 1; padding: 8px; text-align: center; font-size: 0.9rem; font-weight: 600; border-radius: 6px; cursor: pointer; transition: 0.2s; color: var(--text-muted); }
+        .toggle-btn.active { background: white; color: var(--primary); box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+
+        .dashboard-grid { display: grid; gap: 24px; }
+        @media (min-width: 768px) { .dashboard-grid { grid-template-columns: 300px 1fr; } }
+
+        .profile-card {
+            background: white; border-radius: 20px; padding: 24px; box-shadow: var(--shadow-sm); border: 1px solid var(--border); text-align: center; height: fit-content;
+        }
+        .profile-avatar {
+            width: 80px; height: 80px; background: var(--primary-light); color: var(--primary);
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-size: 2rem; font-weight: 700; margin: 0 auto 16px; border: 3px solid white; box-shadow: 0 4px 10px rgba(37,99,235,0.2);
+        }
+        .profile-name { font-size: 1.2rem; font-weight: 700; color: var(--text-main); margin-bottom: 4px; }
+        .profile-email { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 16px; }
+        .member-badge {
+            display: inline-block; padding: 4px 12px; background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white; border-radius: 20px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;
+        }
+
+        .history-card { background: white; border-radius: 20px; padding: 24px; box-shadow: var(--shadow-sm); border: 1px solid var(--border); }
+        .history-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .history-table { width: 100%; border-collapse: collapse; }
+        .history-table th { text-align: left; padding: 12px; font-size: 0.8rem; color: var(--text-muted); border-bottom: 2px solid var(--bg-body); font-weight: 600; text-transform: uppercase; }
+        .history-table td { padding: 16px 12px; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
+        .status-badge { padding: 4px 10px; border-radius: 6px; font-size: 0.75rem; font-weight: 600; }
+        .status-Paid { background: #dcfce7; color: #166534; }
     </style>
 </head>
 <body oncontextmenu="return false;">
@@ -809,12 +852,9 @@
                 <div class="search-suggestions" id="searchSuggestions"></div>
             </div>
             
-            <div id="navActions">
-                <!-- Dinamis: Masuk / Dashboard (Icon Saja di Mobile) -->
-                <a href="#auth" class="btn btn-outline">
-                    <i class="fas fa-sign-in-alt"></i>
-                    <span class="btn-text">Masuk</span>
-                </a>
+            <div class="nav-actions" id="navActions">
+                <!-- Dinamis: Masuk / Dashboard -->
+                <a href="#auth" class="btn btn-outline"><i class="fas fa-sign-in-alt"></i> Masuk</a>
             </div>
         </div>
     </header>
@@ -827,6 +867,7 @@
                 <div class="slider-container" id="sliderTrack"></div>
                 <button class="slider-btn prev-btn" onclick="window.prevSlide()"><i class="fas fa-chevron-left"></i></button>
                 <button class="slider-btn next-btn" onclick="window.nextSlide()"><i class="fas fa-chevron-right"></i></button>
+                <div class="slider-dots" id="sliderDots"></div>
             </section>
             <div class="filter-bar" id="filterBar"></div>
             <div class="product-grid" id="productGrid">
@@ -858,25 +899,31 @@
                     <p>Selamat datang kembali di WriteHub</p>
                 </div>
                 
+                <div class="auth-toggle">
+                    <div class="toggle-btn active" onclick="switchAuthMode('login')">Masuk</div>
+                    <div class="toggle-btn" onclick="switchAuthMode('register')">Daftar</div>
+                </div>
+
                 <form id="authForm" onsubmit="handleAuth(event)">
+                    <div class="input-group" id="nameGroup" style="display:none;">
+                        <label>Nama Lengkap</label>
+                        <input type="text" id="authName" class="input-field" placeholder="John Doe">
+                    </div>
                     <div class="input-group">
                         <label>Email</label>
                         <input type="email" id="authEmail" class="input-field" placeholder="nama@email.com" required>
                     </div>
                     <div class="input-group">
                         <label>Password</label>
-                        <input type="password" id="authPassword" class="input-field" placeholder="••••••••••" required>
+                        <input type="password" id="authPassword" class="input-field" placeholder="•••••••••" required>
                     </div>
-                    <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center; padding:12px;">
+                    <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center;" id="authSubmitBtn">
                         Masuk
                     </button>
-                    <div style="margin-top:20px; font-size:0.85rem; text-align:center;">
-                        Belum punya akun? <a href="#" onclick="alert('Fitur Daftar segera hadir! Gunakan akun demo jika perlu.')" style="color:var(--primary); font-weight:600;">Daftar disini</a>
-                    </div>
-                    <div style="margin-top:10px; font-size:0.85rem;">
-                        <a href="#home" style="color:var(--text-muted);">Kembali ke Beranda</a>
-                    </div>
                 </form>
+                <div style="margin-top:16px; font-size:0.85rem; color:var(--text-muted); text-align:center;">
+                    <a href="#home" style="text-decoration:underline;">Kembali ke Beranda</a>
+                </div>
             </div>
         </div>
 
@@ -885,12 +932,11 @@
             <div class="dashboard-grid">
                 <!-- Profile Section -->
                 <div class="profile-card">
-                    <div class="profile-avatar">U</div>
-                    <h2 class="profile-name">User Name</h2>
-                    <p class="profile-email">user@example.com</p>
+                    <div class="profile-avatar" id="dashAvatar">U</div>
+                    <h2 class="profile-name" id="dashName">User Name</h2>
+                    <p class="profile-email" id="dashEmail">user@example.com</p>
                     <span class="member-badge">Personal Member</span>
-                    
-                    <button onclick="handleLogout()" class="btn btn-danger" style="width:100%; justify-content:center; margin-top:24px; padding:10px;">
+                    <button onclick="handleLogout()" class="btn btn-danger" style="width:100%; justify-content:center; margin-top:24px;">
                         <i class="fas fa-sign-out-alt"></i> Logout
                     </button>
                 </div>
@@ -898,20 +944,21 @@
                 <!-- History Section -->
                 <div class="history-card">
                     <div class="history-header">
-                        <h3 style="font-size:1.1rem;">Riwayat Transaksi</h3>
+                        <h3>Riwayat Transaksi</h3>
                     </div>
                     <div style="overflow-x:auto;">
                         <table class="history-table">
                             <thead>
-                                <tr style="text-align: left; border-bottom: 2px solid var(--bg-body);">
-                                    <th style="padding:12px; font-size: 0.8rem; color: var(--text-muted);">Tanggal</th>
-                                    <th style="padding: 12px; font-size: 0.8rem; color: var(--text-muted);">Order ID</th>
-                                    <th style="padding: 12px; font-size: 0.8rem; color: var(--text-muted);">Produk</th>
-                                    <th style="padding: 12px; font-size: 0.8rem; color: var(--text-muted);">Total</th>
-                                    <th style="padding: 12px; font-size: 0.8rem; color: var(--text-muted);">Status</th>
+                                <tr>
+                                    <th>Tanggal</th>
+                                    <th>Order ID</th>
+                                    <th>Produk</th>
+                                    <th>Total</th>
+                                    <th>Status</th>
                                 </tr>
                             </thead>
                             <tbody id="historyBody">
+                                <!-- Data injected here -->
                                 <tr><td colspan="5" style="text-align:center;">Memuat...</td></tr>
                             </tbody>
                         </table>
@@ -944,7 +991,7 @@
     <!-- MODAL DETAIL PRODUK -->
     <div class="modal-overlay" id="productModal">
         <div class="modal-content">
-            <div class="btn-close" style="position:absolute; top:15px; right:15px; z-index:10; background:white; padding:8px; border-radius: 50%; cursor:pointer;" onclick="closeModal()"><i class="fas fa-times"></i></div>
+            <div class="btn-close" onclick="closeModal()"><i class="fas fa-times"></i></div>
             
             <div class="modal-body" id="productView">
                 <div class="modal-img-wrapper" id="modalImgWrapper">
@@ -961,7 +1008,10 @@
 
                     <div class="addon-section" id="addonSection">
                         <div class="addon-header">
-                            <div class="addon-title"><i class="fas fa-file-signature" style="color: var(--primary);"></i> Tambah Surat Lamaran</div>
+                            <div class="addon-title">
+                                <i class="fas fa-file-signature" style="color: var(--primary);"></i>
+                                Tambah Surat Lamaran
+                            </div>
                             <label class="switch">
                                 <input type="checkbox" id="coverLetterToggle">
                                 <span class="slider-toggle"></span>
@@ -984,7 +1034,9 @@
                         <span class="ad-label">Ad</span>
                     </div>
 
-                    <button id="btn-goto-payment" class="btn-buy">Pakai Sekarang</button>
+                    <button id="btn-goto-payment" class="btn-buy">
+                        <i class="fas fa-file-alt"></i> Pakai Sekarang
+                    </button>
                 </div>
             </div>
 
@@ -1010,7 +1062,7 @@
                     
                     <div class="summary-row">
                         <span>Produk</span>
-                        <span id="p-product-name" style="font-weight:600; color: var(--text-main);">Nama Produk</span>
+                        <span id="p-product-name" style="font-weight:600; color:var(--text-main);">Nama Produk</span>
                     </div>
                     <div class="summary-row">
                         <span>Harga Satuan</span>
@@ -1267,7 +1319,7 @@
             allChip.innerText = 'Semua';
             allChip.onclick = function() { setCategory('all', this); };
             container.appendChild(allChip);
-            [...new Set(products.map(p => getField(p, 'category'))].filter(Boolean).sort().forEach(cat => {
+            [...new Set(products.map(p => getField(p, 'category')))].filter(Boolean).sort().forEach(cat => {
                 const chip = document.createElement('div');
                 chip.className = 'filter-chip';
                 chip.innerText = cat;
@@ -1666,6 +1718,7 @@
             slides.forEach(s => s.classList.remove('active'));
             dots.forEach(d => d.classList.remove('active'));
             slides[n].classList.add('active');
+            dots[n].classList.add('active');
             slideIndex = n;
         }
         function nextSlide() { goToSlide((slideIndex + 1) % sliderData.length); }
@@ -1752,7 +1805,7 @@
             } else {
                 addonSection.style.display = 'block';
                 const customPrice = Number(clPrice);
-                const finalPrice = (!isNaN(customPrice && customPrice > 0) ? customPrice : coverLetterPrice;
+                const finalPrice = (!isNaN(customPrice) && customPrice > 0) ? customPrice : coverLetterPrice;
                 addonPriceText.innerText = `+ ${formatRupiah(finalPrice)}`;
                 updateModalPriceDisplay();
             }
@@ -1825,12 +1878,12 @@
         window.backToProduct = function() {
             clearPaymentTimer();
             paymentView.classList.remove('active');
-            productView.style.display = flex;
+            productView.style.display = 'flex';
             showModalAdBanner();
         };
 
         window.openModal = function(p) {
-            // --- CEK LOGIN (FITUR BARU)
+            // --- CEK LOGIN (FITUR BARU) ---
             if (!currentUser) {
                 showToast('Silakan Login terlebih dahulu untuk memesan.', 'warning');
                 window.location.hash = '#auth';
@@ -1953,6 +2006,7 @@
             const finalAddonPrice = (customAddonPrice > 0) ? customAddonPrice : coverLetterPrice;
             
             // 2. Siapkan Data untuk Database
+            // CATATAN: Kita HAPUS 'tgl_order' dari payload agar DB handle default now()
             const orderData = {
                 id: currentOrderId,
                 jenis_produk: templateName,
@@ -1970,13 +2024,18 @@
             // 4. Jika DB Error: TOMBOL TETAP TERKUNCI (Sesuai aturan 1x klik)
             if (dbResult.error) {
                 showToast('Terjadi kesalahan sistem. Pesanan gagal tersimpan. Silakan Refresh Halaman.', 'error');
-                isOrderProcessing = false; // TIDAK mereset isOrderProcessing (agar tidak bisa retry)
-                // TIDAK meng-enable tombol (agar user tidak bisa retry)
+                // TIDAK mereset isOrderProcessing
+                // TIDAK meng-enable tombol
                 return; 
             }
 
             // 5. Jika DB Sukses: Siapkan Pesan WA
-            let message = `Halo Min, saya ingin membeli CV berikut:\n\n*Order ID:* ${currentOrderId}\n*Jenis CV:* ${templateName}\n*Total Pembayaran (Unik):* ${formattedTotal}\n\nSaya sudah transfer sesuai nominal unik. Mohon segera diproses ya Min. Berikut bukti transfer yang saya lampirkan`;
+            let message = `Halo Min, saya ingin membeli CV berikut:\n\n*Order ID:* ${currentOrderId}\n*Jenis CV:* ${templateName}\n*Total Pembayaran (Unik):* ${formattedTotal}`;
+            
+            if (isAddOn) {
+                message += `\n\n*Addon:* Surat Lamaran Kerja (+${formatRupiah(finalAddonPrice)})`;
+            }
+            message += `\n\nSaya sudah transfer sesuai nominal unik. Mohon segera diproses ya Min. Berikut bukti transfer yang saya lampirkan`;
 
             // 6. Buka WhatsApp
             const adminNumber = getRotatedAdminNumber();
@@ -2031,13 +2090,22 @@
             document.getElementById('productModal').classList.remove('active');
 
             if (hash === '#auth') {
-                if (currentUser) { window.location.hash = '#user'; return; }
-                document.getElementById('auth-view').classList.remove('hidden');
+                // Check if already logged in
+                if (currentUser) {
+                    window.location.hash = '#user';
+                } else {
+                    document.getElementById('auth-view').classList.remove('hidden');
+                }
             } else if (hash === '#user') {
-                if (!currentUser) { window.location.hash = '#auth'; return; }
+                // Check if logged in
+                if (!currentUser) {
+                    window.location.hash = '#auth';
+                    return;
+                }
                 loadDashboard();
                 document.getElementById('user-view').classList.remove('hidden');
             } else {
+                // Home
                 document.getElementById('home-view').classList.remove('hidden');
             }
             updateNavUI();
@@ -2059,22 +2127,10 @@
 
         function updateNavUI() {
             const nav = document.getElementById('navActions');
-            const btn = nav.querySelector('.btn'); // Select specific button element
             if (currentUser) {
-                nav.href = '#user'; // Ganti href link
-                btn.classList.remove('btn-outline'); // Ganti warna style
-                btn.classList.add('btn-primary'); // Ubah jadi putih Biru
-                btn.innerHTML = `<i class="fas fa-user"></i> <span class="btn-text" style="margin-left:5px; display:inline-flex;">Dashboard</span>`; // Tambah teks dashboard
+                nav.innerHTML = `<a href="#user" class="btn btn-primary"><i class="fas fa-user"></i> Dashboard</a>`;
             } else {
-                nav.href = '#auth'; 
-                btn.classList.remove('btn-primary');
-                btn.classList.add('btn-outline');
-                btn.innerHTML = `<i class="fas fa-sign-in-alt"></i> <span class="btn-text" style="margin-left:5px; display:inline-flex;">Masuk</span>`;
-            }
-            // Responsive: Sembunykan teks tombol dashboard di mobile
-            if (window.innerWidth <= 600) {
-                const btnText = btn.querySelector('.btn-text');
-                if(btnText) btnText.style.display = 'none'; // Hide text
+                nav.innerHTML = `<a href="#auth" class="btn btn-outline"><i class="fas fa-sign-in-alt"></i> Masuk</a>`;
             }
         }
 
@@ -2094,13 +2150,13 @@
             }
         }
 
-        window.handleAuth = async (e) {
+        window.handleAuth = async (e) => {
             e.preventDefault();
             const email = document.getElementById('authEmail').value;
             const password = document.getElementById('authPassword').value;
             const name = document.getElementById('authName').value;
             const btn = document.getElementById('authSubmitBtn');
-            const isRegister = document.getElementById('nameGroup').style.display !== 'none'; // Check if 'Daftar' mode by checking nameGroup display
+            const isRegister = document.getElementById('nameGroup').style.display !== 'none';
 
             btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Memproses...`;
 
@@ -2129,7 +2185,7 @@
         window.handleLogout = async () => {
             await supabase.auth.signOut();
             currentUser = null;
-            window.location.hash = '#home'; // Balik ke home
+            window.location.hash = '#home';
             showToast('Anda telah keluar.', 'success');
         }
 
@@ -2144,7 +2200,7 @@
 
             // History
             const tbody = document.getElementById('historyBody');
-            tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">Memuat...</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">Memuat data...</td></tr>';
 
             const { data, error } = await supabase
                 .from('orders')
@@ -2166,7 +2222,7 @@
             data.forEach(order => {
                 const tr = document.createElement('tr');
                 const date = new Date(order.tgl_order).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute:'2-digit' });
-                const formattedPrice = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(order.total_bayar);
+                const formattedPrice = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(order.total_bayar);
                 
                 tr.innerHTML = `
                     <td>${date}</td>
