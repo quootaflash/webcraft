@@ -1,0 +1,6 @@
+{
+  "name": "Dunnak",
+  "description": "Affiliate Bio Link Platform MVP to manage and track products and optimize earnings",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
